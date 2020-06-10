@@ -65,12 +65,12 @@ class Komplett:
         logger.info('Record saved')
 
 
-def multiple_links():
-    with open('links.txt', 'r') as txt_file:
-        text_lines = txt_file.readlines()
+def multiple_links(file_name):
+    with open(f'{file_name}', 'r') as file:
+        lines = file.readlines()
 
     count = 1
-    for line in text_lines:
+    for line in lines:
         print(f'Produkt {count}:')
         print(f'Link: {line.strip()}')
         Product(line.strip()).print_info()
