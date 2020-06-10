@@ -21,8 +21,6 @@ def log_setup():
     logger.addHandler(file_handler)
     return logger
 
-logger = log_setup()
-
 
 class Komplett:
     def __init__(self, category, URL):
@@ -67,13 +65,6 @@ class Komplett:
         logger.info('Record saved')
 
 
-gpu = Komplett('gpu', 'https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#')
-ssd = Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
-
-#gpu.print_info()
-#ssd.print_info()
-
-
 def multiple_links():
     with open('links.txt', 'r') as txt_file:
         text_lines = txt_file.readlines()
@@ -84,3 +75,9 @@ def multiple_links():
         print(f'Link: {line.strip()}')
         Product(line.strip()).print_info()
         count += 1
+
+
+if __name__ == '__main__':
+    logger = log_setup()
+    gpu = Komplett('gpu', 'https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#')
+    ssd = Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
