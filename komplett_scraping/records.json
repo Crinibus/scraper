@@ -2,15 +2,21 @@
   "gpu": {
     "2020-06-08-00:21:09": {
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
-      "price": "9949"
+      "price": "9949",
+      "from": "www.komplett.dk",
+      "part_num": "1103205"
     },
     "2020-06-08-12:48:02": {
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
-      "price": "9949"
+      "price": "9949",
+      "from": "www.komplett.dk",
+      "part_num": "1103205"
     },
     "2020-06-10-12:00:08": {
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
-      "price": "9949"
+      "price": "9949",
+      "from": "www.komplett.dk",
+      "part_num": "1103205"
     }
   },
   "ssd": {
