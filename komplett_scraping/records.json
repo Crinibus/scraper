@@ -1,5 +1,5 @@
 {
-  "dates": {
+  "gpu": {
     "2020-06-08-00:21:09": {
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
       "price": "9949"
@@ -11,6 +11,14 @@
     "2020-06-10-12:00:08": {
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
       "price": "9949"
+    }
+  },
+  "ssd": {
+    "2020-06-10-13:04:55": {
+      "name": "Corsair Force Series MP600 1TB M.2 SSD",
+      "price": "1891",
+      "from": "www.komplett.dk",
+      "part_num": "1133452"
     }
   }
 }
