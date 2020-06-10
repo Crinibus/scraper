@@ -24,10 +24,13 @@ def log_setup():
 logger = log_setup()
 
 
-class Product:
-    def __init__(self, URL):
-        logger.debug('Initiating instance of class "Product"')
+class Komplett:
+    def __init__(self, category, URL):
+        logger.debug(f'Initiating instance of class "{self.__class__.__name__}"')
+        self.cat = category
         self.URL = URL
+        self.URL_domain = self.URL.split('/')[2]
+        logger.debug(f'category: {self.cat}, from url: {self.URL}')
         try:
             self.get_info()
         except Exception as err:
@@ -44,17 +47,18 @@ class Product:
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find_all('div', class_='product-main-info__info')[0].h1.span.text
         self.price = ''.join(self.html_soup.find_all('div', class_='price-freight')[0].div.span.text.strip('.,-').split('.'))
+        self.part_num = self.html_soup.find_all('div', class_='product-main-info-partnumber-store')
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
     def print_info(self):
-        print(f'Navn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\n')
+        print(f'Kategori: {self.cat}\nNavn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\nFra domain: {self.URL_domain}')
 
     def save_record(self):
         #print('Saving record...')
         logger.info('Saving record...')
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
-            data['dates'][self.date] = {"name": f"{self.name}", "price": f"{self.price}"}
+            data[self.cat][self.date] = {"name": f"{self.name}", "price": f"{self.price}", "from": f'{self.URL_domain}'}
         with open('records.json', 'w') as json_file:
             json.dump(data, json_file, indent=2)
         #print('Record saved')
@@ -62,7 +66,11 @@ class Product:
 
 
 
-test1 = Product('https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#')
+gpu = Komplett('gpu', 'https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#')
+ssd = Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
+
+gpu.print_info()
+ssd.print_info()
 #test1.print_info()
 #test1.save_record()
 
