@@ -67,15 +67,11 @@ class Komplett:
         logger.info('Record saved')
 
 
-
 gpu = Komplett('gpu', 'https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#')
 ssd = Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
 
-gpu.print_info()
-ssd.print_info()
-#test1.print_info()
-#test1.save_record()
-
+#gpu.print_info()
+#ssd.print_info()
 
 
 def multiple_links():
