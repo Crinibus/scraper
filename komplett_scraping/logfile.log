@@ -13,3 +13,27 @@
 2020-06-10 12:00:08,059 : INFO : __main__ : Got response from URL
 2020-06-10 12:00:08,106 : INFO : __main__ : Saving record...
 2020-06-10 12:00:08,183 : INFO : __main__ : Record saved
+2020-06-10 12:58:44,431 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-10 12:58:44,431 : DEBUG : __main__ : category: gpu, from url: https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#
+2020-06-10 12:58:44,431 : INFO : __main__ : Getting response from URL...
+2020-06-10 12:58:44,697 : INFO : __main__ : Got response from URL
+2020-06-10 12:58:44,744 : INFO : __main__ : Saving record...
+2020-06-10 12:58:44,745 : ERROR : __main__ : Failed in method "Product.save_record()": 'gpu'
+Traceback (most recent call last):
+  File "komplett_scraping.py", line 39, in __init__
+    self.save_record()
+  File "komplett_scraping.py", line 61, in save_record
+    data[self.cat][self.date] = {"name": f"{self.name}", "price": f"{self.price}", "from": f'{self.URL_domain}', "part_num": f'{self.part_num}'}
+KeyError: 'gpu'
+2020-06-10 12:58:44,745 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-10 12:58:44,745 : DEBUG : __main__ : category: ssd, from url: https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#
+2020-06-10 12:58:44,745 : INFO : __main__ : Getting response from URL...
+2020-06-10 12:58:45,133 : INFO : __main__ : Got response from URL
+2020-06-10 12:58:45,180 : INFO : __main__ : Saving record...
+2020-06-10 12:58:45,180 : ERROR : __main__ : Failed in method "Product.save_record()": 'ssd'
+Traceback (most recent call last):
+  File "komplett_scraping.py", line 39, in __init__
+    self.save_record()
+  File "komplett_scraping.py", line 61, in save_record
+    data[self.cat][self.date] = {"name": f"{self.name}", "price": f"{self.price}", "from": f'{self.URL_domain}', "part_num": f'{self.part_num}'}
+KeyError: 'ssd'

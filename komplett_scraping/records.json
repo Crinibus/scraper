@@ -1,5 +1,5 @@
 {
-  "dates": {
+  "gpu": {
     "2020-06-08-00:21:09": {
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
       "price": "9949"
@@ -12,5 +12,8 @@
       "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
       "price": "9949"
     }
+  },
+  "cpu": {
+    
   }
 }
