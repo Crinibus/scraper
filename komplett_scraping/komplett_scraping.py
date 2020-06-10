@@ -51,7 +51,7 @@ class Komplett:
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
     def print_info(self):
-        print(f'Kategori: {self.cat}\nNavn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\nFra domain: {self.URL_domain}\nProdukt nummer: {self.part_num}')
+        print(f'Kategori: {self.cat}\nNavn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\nFra domain: {self.URL_domain}\nProdukt nummer: {self.part_num}\n')
 
     def save_record(self):
         #print('Saving record...')
