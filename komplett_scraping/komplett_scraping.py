@@ -36,6 +36,7 @@ class Komplett:
             self.get_info()
         except Exception as err:
             logger.error(f'Failed in method "Product.get_info()": {err}', exc_info=True)
+
         try:
             self.save_record()
         except Exception as err:
