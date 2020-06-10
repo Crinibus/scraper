@@ -30,7 +30,8 @@ class Komplett:
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
-        logger.debug(f'category: {self.cat}, from url: {self.URL}')
+        logger.debug(f'Category: {self.cat}')
+        logger.debug(f'URL: {self.URL}')
         try:
             self.get_info()
         except Exception as err:
