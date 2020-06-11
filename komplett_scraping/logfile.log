@@ -1,0 +1,14 @@
+2020-06-11 12:00:02,101 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-11 12:00:02,101 : DEBUG : __main__ : Category: gpu
+2020-06-11 12:00:02,101 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#
+2020-06-11 12:00:02,101 : INFO : __main__ : Getting response from URL...
+2020-06-11 12:00:02,549 : INFO : __main__ : Got response from URL
+2020-06-11 12:00:02,601 : INFO : __main__ : Saving record...
+2020-06-11 12:00:07,997 : INFO : __main__ : Record saved
+2020-06-11 12:00:07,997 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-11 12:00:07,997 : DEBUG : __main__ : Category: ssd
+2020-06-11 12:00:07,998 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#
+2020-06-11 12:00:07,998 : INFO : __main__ : Getting response from URL...
+2020-06-11 12:00:08,268 : INFO : __main__ : Got response from URL
+2020-06-11 12:00:08,316 : INFO : __main__ : Saving record...
+2020-06-11 12:00:08,316 : INFO : __main__ : Record saved
