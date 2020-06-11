@@ -35,12 +35,12 @@ class Komplett:
         try:
             self.get_info()
         except Exception as err:
-            logger.error(f'Failed in method "Product.get_info()": {err}', exc_info=True)
+            logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
         try:
             self.save_record()
         except Exception as err:
-            logger.error(f'Failed in method "Product.save_record()": {err}', exc_info=True)
+            logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
 
     def get_info(self):
         logger.info('Getting response from URL...')
