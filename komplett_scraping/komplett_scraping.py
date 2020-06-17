@@ -48,7 +48,10 @@ class Komplett:
         logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find_all('div', class_='product-main-info__info')[0].h1.span.text
-        self.price = ''.join(self.html_soup.find_all('div', class_='price-freight')[0].div.span.text.strip('.,-').split('.'))
+        try:
+            self.price = ''.join(self.html_soup.find_all('div', class_='price-freight')[0].div.span.text.strip('.,-').split('.'))
+        except AttributeError:
+            self.price = ''.join(self.html_soup.find_all('div', class_='price-freight')[0].span.text.strip('.,-').split('.'))
         self.part_num = self.URL.split('/')[4]
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
