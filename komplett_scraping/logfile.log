@@ -12,3 +12,72 @@
 2020-06-11 12:00:08,268 : INFO : __main__ : Got response from URL
 2020-06-11 12:00:08,316 : INFO : __main__ : Saving record...
 2020-06-11 12:00:08,316 : INFO : __main__ : Record saved
+2020-06-14 12:00:02,504 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-14 12:00:02,544 : DEBUG : __main__ : Category: gpu
+2020-06-14 12:00:02,544 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#
+2020-06-14 12:00:02,544 : INFO : __main__ : Getting response from URL...
+2020-06-14 12:00:04,071 : INFO : __main__ : Got response from URL
+2020-06-14 12:00:04,117 : INFO : __main__ : Saving record...
+2020-06-14 12:00:04,155 : INFO : __main__ : Record saved
+2020-06-14 12:00:04,155 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-14 12:00:04,155 : DEBUG : __main__ : Category: ssd
+2020-06-14 12:00:04,155 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#
+2020-06-14 12:00:04,156 : INFO : __main__ : Getting response from URL...
+2020-06-14 12:00:04,533 : INFO : __main__ : Got response from URL
+2020-06-14 12:00:04,579 : INFO : __main__ : Saving record...
+2020-06-14 12:00:04,583 : INFO : __main__ : Record saved
+2020-06-16 12:00:02,361 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-16 12:00:02,370 : DEBUG : __main__ : Category: gpu
+2020-06-16 12:00:02,370 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#
+2020-06-16 12:00:02,370 : INFO : __main__ : Getting response from URL...
+2020-06-16 12:00:02,704 : INFO : __main__ : Got response from URL
+2020-06-16 12:00:02,750 : INFO : __main__ : Saving record...
+2020-06-16 12:00:02,768 : INFO : __main__ : Record saved
+2020-06-16 12:00:02,768 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-16 12:00:02,768 : DEBUG : __main__ : Category: ssd
+2020-06-16 12:00:02,768 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#
+2020-06-16 12:00:02,768 : INFO : __main__ : Getting response from URL...
+2020-06-16 12:00:05,752 : INFO : __main__ : Got response from URL
+2020-06-16 12:00:05,797 : ERROR : __main__ : Failed in method "Komplett.get_info()": 'NoneType' object has no attribute 'text'
+Traceback (most recent call last):
+  File "komplett_scraping.py", line 36, in __init__
+    self.get_info()
+  File "komplett_scraping.py", line 51, in get_info
+    self.price = ''.join(self.html_soup.find_all('div', class_='price-freight')[0].div.span.text.strip('.,-').split('.'))
+AttributeError: 'NoneType' object has no attribute 'text'
+2020-06-16 12:00:05,797 : INFO : __main__ : Saving record...
+2020-06-16 12:00:05,800 : ERROR : __main__ : Failed in method "Komplett.save_record()": 'Komplett' object has no attribute 'price'
+Traceback (most recent call last):
+  File "komplett_scraping.py", line 41, in __init__
+    self.save_record()
+  File "komplett_scraping.py", line 63, in save_record
+    data[self.cat][self.date] = {"name": f"{self.name}", "price": f"{self.price}", "from": f'{self.URL_domain}', "part_num": f'{self.part_num}'}
+AttributeError: 'Komplett' object has no attribute 'price'
+2020-06-17 15:30:31,264 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-17 15:30:31,264 : DEBUG : __main__ : Category: gpu
+2020-06-17 15:30:31,264 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#
+2020-06-17 15:30:31,265 : INFO : __main__ : Getting response from URL...
+2020-06-17 15:30:31,523 : INFO : __main__ : Got response from URL
+2020-06-17 15:30:31,570 : INFO : __main__ : Saving record...
+2020-06-17 15:30:31,571 : INFO : __main__ : Record saved
+2020-06-17 15:30:31,571 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-17 15:30:31,571 : DEBUG : __main__ : Category: ssd
+2020-06-17 15:30:31,571 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#
+2020-06-17 15:30:31,571 : INFO : __main__ : Getting response from URL...
+2020-06-17 15:30:31,806 : INFO : __main__ : Got response from URL
+2020-06-17 15:30:31,855 : INFO : __main__ : Saving record...
+2020-06-17 15:30:31,860 : INFO : __main__ : Record saved
+2020-06-17 15:30:49,773 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-17 15:30:49,773 : DEBUG : __main__ : Category: gpu
+2020-06-17 15:30:49,774 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#
+2020-06-17 15:30:49,774 : INFO : __main__ : Getting response from URL...
+2020-06-17 15:30:50,180 : INFO : __main__ : Got response from URL
+2020-06-17 15:30:50,226 : INFO : __main__ : Saving record...
+2020-06-17 15:30:50,227 : INFO : __main__ : Record saved
+2020-06-17 15:30:50,227 : DEBUG : __main__ : Initiating instance of class "Komplett"
+2020-06-17 15:30:50,227 : DEBUG : __main__ : Category: ssd
+2020-06-17 15:30:50,227 : DEBUG : __main__ : URL: https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#
+2020-06-17 15:30:50,227 : INFO : __main__ : Getting response from URL...
+2020-06-17 15:30:50,509 : INFO : __main__ : Got response from URL
+2020-06-17 15:30:50,560 : INFO : __main__ : Saving record...
+2020-06-17 15:30:50,561 : INFO : __main__ : Record saved
