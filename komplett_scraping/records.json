@@ -23,6 +23,18 @@
       "price": "9949",
       "from": "www.komplett.dk",
       "part_num": "1103205"
+    },
+    "2020-06-14-12:00:04": {
+      "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
+      "price": "9949",
+      "from": "www.komplett.dk",
+      "part_num": "1103205"
+    },
+    "2020-06-16-12:00:02": {
+      "name": "ASUS GeForce RTX 2080 Ti ROG Strix OC",
+      "price": "9949",
+      "from": "www.komplett.dk",
+      "part_num": "1103205"
     }
   },
   "ssd": {
@@ -35,6 +47,18 @@
     "2020-06-11-12:00:08": {
       "name": "Corsair Force Series MP600 1TB M.2 SSD",
       "price": "1891",
+      "from": "www.komplett.dk",
+      "part_num": "1133452"
+    },
+    "2020-06-14-12:00:04": {
+      "name": "Corsair Force Series MP600 1TB M.2 SSD",
+      "price": "1891",
+      "from": "www.komplett.dk",
+      "part_num": "1133452"
+    },
+    "2020-06-17-15:27:00": {
+      "name": "Corsair Force Series MP600 1TB M.2 SSD",
+      "price": "1599",
       "from": "www.komplett.dk",
       "part_num": "1133452"
     }
