@@ -78,10 +78,9 @@ def multiple_links(file_name):
     for line in lines:
         print(f'Produkt {count}:')
         print(f'Link: {line.strip()}')
-        Product(line.strip()).print_info()
+        #Product(line.strip()).print_info()
         count += 1
 
-# Test Commit
 
 if __name__ == '__main__':
     logger = log_setup()
