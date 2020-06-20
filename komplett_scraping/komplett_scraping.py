@@ -81,6 +81,7 @@ def multiple_links(file_name):
         #Product(line.strip()).print_info()
         count += 1
 
+#test commit
 
 if __name__ == '__main__':
     logger = log_setup()
