@@ -60,10 +60,10 @@ class Scraper:
             data = json.load(json_file)
             part_num_from_data = data[self.cat][self.name][self.URL_domain]['info']['part_num']
             if part_num_from_data == '':
-                data[self.cat][self.name][self.URL_domain]['info']['part_num'] = f"{self.part_num}"
+                data[self.cat][self.name][self.URL_domain]['info']['part_num'] = self.part_num
                 changed = True
             elif not self.part_num == part_num_from_data:
-                data[self.cat][self.name][self.URL_domain]['info']['part_num_2'] = f"{self.part_num}"
+                data[self.cat][self.name][self.URL_domain]['info']['part_num_2'] = self.part_num
                 changed = True
         if changed:
             with open('records.json', 'w') as json_file:
@@ -77,7 +77,7 @@ class Scraper:
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
             #data[self.cat][self.date] = {"name": f"{self.name}", "price": f"{self.price}", "from": f'{self.URL_domain}', "part_num": f'{self.part_num}'}
-            data[self.cat][self.name][self.URL_domain]["dates"][self.date] = {"price": f"{self.price}"}
+            data[self.cat][self.name][self.URL_domain]["dates"][self.date] = {"price": self.price}
         with open('records.json', 'w') as json_file:
             json.dump(data, json_file, indent=4)
         logger.info('Record saved')
