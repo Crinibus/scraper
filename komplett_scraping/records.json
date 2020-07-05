@@ -3,7 +3,7 @@
     "asus geforce rtx 2080 ti rog strix oc": {
       "www.komplett.dk": {
         "info": {
-          "part_num_": "1103205"
+          "part_num": "1103205"
         },
         "dates": {
           "2020-06-08-00:21:09": {
@@ -107,7 +107,7 @@
     "corsair force series mp600 1tb m.2 ssd": {
       "www.komplett.dk": {
         "info": {
-          "part_num_": "1133452"
+          "part_num": "1133452"
         },
         "dates": {
           "2020-06-10-13:04:55": {
