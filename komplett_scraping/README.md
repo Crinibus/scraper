@@ -3,12 +3,10 @@ In the terminal, run:
 2.     python komplet_scraping/komplett_scraping.py
 
 Before tracking a new product, run:
-
      python komplett_scraping/tilføj_produkt.py
 and follow instructions.
 
 Then add this line in the last if-statement in komplett_scraping/komplett_scraping.py:
-
     {site}('{category}', '{link}')
 e.g.
 
