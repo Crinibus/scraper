@@ -5,7 +5,7 @@ In the terminal, run:
 Before tracking a new product, run:
 
      python komplett_scraping/tilføj_produkt.py
-and follow instructions.\
+and follow instructions.  
 Then add this line in the last if-statement in komplett_scraping/komplett_scraping.py:
 
     {site}('{category}', '{link}')
