@@ -111,7 +111,7 @@ class Proshop(Scraper):
         try:
             self.price = ''.join(self.html_soup.find('div', class_='site-currency-attention site-currency-campaign').text.replace('.', '').split(',')[0])
         except AttributeError:
-            self.price = ''.join(self.html_soup.find('div', class_='col-md-7').span.span.text.strip('.-kr').split(',')[0].split('.'))
+            self.price = ''.join(self.html_soup.find('div', class_='site-currency-attention').text.strip('.-kr').split(',')[0].split('.'))
         self.part_num = self.html_soup.find('small', class_='col-xs-12 text-center').strong.text
         self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
