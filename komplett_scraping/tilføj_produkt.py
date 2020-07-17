@@ -57,19 +57,22 @@ with open('records.json', 'r') as json_file:
 with open('records.json', 'w') as json_file:
     if kategori not in data.keys():
         data[kategori] = {}
-    data[kategori][produkt_navn] = {}
-    data[kategori][produkt_navn][komplett_domain] = {}
-    data[kategori][produkt_navn][komplett_domain]["info"] = {}
-    data[kategori][produkt_navn][komplett_domain]["info"]["part_num"] = ""
-    data[kategori][produkt_navn][komplett_domain]["dates"] = {}
-    data[kategori][produkt_navn][proshop_domain] = {}
-    data[kategori][produkt_navn][proshop_domain]["info"] = {}
-    data[kategori][produkt_navn][proshop_domain]["info"]["part_num"] = ""
-    data[kategori][produkt_navn][proshop_domain]["dates"] = {}
 
-    #data[kategori][produkt_navn]['www.komplett.dk']["dates"][date] = {"pris": pris}
-    #data[kategori][produkt_navn]['www.proshop.dk']["dates"][date_2] = {"pris": pris_2}
-
+    data[kategori][produkt_navn] = {
+                                        f"{komplett_domain}": {
+                                            "info": {
+                                                "part_num": ""
+                                            },
+                                            "dates": {}  
+                                        },
+                                        f"{proshop_domain}": {            
+                                            "info": {
+                                                "part_num": ""
+                                            },
+                                            "dates": {}
+                                        }
+                                    }
+    
     json.dump(data, json_file, indent=2)
 
 
