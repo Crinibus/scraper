@@ -1,3 +1,5 @@
+This program can scrape prices on products from Komplett.dk, Proshop.dk and Computersalg.dk
+
 In the terminal, run:
 1.     pip install -r requirements.txt
 2.     python komplett_scraping.py
