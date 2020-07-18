@@ -91,7 +91,7 @@ class Komplett(Scraper):
         self.name = self.html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
         self.change_name()
         # find price
-        self.price = ''.join(self.html_soup.find('span', class_='product-price-now').text.strip('.,-').split('.'))
+        self.price = self.html_soup.find('span', class_='product-price-now').text.strip(',-').replace('.', '')
         self.part_num = self.URL.split('/')[4]
         self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
