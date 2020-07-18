@@ -49,12 +49,15 @@ URL_domain = link.split('/')[2]
 
 komplett_domain = 'www.komplett.dk'
 proshop_domain = 'www.proshop.dk'
+computersalg_domain = 'www.computersalg.dk'
 
 # to determine which kind of site to find product name on (komplett or proshop)
 if URL_domain == komplett_domain:
     produkt_navn = komplett(link)
 elif URL_domain == proshop_domain:
     produkt_navn = proshop(link)
+elif URL_domain == computersalg_domain:
+    produkt_navn = computersalg(link)
 
 # Ændre æ, ø og/eller å
 kategori = ændre_æøå(kategori)
