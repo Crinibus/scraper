@@ -91,7 +91,7 @@ class Komplett(Scraper):
         self.name = self.html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
         self.change_name()
         # find price
-        self.price = ''.join(self.html_soup.find('span', class_='product-price-now').text.strip('.,-').split('.'))
+        self.price = self.html_soup.find('span', class_='product-price-now').text.strip(',-').replace('.', '')
         self.part_num = self.URL.split('/')[4]
         self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
@@ -107,10 +107,14 @@ class Proshop(Scraper):
         self.change_name()
         try:
             # find normal price
-            self.price = ''.join(self.html_soup.find('span', class_='site-currency-attention').text.strip('.-kr').split(',')[0].split('.'))
+            self.price = self.html_soup.find('span', class_='site-currency-attention').text.split(',')[0].replace('.', '')
         except AttributeError:
-            # find discount price
-            self.price = ''.join(self.html_soup.find('div', class_='site-currency-attention site-currency-campaign').text.replace('.', '').split(',')[0])
+            try:
+                # find discount price
+                self.price = self.html_soup.find('div', class_='site-currency-attention site-currency-campaign').text.split(',')[0].replace('.', '')
+            except AttributeError:
+                # if campaign is sold out (udsolgt)
+                self.price = self.html_soup.find('div', class_='site-currency-attention').text.split(',')[0].replace('.', '')
         self.part_num = self.html_soup.find('small', class_='col-xs-12 text-center').strong.text
         self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
