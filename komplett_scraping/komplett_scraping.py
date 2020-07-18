@@ -109,8 +109,12 @@ class Proshop(Scraper):
             # find normal price
             self.price = self.html_soup.find('span', class_='site-currency-attention').text.split(',')[0].replace('.', '')
         except AttributeError:
-            # find discount price
-            self.price = self.html_soup.find('div', class_='site-currency-attention site-currency-campaign').text.split(',')[0].replace('.', '')
+            try:
+                # find discount price
+                self.price = self.html_soup.find('div', class_='site-currency-attention site-currency-campaign').text.split(',')[0].replace('.', '')
+            except AttributeError:
+                # if campaign is sold out (udsolgt)
+                self.price = self.html_soup.find('div', class_='site-currency-attention').text.split(',')[0].replace('.', '')
         self.part_num = self.html_soup.find('small', class_='col-xs-12 text-center').strong.text
         self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
