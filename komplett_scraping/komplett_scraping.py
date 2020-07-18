@@ -50,10 +50,10 @@ class Scraper:
 
     def change_name(self):
         '''Change the name of the product, so if a similiar product is also being scraped, the similar products goes under the same name.'''
-        if "asus geforce rtx 2080 ti rog strix oc" in self.name:
-            self.name = "asus geforce rtx 2080 ti rog strix oc"
-        elif "corsair" in self.name and "mp600" in self.name and "1tb" in self.name and "m.2" in self.name:
-            self.name = "corsair force mp600 1tb m.2"
+        if 'asus' in self.name and 'geforce' in self.name and 'rtx' in self.name and '2080' in self.name and 'ti' in self.name and 'rog' in self.name and 'strix' in self.name and 'oc' in self.name:
+            self.name = 'asus geforce rtx 2080 ti rog strix oc'
+        elif 'corsair' in self.name and 'mp600' in self.name and '1tb' in self.name and 'm.2' in self.name:
+            self.name = 'corsair force mp600 1tb m.2'
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file, if it doesn't, it added to the JSON-file.'''
