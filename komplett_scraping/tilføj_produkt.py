@@ -1,12 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
+from komplett_scraping import change_name
 
 def komplett(link):
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
+    name = change_name(name)
     return name
 
 
@@ -14,6 +15,15 @@ def proshop(link):
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
+    name = change_name(name)
+    return name
+
+
+def computersalg(link):
+    response = requests.get(link)
+    html_soup = BeautifulSoup(response.text, 'html.parser')
+    name = html_soup.find('h1', itemprop='name').text.lower()
+    name = change_name(name)
     return name
 
 
@@ -34,7 +44,7 @@ def ændre_æøå(navn):
 kategori = input("Kategori f.eks. 'gpu': ")
 #produkt_navn = input('Produkt navn: ')
 
-link = input('Indsæt link fra Komplett eller Proshop\n>')
+link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
 URL_domain = link.split('/')[2]
 
 komplett_domain = 'www.komplett.dk'
@@ -66,6 +76,12 @@ with open('records.json', 'w') as json_file:
                                             "dates": {}  
                                         },
                                         f"{proshop_domain}": {            
+                                            "info": {
+                                                "part_num": ""
+                                            },
+                                            "dates": {}
+                                        },
+                                        f"{computersalg_domain}": {            
                                             "info": {
                                                 "part_num": ""
                                             },
