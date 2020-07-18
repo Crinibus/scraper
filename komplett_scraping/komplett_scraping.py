@@ -120,6 +120,19 @@ class Proshop(Scraper):
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
+class Computersalg(Scraper):
+    def get_info(self):
+        self.response = requests.get(self.URL)
+        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
+        self.name = self.html_soup.find('h1', itemprop='name').text.lower()
+        self.change_name()
+        # find price
+        self.price = self.html_soup.find('span', itemprop='price').text.strip().split(',')[0].replace('.', '')
+        self.part_num = self.URL.split('/')[4]
+        self.check_part_num()
+        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
+
+
 def multiple_links(file_name):
     with open(f'{file_name}', 'r') as file:
         lines = file.readlines()
