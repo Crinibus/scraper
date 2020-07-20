@@ -4,7 +4,7 @@ In the terminal, run:
 1.     pip install -r requirements.txt
 2.     python scraping.py
 
-Before tracking a new product, run:
+Before scraping a new product, run:
 
      python add_product.py
 and follow instructions.
