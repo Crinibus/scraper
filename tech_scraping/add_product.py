@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from komplett_scraping import change_name
+from scraping import change_name
 
 def komplett(link):
     response = requests.get(link)
