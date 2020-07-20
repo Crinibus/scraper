@@ -1,15 +1,15 @@
 This program can scrape prices on products from Komplett.dk, Proshop.dk and Computersalg.dk
 
 In the terminal, run:
-1.     pip install -r requirements.txt
-2.     python scraping.py
+-     pip install -r requirements.txt
+-     python scraping.py
 
 Before scraping a new product, run:
 
      python add_product.py
 and follow instructions.
 
-Then add this line in the last if-statement in scraping.py:
+Then add a line in this form in the last if-statement in scraping.py:
 
     {site}('{category}', '{link}')
 e.g.
