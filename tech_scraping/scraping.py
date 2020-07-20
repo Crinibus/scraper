@@ -49,7 +49,7 @@ class Scraper:
         self.part_num = ''
 
     def check_part_num(self):
-        '''Checks if a product has a part number in the JSON-file, if it doesn't, it added to the JSON-file.'''
+        '''Checks if a product has a part number in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -64,6 +64,21 @@ class Scraper:
             with open('records.json', 'w') as json_file:
                 json.dump(data, json_file, indent=4)
 
+    def check_url(self):
+        '''Check if a producct has a url in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
+        with open('records.json', 'r') as json_file:
+            data = json.load(json_file)
+            url_from_data = data[self.cat][self.name][self.URL_domain]['info']['url']
+            if url_from_data == '':
+                data[self.cat][self.name][self.URL_domain]['info']['url'] = self.URL
+                changed = True
+            elif not self.URL == url_from_data:
+                data[self.cat][self.name][self.URL_domain]['info']['url_2'] = self.URL
+                changed = True
+        if changed:
+            with open('records.json', 'w') as json_file:
+                json.dump(data, json_file, indent=4)
+
     def print_info(self):
         '''Print info about the product in the terminal.'''
         print(f'Kategori: {self.cat}\nNavn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\nFra domain: {self.URL_domain}\nProdukt nummer: {self.part_num}\n')
@@ -71,6 +86,7 @@ class Scraper:
     def save_record(self):
         '''Save the price of the product in the JSON-file.'''
         logger.info('Saving record...')
+        self.check_url()
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
             data[self.cat][self.name][self.URL_domain]["dates"][self.date] = {"price": self.price}
