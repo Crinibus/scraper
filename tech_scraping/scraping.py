@@ -79,7 +79,7 @@ class Scraper:
                 json.dump(data, json_file, indent=4)
 
     def check_url(self):
-        '''Check if a producct has a url in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
+        '''Check if a product has a url in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
