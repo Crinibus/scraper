@@ -114,6 +114,8 @@ def main():
         produkt_navn = proshop(link)
     elif URL_domain == computersalg_domain:
         produkt_navn = computersalg(link)
+    elif URL_domain == elgiganten_domain:
+        produkt_navn = elgiganten(link)
     else:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
