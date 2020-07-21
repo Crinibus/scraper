@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -74,19 +76,22 @@ with open('records.json', 'w') as json_file:
     data[kategori][produkt_navn] = {
                                         f"{komplett_domain}": {
                                             "info": {
-                                                "part_num": ""
+                                                "part_num": "",
+                                                "url": ""
                                             },
                                             "dates": {}  
                                         },
                                         f"{proshop_domain}": {            
                                             "info": {
-                                                "part_num": ""
+                                                "part_num": "",
+                                                "url": ""
                                             },
                                             "dates": {}
                                         },
                                         f"{computersalg_domain}": {            
                                             "info": {
-                                                "part_num": ""
+                                                "part_num": "",
+                                                "url": ""
                                             },
                                             "dates": {}
                                         }

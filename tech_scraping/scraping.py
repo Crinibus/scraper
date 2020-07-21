@@ -30,6 +30,8 @@ class Scraper:
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
+        self.get_part_num()
+        self.shorten_url()
         logger.debug(f'Category: {self.cat}')
         logger.debug(f'URL: {self.URL}')
         try:
@@ -37,6 +39,8 @@ class Scraper:
         except Exception as err:
             logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
+        self.check_part_num()
+        
         try:
             self.save_record()
         except Exception as err:
@@ -48,8 +52,18 @@ class Scraper:
         self.date = ''
         self.part_num = ''
 
+    def get_part_num(self):
+        '''Get part number from URL.'''
+        self.part_num = ''
+        if self.URL_domain == 'www.komplett.dk':
+            self.part_num = self.URL.split('/')[4]
+        elif self.URL_domain == 'www.proshop.dk':
+            self.part_num = self.URL.split('/')[5]
+        elif self.URL_domain == 'www.computersalg.dk':
+            self.part_num = self.URL.split('/')[4]
+
     def check_part_num(self):
-        '''Checks if a product has a part number in the JSON-file, if it doesn't, it added to the JSON-file.'''
+        '''Checks if a product has a part number in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -64,6 +78,32 @@ class Scraper:
             with open('records.json', 'w') as json_file:
                 json.dump(data, json_file, indent=4)
 
+    def check_url(self):
+        '''Check if a product has a url in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
+        changed = False
+        with open('records.json', 'r') as json_file:
+            data = json.load(json_file)
+            url_from_data = data[self.cat][self.name][self.URL_domain]['info']['url']
+            if url_from_data == '':
+                data[self.cat][self.name][self.URL_domain]['info']['url'] = self.short_url
+                changed = True
+            elif not self.short_url == url_from_data:
+                data[self.cat][self.name][self.URL_domain]['info']['url_2'] = self.short_url
+                changed = True
+        if changed:
+            with open('records.json', 'w') as json_file:
+                json.dump(data, json_file, indent=4)
+
+    def shorten_url(self):
+        '''Shorten url to be as short as possible, usually domain.dk/product_number.'''
+        self.short_url = ''
+        if self.URL_domain == 'www.komplett.dk':
+            self.short_url = f'https://www.komplett.dk/product/{self.part_num}'
+        elif self.URL_domain == 'www.proshop.dk':
+            self.short_url = f'https://www.proshop.dk/{self.part_num}'
+        elif self.URL_domain == 'www.computersalg.dk':
+            self.short_url = f'https://www.computersalg.dk/i/{self.part_num}'
+
     def print_info(self):
         '''Print info about the product in the terminal.'''
         print(f'Kategori: {self.cat}\nNavn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\nFra domain: {self.URL_domain}\nProdukt nummer: {self.part_num}\n')
@@ -71,6 +111,7 @@ class Scraper:
     def save_record(self):
         '''Save the price of the product in the JSON-file.'''
         logger.info('Saving record...')
+        self.check_url()
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
             data[self.cat][self.name][self.URL_domain]["dates"][self.date] = {"price": self.price}
@@ -98,8 +139,6 @@ class Komplett(Scraper):
         self.name = change_name(self.name)
         # find price
         self.price = self.html_soup.find('span', class_='product-price-now').text.strip(',-').replace('.', '')
-        self.part_num = self.URL.split('/')[4]
-        self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
@@ -121,8 +160,6 @@ class Proshop(Scraper):
             except AttributeError:
                 # if campaign is sold out (udsolgt)
                 self.price = self.html_soup.find('div', class_='site-currency-attention').text.split(',')[0].replace('.', '')
-        self.part_num = self.html_soup.find('small', class_='col-xs-12 text-center').strong.text
-        self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
@@ -134,8 +171,6 @@ class Computersalg(Scraper):
         self.name = change_name(self.name)
         # find price
         self.price = self.html_soup.find('span', itemprop='price').text.strip().split(',')[0].replace('.', '')
-        self.part_num = self.URL.split('/')[4]
-        self.check_part_num()
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
@@ -157,3 +192,4 @@ if __name__ == '__main__':
     Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-GeForce-RTX-2080-Ti-ROG-STRIX-OC-11GB-GDDR6-RAM-Grafikkort/2679518')
     Proshop('ssd', 'https://www.proshop.dk/SSD/Corsair-Force-MP600-NVMe-Gen4-M2-1TB/2779161')
+    Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-Radeon-RX-5700-XT-ROG-STRIX-OC-8GB-GDDR6-RAM-Grafikkort/2792486')
