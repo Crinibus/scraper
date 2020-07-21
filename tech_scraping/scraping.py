@@ -61,6 +61,8 @@ class Scraper:
             self.part_num = self.URL.split('/')[5]
         elif self.URL_domain == 'www.computersalg.dk':
             self.part_num = self.URL.split('/')[4]
+        elif self.URL_domain == 'www.elgiganten.dk':
+            self.part_num = self.URL.split('/')[6]
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
@@ -103,6 +105,8 @@ class Scraper:
             self.short_url = f'https://www.proshop.dk/{self.part_num}'
         elif self.URL_domain == 'www.computersalg.dk':
             self.short_url = f'https://www.computersalg.dk/i/{self.part_num}'
+        elif self.URL_domain == 'www.elgiganten.dk':
+            self.short_url = f'https://www.elgiganten.dk/product/{self.part_num}/'
 
     def print_info(self):
         '''Print info about the product in the terminal.'''
