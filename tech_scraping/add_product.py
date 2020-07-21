@@ -7,6 +7,7 @@ from scraping import change_name
 
 
 def komplett(link):
+    '''Get name of product from Komplett-link.'''
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
@@ -15,6 +16,7 @@ def komplett(link):
 
 
 def proshop(link):
+    '''Get name of product from Proshop-link.'''
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
@@ -23,6 +25,7 @@ def proshop(link):
 
 
 def computersalg(link):
+    '''Get name of product from Computersalg-link.'''
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('h1', itemprop='name').text.lower()
@@ -31,6 +34,7 @@ def computersalg(link):
 
 
 def ændre_æøå(navn):
+    '''Change the letters æ, ø and å to international letters to avoid unicode.'''
     nyt_navn = ''
     for bogstav in navn:
         if bogstav in 'æøå':
@@ -45,7 +49,7 @@ def ændre_æøå(navn):
 
 
 def save(kategori, produkt_navn):
-
+    '''Save (category and) product-name in JSON-file.'''
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
 
@@ -105,7 +109,7 @@ def main():
     save(kategori, produkt_navn)
 
 
-if __name__ == '__man__':
+if __name__ == '__main__':
     komplett_domain = 'www.komplett.dk'
     proshop_domain = 'www.proshop.dk'
     computersalg_domain = 'www.computersalg.dk'
