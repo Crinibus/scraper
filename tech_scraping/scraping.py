@@ -30,8 +30,6 @@ class Scraper:
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
-        self.get_part_num()
-        self.shorten_url()
         logger.debug(f'Category: {self.cat}')
         logger.debug(f'URL: {self.URL}')
         try:
@@ -39,6 +37,8 @@ class Scraper:
         except Exception as err:
             logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
+        self.get_part_num()
+        self.shorten_url()
         self.check_part_num()
         
         try:
@@ -62,7 +62,7 @@ class Scraper:
         elif self.URL_domain == 'www.computersalg.dk':
             self.part_num = self.URL.split('/')[4]
         elif self.URL_domain == 'www.elgiganten.dk':
-            self.part_num = self.URL.split('/')[6]
+            self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
