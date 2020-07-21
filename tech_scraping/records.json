@@ -3,7 +3,8 @@
         "asus radeon rx 5700 xt rog strix oc - 8gb gddr6 ram - grafikkort": {
             "www.proshop.dk": {
                 "info": {
-                    "part_num": "2792486"
+                    "part_num": "2792486",
+                    "url": ""
                 },
                 "dates": {
                     "2020-07-15-18:39:20": {
@@ -33,7 +34,8 @@
         "asus geforce rtx 2080 ti rog strix oc": {
             "www.komplett.dk": {
                 "info": {
-                    "part_num": "1103205"
+                    "part_num": "1103205",
+                    "url": ""
                 },
                 "dates": {
                     "2020-06-08-00:21:09": {
@@ -172,7 +174,8 @@
             },
             "www.proshop.dk": {
                 "info": {
-                    "part_num": "2679518"
+                    "part_num": "2679518",
+                    "url": ""
                 },
                 "dates": {
                     "2020-07-05-23:56:04": {
@@ -219,7 +222,8 @@
         "corsair force mp600 1tb m.2": {
             "www.komplett.dk": {
                 "info": {
-                    "part_num": "1133452"
+                    "part_num": "1133452",
+                    "url": ""
                 },
                 "dates": {
                     "2020-06-10-13:04:55": {
@@ -346,7 +350,8 @@
             },
             "www.proshop.dk": {
                 "info": {
-                    "part_num": "2779161"
+                    "part_num": "2779161",
+                    "url": ""
                 },
                 "dates": {
                     "2020-07-05-23:58:58": {
