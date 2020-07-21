@@ -3,6 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import sys
 from scraping import change_name
 
 def komplett(link):
@@ -43,61 +44,74 @@ def ændre_æøå(navn):
     return nyt_navn
 
 
-kategori = input("Kategori f.eks. 'gpu': ")
-#produkt_navn = input('Produkt navn: ')
+def save(kategori, produkt_navn):
 
-link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
-URL_domain = link.split('/')[2]
+    komplett_domain = 'www.komplett.dk'
+    proshop_domain = 'www.proshop.dk'
+    computersalg_domain = 'www.computersalg.dk'
 
-komplett_domain = 'www.komplett.dk'
-proshop_domain = 'www.proshop.dk'
-computersalg_domain = 'www.computersalg.dk'
+    with open('records.json', 'r') as json_file:
+        data = json.load(json_file)
 
-# to determine which kind of site to find product name on (komplett or proshop)
-if URL_domain == komplett_domain:
-    produkt_navn = komplett(link)
-elif URL_domain == proshop_domain:
-    produkt_navn = proshop(link)
-elif URL_domain == computersalg_domain:
-    produkt_navn = computersalg(link)
+    with open('records.json', 'w') as json_file:
+        if kategori not in data.keys():
+            data[kategori] = {}
 
-# Ændre æ, ø og/eller å
-kategori = ændre_æøå(kategori)
-produkt_navn = ændre_æøå(produkt_navn)
-
-
-with open('records.json', 'r') as json_file:
-    data = json.load(json_file)
-
-with open('records.json', 'w') as json_file:
-    if kategori not in data.keys():
-        data[kategori] = {}
-
-    data[kategori][produkt_navn] = {
-                                        f"{komplett_domain}": {
-                                            "info": {
-                                                "part_num": "",
-                                                "url": ""
+        data[kategori][produkt_navn] = {
+                                            f"{komplett_domain}": {
+                                                "info": {
+                                                    "part_num": "",
+                                                    "url": ""
+                                                },
+                                                "dates": {}  
                                             },
-                                            "dates": {}  
-                                        },
-                                        f"{proshop_domain}": {            
-                                            "info": {
-                                                "part_num": "",
-                                                "url": ""
+                                            f"{proshop_domain}": {            
+                                                "info": {
+                                                    "part_num": "",
+                                                    "url": ""
+                                                },
+                                                "dates": {}
                                             },
-                                            "dates": {}
-                                        },
-                                        f"{computersalg_domain}": {            
-                                            "info": {
-                                                "part_num": "",
-                                                "url": ""
-                                            },
-                                            "dates": {}
+                                            f"{computersalg_domain}": {            
+                                                "info": {
+                                                    "part_num": "",
+                                                    "url": ""
+                                                },
+                                                "dates": {}
+                                            }
                                         }
-                                    }
+        
+        json.dump(data, json_file, indent=2)
+
+
+def main():
+    kategori = input("Kategori f.eks. 'gpu': ")
+    #produkt_navn = input('Produkt navn: ')
+
+    link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
+    URL_domain = link.split('/')[2]
+
+    komplett_domain = 'www.komplett.dk'
+    proshop_domain = 'www.proshop.dk'
+    computersalg_domain = 'www.computersalg.dk'
+
+    # to determine which kind of site to find product name on
+    if URL_domain == komplett_domain:
+        produkt_navn = komplett(link)
+    elif URL_domain == proshop_domain:
+        produkt_navn = proshop(link)
+    elif URL_domain == computersalg_domain:
+        produkt_navn = computersalg(link)
+    else:
+        print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
+        return
+
+    # Ændre æ, ø og/eller å
+    kategori = ændre_æøå(kategori)
+    produkt_navn = ændre_æøå(produkt_navn)
     
-    json.dump(data, json_file, indent=2)
+    save(kategori, produkt_navn)
 
 
-#print(data)
+if __name__ == '__man__':
+    main()
