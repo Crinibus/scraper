@@ -3,8 +3,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-import sys
 from scraping import change_name
+
 
 def komplett(link):
     response = requests.get(link)
@@ -45,10 +45,6 @@ def ændre_æøå(navn):
 
 
 def save(kategori, produkt_navn):
-
-    komplett_domain = 'www.komplett.dk'
-    proshop_domain = 'www.proshop.dk'
-    computersalg_domain = 'www.computersalg.dk'
 
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
@@ -91,10 +87,6 @@ def main():
     link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
     URL_domain = link.split('/')[2]
 
-    komplett_domain = 'www.komplett.dk'
-    proshop_domain = 'www.proshop.dk'
-    computersalg_domain = 'www.computersalg.dk'
-
     # to determine which kind of site to find product name on
     if URL_domain == komplett_domain:
         produkt_navn = komplett(link)
@@ -114,4 +106,7 @@ def main():
 
 
 if __name__ == '__man__':
+    komplett_domain = 'www.komplett.dk'
+    proshop_domain = 'www.proshop.dk'
+    computersalg_domain = 'www.computersalg.dk'
     main()
