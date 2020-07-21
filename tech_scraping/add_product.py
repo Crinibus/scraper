@@ -33,6 +33,15 @@ def computersalg(link):
     return name
 
 
+def elgiganten(link):
+    '''Get name of product from Elgiganten-link.'''
+    response = requests.get(link)
+    html_soup = BeautifulSoup(response.text, 'html.parser')
+    name = html_soup.find('h1', class_='product-title').text.lower()
+    name = change_name(name)
+    return name
+
+
 def ændre_æøå(navn):
     '''Change the letters æ, ø and å to international letters to avoid unicode.'''
     nyt_navn = ''
@@ -78,6 +87,13 @@ def save(kategori, produkt_navn):
                                                     "url": ""
                                                 },
                                                 "dates": {}
+                                            },
+                                            f"{elgiganten_domain}": {
+                                                "info": {
+                                                    "part_num": "",
+                                                    "url": ""
+                                                },
+                                                "dates": {}
                                             }
                                         }
         
@@ -98,6 +114,8 @@ def main():
         produkt_navn = proshop(link)
     elif URL_domain == computersalg_domain:
         produkt_navn = computersalg(link)
+    elif URL_domain == elgiganten_domain:
+        produkt_navn = elgiganten(link)
     else:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
@@ -113,4 +131,5 @@ if __name__ == '__main__':
     komplett_domain = 'www.komplett.dk'
     proshop_domain = 'www.proshop.dk'
     computersalg_domain = 'www.computersalg.dk'
+    elgiganten_domain = 'www.elgiganten.dk'
     main()

@@ -30,8 +30,6 @@ class Scraper:
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
-        self.get_part_num()
-        self.shorten_url()
         logger.debug(f'Category: {self.cat}')
         logger.debug(f'URL: {self.URL}')
         try:
@@ -39,6 +37,8 @@ class Scraper:
         except Exception as err:
             logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
+        self.get_part_num()
+        self.shorten_url()
         self.check_part_num()
         
         try:
@@ -61,6 +61,8 @@ class Scraper:
             self.part_num = self.URL.split('/')[5]
         elif self.URL_domain == 'www.computersalg.dk':
             self.part_num = self.URL.split('/')[4]
+        elif self.URL_domain == 'www.elgiganten.dk':
+            self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
@@ -103,6 +105,8 @@ class Scraper:
             self.short_url = f'https://www.proshop.dk/{self.part_num}'
         elif self.URL_domain == 'www.computersalg.dk':
             self.short_url = f'https://www.computersalg.dk/i/{self.part_num}'
+        elif self.URL_domain == 'www.elgiganten.dk':
+            self.short_url = f'https://www.elgiganten.dk/product/{self.part_num}/'
 
     def print_info(self):
         '''Print info about the product in the terminal.'''
@@ -171,6 +175,17 @@ class Computersalg(Scraper):
         self.name = change_name(self.name)
         # find price
         self.price = self.html_soup.find('span', itemprop='price').text.strip().split(',')[0].replace('.', '')
+        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
+
+
+class Elgiganten(Scraper):
+    def get_info(self):
+        self.response = requests.get(self.URL)
+        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
+        self.name = self.html_soup.find('h1', class_='product-title').text.lower()
+        self.name = change_name(self.name)
+        # find price
+        self.price = self.html_soup.find('div', class_='product-price-container').text.strip().replace(u'\xa0', '')
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
