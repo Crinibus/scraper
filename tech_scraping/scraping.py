@@ -47,10 +47,11 @@ class Scraper:
             logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
 
     def get_info(self): # gets overwritten
+        self.response = ''
+        self.html_soup = ''
         self.name = ''
         self.price = ''
         self.date = ''
-        self.part_num = ''
 
     def get_part_num(self):
         '''Get part number from URL.'''
