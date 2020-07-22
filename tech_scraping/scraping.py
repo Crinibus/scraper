@@ -54,7 +54,7 @@ class Scraper:
         self.date = ''
 
     def get_part_num(self):
-        '''Get part number from URL.'''
+        '''Get part number from URL or from HTML.'''
         self.part_num = ''
         if self.URL_domain == 'www.komplett.dk':
             self.part_num = self.URL.split('/')[4]
