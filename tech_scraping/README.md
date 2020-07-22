@@ -1,4 +1,4 @@
-This program can scrape prices on products from Komplett.dk, Proshop.dk and Computersalg.dk
+This program can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk
 
 ## First setup
 Make sure you have the modules, run this in the terminal:
