@@ -54,7 +54,7 @@ class Scraper:
         self.date = ''
 
     def get_part_num(self):
-        '''Get part number from URL.'''
+        '''Get part number from URL or from HTML.'''
         self.part_num = ''
         if self.URL_domain == 'www.komplett.dk':
             self.part_num = self.URL.split('/')[4]
@@ -66,7 +66,8 @@ class Scraper:
             self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
 
     def check_part_num(self):
-        '''Checks if a product has a part number in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
+        '''Checks if a product has a part number in the JSON-file, 
+        if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -82,7 +83,8 @@ class Scraper:
                 json.dump(data, json_file, indent=4)
 
     def check_url(self):
-        '''Check if a product has a url in the JSON-file, if it doesn't, it gets added to the JSON-file.'''
+        '''Check if a product has a url in the JSON-file, 
+        if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -111,7 +113,12 @@ class Scraper:
 
     def print_info(self):
         '''Print info about the product in the terminal.'''
-        print(f'Kategori: {self.cat}\nNavn: {self.name}\nPris: {self.price} kr.\nDato: {self.date}\nFra domain: {self.URL_domain}\nProdukt nummer: {self.part_num}\n')
+        print(f'Kategori: {self.cat}\n'
+              f'Navn: {self.name}\n'
+              f'Pris: {self.price} kr.\n'
+              f'Dato: {self.date}\n'
+              f'Fra domain: {self.URL_domain}\n'
+              f'Produkt nummer: {self.part_num}\n')
 
     def save_record(self):
         '''Save the price of the product in the JSON-file.'''
@@ -126,8 +133,10 @@ class Scraper:
 
 
 def change_name(name):
-    '''Change the name of the product, so if a similiar product is also being scraped, the similar products goes under the same name.'''
-    if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name and 'rog' in name and 'strix' in name and 'oc' in name:
+    '''Change the name of the product, so if a similiar product is also being scraped, 
+    the similar products goes under the same name.'''
+    if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name \
+            and 'rog' in name and 'strix' in name and 'oc' in name:
         name = 'asus geforce rtx 2080 ti rog strix oc'
     elif 'corsair' in name and 'mp600' in name and '1tb' in name and 'm.2' in name:
         name = 'corsair force mp600 1tb m.2'
