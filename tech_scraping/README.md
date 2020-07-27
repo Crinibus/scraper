@@ -8,17 +8,19 @@ Make sure you have the modules, run this in the terminal:
 ## Scrape products
 To scrape prices of products run this in the terminal:
 
-    python scraping.py
+    python3 scraping.py
 
 ## Adding products
-Before scraping a new product, run:
+Before scraping a new product, run a similar line to this:
 
-     python add_product.py
-and follow instructions.
+    python3 add_product.py <category> <url>
+e.g.
+
+    python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
 
 Then add a line in this form in the last if-statement in scraping.py:
 
-    {site}('{category}', '{link}')
+    <site>('<category>', '<link>')
 e.g.
 
     Komplett('gpu', 'https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio')
