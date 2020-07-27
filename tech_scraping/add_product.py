@@ -89,6 +89,84 @@ def ændre_æøå(navn):
     return nyt_navn
 
 
+def check_arguments():
+    '''Check if any of the optional domain arguments is giving to the script and returns those that are as one json-object.'''
+    json_object = json.loads('{}')
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten:
+        if args.komplett:
+            json_object.update({
+                                    f"{komplett_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.proshop:
+            json_object.update({
+                                    f"{proshop_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.computersalg:
+            json_object.update({
+                                    f"{computersalg_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.elgiganten:
+            json_object.update({
+                                    f"{elgiganten_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+    else:
+        json_object = {
+                            f"{komplett_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}  
+                            },
+                            f"{proshop_domain}": {            
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{computersalg_domain}": {            
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{elgiganten_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            }
+                        }
+    return json_object
+
+
 def save(kategori, produkt_navn):
     '''Save (category and) product-name in JSON-file.'''
     with open('records.json', 'r') as json_file:
