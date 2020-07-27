@@ -11,27 +11,27 @@ def argparse_setup():
     '''Setup argparse.'''
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('category', 
-                        help='category the product is going to be in',
+    parser.add_argument('category',
+                        help='the category the product is going to be in',
                         type=str)
 
-    parser.add_argument('url', 
+    parser.add_argument('url',
                         help='the url to the product',
                         type=str)
-    
-    parser.add_argument('--komplett', 
+
+    parser.add_argument('--komplett',
                         help='add only komplett-domain under the product-name, if this is the only optional flag',
                         action="store_true")
 
-    parser.add_argument('--proshop', 
+    parser.add_argument('--proshop',
                         help='add only proshop-domain under the product-name, if this is the only optional flag',
                         action="store_true")
 
-    parser.add_argument('--computersalg', 
+    parser.add_argument('--computersalg',
                         help='add only computersalg-domain under the product-name, if this is the only optional flag',
                         action="store_true")
 
-    parser.add_argument('--elgiganten', 
+    parser.add_argument('--elgiganten',
                         help='add only elgiganten-domain under the product-name, if this is the only optional flag',
                         action="store_true")
 
@@ -140,16 +140,16 @@ def check_arguments():
                                     "part_num": "",
                                     "url": ""
                                 },
-                                "dates": {}  
+                                "dates": {}
                             },
-                            f"{proshop_domain}": {            
+                            f"{proshop_domain}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{computersalg_domain}": {            
+                            f"{computersalg_domain}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
@@ -177,15 +177,17 @@ def save(kategori, produkt_navn):
             data[kategori] = {}
 
         data[kategori][produkt_navn] = check_arguments()
-        
+
         json.dump(data, json_file, indent=2)
 
 
 def main():
-    kategori = input("Kategori f.eks. 'gpu': ")
+    #kategori = input("Kategori f.eks. 'gpu': ")
+    kategori = args.category
     #produkt_navn = input('Produkt navn: ')
 
-    link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
+    #link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
+    link = args.url
     URL_domain = link.split('/')[2]
 
     # to determine which kind of site to find product name on
@@ -204,7 +206,7 @@ def main():
     # Ændre æ, ø og/eller å
     kategori = ændre_æøå(kategori)
     produkt_navn = ændre_æøå(produkt_navn)
-    
+
     save(kategori, produkt_navn)
 
 
