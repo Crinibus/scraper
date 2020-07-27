@@ -11,13 +11,29 @@ def argparse_setup():
     '''Setup argparse.'''
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('category', 
+    parser.add_argument('category',
                         help='the category the product is going to be in',
                         type=str)
 
-    parser.add_argument('url', 
+    parser.add_argument('url',
                         help='the url to the product',
                         type=str)
+
+    parser.add_argument('--komplett',
+                        help='add only komplett-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--proshop',
+                        help='add only proshop-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--computersalg',
+                        help='add only computersalg-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--elgiganten',
+                        help='add only elgiganten-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
 
     return parser.parse_args()
 
@@ -73,6 +89,84 @@ def ændre_æøå(navn):
     return nyt_navn
 
 
+def check_arguments():
+    '''Check if any of the optional domain arguments is giving to the script and returns those that are as one json-object.'''
+    json_object = json.loads('{}')
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten:
+        if args.komplett:
+            json_object.update({
+                                    f"{komplett_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.proshop:
+            json_object.update({
+                                    f"{proshop_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.computersalg:
+            json_object.update({
+                                    f"{computersalg_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.elgiganten:
+            json_object.update({
+                                    f"{elgiganten_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+    else:
+        json_object = {
+                            f"{komplett_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{proshop_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{computersalg_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{elgiganten_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            }
+                        }
+    return json_object
+
+
 def save(kategori, produkt_navn):
     '''Save (category and) product-name in JSON-file.'''
     with open('records.json', 'r') as json_file:
@@ -82,37 +176,8 @@ def save(kategori, produkt_navn):
         if kategori not in data.keys():
             data[kategori] = {}
 
-        data[kategori][produkt_navn] = {
-                                            f"{komplett_domain}": {
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}  
-                                            },
-                                            f"{proshop_domain}": {            
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}
-                                            },
-                                            f"{computersalg_domain}": {            
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}
-                                            },
-                                            f"{elgiganten_domain}": {
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}
-                                            }
-                                        }
-        
+        data[kategori][produkt_navn] = check_arguments()
+
         json.dump(data, json_file, indent=2)
 
 
@@ -141,7 +206,7 @@ def main():
     # Ændre æ, ø og/eller å
     kategori = ændre_æøå(kategori)
     produkt_navn = ændre_æøå(produkt_navn)
-    
+
     save(kategori, produkt_navn)
 
 
