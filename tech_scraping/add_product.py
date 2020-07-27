@@ -213,4 +213,5 @@ if __name__ == '__main__':
     proshop_domain = 'www.proshop.dk'
     computersalg_domain = 'www.computersalg.dk'
     elgiganten_domain = 'www.elgiganten.dk'
+    args = argparse_setup()
     main()
