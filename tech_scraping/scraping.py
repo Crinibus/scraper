@@ -17,7 +17,7 @@ def log_setup():
 
     # define file handler and set formatter
     file_handler = logging.FileHandler('logfile.log')
-    formatter    = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+    formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
     file_handler.setFormatter(formatter)
 
     # add file handler to logger
@@ -41,13 +41,13 @@ class Scraper:
         self.get_part_num()
         self.shorten_url()
         self.check_part_num()
-        
+
         try:
             self.save_record()
         except Exception as err:
             logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
 
-    def get_info(self): # gets overwritten
+    def get_info(self):  # gets overwritten
         self.response = ''
         self.html_soup = ''
         self.name = ''
@@ -67,7 +67,7 @@ class Scraper:
             self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
 
     def check_part_num(self):
-        '''Checks if a product has a part number in the JSON-file, 
+        '''Checks if a product has a part number in the JSON-file,
         if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
@@ -84,7 +84,7 @@ class Scraper:
                 json.dump(data, json_file, indent=4)
 
     def check_url(self):
-        '''Check if a product has a url in the JSON-file, 
+        '''Check if a product has a url in the JSON-file,
         if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
@@ -134,7 +134,7 @@ class Scraper:
 
 
 def change_name(name):
-    '''Change the name of the product, so if a similiar product is also being scraped, 
+    '''Change the name of the product, so if a similiar product is also being scraped,
     the similar products goes under the same name.'''
     if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name \
             and 'rog' in name and 'strix' in name and 'oc' in name:
