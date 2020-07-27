@@ -4,6 +4,38 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from scraping import change_name
+import argparse
+
+
+def argparse_setup():
+    '''Setup argparse.'''
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('category', 
+                        help='category the product is going to be in',
+                        type=str)
+
+    parser.add_argument('url', 
+                        help='the url to the product',
+                        type=str)
+    
+    parser.add_argument('--komplett', 
+                        help='add only komplett-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--proshop', 
+                        help='add only proshop-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--computersalg', 
+                        help='add only computersalg-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--elgiganten', 
+                        help='add only elgiganten-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    return parser.parse_args()
 
 
 def komplett(link):
