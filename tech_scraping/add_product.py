@@ -176,36 +176,7 @@ def save(kategori, produkt_navn):
         if kategori not in data.keys():
             data[kategori] = {}
 
-        data[kategori][produkt_navn] = {
-                                            f"{komplett_domain}": {
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}  
-                                            },
-                                            f"{proshop_domain}": {            
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}
-                                            },
-                                            f"{computersalg_domain}": {            
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}
-                                            },
-                                            f"{elgiganten_domain}": {
-                                                "info": {
-                                                    "part_num": "",
-                                                    "url": ""
-                                                },
-                                                "dates": {}
-                                            }
-                                        }
+        data[kategori][produkt_navn] = check_arguments()
         
         json.dump(data, json_file, indent=2)
 
