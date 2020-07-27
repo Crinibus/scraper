@@ -4,6 +4,22 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from scraping import change_name
+import argparse
+
+
+def argparse_setup():
+    '''Setup argparse.'''
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('category', 
+                        help='the category the product is going to be in',
+                        type=str)
+
+    parser.add_argument('url', 
+                        help='the url to the product',
+                        type=str)
+
+    return parser.parse_args()
 
 
 def komplett(link):
@@ -101,10 +117,12 @@ def save(kategori, produkt_navn):
 
 
 def main():
-    kategori = input("Kategori f.eks. 'gpu': ")
+    #kategori = input("Kategori f.eks. 'gpu': ")
+    kategori = args.category
     #produkt_navn = input('Produkt navn: ')
 
-    link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
+    #link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
+    link = args.url
     URL_domain = link.split('/')[2]
 
     # to determine which kind of site to find product name on
@@ -132,4 +150,5 @@ if __name__ == '__main__':
     proshop_domain = 'www.proshop.dk'
     computersalg_domain = 'www.computersalg.dk'
     elgiganten_domain = 'www.elgiganten.dk'
+    args = argparse_setup()
     main()

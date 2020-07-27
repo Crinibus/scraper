@@ -8,6 +8,7 @@ import logging
 
 
 def log_setup():
+    '''Setup logging.'''
     # Gets or creates a logger
     logger = logging.getLogger(__name__)
 
