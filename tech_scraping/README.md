@@ -25,6 +25,7 @@ Before scraping a new product, run a similar line to this:
 e.g.
 
     python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
+**OBS: the category can only be one word, so add a underscore instead of a space if needed.**
 
 <br/>Then add a line in this form in the last if-statement in scraping.py:
 
@@ -32,7 +33,7 @@ e.g.
 e.g.
 
     Komplett('gpu', 'https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio')
-OBS: make sure the category and product name has been created with add_product.py
+**OBS: make sure the category and product name has been created with add_product.py**
 
 ### Optional arguments <a name="optional-arguments"></a>
 There is some optional arguments you can use when running add_product.py, these are:
