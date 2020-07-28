@@ -27,7 +27,7 @@ def log_setup():
 
 class Scraper:
     def __init__(self, category, URL):
-        logger.debug(f'Initiating instance of class "{self.__class__.__name__}"')
+        logger.debug(f'Initiating class "{self.__class__.__name__}"')
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
