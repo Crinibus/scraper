@@ -181,13 +181,13 @@ def save(kategori, produkt_navn):
         json.dump(data, json_file, indent=2)
 
 
-def main():
+def main(kategori, link):
     #kategori = input("Kategori f.eks. 'gpu': ")
-    kategori = args.category
+    #kategori = args.category
     #produkt_navn = input('Produkt navn: ')
 
     #link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
-    link = args.url
+    #link = args.url
     URL_domain = link.split('/')[2]
 
     # to determine which kind of site to find product name on
@@ -216,4 +216,4 @@ if __name__ == '__main__':
     computersalg_domain = 'www.computersalg.dk'
     elgiganten_domain = 'www.elgiganten.dk'
     args = argparse_setup()
-    main()
+    main(args.category, args.url)
