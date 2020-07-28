@@ -20,19 +20,23 @@ def argparse_setup():
                         type=str)
 
     parser.add_argument('--komplett',
-                        help='add only komplett-domain under the product-name, if this is the only optional flag',
+                        help='add only komplett-domain under the product-name,'
+                             'if this is the only optional flag',
                         action="store_true")
 
     parser.add_argument('--proshop',
-                        help='add only proshop-domain under the product-name, if this is the only optional flag',
+                        help='add only proshop-domain under the product-name,'
+                             'if this is the only optional flag',
                         action="store_true")
 
     parser.add_argument('--computersalg',
-                        help='add only computersalg-domain under the product-name, if this is the only optional flag',
+                        help='add only computersalg-domain under the product-name,'
+                             'if this is the only optional flag',
                         action="store_true")
 
     parser.add_argument('--elgiganten',
-                        help='add only elgiganten-domain under the product-name, if this is the only optional flag',
+                        help='add only elgiganten-domain under the product-name,'
+                             'if this is the only optional flag',
                         action="store_true")
 
     return parser.parse_args()
@@ -90,7 +94,8 @@ def ændre_æøå(navn):
 
 
 def check_arguments():
-    '''Check if any of the optional domain arguments is giving to the script and returns those that are as one json-object.'''
+    '''Check if any of the optional domain arguments is giving to the script
+       and returns those that are as one json-object.'''
     json_object = json.loads('{}')
     if args.komplett or args.proshop or args.computersalg or args.elgiganten:
         if args.komplett:
