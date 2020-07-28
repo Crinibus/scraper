@@ -68,7 +68,7 @@ class Scraper:
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file,
-        if it doesn't, it gets added to the JSON-file.'''
+           if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -85,7 +85,7 @@ class Scraper:
 
     def check_url(self):
         '''Check if a product has a url in the JSON-file,
-        if it doesn't, it gets added to the JSON-file.'''
+           if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -136,7 +136,7 @@ class Scraper:
 
 def change_name(name):
     '''Change the name of the product, so if a similiar product is also
-    being scraped, the similar products goes under the same name.'''
+       being scraped, the similar products goes under the same name.'''
     if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name \
             and 'rog' in name and 'strix' in name and 'oc' in name:
         name = 'asus geforce rtx 2080 ti rog strix oc'
