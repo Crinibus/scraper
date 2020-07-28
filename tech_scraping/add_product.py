@@ -94,7 +94,8 @@ def ændre_æøå(navn):
 
 
 def check_arguments():
-    '''Check if any of the optional domain arguments is giving to the script and returns those that are as one json-object.'''
+    '''Check if any of the optional domain arguments is giving to the script
+       and returns those that are as one json-object.'''
     json_object = json.loads('{}')
     if args.komplett or args.proshop or args.computersalg or args.elgiganten:
         if args.komplett:
