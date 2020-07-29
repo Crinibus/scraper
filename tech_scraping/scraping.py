@@ -27,7 +27,7 @@ def log_setup():
 
 class Scraper:
     def __init__(self, category, URL):
-        logger.debug(f'Initiating instance of class "{self.__class__.__name__}"')
+        logger.debug(f'Initiating class "{self.__class__.__name__}"')
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
@@ -68,7 +68,7 @@ class Scraper:
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file,
-        if it doesn't, it gets added to the JSON-file.'''
+           if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -85,7 +85,7 @@ class Scraper:
 
     def check_url(self):
         '''Check if a product has a url in the JSON-file,
-        if it doesn't, it gets added to the JSON-file.'''
+           if it doesn't, it gets added to the JSON-file.'''
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
@@ -101,7 +101,8 @@ class Scraper:
                 json.dump(data, json_file, indent=4)
 
     def shorten_url(self):
-        '''Shorten url to be as short as possible, usually domain.dk/product_number.'''
+        '''Shorten url to be as short as possible,
+        usually domain.dk/product_number.'''
         self.short_url = ''
         if self.URL_domain == 'www.komplett.dk':
             self.short_url = f'https://www.komplett.dk/product/{self.part_num}'
@@ -134,8 +135,8 @@ class Scraper:
 
 
 def change_name(name):
-    '''Change the name of the product, so if a similiar product is also being scraped,
-    the similar products goes under the same name.'''
+    '''Change the name of the product, so if a similiar product is also
+       being scraped, the similar products goes under the same name.'''
     if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name \
             and 'rog' in name and 'strix' in name and 'oc' in name:
         name = 'asus geforce rtx 2080 ti rog strix oc'
