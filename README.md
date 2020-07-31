@@ -9,13 +9,13 @@
 <br/>
 
 ## First setup <a name="first-setup"></a>
-First cd into the tech_scraping directory:
-
-    cd tech_scraping
-
-Make sure you have the modules, run this in the terminal:
+First make sure you have the modules, run this in the terminal:
 
     pip install -r requirements.txt
+
+Then cd into the tech_scraping directory:
+
+    cd tech_scraping
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
