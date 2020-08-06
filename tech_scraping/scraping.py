@@ -33,6 +33,12 @@ class Scraper:
         self.URL_domain = self.URL.split('/')[2]
         logger.debug(f'Category: {self.cat}')
         logger.debug(f'URL: {self.URL}')
+
+        try:
+            self.get_response()
+        except Exception as err:
+            logger.error(f'Failed in method "{self.__class__.__name__}.get_response()": {err}', exc_info=True)
+
         try:
             self.get_info()
         except Exception as err:
@@ -53,6 +59,11 @@ class Scraper:
         self.name = ''
         self.price = ''
         self.date = ''
+
+    def get_response(self):
+        logger.info('Getting response from URL...')
+        self.response = requests.get(self.URL)
+        logger.info('Got response from URL')
 
     def get_part_num(self):
         '''Get part number from URL or from HTML.'''
@@ -147,9 +158,6 @@ def change_name(name):
 
 class Komplett(Scraper):
     def get_info(self):
-        logger.info('Getting response from URL...')
-        self.response = requests.get(self.URL)
-        logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
         self.name = change_name(self.name)
@@ -160,9 +168,6 @@ class Komplett(Scraper):
 
 class Proshop(Scraper):
     def get_info(self):
-        logger.info('Getting response from URL...')
-        self.response = requests.get(self.URL)
-        logger.info('Got response from URl')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
         self.name = change_name(self.name)
@@ -181,7 +186,6 @@ class Proshop(Scraper):
 
 class Computersalg(Scraper):
     def get_info(self):
-        self.response = requests.get(self.URL)
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('h1', itemprop='name').text.lower()
         self.name = change_name(self.name)
@@ -192,7 +196,6 @@ class Computersalg(Scraper):
 
 class Elgiganten(Scraper):
     def get_info(self):
-        self.response = requests.get(self.URL)
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('h1', class_='product-title').text.lower()
         self.name = change_name(self.name)
