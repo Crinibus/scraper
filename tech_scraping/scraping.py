@@ -100,13 +100,16 @@ class Scraper:
         changed = False
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
-            url_from_data = data[self.cat][self.name][self.URL_domain]['info']['url']
-            if url_from_data == '':
-                data[self.cat][self.name][self.URL_domain]['info']['url'] = self.short_url
-                changed = True
-            elif not self.short_url == url_from_data:
-                data[self.cat][self.name][self.URL_domain]['info']['url_2'] = self.short_url
-                changed = True
+        
+        url_from_data = data[self.cat][self.name][self.URL_domain]['info']['url']
+        
+        if url_from_data == '':
+            data[self.cat][self.name][self.URL_domain]['info']['url'] = self.short_url
+            changed = True
+        elif not self.short_url == url_from_data:
+            data[self.cat][self.name][self.URL_domain]['info']['url_2'] = self.short_url
+            changed = True
+        
         if changed:
             with open('records.json', 'w') as json_file:
                 json.dump(data, json_file, indent=4)
