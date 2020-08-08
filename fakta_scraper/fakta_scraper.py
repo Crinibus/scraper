@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 
 
+# Setup headless browser
 # firefox_options = Options()
 # firefox_options.add_argument('--headless')
 
@@ -20,38 +21,43 @@ URL = 'https://fakta.coop.dk/tilbudsavis/'
 
 wait = WebDriverWait(driver, 20)
 
+# Go to URL
 driver.get(URL)
 
+# Find "Tillad alle"-button on pop-up with cookies
 accept_cookies_button = driver.find_element_by_id('acceptAllButton')
+# Press "Tillad alle"-button on pop-up with cookies
 accept_cookies_button.send_keys(Keys.RETURN)
 
+# Wait until the page is loaded
 wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[2]/div/div[1]')))
 
 print(driver.title)
 print(driver.current_url)
 
-
+# Find all the products on discount
 products = driver.find_elements_by_xpath(f'/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
 
+# Discount to look for
+discount_words = ['lays', 'majskolber', 'kellogg']
 
-word_tilbud = ['lays', 'majskolber', 'kellogg']
+found_discounts = []
 
-
-tilbud_søgning = []
+# Find the products that match the ones to look for
 for product in products:
-    print(f'{product.text}\n')
-
-    for word in word_tilbud:
+    # print(f'{product.text}\n')
+    for word in discount_words:
         if word in product.text.lower():
-            tilbud_søgning.append(product.text)
+            found_discounts.append(product.text)
 
+# Find the time period the discounts is valid for
+time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
+print(time_periode.text)
 
-tidsperiode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
-print(tidsperiode.text)
-
+# Print found discounts
 print('\n\n\nTilbud:')
-for tilbud in tilbud_søgning:
-    print(f'{tilbud}\n')
+for discount in found_discounts:
+    print(f'{discount}\n')
 
-input("enter to quit")
+# input("enter to quit")
 driver.quit()
