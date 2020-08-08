@@ -49,6 +49,10 @@ for product in products:
 time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
 print(time_periode.text)
 
+
+
+
+
 #num = 0
 #new_list = []
 #for product in found_discounts:
@@ -84,6 +88,8 @@ for product in new_list:
             print(new_list_1[num_1])
             new_list_1[num_1] += ' '+product
     num += 1
+
+
 
 
 
