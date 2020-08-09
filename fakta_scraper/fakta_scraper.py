@@ -8,6 +8,7 @@ import sys
 
 
 def setup_driver():
+    '''Setup driver for headless Firefox browser.'''
     # Setup headless browser
     firefox_options = Options()
     firefox_options.add_argument('--headless')
