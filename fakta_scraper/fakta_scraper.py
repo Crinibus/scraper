@@ -77,17 +77,16 @@ for product in found_discounts:
     for indi in indi_product:
         new_list.append(indi)
 
+print(new_list)
+
 num = 0
-new_list_1 = []
+seperate_products = []
 for product in new_list:
-    if num%2 != 0:
-        new_list_1.append(product)
-    if num != 1:
-        if num%2 == 0:
-            num_1 = int(num/2)
-            print(new_list_1[num_1])
-            new_list_1[num_1] += ' '+product
     num += 1
+    if num%2 != 0:
+        seperate_products.append(product)
+    else:
+        seperate_products[-1] += ' '+product
 
 
 
@@ -100,7 +99,8 @@ for discount in found_discounts:
 
 print(found_discounts)
 
-print(new_list)
+for discount in seperate_products:
+    print(discount)
 
 # input("enter to quit")
 driver.quit()
