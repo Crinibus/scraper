@@ -7,14 +7,19 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 import sys
 
 
-def main():
+def setup_driver():
     # Setup headless browser
     firefox_options = Options()
     firefox_options.add_argument('--headless')
     driver = webdriver.Firefox(options=firefox_options)
     # driver = webdriver.Firefox()
+    return driver
+
+
+def main(driver):
 
     URL = 'https://fakta.coop.dk/tilbudsavis/'
+    URL_domain = URL.split('/')[2]
 
     # Go to URL
     driver.get(URL)
@@ -25,18 +30,19 @@ def main():
     accept_cookies_button.send_keys(Keys.RETURN)
 
 
-    # Wait until the page is loaded
-    wait = WebDriverWait(driver, 30)
-    wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[25]/div/div[4]')))
+    # # Wait until the page is loaded
+    # wait = WebDriverWait(driver, 30)
+    # wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[25]/div/div[4]')))
+    products, time_periode = find_products(URL_domain, driver)
 
     print(driver.title)
     print(driver.current_url)
 
-    # Find all the products on discount
-    products = driver.find_elements_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
+    # # Find all the products on discount
+    # products = driver.find_elements_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
 
-    # Find the time period the discounts is valid for
-    time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
+    # # Find the time period the discounts is valid for
+    # time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
     print(f'\n{time_periode.text}')
 
 
@@ -56,7 +62,19 @@ def main():
     print_discounts(discounts)
 
 
+def find_products(URL_domain, driver):
+    '''Find products and time periode depending on the url domain.'''
+    wait = WebDriverWait(driver, 30)
 
+    if URL_domain == 'fakta.coop.dk':
+        # Wait until the page is loaded
+        wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[25]/div/div[4]')))
+        # Find all the products on discount
+        products = driver.find_elements_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
+        # Find the time period the discounts is valid for
+        time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
+
+    return products, time_periode
 
 
 def manipulate_product_list(products, discount_words):
@@ -97,6 +115,7 @@ def manipulate_product_list(products, discount_words):
 
 
 def print_discounts(discounts):
+    '''Print discounts line by line.'''
     # Print discounts
     print('\nTilbud:')
     for discount in discounts:
@@ -104,7 +123,12 @@ def print_discounts(discounts):
 
 
 if __name__ == '__main__':
+    driver = setup_driver()
+
     if len(sys.argv) > 1:
-        main()
+        try:
+            main(driver)
+        except:
+            driver.quit()
     else:
         print('Please add your seach terms as arguments')
