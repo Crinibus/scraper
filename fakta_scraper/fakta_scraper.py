@@ -123,12 +123,11 @@ def print_discounts(discounts):
 
 
 if __name__ == '__main__':
-    driver = setup_driver()
-
-    if len(sys.argv) > 1:
-        try:
+    try:
+        driver = setup_driver()
+        if len(sys.argv) > 1:
             main(driver)
-        except:
-            driver.quit()
-    else:
-        print('Please add your seach terms as arguments')
+        else:
+            print('Please add your seach terms as arguments')
+    except:
+        driver.quit()
