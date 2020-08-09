@@ -26,7 +26,7 @@ def main():
 
 
     # Wait until the page is loaded
-    wait = WebDriverWait(driver, 20)
+    wait = WebDriverWait(driver, 30)
     wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[2]/div/div[1]')))
 
     print(driver.title)
@@ -35,9 +35,13 @@ def main():
     # Find all the products on discount
     products = driver.find_elements_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
 
+    # Get discounts to look for from arguments
+    discount_words = []
+    for x in range(1, len(sys.argv)):
+        discount_words.append(sys.argv[x])
 
     # Discounts to look for
-    discount_words = ['lays', 'majskolber', 'kellogg']
+    #discount_words = ['lays', 'majskolber', 'kellogg']
 
     # Find the products that match the ones to look for
     found_discounts = []
@@ -50,7 +54,7 @@ def main():
 
     # Find the time period the discounts is valid for
     time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
-    print(time_periode.text)
+    print(f'\n{time_periode.text}')
 
 
     # Seperate products and prices
@@ -89,4 +93,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        main()
+    else:
+        print('Please add your seach terms as arguments')
