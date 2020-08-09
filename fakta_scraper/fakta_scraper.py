@@ -14,7 +14,6 @@ driver = webdriver.Firefox(options=firefox_options)
 
 URL = 'https://fakta.coop.dk/tilbudsavis/'
 
-wait = WebDriverWait(driver, 20)
 
 # Go to URL
 driver.get(URL)
@@ -24,7 +23,9 @@ accept_cookies_button = driver.find_element_by_id('acceptAllButton')
 # Press "Tillad alle"-button on pop-up with cookies
 accept_cookies_button.send_keys(Keys.RETURN)
 
+
 # Wait until the page is loaded
+wait = WebDriverWait(driver, 20)
 wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[2]/div/div[1]')))
 
 print(driver.title)
@@ -67,18 +68,18 @@ for product in new_list:
     if num%2 != 0:
         seperate_products.append(product)
     else:
-        seperate_products[-1] += ' '+product
+        seperate_products[-1] += f' {product}'
 
 # Get rid of duplicates
-check_products = []
+discounts = []
 for product in seperate_products:
-    if not product in check_products:
-        check_products.append(product)
+    if not product in discounts:
+        discounts.append(product)
 
 
 # Print discounts
 print('\nTilbud:')
-for discount in check_products:
+for discount in discounts:
     print(f'{discount}\n')
 
 
