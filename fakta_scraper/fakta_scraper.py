@@ -27,13 +27,18 @@ def main():
 
     # Wait until the page is loaded
     wait = WebDriverWait(driver, 30)
-    wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[2]/div/div[1]')))
+    wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[25]/div/div[4]')))
 
     print(driver.title)
     print(driver.current_url)
 
     # Find all the products on discount
     products = driver.find_elements_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
+
+    # Find the time period the discounts is valid for
+    time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
+    print(f'\n{time_periode.text}')
+
 
     # Get discounts to look for from arguments
     discount_words = []
@@ -43,6 +48,19 @@ def main():
     # Discounts to look for
     #discount_words = ['lays', 'majskolber', 'kellogg']
 
+    discounts = manipulate_product_list(products, discount_words)
+
+    # input("enter to quit")
+    driver.quit()
+
+    print_discounts(discounts)
+
+
+
+
+
+def manipulate_product_list(products, discount_words):
+    '''Pass a list with products, return a list with only the products that match "discount_words"-list.'''
     # Find the products that match the ones to look for
     found_discounts = []
     for product in products:
@@ -50,12 +68,6 @@ def main():
         for word in discount_words:
             if word in product.text.lower():
                 found_discounts.append(product.text)
-
-
-    # Find the time period the discounts is valid for
-    time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
-    print(f'\n{time_periode.text}')
-
 
     # Seperate products and prices
     new_list = []
@@ -81,15 +93,14 @@ def main():
         if not product in discounts:
             discounts.append(product)
 
+    return discounts
 
+
+def print_discounts(discounts):
     # Print discounts
     print('\nTilbud:')
     for discount in discounts:
         print(f'{discount}\n')
-
-
-    # input("enter to quit")
-    driver.quit()
 
 
 if __name__ == '__main__':
