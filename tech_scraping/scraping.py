@@ -61,6 +61,7 @@ class Scraper:
         self.date = ''
 
     def get_response(self):
+        '''Get response from URL.'''
         logger.info('Getting response from URL...')
         self.response = requests.get(self.URL)
         logger.info('Got response from URL')
