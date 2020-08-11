@@ -172,7 +172,7 @@ def check_arguments():
     return json_object
 
 
-def save(kategori, produkt_navn):
+def save_json(kategori, produkt_navn):
     '''Save (category and) product-name in JSON-file.'''
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
@@ -184,6 +184,27 @@ def save(kategori, produkt_navn):
         data[kategori][produkt_navn] = check_arguments()
 
         json.dump(data, json_file, indent=2)
+
+
+def find_domain(link):
+    '''Return the domain of the url without "www." and ".dk".'''
+    if link == 'www.komplett.dk':
+        return 'Komplett'
+    elif link == 'www.proshop.dk':
+        return 'Proshop'
+    elif link == 'www.computersalg.dk':
+        return 'Computersalg'
+    elif link == 'www.elgiganten.dk':
+        return 'Elgiganten'
+
+
+def add_to_scraper(kategori, link, url_domain):
+    '''Add line to scraping.py, so scraping.py can scrape the new product.'''
+    domain = find_domain(url_domain)
+
+    with open('scraping.py', 'a+') as python_file:
+        python_file.write(f'    {domain}(\'{kategori}\', \'{link}\')\n')
+        print(f'{kategori}\n{link}')
 
 
 def main(kategori, link):
@@ -212,7 +233,8 @@ def main(kategori, link):
     kategori = ændre_æøå(kategori)
     produkt_navn = ændre_æøå(produkt_navn)
 
-    save(kategori, produkt_navn)
+    save_json(kategori, produkt_navn)
+    add_to_scraper(kategori, link, URL_domain)
 
 
 if __name__ == '__main__':
