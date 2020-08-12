@@ -17,6 +17,7 @@ First make sure you have the modules, run this in the terminal:
 
     pip install -r requirements.txt
 
+<br/>
 
 # Tech scraper <a name="tech-scraper"></a>
 The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk
