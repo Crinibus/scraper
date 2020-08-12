@@ -17,10 +17,6 @@ First make sure you have the modules, run this in the terminal:
 
     pip install -r requirements.txt
 
-Then cd into the tech_scraping directory:
-
-    cd tech_scraping
-
 
 # Tech scraper <a name="tech-scraper"></a>
 
