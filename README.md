@@ -1,10 +1,14 @@
-**This program can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk**
+**The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk**
+**The Fakta scraper can scrape discounts from this week discounts.**
 
 # Table of contents
 - [First setup](#first-setup)
-- [Scrape products](#scrape-products)
-- [Adding products](#adding-products)
-    - [Optional arguments](#optional-arguments)
+- [Tech scraper](#tech-scraper)
+    - [Scrape products](#scrape-products)
+    - [Adding products](#adding-products)
+        - [Optional arguments](#optional-arguments)
+- [Fakta scraper](#fakta-scraper)
+    - [Scrape discounts](#scrape-discounts)
 
 <br/>
 
@@ -13,9 +17,10 @@ First make sure you have the modules, run this in the terminal:
 
     pip install -r requirements.txt
 
-Then cd into the tech_scraping directory:
+<br/>
 
-    cd tech_scraping
+# Tech scraper <a name="tech-scraper"></a>
+The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -51,3 +56,21 @@ There is some optional arguments you can use when running add_product.py, these 
 -     --elgiganten
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
+
+<br/>
+
+# Fakta scraper <a name="fakta-scraper"></a>
+The Fakta scraper can scrape discounts from this week discounts. <br/>
+**OBS: Fakta scraper can not run in Linux as it uses the Firefox webdriver which is a .exe file.**
+
+## Scrape discounts <a name="scrape-discounts"></a>
+For now you can only search for keywords and get the discounts that match the keywords.
+To scrape for discounts about for example Kellogg products, you only have to add the keyword "Kellogg" as a argument when running the fakta_scraper.py script:
+
+    python3 fakta_scraper.py kellogg
+
+You can search for multiple keyword by just adding them as arguments, as such:
+
+    python fakta_scraper.py <keyword_1> <keyword_2> <keyword_3>
+
+The discounts is printed in the terminal.

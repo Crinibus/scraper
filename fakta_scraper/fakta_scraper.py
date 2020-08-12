@@ -31,19 +31,11 @@ def main(driver):
     accept_cookies_button.send_keys(Keys.RETURN)
 
 
-    # # Wait until the page is loaded
-    # wait = WebDriverWait(driver, 30)
-    # wait.until(presence_of_element_located((By.XPATH, '/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[25]/div/div[4]')))
     products, time_periode = find_products(URL_domain, driver)
 
     print(driver.title)
     print(driver.current_url)
 
-    # # Find all the products on discount
-    # products = driver.find_elements_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div')
-
-    # # Find the time period the discounts is valid for
-    # time_periode = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/div[3]/div/div/div[2]/div/div[1]/div/p')
     print(f'\n{time_periode.text}')
 
 
@@ -52,8 +44,6 @@ def main(driver):
     for x in range(1, len(sys.argv)):
         discount_words.append(sys.argv[x])
 
-    # Discounts to look for
-    #discount_words = ['lays', 'majskolber', 'kellogg']
 
     discounts = manipulate_product_list(products, discount_words)
 
@@ -124,8 +114,8 @@ def print_discounts(discounts):
 
 
 if __name__ == '__main__':
-    driver = setup_driver()
     if len(sys.argv) > 1:
+        driver = setup_driver()
         main(driver)
     else:
         print('Please add your seach terms as arguments')
