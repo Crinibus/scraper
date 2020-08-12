@@ -72,3 +72,5 @@ To scrape for discounts about for example Kellogg products, you only have to add
 You can search for multiple keyword by just adding them as arguments, as such:
 
     python fakta_scraper.py <keyword_1> <keyword_2> <keyword_3>
+
+The discounts is printed in the terminal.
