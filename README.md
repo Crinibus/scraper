@@ -21,8 +21,10 @@ Then cd into the tech_scraping directory:
 
     cd tech_scraping
 
+<br/>
 
 # Tech scraper <a name="tech-scraper"></a>
+The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -59,8 +61,10 @@ There is some optional arguments you can use when running add_product.py, these 
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
 
+<br/>
 
 # Fakta scraper <a name="fakta-scraper"></a>
+The Fakta scraper can scrape discounts from this week discounts. <br/>
 **OBS: Fakta scraper can not run in Linux as it uses the Firefox webdriver which is a .exe file.**
 
 ## Scrape discounts <a name="scrape-discounts"></a>
