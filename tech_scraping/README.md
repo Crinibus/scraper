@@ -47,4 +47,6 @@ There is some optional arguments you can use when running add_product.py, these 
 
 -     --elgiganten
 
+-     --avxperten
+
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
