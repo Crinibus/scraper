@@ -5,6 +5,7 @@
 - [First setup](#first-setup)
 - [Tech scraper](#tech-scraper)
     - [Scrape products](#scrape-products)
+    - [Start from scratch](#start-scratch)
     - [Adding products](#adding-products)
         - [Optional arguments](#optional-arguments)
 - [Fakta scraper](#fakta-scraper)
@@ -20,14 +21,20 @@ First make sure you have the modules, run this in the terminal:
 <br/>
 
 # Tech scraper <a name="tech-scraper"></a>
-The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk and Elgiganten.dk
+The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk and AvXperten.dk
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
 
     python3 scraping.py
 
-## Adding products <a name="adding-products"></a>
+## Start from scratch <a name="start-scratch"></a>
+If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
+
+    {}
+Then just add products like described [here](#add-products)
+
+## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
 
     python3 add_product.py <category> <url>
