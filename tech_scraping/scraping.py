@@ -213,18 +213,6 @@ class AvXperten(Scraper):
         self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
-def multiple_links(file_name):
-    with open(f'{file_name}', 'r') as file:
-        lines = file.readlines()
-
-    count = 1
-    for line in lines:
-        print(f'Produkt {count}:')
-        print(f'Link: {line.strip()}')
-        #Product(line.strip()).print_info()
-        count += 1
-
-
 if __name__ == '__main__':
     logger = log_setup()
     Komplett('gpu', 'https://www.komplett.dk/product/1103205/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix-oc#')
