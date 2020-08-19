@@ -119,7 +119,7 @@ class Scraper:
         
         if changed:
             with open('records.json', 'w') as json_file:
-                json.dump(data, json_file, indent=4)
+                json.dump(data, json_file, indent=2)
 
     def shorten_url(self):
         '''Shorten url to be as short as possible,
