@@ -39,6 +39,11 @@ def argparse_setup():
                              'if this is the only optional flag',
                         action="store_true")
 
+    parser.add_argument('--avxperten',
+                        help='add only avxperten-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
     return parser.parse_args()
 
 
@@ -74,6 +79,15 @@ def elgiganten(link):
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('h1', class_='product-title').text.lower()
+    name = change_name(name)
+    return name
+
+
+def avxperten(link):
+    '''Get name of product from AvXperten-link.'''
+    response = requests.get(link)
+    html_soup = BeautifulSoup(response.text, 'html.parser')
+    name = html_soup.find('div', class_='content-head').text.strip().lower()
     name = change_name(name)
     return name
 
@@ -138,6 +152,16 @@ def check_arguments():
                                         "dates": {}
                                     }
                                 })
+        if args.avxperten:
+            json_object.update({
+                                    f"{avxperten_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
     else:
         json_object = {
                             f"{komplett_domain}": {
@@ -162,6 +186,13 @@ def check_arguments():
                                 "dates": {}
                             },
                             f"{elgiganten_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{avxperten_domain}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
@@ -196,6 +227,8 @@ def find_domain(link):
         return 'Computersalg'
     elif link == 'www.elgiganten.dk':
         return 'Elgiganten'
+    elif link == 'www.avxperten.dk':
+        return 'AvXperten'
 
 
 def add_to_scraper(kategori, link, url_domain):
@@ -225,6 +258,8 @@ def main(kategori, link):
         produkt_navn = computersalg(link)
     elif URL_domain == elgiganten_domain:
         produkt_navn = elgiganten(link)
+    elif URL_domain == avxperten_domain:
+        produkt_navn = avxperten(link)
     else:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
@@ -242,5 +277,6 @@ if __name__ == '__main__':
     proshop_domain = 'www.proshop.dk'
     computersalg_domain = 'www.computersalg.dk'
     elgiganten_domain = 'www.elgiganten.dk'
+    avxperten_domain = 'www.avxperten.dk'
     args = argparse_setup()
     main(args.category, args.url)
