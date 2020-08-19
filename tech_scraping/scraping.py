@@ -45,6 +45,7 @@ class Scraper:
             logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
         self.name = change_name(self.name)
+        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
         self.get_part_num()
         self.shorten_url()
         self.check_part_num()
@@ -55,17 +56,16 @@ class Scraper:
             logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
 
     def get_info(self):  # gets overwritten
-        '''Get name and price of product and the date.'''
-        self.html_soup = ''
+        '''Get name and price of product.'''
         self.name = ''
         self.price = ''
-        self.date = ''
 
     def get_response(self):
         '''Get response from URL.'''
         logger.info('Getting response from URL...')
         self.response = requests.get(self.URL)
         logger.info('Got response from URL')
+        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
 
     def get_part_num(self):
         '''Get part number from URL or from HTML.'''
@@ -78,6 +78,8 @@ class Scraper:
             self.part_num = self.URL.split('/')[4]
         elif self.URL_domain == 'www.elgiganten.dk':
             self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
+        elif self.URL_domain == 'www.avxperten.dk':
+            self.part_num = self.html_soup.find('div', class_='description-foot').p.text.replace('Varenummer: ', '')
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file,
@@ -131,6 +133,8 @@ class Scraper:
             self.short_url = f'https://www.computersalg.dk/i/{self.part_num}'
         elif self.URL_domain == 'www.elgiganten.dk':
             self.short_url = f'https://www.elgiganten.dk/product/{self.part_num}/'
+        elif self.URL_domain == 'www.avxperten.dk':
+            self.short_url = self.URL
 
     def print_info(self):
         '''Print info about the product in the terminal.'''
@@ -166,16 +170,12 @@ def change_name(name):
 
 class Komplett(Scraper):
     def get_info(self):
-        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
-        # find price
         self.price = self.html_soup.find('span', class_='product-price-now').text.strip(',-').replace('.', '')
-        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
 class Proshop(Scraper):
     def get_info(self):
-        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
         try:
             # find normal price
@@ -187,37 +187,24 @@ class Proshop(Scraper):
             except AttributeError:
                 # if campaign is sold out (udsolgt)
                 self.price = self.html_soup.find('div', class_='site-currency-attention').text.split(',')[0].replace('.', '')
-        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
 class Computersalg(Scraper):
     def get_info(self):
-        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('h1', itemprop='name').text.lower()
-        # find price
         self.price = self.html_soup.find('span', itemprop='price').text.strip().split(',')[0].replace('.', '')
-        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
 class Elgiganten(Scraper):
     def get_info(self):
-        self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
         self.name = self.html_soup.find('h1', class_='product-title').text.lower()
-        # find price
         self.price = self.html_soup.find('div', class_='product-price-container').text.strip().replace(u'\xa0', '')
-        self.date = str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))
 
 
-def multiple_links(file_name):
-    with open(f'{file_name}', 'r') as file:
-        lines = file.readlines()
-
-    count = 1
-    for line in lines:
-        print(f'Produkt {count}:')
-        print(f'Link: {line.strip()}')
-        #Product(line.strip()).print_info()
-        count += 1
+class AvXperten(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('div', class_='content-head').text.strip().lower()
+        self.price = self.html_soup.find('div', class_='price').text.replace(u'\xa0DKK', '')
 
 
 if __name__ == '__main__':
