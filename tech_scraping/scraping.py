@@ -57,7 +57,6 @@ class Scraper:
 
     def get_info(self):  # gets overwritten
         '''Get name and price of product.'''
-        self.html_soup = ''
         self.name = ''
         self.price = ''
 
