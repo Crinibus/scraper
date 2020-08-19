@@ -79,6 +79,8 @@ class Scraper:
             self.part_num = self.URL.split('/')[4]
         elif self.URL_domain == 'www.elgiganten.dk':
             self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
+        elif self.URL_domain == 'www.avxperten.dk':
+            self.part_num = self.html_soup.find('div', class_='description-foot').p.text.replace('Varenummer: ', '')
 
     def check_part_num(self):
         '''Checks if a product has a part number in the JSON-file,
@@ -132,6 +134,8 @@ class Scraper:
             self.short_url = f'https://www.computersalg.dk/i/{self.part_num}'
         elif self.URL_domain == 'www.elgiganten.dk':
             self.short_url = f'https://www.elgiganten.dk/product/{self.part_num}/'
+        elif self.URL_domain == 'www.avxperten.dk':
+            self.short_url = self.URL
 
     def print_info(self):
         '''Print info about the product in the terminal.'''
