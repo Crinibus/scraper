@@ -1,4 +1,4 @@
-**The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk and AvXperten.dk**
+**The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk and AvXperten.dk**<br/>
 **The Fakta scraper can scrape discounts from this week discounts.**
 
 # Table of contents
