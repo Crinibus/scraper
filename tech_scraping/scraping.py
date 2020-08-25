@@ -99,7 +99,7 @@ class Scraper:
         
         if changed:
             with open('records.json', 'w') as json_file:
-                json.dump(data, json_file, indent=4)
+                json.dump(data, json_file, indent=2)
 
     def check_url(self):
         '''Check if a product has a url in the JSON-file,
@@ -153,7 +153,7 @@ class Scraper:
             data = json.load(json_file)
             data[self.cat][self.name][self.URL_domain]["dates"][self.date] = {"price": self.price}
         with open('records.json', 'w') as json_file:
-            json.dump(data, json_file, indent=4)
+            json.dump(data, json_file, indent=2)
         logger.info('Record saved')
 
 
