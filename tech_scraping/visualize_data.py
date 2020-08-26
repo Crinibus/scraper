@@ -41,7 +41,7 @@ def asus_2080ti():
 
 
 def show_all():
-    
+
     data = read_records()
 
     for category in data:
@@ -77,3 +77,7 @@ def show_all():
             plt.ylabel('Price')
             plt.xlabel('Day')
             plt.show()
+
+
+if __name__ == '__main__':
+    asus_2080ti()
