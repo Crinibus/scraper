@@ -27,7 +27,7 @@ plt.style.use('seaborn-darkgrid')
 plt.title('Prices of ASUS 2080 TI ROG Strix')
 plt.xlabel('Day')
 plt.ylabel('Price')
-plt.xticks(rotation=65)
+plt.xticks(rotation=70)
 plt.legend(['Komplett', 'Proshop'])
 
 # Show graph
