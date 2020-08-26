@@ -32,3 +32,40 @@ plt.legend(['Komplett', 'Proshop'])
 
 # Show graph
 plt.show()
+
+
+
+def show_all():
+    for category in data:
+        for product in data[category]:
+            dates_1 = []
+            prices_1 = []
+            dates_2 = []
+            prices_2 = []
+            domains = []
+            for domain in data[category][product]:
+                if len(dates_1) == 0:
+                    dates_1 = [date for date in data[category][product][domain]['dates']]
+                    prices_1 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_1]
+                else:
+                    dates_2 = [date for date in data[category][product][domain]['dates']]
+                    prices_2 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_2]
+                
+                domains.append(domain)
+
+            plt.style.use('seaborn-darkgrid')
+            plt.xticks(rotation=65)
+
+            if len(dates_1) > 0 and len(dates_2) > 0:
+                plt.plot(dates_1, prices_1,
+                        dates_2, prices_2,
+                        marker='o', linestyle='-')
+                plt.legend([f'{domains[0]}', f'{domains[1]}'])
+            else:
+                plt.plot(dates_1, prices_1,
+                        marker='o', linestyle='-')
+                plt.legend([f'{domains[0]}'])
+            plt.title(f'Prices of {product}')
+            plt.ylabel('Price')
+            plt.xlabel('Day')
+            plt.show()
