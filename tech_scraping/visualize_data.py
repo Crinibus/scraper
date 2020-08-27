@@ -1,6 +1,7 @@
 import json
 import matplotlib.pyplot as plt
 
+
 def read_records():
     with open('records.json', 'r') as jsonfile:
         data = json.load(jsonfile)
@@ -25,8 +26,8 @@ def asus_2080ti():
 
     # Plotting
     plt.plot(komplett_dates, komplett_prices, 
-            proshop_dates, proshop_prices, 
-            marker='o', linestyle='-')
+             proshop_dates, proshop_prices, 
+             marker='o', linestyle='-')
 
     # Styling
     plt.style.use('seaborn-darkgrid')
@@ -58,7 +59,7 @@ def show_all():
                 else:
                     dates_2 = [date for date in data[category][product][domain]['dates']]
                     prices_2 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_2]
-                
+
                 domains.append(domain)
 
             plt.style.use('seaborn-darkgrid')
@@ -66,12 +67,12 @@ def show_all():
 
             if len(dates_1) > 0 and len(dates_2) > 0:
                 plt.plot(dates_1, prices_1,
-                        dates_2, prices_2,
-                        marker='o', linestyle='-')
+                         dates_2, prices_2,
+                         marker='o', linestyle='-')
                 plt.legend([f'{domains[0]}', f'{domains[1]}'])
             else:
                 plt.plot(dates_1, prices_1,
-                        marker='o', linestyle='-')
+                         marker='o', linestyle='-')
                 plt.legend([f'{domains[0]}'])
             plt.title(f'Prices of {product}')
             plt.ylabel('Price')
