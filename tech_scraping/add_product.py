@@ -241,12 +241,6 @@ def add_to_scraper(kategori, link, url_domain):
 
 
 def main(kategori, link):
-    #kategori = input("Kategori f.eks. 'gpu': ")
-    #kategori = args.category
-    #produkt_navn = input('Produkt navn: ')
-
-    #link = input('Indsæt link fra Komplett, Proshop eller Computersalg\n>')
-    #link = args.url
     URL_domain = link.split('/')[2]
 
     # to determine which kind of site to find product name on
