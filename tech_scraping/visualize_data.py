@@ -19,6 +19,7 @@ def read_records():
     """Read and return data from records.json."""
     with open('records.json', 'r') as jsonfile:
         data = json.load(jsonfile)
+
     return data
 
 
@@ -72,6 +73,8 @@ def show_all():
 
                 domains.append(domain)
 
+            # Check for more than one domain
+            # If two domains, show both graph for both domains on the same graph
             if len(dates_1) > 0 and len(dates_2) > 0:
                 plt.plot(dates_1, prices_1,
                          dates_2, prices_2,
