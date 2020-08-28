@@ -2,8 +2,9 @@ import json
 import matplotlib.pyplot as plt
 import argparse
 
+
 def argparse_setup():
-    '''Setup argparse.'''
+    """Setup and return argparse."""
     parser = argparse.ArgumentParser()
 
     # optional argument
@@ -15,13 +16,14 @@ def argparse_setup():
 
 
 def read_records():
+    """Read and return data from records.json."""
     with open('records.json', 'r') as jsonfile:
         data = json.load(jsonfile)
     return data
 
 
 def asus_2080ti():
-
+    """Show graph for ASUS RTX 2080 TI ROG Strix graphics cards."""
     data = read_records()
 
     # Get dates
@@ -32,13 +34,9 @@ def asus_2080ti():
     komplett_prices = [int(data['gpu']['asus geforce rtx 2080 ti rog strix oc']['www.komplett.dk']['dates'][date]['price']) for date in komplett_dates]
     proshop_prices = [int(data['gpu']['asus geforce rtx 2080 ti rog strix oc']['www.proshop.dk']['dates'][date]['price']) for date in proshop_dates]
 
-    # komplett_num_days = [i for i in range(len(komplett_dates))]
-    # proshop_num_days = [i for i in range(len(proshop_dates))]
-
-
     # Plotting
-    plt.plot(komplett_dates, komplett_prices, 
-             proshop_dates, proshop_prices, 
+    plt.plot(komplett_dates, komplett_prices,
+             proshop_dates, proshop_prices,
              marker='o', linestyle='-')
 
     # Styling
@@ -54,7 +52,7 @@ def asus_2080ti():
 
 
 def show_all():
-
+    """Show graphs for all products."""
     data = read_records()
 
     for category in data:
@@ -83,7 +81,7 @@ def show_all():
                 plt.plot(dates_1, prices_1,
                          marker='o', linestyle='-')
                 plt.legend([f'{domains[0]}'])
-            
+
             plt.style.use('seaborn-darkgrid')
             plt.xticks(rotation=65)
             plt.title(f'Prices of {product}')
