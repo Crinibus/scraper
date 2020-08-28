@@ -9,7 +9,7 @@ def argparse_setup():
 
     # optional argument
     parser.add_argument('--all',
-                        help='Show graph for all products',
+                        help='Show graphs for all products',
                         action="store_true")
 
     return parser.parse_args()
@@ -87,7 +87,7 @@ def show_all():
 
             plt.style.use('seaborn-darkgrid')
             plt.xticks(rotation=65)
-            plt.title(f'Prices of {product}')
+            plt.title(f'Prices of {product.capitalize()}')
             plt.ylabel('Price')
             plt.xlabel('Day')
             plt.show()
