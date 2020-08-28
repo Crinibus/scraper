@@ -74,9 +74,6 @@ def show_all():
 
                 domains.append(domain)
 
-            plt.style.use('seaborn-darkgrid')
-            plt.xticks(rotation=65)
-
             if len(dates_1) > 0 and len(dates_2) > 0:
                 plt.plot(dates_1, prices_1,
                          dates_2, prices_2,
@@ -86,6 +83,9 @@ def show_all():
                 plt.plot(dates_1, prices_1,
                          marker='o', linestyle='-')
                 plt.legend([f'{domains[0]}'])
+            
+            plt.style.use('seaborn-darkgrid')
+            plt.xticks(rotation=65)
             plt.title(f'Prices of {product}')
             plt.ylabel('Price')
             plt.xlabel('Day')
