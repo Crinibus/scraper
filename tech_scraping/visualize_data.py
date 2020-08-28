@@ -1,5 +1,17 @@
 import json
 import matplotlib.pyplot as plt
+import argparse
+
+def argparse_setup():
+    '''Setup argparse.'''
+    parser = argparse.ArgumentParser()
+
+    # optional argument
+    parser.add_argument('--all',
+                        help='add only komplett-domain under the product-name, if this is the only optional flag',
+                        action="store_true")
+
+    return parser.parse_args()
 
 
 def read_records():
@@ -81,4 +93,9 @@ def show_all():
 
 
 if __name__ == '__main__':
-    asus_2080ti()
+    args = argparse_setup()
+
+    if args.all:
+        show_all()
+    else:
+        asus_2080ti()
