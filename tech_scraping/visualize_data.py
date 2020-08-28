@@ -8,7 +8,7 @@ def argparse_setup():
 
     # optional argument
     parser.add_argument('--all',
-                        help='add only komplett-domain under the product-name, if this is the only optional flag',
+                        help='Show graph for all products',
                         action="store_true")
 
     return parser.parse_args()
