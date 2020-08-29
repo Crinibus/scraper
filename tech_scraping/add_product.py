@@ -193,17 +193,17 @@ def save_json(kategori, produkt_navn):
         json.dump(data, json_file, indent=2)
 
 
-def find_domain(link):
+def find_domain(domain):
     """Return the domain of the url without "www." and ".dk"."""
-    if link == 'www.komplett.dk':
+    if domain == 'www.komplett.dk':
         return 'Komplett'
-    elif link == 'www.proshop.dk':
+    elif domain == 'www.proshop.dk':
         return 'Proshop'
-    elif link == 'www.computersalg.dk':
+    elif domain == 'www.computersalg.dk':
         return 'Computersalg'
-    elif link == 'www.elgiganten.dk':
+    elif domain == 'www.elgiganten.dk':
         return 'Elgiganten'
-    elif link == 'www.avxperten.dk':
+    elif domain == 'www.avxperten.dk':
         return 'AvXperten'
 
 
