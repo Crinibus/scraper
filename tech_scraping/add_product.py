@@ -221,7 +221,7 @@ def main(kategori, link):
 
     produkt_navn = get_product_name(link)
 
-    if produkt_navn == None:
+    if not produkt_navn:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
 
