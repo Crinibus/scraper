@@ -220,17 +220,7 @@ def main(kategori, link):
     URL_domain = link.split('/')[2]
 
     produkt_navn = get_product_name(link)
-    # # to determine which kind of site to find product name on
-    # if URL_domain == komplett_domain:
-    #     produkt_navn = komplett(link)
-    # elif URL_domain == proshop_domain:
-    #     produkt_navn = proshop(link)
-    # elif URL_domain == computersalg_domain:
-    #     produkt_navn = computersalg(link)
-    # elif URL_domain == elgiganten_domain:
-    #     produkt_navn = elgiganten(link)
-    # elif URL_domain == avxperten_domain:
-    #     produkt_navn = avxperten(link)
+
     if produkt_navn == None:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
