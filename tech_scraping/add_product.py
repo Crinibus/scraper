@@ -47,49 +47,25 @@ def argparse_setup():
     return parser.parse_args()
 
 
-def komplett(link):
-    """Get and return name of product from Komplett-link."""
+def get_product_name(link):
+    """Get and return name of the product from the link."""
+    URL_domain = link.split('/')[2]
+
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
-    name = html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
-    name = change_name(name)
-    return name
 
-
-def proshop(link):
-    """Get and return name of product from Proshop-link."""
-    response = requests.get(link)
-    html_soup = BeautifulSoup(response.text, 'html.parser')
-    name = html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
-    name = change_name(name)
-    return name
-
-
-def computersalg(link):
-    """Get and return name of product from Computersalg-link."""
-    response = requests.get(link)
-    html_soup = BeautifulSoup(response.text, 'html.parser')
-    name = html_soup.find('h1', itemprop='name').text.lower()
-    name = change_name(name)
-    return name
-
-
-def elgiganten(link):
-    """Get and return name of product from Elgiganten-link."""
-    response = requests.get(link)
-    html_soup = BeautifulSoup(response.text, 'html.parser')
-    name = html_soup.find('h1', class_='product-title').text.lower()
-    name = change_name(name)
-    return name
-
-
-def avxperten(link):
-    """Get and return name of product from AvXperten-link."""
-    response = requests.get(link)
-    html_soup = BeautifulSoup(response.text, 'html.parser')
-    name = html_soup.find('div', class_='content-head').text.strip().lower()
-    name = change_name(name)
-    return name
+    if URL_domain == 'www.komplett.dk':
+        return change_name(html_soup.find('div', class_='product-main-info__info').h1.span.text.lower())
+    elif URL_domain == 'www.proshop.dk':
+        return change_name(html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower())
+    elif URL_domain == 'www.computersalg.dk':
+        return change_name(html_soup.find('h1', itemprop='name').text.lower())
+    elif URL_domain == 'www.elgiganten.dk':
+        return change_name(html_soup.find('h1', class_='product-title').text.lower())
+    elif URL_domain == 'www.avxperten.dk':
+        return change_name(html_soup.find('div', class_='content-head').text.strip().lower())
+    else:
+        return None
 
 
 def ændre_æøå(navn):
@@ -243,18 +219,19 @@ def add_to_scraper(kategori, link, url_domain):
 def main(kategori, link):
     URL_domain = link.split('/')[2]
 
-    # to determine which kind of site to find product name on
-    if URL_domain == komplett_domain:
-        produkt_navn = komplett(link)
-    elif URL_domain == proshop_domain:
-        produkt_navn = proshop(link)
-    elif URL_domain == computersalg_domain:
-        produkt_navn = computersalg(link)
-    elif URL_domain == elgiganten_domain:
-        produkt_navn = elgiganten(link)
-    elif URL_domain == avxperten_domain:
-        produkt_navn = avxperten(link)
-    else:
+    produkt_navn = get_product_name(link)
+    # # to determine which kind of site to find product name on
+    # if URL_domain == komplett_domain:
+    #     produkt_navn = komplett(link)
+    # elif URL_domain == proshop_domain:
+    #     produkt_navn = proshop(link)
+    # elif URL_domain == computersalg_domain:
+    #     produkt_navn = computersalg(link)
+    # elif URL_domain == elgiganten_domain:
+    #     produkt_navn = elgiganten(link)
+    # elif URL_domain == avxperten_domain:
+    #     produkt_navn = avxperten(link)
+    if produkt_navn == None:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
 
