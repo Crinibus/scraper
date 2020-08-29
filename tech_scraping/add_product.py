@@ -8,7 +8,7 @@ import argparse
 
 
 def argparse_setup():
-    '''Setup argparse.'''
+    """Setup and return argparse."""
     parser = argparse.ArgumentParser()
 
     parser.add_argument('category',
@@ -48,7 +48,7 @@ def argparse_setup():
 
 
 def komplett(link):
-    '''Get name of product from Komplett-link.'''
+    """Get and return name of product from Komplett-link."""
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()
@@ -57,7 +57,7 @@ def komplett(link):
 
 
 def proshop(link):
-    '''Get name of product from Proshop-link.'''
+    """Get and return name of product from Proshop-link."""
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
@@ -66,7 +66,7 @@ def proshop(link):
 
 
 def computersalg(link):
-    '''Get name of product from Computersalg-link.'''
+    """Get and return name of product from Computersalg-link."""
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('h1', itemprop='name').text.lower()
@@ -75,7 +75,7 @@ def computersalg(link):
 
 
 def elgiganten(link):
-    '''Get name of product from Elgiganten-link.'''
+    """Get and return name of product from Elgiganten-link."""
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('h1', class_='product-title').text.lower()
@@ -84,7 +84,7 @@ def elgiganten(link):
 
 
 def avxperten(link):
-    '''Get name of product from AvXperten-link.'''
+    """Get and return name of product from AvXperten-link."""
     response = requests.get(link)
     html_soup = BeautifulSoup(response.text, 'html.parser')
     name = html_soup.find('div', class_='content-head').text.strip().lower()
@@ -93,7 +93,7 @@ def avxperten(link):
 
 
 def ændre_æøå(navn):
-    '''Change the letters æ, ø and å to international letters to avoid unicode.'''
+    """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
     nyt_navn = ''
     for bogstav in navn:
         if bogstav in 'æøå':
@@ -108,8 +108,8 @@ def ændre_æøå(navn):
 
 
 def check_arguments():
-    '''Check if any of the optional domain arguments is giving to the script
-       and returns those that are as one json-object.'''
+    """Check if any of the optional domain arguments is giving to the script
+       and returns those that are as one json-object."""
     json_object = json.loads('{}')
     if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten:
         if args.komplett:
@@ -204,7 +204,7 @@ def check_arguments():
 
 
 def save_json(kategori, produkt_navn):
-    '''Save (category and) product-name in JSON-file.'''
+    """Save (category and) product-name in JSON-file."""
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
 
@@ -218,7 +218,7 @@ def save_json(kategori, produkt_navn):
 
 
 def find_domain(link):
-    '''Return the domain of the url without "www." and ".dk".'''
+    """Return the domain of the url without "www." and ".dk"."""
     if link == 'www.komplett.dk':
         return 'Komplett'
     elif link == 'www.proshop.dk':
@@ -232,7 +232,7 @@ def find_domain(link):
 
 
 def add_to_scraper(kategori, link, url_domain):
-    '''Add line to scraping.py, so scraping.py can scrape the new product.'''
+    """Add line to scraping.py, so scraping.py can scrape the new product."""
     domain = find_domain(url_domain)
 
     with open('scraping.py', 'a+') as python_file:
