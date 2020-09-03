@@ -150,6 +150,9 @@
           },
           "2020-09-02": {
             "price": "3399"
+          },
+          "2020-09-03": {
+            "price": "3399"
           }
         }
       }
@@ -158,7 +161,8 @@
       "www.komplett.dk": {
         "info": {
           "part_num": "1103205",
-          "url": "https://www.komplett.dk/product/1103205"
+          "url": "https://www.komplett.dk/product/1103205",
+          "extra-info": "Until 2020-09-03 the tracked price was for the OC-edition of the ASUS 2080 ti ROG Strix, but after that date it's the non OC-edition"
         },
         "dates": {
           "2020-06-08": {
@@ -379,6 +383,10 @@
           },
           "2020-09-02": {
             "price": "10874"
+          },
+          "2020-09-03": {
+            "price": "10449",
+            "info": "OC-edition no longer available (product number: 1103205). Non-OC-edition product number is 1116464 and the pricing for this date is the non OC-edition"
           }
         }
       },
@@ -535,6 +543,9 @@
             "info": "with RTX Rainbow Six Siege Bundle"
           },
           "2020-09-02": {
+            "price": "10966"
+          },
+          "2020-09-03": {
             "price": "10966"
           }
         }
@@ -761,6 +772,9 @@
           },
           "2020-09-02": {
             "price": "1891"
+          },
+          "2020-09-03": {
+            "price": "1891"
           }
         }
       },
@@ -916,6 +930,9 @@
           },
           "2020-09-02": {
             "price": "1494"
+          },
+          "2020-09-03": {
+            "price": "1528"
           }
         }
       }
