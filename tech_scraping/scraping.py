@@ -80,6 +80,8 @@ class Scraper:
             self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
         elif self.URL_domain == 'www.avxperten.dk':
             self.part_num = self.html_soup.find('div', class_='description-foot').p.text.replace('Varenummer: ', '')
+        elif self.URL_domain == 'www.av-cables.dk':
+            self.part_num = self.html_soup.find('div', class_='text-right model').text.strip().replace('[ ', '').replace(']', '').split(': ')[1]
 
     def check_part_num(self):
         """
@@ -141,6 +143,8 @@ class Scraper:
             self.short_url = f'https://www.elgiganten.dk/product/{self.part_num}/'
         elif self.URL_domain == 'www.avxperten.dk':
             self.short_url = self.URL
+        elif self.URL_domain == 'www.av-cables.dk':
+            self.short_url = self.URL
 
     def print_info(self):
         """Print info about the product in the terminal."""
@@ -169,7 +173,7 @@ def change_name(name):
     being scraped, the similar products goes under the same name.
     """
     if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name \
-            and 'rog' in name and 'strix' in name and 'oc' in name:
+            and 'rog' in name and 'strix' in name:
         name = 'asus geforce rtx 2080 ti rog strix oc'
     elif 'corsair' in name and 'mp600' in name and '1tb' in name and 'm.2' in name:
         name = 'corsair force mp600 1tb m.2'
