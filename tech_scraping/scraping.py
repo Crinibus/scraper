@@ -215,6 +215,12 @@ class AvXperten(Scraper):
         self.price = self.html_soup.find('div', class_='price').text.replace(u'\xa0DKK', '')
 
 
+class AvCables(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('h1', class_='title').text
+        self.price = self.html_soup.find('div', class_='regular-price').text.strip().replace('Pris:   ', '').split(',')[0]
+
+
 if __name__ == '__main__':
     logger = log_setup()
     Komplett('gpu', 'https://www.komplett.dk/product/1116464/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix')
