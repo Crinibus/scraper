@@ -43,7 +43,7 @@ def argparse_setup():
                         help='add only avxperten-domain under the product-name,'
                              'if this is the only optional flag',
                         action="store_true")
-    
+
     parser.add_argument('--avcables',
                         help='add only avcables-domain under the product-name,'
                              'if this is the only optional flag',
