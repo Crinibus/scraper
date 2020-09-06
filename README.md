@@ -32,7 +32,10 @@ To scrape prices of products run this in the terminal:
 If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
 
     {}
-Then just add products like described [here](#add-products)
+
+Then delete the lines under the last if-statement in scraping.py. 
+
+Then just add products like described [here](#add-products).
 
 ## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
