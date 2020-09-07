@@ -42,7 +42,7 @@ e.g.
 
     python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
 **OBS: The category can only be one word, so add a underscore instead of a space if needed.**<br/>
-**OBS: The url must have the "www." part.**
+**OBS: The url must have the "https://www." part.**
 
 <br/>
 
