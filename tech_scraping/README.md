@@ -1,4 +1,4 @@
-**This program can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk and AvXperten.dk**
+**This program can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk and Av-Cables.dk**
 
 # Table of contents
 - [First setup](#first-setup)
@@ -18,7 +18,10 @@ Make sure you have the modules, run this in the terminal:
 If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
 
     {}
-Then just add products like described [here](#add-products)
+
+Then delete the lines under the last if-statement in scraping.py. 
+
+Then just add products like described [here](#add-products).
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -49,5 +52,7 @@ There is some optional arguments you can use when running add_product.py, these 
 -     --elgiganten
 
 -     --avxperten
+
+-     --avcables
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 

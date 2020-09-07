@@ -153,6 +153,9 @@
           },
           "2020-09-03": {
             "price": "3399"
+          },
+          "2020-09-04": {
+            "price": "3399"
           }
         }
       }
@@ -387,6 +390,9 @@
           "2020-09-03": {
             "price": "10449",
             "info": "OC-edition no longer available (product number: 1103205). Non-OC-edition product number is 1116464 and the pricing for this date is the non OC-edition"
+          },
+          "2020-09-04": {
+            "price": "10449"
           }
         }
       },
@@ -547,8 +553,27 @@
           },
           "2020-09-03": {
             "price": "10966"
+          },
+          "2020-09-04": {
+            "price": "10966"
           }
         }
+      }
+    },
+    "asus geforce rtx 3080 rog strix oc": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      },
+      "www.proshop.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
       }
     }
   },
@@ -775,6 +800,9 @@
           },
           "2020-09-03": {
             "price": "1891"
+          },
+          "2020-09-04": {
+            "price": "1891"
           }
         }
       },
@@ -933,6 +961,9 @@
           },
           "2020-09-03": {
             "price": "1528"
+          },
+          "2020-09-04": {
+            "price": "1508"
           }
         }
       }
