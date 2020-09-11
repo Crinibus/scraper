@@ -63,7 +63,7 @@ class Scraper:
     def get_response(self):
         """Get response from URL."""
         logger.info('Getting response from URL...')
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
         self.response = requests.get(self.URL, headers=headers)
         logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
