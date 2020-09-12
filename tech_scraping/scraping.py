@@ -229,7 +229,6 @@ class AvCables(Scraper):
 
 if __name__ == '__main__':
     logger = log_setup()
-    Komplett('gpu', 'https://www.komplett.dk/product/1116464/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-2080-ti-rog-strix')
     Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-GeForce-RTX-2080-Ti-ROG-STRIX-OC-11GB-GDDR6-RAM-Grafikkort/2679518')
     Proshop('ssd', 'https://www.proshop.dk/SSD/Corsair-Force-MP600-NVMe-Gen4-M2-1TB/2779161')
