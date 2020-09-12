@@ -18,7 +18,10 @@ Make sure you have the modules, run this in the terminal:
 If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
 
     {}
-Then just add products like described [here](#add-products)
+
+Then delete the lines under the last if-statement in scraping.py. 
+
+Then just add products like described [here](#add-products).
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -33,7 +36,7 @@ e.g.
 
     python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
 **OBS: The category can only be one word, so add a underscore instead of a space if needed.**<br/>
-**OBS: The url must have the "www." part.**
+**OBS: The url must have the "https://www." part.**
 
 This adds the category (if new) and the product to the records.json file, and adds a line at the end of the scraping.py file so the script can scrape price of the new product.
 

@@ -63,7 +63,8 @@ class Scraper:
     def get_response(self):
         """Get response from URL."""
         logger.info('Getting response from URL...')
-        self.response = requests.get(self.URL)
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
+        self.response = requests.get(self.URL, headers=headers)
         logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
 
@@ -232,3 +233,4 @@ if __name__ == '__main__':
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-GeForce-RTX-2080-Ti-ROG-STRIX-OC-11GB-GDDR6-RAM-Grafikkort/2679518')
     Proshop('ssd', 'https://www.proshop.dk/SSD/Corsair-Force-MP600-NVMe-Gen4-M2-1TB/2779161')
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-Radeon-RX-5700-XT-ROG-STRIX-OC-8GB-GDDR6-RAM-Grafikkort/2792486')
+    Komplett('gpu', 'https://www.komplett.dk/product/1168436/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-3080-rog-strix-oc')
