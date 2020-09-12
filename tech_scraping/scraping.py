@@ -173,9 +173,10 @@ def change_name(name):
     Change the name of the product, so if a similiar product is also
     being scraped, the similar products goes under the same name.
     """
-    if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name \
-            and 'rog' in name and 'strix' in name:
+    if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name and 'rog' in name and 'strix' in name:
         name = 'asus geforce rtx 2080 ti rog strix oc'
+    elif 'asus' in name and 'rtx' in name and '3080' in name and 'ti' in name and 'rog' in name and 'strix' in name and 'oc' in name:
+        name = 'asus geforce rtx 3080 rog strix oc'
     elif 'corsair' in name and 'mp600' in name and '1tb' in name and 'm.2' in name:
         name = 'corsair force mp600 1tb m.2'
     return name
@@ -234,3 +235,4 @@ if __name__ == '__main__':
     Proshop('ssd', 'https://www.proshop.dk/SSD/Corsair-Force-MP600-NVMe-Gen4-M2-1TB/2779161')
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-Radeon-RX-5700-XT-ROG-STRIX-OC-8GB-GDDR6-RAM-Grafikkort/2792486')
     Komplett('gpu', 'https://www.komplett.dk/product/1168436/hardware/pc-komponenter/grafikkort/asus-geforce-rtx-3080-rog-strix-oc')
+    Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-GeForce-RTX-3080-ROG-STRIX-OC-10GB-GDDR6X-RAM-Grafikkort/2876859')
