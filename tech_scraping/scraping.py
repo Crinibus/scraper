@@ -175,7 +175,7 @@ def change_name(name):
     """
     if 'asus' in name and 'rtx' in name and '2080' in name and 'ti' in name and 'rog' in name and 'strix' in name:
         name = 'asus geforce rtx 2080 ti rog strix oc'
-    elif 'asus' in name and 'rtx' in name and '3080' in name and 'ti' in name and 'rog' in name and 'strix' in name and 'oc' in name:
+    elif 'asus' in name and 'rtx' in name and '3080' in name and 'rog' in name and 'strix' in name and 'oc' in name:
         name = 'asus geforce rtx 3080 rog strix oc'
     elif 'corsair' in name and 'mp600' in name and '1tb' in name and 'm.2' in name:
         name = 'corsair force mp600 1tb m.2'
