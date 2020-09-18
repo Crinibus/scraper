@@ -968,5 +968,97 @@
         }
       }
     }
+  },
+  "baerbar": {
+    "msi gl65 leopard 15,6\" fhd 144 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus rog strix g g712lw 17,3\" fhd 144 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus rog strix g512lw 15,6\" fhd 144 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus rog zephyrus g15 ga502iv 15,6\" fhd 240 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "acer nitro 5 an515-55 15,6\" fhd 144 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "lenovo legion 5i 15,6\" fhd 120 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus tuf gaming a15 fx506 15,6\" gaming computer (sort)": {
+      "www.elgiganten.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus tuf gaming a15 fx506iv 15,6\" fhd 144 hz": {
+      "www.komplett.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus rog strix g15 g512lv-al016t": {
+      "www.proshop.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    },
+    "asus tuf gaming a17 fx706iu-h7209t": {
+      "www.proshop.dk": {
+        "info": {
+          "part_num": "",
+          "url": ""
+        },
+        "dates": {}
+      }
+    }
   }
 }
