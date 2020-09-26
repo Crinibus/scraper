@@ -245,5 +245,4 @@ if __name__ == '__main__':
     Komplett('baerbar', 'https://www.komplett.dk/product/1159645/gaming/gaming-pc/baerbar/lenovo-legion-5i-156-fhd-120-hz')
     Elgiganten('baerbar', 'https://www.elgiganten.dk/product/gaming/gaming-laptop/157466/asus-tuf-gaming-a15-fx506-15-6-gaming-computer-sort')
     Komplett('baerbar', 'https://www.komplett.dk/product/1159926/gaming/gaming-pc/baerbar/asus-tuf-gaming-a15-fx506iv-156-fhd-144-hz#')
-    Proshop('baerbar', 'https://www.proshop.dk/Baerbar/ASUS-ROG-Strix-G15-G512LV-AL016T/2861886')
     Proshop('baerbar', 'https://www.proshop.dk/Baerbar/ASUS-TUF-Gaming-A17-FX706IU-H7209T/2877154')
