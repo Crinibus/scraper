@@ -100,4 +100,3 @@ if __name__ == '__main__':
         show_all()
     else:
         asus_2080ti()
-# test
