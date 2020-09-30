@@ -35,10 +35,16 @@ Before scraping a new product, run a similar line to this:
 e.g.
 
     python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
-**OBS: The category can only be one word, so add a underscore instead of a space if needed.**<br/>
-**OBS: The url must have the "https://www." part.**
 
 This adds the category (if new) and the product to the records.json file, and adds a line at the end of the scraping.py file so the script can scrape price of the new product.
+
+**OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
+**OBS**: The url must have the "https://www." part.<br/>
+**OBS**: When using Amazon links, delete the part of the url after the last forward slash (/).<br/>
+For example the link: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/ref=sr_1_2?dchild=1&qid=1601488833&s=computers-intl-ship&sr=1-2<br/>
+Should be: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/
+
+
 
 ### Optional arguments <a name="optional-arguments"></a>
 There is some optional arguments you can use when running add_product.py, these are:
@@ -54,5 +60,7 @@ There is some optional arguments you can use when running add_product.py, these 
 -     --avxperten
 
 -     --avcables
+
+-     --amazon
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
