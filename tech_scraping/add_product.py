@@ -49,6 +49,11 @@ def argparse_setup():
                              'if this is the only optional flag',
                         action="store_true")
 
+    parser.add_argument('--amazon',
+                        help='add only amazon-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
     return parser.parse_args()
 
 
@@ -56,7 +61,9 @@ def get_product_name(link):
     """Get and return name of the product from the link."""
     URL_domain = link.split('/')[2]
 
-    response = requests.get(link)
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
+    cookies = dict(cookies_are='working')
+    response = requests.get(link, headers=headers, cookies=cookies)
     html_soup = BeautifulSoup(response.text, 'html.parser')
 
     if URL_domain == 'www.komplett.dk':
@@ -71,6 +78,8 @@ def get_product_name(link):
         return change_name(html_soup.find('div', class_='content-head').text.strip().lower())
     elif URL_domain == 'www.av-cables.dk':
         return change_name(html_soup.find('h1', class_='title').text.lower())
+    elif URL_domain == 'www.amazon.com':
+        return change_name(html_soup.find('span', id='productTitle').text.strip().lower())
     else:
         return None
 
@@ -155,6 +164,16 @@ def check_arguments():
                                         "dates": {}
                                     }
                                 })
+        if args.amazon:
+            json_object.update({
+                                    f"{amazon_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
     else:
         json_object = {
                             f"{komplett_domain}": {
@@ -198,6 +217,13 @@ def check_arguments():
                                     "url": ""
                                 },
                                 "dates": {}
+                            },
+                            f"{amazon_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
                             }
                         }
     return json_object
@@ -231,6 +257,8 @@ def find_domain(domain):
         return 'AvXperten'
     elif domain == 'www.av-cables.dk':
         return 'AvCables'
+    elif domain == 'www.amazon.com':
+        return 'Amazon'
 
 
 def add_to_scraper(kategori, link, url_domain):
@@ -266,5 +294,6 @@ if __name__ == '__main__':
     elgiganten_domain = 'www.elgiganten.dk'
     avxperten_domain = 'www.avxperten.dk'
     avcables_domain = 'www.av-cables.dk'
+    amazon_domain = 'www.amazon.com'
     args = argparse_setup()
     main(args.category, args.url)
