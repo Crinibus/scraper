@@ -64,7 +64,8 @@ class Scraper:
         """Get response from URL."""
         logger.info('Getting response from URL...')
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
-        self.response = requests.get(self.URL, headers=headers)
+        cookies = dict(cookies_are='working')
+        self.response = requests.get(self.URL, headers=headers, cookies=cookies)
         logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
 
@@ -83,6 +84,8 @@ class Scraper:
             self.part_num = self.html_soup.find('div', class_='description-foot').p.text.replace('Varenummer: ', '')
         elif self.URL_domain == 'www.av-cables.dk':
             self.part_num = self.html_soup.find('div', class_='text-right model').text.strip().replace('[ ', '').replace(']', '').split(': ')[1]
+        elif self.URL_domain == 'www.amazon.com':
+            self.part_num = self.URL.split('/')[5]
 
     def check_part_num(self):
         """
@@ -145,6 +148,8 @@ class Scraper:
         elif self.URL_domain == 'www.avxperten.dk':
             self.short_url = self.URL
         elif self.URL_domain == 'www.av-cables.dk':
+            self.short_url = self.URL
+        elif self.URL_domain == 'www.amazon.com':
             self.short_url = self.URL
 
     def print_info(self):
@@ -225,6 +230,12 @@ class AvCables(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('h1', class_='title').text
         self.price = self.html_soup.find('div', class_='regular-price').text.strip().replace('Pris:   ', '').split(',')[0]
+
+
+class Amazon(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('span', id='productTitle').text.strip().lower()
+        self.price = self.html_soup.find('span', id='priceblock_ourprice').text.replace('$', '')
 
 
 if __name__ == '__main__':
