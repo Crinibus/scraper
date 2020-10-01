@@ -86,7 +86,10 @@ def get_product_name(link):
     elif URL_domain == 'www.amazon.com':
         return change_name(html_soup.find('span', id='productTitle').text.strip().lower())
     elif URL_domain == 'www.ebay.com':
-        return change_name(html_soup.find('h1', class_='product-title').text.lower())
+        if link.split('/')[3] == 'itm':
+            return change_name(link.split('/')[4].replace('-', ' ').lower())
+        else:
+            return change_name(html_soup.find('h1', class_='product-title').text.lower())
     else:
         return None
 
