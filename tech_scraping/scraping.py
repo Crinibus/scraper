@@ -86,6 +86,13 @@ class Scraper:
             self.part_num = self.html_soup.find('div', class_='text-right model').text.strip().replace('[ ', '').replace(']', '').split(': ')[1]
         elif self.URL_domain == 'www.amazon.com':
             self.part_num = self.URL.split('/')[5]
+        elif self.URL_domain == 'www.ebay.com':
+            if self.URL.split('/')[3] == 'itm':
+                # Find "eBay item number"
+                self.part_num = self.html_soup.find('div', id='descItemNumber').text
+            else:
+                # Find id number
+                self.part_num = self.URL.split('=')[1]
 
     def check_part_num(self):
         """
@@ -151,6 +158,11 @@ class Scraper:
             self.short_url = self.URL
         elif self.URL_domain == 'www.amazon.com':
             self.short_url = self.URL
+        elif self.URL_domain == 'www.ebay.com':
+            if self.URL.split('/')[3] == 'itm':
+                self.short_url = f'https://www.ebay.com/itm/{self.part_num}'
+            else:
+                self.short_url = self.URL.split('?')[0]
 
     def print_info(self):
         """Print info about the product in the terminal."""
@@ -240,8 +252,12 @@ class Amazon(Scraper):
 
 class eBay(Scraper):
     def get_info(self):
-        self.name = self.html_soup.find('h1', class_='product-title').text.lower()
-        self.price = self.html_soup.find('div', class_='display-price').text
+        if self.URL.split('/')[3] == 'itm':
+            self.name = self.URL.split('/')[4].replace('-', ' ').lower()
+            self.price = self.html_soup.find('span', id='convbinPrice').text.replace('(including shipping)', '').replace('DKK ', '').replace(',', '')
+        else:
+            self.name = self.html_soup.find('h1', class_='product-title').text.lower()
+            self.price = self.html_soup.find('div', class_='display-price').text.replace('DKK ', '').replace(',', '')
 
 
 if __name__ == '__main__':
