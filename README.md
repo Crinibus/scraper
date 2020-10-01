@@ -1,5 +1,7 @@
-**The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk and Av-Cables.dk**<br/>
+**The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk, Av-Cables.dk, Amazon.com and eBay.com**<br/><br/>
 **The Fakta scraper can scrape discounts from this week discounts.**
+
+<br/>
 
 # Table of contents
 - [First setup](#first-setup)
@@ -21,7 +23,7 @@ First make sure you have the modules, run this in the terminal:
 <br/>
 
 # Tech scraper <a name="tech-scraper"></a>
-The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk and Av-Cables.dk
+The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk, Av-Cables.dk, Amazon.com and eBay.com
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -71,6 +73,8 @@ There is some optional arguments you can use when running add_product.py, these 
 -     --avcables
 
 -     --amazon
+
+-     --ebay
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
 

@@ -1,4 +1,4 @@
-**This program can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk and Av-Cables.dk**
+**This program can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk, Av-Cables.dk, Amazon.com and eBay.com**
 
 # Table of contents
 - [First setup](#first-setup)
@@ -62,5 +62,7 @@ There is some optional arguments you can use when running add_product.py, these 
 -     --avcables
 
 -     --amazon
+
+-     --ebay
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
