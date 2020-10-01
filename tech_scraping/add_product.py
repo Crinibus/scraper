@@ -54,6 +54,11 @@ def argparse_setup():
                              'if this is the only optional flag',
                         action="store_true")
 
+    parser.add_argument('--ebay',
+                        help='add only ebay-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
     return parser.parse_args()
 
 
@@ -80,6 +85,8 @@ def get_product_name(link):
         return change_name(html_soup.find('h1', class_='title').text.lower())
     elif URL_domain == 'www.amazon.com':
         return change_name(html_soup.find('span', id='productTitle').text.strip().lower())
+    elif URL_domain == 'www.ebay.com':
+        return change_name(html_soup.find('h1', class_='product-title').text.lower())
     else:
         return None
 
@@ -103,7 +110,7 @@ def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     json_object = json.loads('{}')
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables:
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay:
         if args.komplett:
             json_object.update({
                                     f"{komplett_domain}": {
@@ -174,6 +181,16 @@ def check_arguments():
                                         "dates": {}
                                     }
                                 })
+        if args.ebay:
+            json_object.update({
+                                    f"{ebay_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
     else:
         json_object = {
                             f"{komplett_domain}": {
@@ -224,6 +241,13 @@ def check_arguments():
                                     "url": ""
                                 },
                                 "dates": {}
+                            },
+                            f"{ebay_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
                             }
                         }
     return json_object
@@ -259,6 +283,8 @@ def find_domain(domain):
         return 'AvCables'
     elif domain == 'www.amazon.com':
         return 'Amazon'
+    elif domain == 'www.ebay.com':
+        return 'eBay'
 
 
 def add_to_scraper(kategori, link, url_domain):
@@ -295,5 +321,6 @@ if __name__ == '__main__':
     avxperten_domain = 'www.avxperten.dk'
     avcables_domain = 'www.av-cables.dk'
     amazon_domain = 'www.amazon.com'
+    ebay_domain = 'www.ebay.com'
     args = argparse_setup()
     main(args.category, args.url)
