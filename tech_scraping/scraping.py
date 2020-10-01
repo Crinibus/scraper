@@ -228,7 +228,7 @@ class AvXperten(Scraper):
 
 class AvCables(Scraper):
     def get_info(self):
-        self.name = self.html_soup.find('h1', class_='title').text
+        self.name = self.html_soup.find('h1', class_='title').text.lower()
         self.price = self.html_soup.find('div', class_='regular-price').text.strip().replace('Pris:   ', '').split(',')[0]
 
 
@@ -236,6 +236,12 @@ class Amazon(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('span', id='productTitle').text.strip().lower()
         self.price = self.html_soup.find('span', id='priceblock_ourprice').text.replace('$', '')
+
+
+class eBay(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('h1', class_='product-title').text.lower()
+        self.price = self.html_soup.find('div', class_='display-price').text
 
 
 if __name__ == '__main__':
