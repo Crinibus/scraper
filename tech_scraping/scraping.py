@@ -203,6 +203,21 @@ def change_name(name):
     return name
 
 
+def change_æøå(name):
+    """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
+    new_name = ''
+    for letter in name:
+        if letter in 'æøå':
+            if letter == 'æ':
+                letter = 'ae'
+            elif letter == 'ø':
+                letter = 'oe'
+            elif letter == 'å':
+                letter = 'aa'
+        new_name += letter
+    return new_name
+
+
 class Komplett(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('div', class_='product-main-info__info').h1.span.text.lower()

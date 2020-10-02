@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraping import change_name
+from scraping import change_name, change_æøå
 import argparse
 
 
@@ -99,21 +99,6 @@ def get_product_name(link):
         return change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
     else:
         return None
-
-
-def change_æøå(name):
-    """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
-    new_name = ''
-    for letter in name:
-        if letter in 'æøå':
-            if letter == 'æ':
-                letter = 'ae'
-            elif letter == 'ø':
-                letter = 'oe'
-            elif letter == 'å':
-                letter = 'aa'
-        new_name += letter
-    return new_name
 
 
 def check_arguments():
