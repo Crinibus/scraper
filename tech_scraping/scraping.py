@@ -99,6 +99,8 @@ class Scraper:
             self.part_num = self.URL.split('/')[-2].replace('p-', '')
         elif self.URL_domain == 'www.mm-vision.dk':
             self.part_num = self.html_soup.find('input', type='radio')['value']
+        elif self.URL_domain == 'www.coolshop.dk':
+            self.part_num = self.html_soup.find_all('div', id='attributeSku')[1].text.strip()
 
     def check_part_num(self):
         """
@@ -175,6 +177,8 @@ class Scraper:
             self.short_url = f'https://www.expert.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
         elif self.URL_domain == 'www.mm-vision.dk':
             self.short_url = self.URL
+        elif self.URL_domain == 'www.coolshop.dk':
+            self.short_url = f'https://www.coolshop.dk/produkt/{self.URL.split("/")[-2]}/'
 
     def print_info(self):
         """Print info about the product in the terminal."""
@@ -303,6 +307,12 @@ class MMVision(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('h1', itemprop='name').text.strip().lower()
         self.price = self.html_soup.find('h3', class_='product-price text-right').text.replace(',-', '').replace('.', '')
+
+
+class Coolshop(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('div', class_='thing-header').text.strip().lower()
+        self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split('.')[0]
 
 
 if __name__ == '__main__':
