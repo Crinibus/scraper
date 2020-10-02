@@ -101,7 +101,7 @@ def get_product_name(link):
         return None
 
 
-def ændre_æøå(navn):
+def change_æøå(navn):
     """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
     nyt_navn = ''
     for bogstav in navn:
@@ -334,9 +334,9 @@ def main(kategori, link):
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
 
-    # Ændre æ, ø og/eller å
-    kategori = ændre_æøå(kategori)
-    produkt_navn = ændre_æøå(produkt_navn)
+    # Change æ, ø and/or å
+    kategori = Change_æøå(kategori)
+    produkt_navn = Change_æøå(produkt_navn)
 
     save_json(kategori, produkt_navn)
     add_to_scraper(kategori, link, URL_domain)
