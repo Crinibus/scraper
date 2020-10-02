@@ -101,6 +101,8 @@ class Scraper:
             self.part_num = self.html_soup.find('input', type='radio')['value']
         elif self.URL_domain == 'www.coolshop.dk':
             self.part_num = self.html_soup.find_all('div', id='attributeSku')[1].text.strip()
+        elif self.URL_domain == 'www.sharkgaming.dk' or self.URL_domain == 'sharkgaming.dk':
+            self.part_num = 'Non existing on Sharkgaming'
 
     def check_part_num(self):
         """
@@ -179,6 +181,8 @@ class Scraper:
             self.short_url = self.URL
         elif self.URL_domain == 'www.coolshop.dk':
             self.short_url = f'https://www.coolshop.dk/produkt/{self.URL.split("/")[-2]}/'
+        elif self.URL_domain == 'www.sharkgaming.dk' or self.URL_domain == 'sharkgaming.dk':
+            self.short_url = self.URL
 
     def print_info(self):
         """Print info about the product in the terminal."""
@@ -313,6 +317,12 @@ class Coolshop(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('div', class_='thing-header').text.strip().lower()
         self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split('.')[0]
+
+
+class Sharkgaming(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('div', class_='product-name').text.strip().lower()
+        self.price = self.html_soup.find('span', class_='price').text.replace(' kr.', '').replace('.', '')
 
 
 if __name__ == '__main__':

@@ -79,6 +79,11 @@ def argparse_setup():
                              'if this is the only optional flag',
                         action="store_true")
 
+    parser.add_argument('--sharkgaming',
+                        help='add only sharkgaming-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
     return parser.parse_args()
 
 
@@ -118,6 +123,8 @@ def get_product_name(link):
         return change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
     elif URL_domain == 'www.coolshop.dk':
         return change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
+    elif URL_domain == 'www.sharkgaming.dk':
+        return change_name(html_soup.find('div', class_='product-name').text.strip().lower())
     else:
         return None
 
@@ -126,7 +133,7 @@ def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     json_object = json.loads('{}')
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power or args.expert or args.mmvision or args.coolshop:
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
         if args.komplett:
             json_object.update({
                                     f"{komplett_domain}": {
@@ -247,6 +254,16 @@ def check_arguments():
                                         "dates": {}
                                     }
                                 })
+        if args.sharkgaming:
+            json_object.update({
+                                    f"{sharkgaming_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
     else:
         json_object = {
                             f"{komplett_domain}": {
@@ -332,6 +349,13 @@ def check_arguments():
                                     "url": ""
                                 },
                                 "dates": {}
+                            },
+                            f"{sharkgaming_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
                             }
                         }
     return json_object
@@ -377,6 +401,8 @@ def find_domain(domain):
         return 'MMVision'
     elif domain == 'www.coolshop.dk':
         return 'Coolshop'
+    elif domain == 'www.sharkgaming.dk':
+        return 'Sharkgaming'
 
 
 def add_to_scraper(kategori, link, url_domain):
@@ -418,5 +444,6 @@ if __name__ == '__main__':
     expert_domain = 'www.expert.dk'
     mmvision_domain = 'www.mm-vision.dk'
     coolshop_domain = 'www.coolshop.dk'
+    sharkgaming_domain = 'www.sharkgaming.dk'
     args = argparse_setup()
     main(args.category, args.url)
