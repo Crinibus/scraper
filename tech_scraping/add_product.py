@@ -335,8 +335,8 @@ def main(kategori, link):
         return
 
     # Change æ, ø and/or å
-    kategori = Change_æøå(kategori)
-    produkt_navn = Change_æøå(produkt_navn)
+    kategori = change_æøå(kategori)
+    produkt_navn = change_æøå(produkt_navn)
 
     save_json(kategori, produkt_navn)
     add_to_scraper(kategori, link, URL_domain)
