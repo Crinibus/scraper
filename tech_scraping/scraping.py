@@ -95,6 +95,8 @@ class Scraper:
                 self.part_num = self.URL.split('=')[1]
         elif self.URL_domain == 'www.power.dk':
             self.part_num = self.URL.split('/')[-2].replace('p-', '')
+        elif self.URL_domain == 'www.expert.dk':
+            self.part_num = self.URL.split('/')[-2].replace('p-', '')
 
     def check_part_num(self):
         """
@@ -167,6 +169,8 @@ class Scraper:
                 self.short_url = self.URL.split('?')[0]
         elif self.URL_domain == 'www.power.dk':
             self.short_url = f'https://www.power.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
+        elif self.URL_domain == 'www.expert.dk':
+            self.short_url = f'https://www.expert.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
 
     def print_info(self):
         """Print info about the product in the terminal."""
@@ -282,6 +286,12 @@ class eBay(Scraper):
 class Power(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('title').text.replace(' - Power.dk', '').lower()
+        self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split(',')[0]
+
+
+class Expert(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('meta', property='og:title')['content'].lower()
         self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split(',')[0]
 
 
