@@ -69,6 +69,11 @@ def argparse_setup():
                              'if this is the only optional flag',
                         action="store_true")
 
+    parser.add_argument('--mmvision',
+                        help='add only mm-vision-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
     return parser.parse_args()
 
 
@@ -104,6 +109,8 @@ def get_product_name(link):
         return change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
     elif URL_domain == 'www.expert.dk':
         return change_name(html_soup.find('meta', property='og:title')['content'].lower())
+    elif URL_domain == 'www.mm-vision.dk':
+        return change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
     else:
         return None
 
@@ -112,7 +119,7 @@ def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     json_object = json.loads('{}')
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power or args.expert:
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power or args.expert or args.mmvision:
         if args.komplett:
             json_object.update({
                                     f"{komplett_domain}": {
@@ -213,6 +220,16 @@ def check_arguments():
                                         "dates": {}
                                     }
                                 })
+        if args.mmvision:
+            json_object.update({
+                                    f"{mmvision_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
     else:
         json_object = {
                             f"{komplett_domain}": {
@@ -284,6 +301,13 @@ def check_arguments():
                                     "url": ""
                                 },
                                 "dates": {}
+                            },
+                            f"{mmvision_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
                             }
                         }
     return json_object
@@ -325,6 +349,8 @@ def find_domain(domain):
         return 'Power'
     elif domain == 'www.expert.dk':
         return 'Expert'
+    elif domain == 'www.mm-vision.dk':
+        return 'MMVision'
 
 
 def add_to_scraper(kategori, link, url_domain):
@@ -364,5 +390,6 @@ if __name__ == '__main__':
     ebay_domain = 'www.ebay.com'
     power_domain = 'www.power.dk'
     expert_domain = 'www.expert.dk'
+    mmvision_domain = 'www.mm-vision.dk'
     args = argparse_setup()
     main(args.category, args.url)
