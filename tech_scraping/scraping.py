@@ -44,7 +44,7 @@ class Scraper:
         except Exception as err:
             logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
-        self.name = change_name(self.name)
+        self.name = change_æøå(change_name(self.name))
         self.date = str(datetime.today().strftime('%Y-%m-%d'))
         self.get_part_num()
         self.shorten_url()
@@ -95,6 +95,14 @@ class Scraper:
                 self.part_num = self.URL.split('=')[1]
         elif self.URL_domain == 'www.power.dk':
             self.part_num = self.URL.split('/')[-2].replace('p-', '')
+        elif self.URL_domain == 'www.expert.dk':
+            self.part_num = self.URL.split('/')[-2].replace('p-', '')
+        elif self.URL_domain == 'www.mm-vision.dk':
+            self.part_num = self.html_soup.find('input', type='radio')['value']
+        elif self.URL_domain == 'www.coolshop.dk':
+            self.part_num = self.html_soup.find_all('div', id='attributeSku')[1].text.strip()
+        elif self.URL_domain == 'www.sharkgaming.dk' or self.URL_domain == 'sharkgaming.dk':
+            self.part_num = 'Non existing on Sharkgaming'
 
     def check_part_num(self):
         """
@@ -167,6 +175,14 @@ class Scraper:
                 self.short_url = self.URL.split('?')[0]
         elif self.URL_domain == 'www.power.dk':
             self.short_url = f'https://www.power.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
+        elif self.URL_domain == 'www.expert.dk':
+            self.short_url = f'https://www.expert.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
+        elif self.URL_domain == 'www.mm-vision.dk':
+            self.short_url = self.URL
+        elif self.URL_domain == 'www.coolshop.dk':
+            self.short_url = f'https://www.coolshop.dk/produkt/{self.URL.split("/")[-2]}/'
+        elif self.URL_domain == 'www.sharkgaming.dk' or self.URL_domain == 'sharkgaming.dk':
+            self.short_url = self.URL
 
     def print_info(self):
         """Print info about the product in the terminal."""
@@ -201,6 +217,21 @@ def change_name(name):
     elif 'corsair' in name and 'mp600' in name and '1tb' in name and 'm.2' in name:
         name = 'corsair force mp600 1tb m.2'
     return name
+
+
+def change_æøå(name):
+    """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
+    new_name = ''
+    for letter in name:
+        if letter in 'æøå':
+            if letter == 'æ':
+                letter = 'ae'
+            elif letter == 'ø':
+                letter = 'oe'
+            elif letter == 'å':
+                letter = 'aa'
+        new_name += letter
+    return new_name
 
 
 class Komplett(Scraper):
@@ -268,6 +299,30 @@ class Power(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('title').text.replace(' - Power.dk', '').lower()
         self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split(',')[0]
+
+
+class Expert(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('meta', property='og:title')['content'].lower()
+        self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split(',')[0]
+
+
+class MMVision(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('h1', itemprop='name').text.strip().lower()
+        self.price = self.html_soup.find('h3', class_='product-price text-right').text.replace(',-', '').replace('.', '')
+
+
+class Coolshop(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('div', class_='thing-header').text.strip().lower()
+        self.price = self.html_soup.find('meta', property='product:price:amount')['content'].split('.')[0]
+
+
+class Sharkgaming(Scraper):
+    def get_info(self):
+        self.name = self.html_soup.find('div', class_='product-name').text.strip().lower()
+        self.price = self.html_soup.find('span', class_='price').text.replace(' kr.', '').replace('.', '')
 
 
 if __name__ == '__main__':

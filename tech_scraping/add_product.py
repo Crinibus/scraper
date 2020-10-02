@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraping import change_name
+from scraping import change_name, change_æøå
 import argparse
 
 
@@ -64,6 +64,26 @@ def argparse_setup():
                              'if this is the only optional flag',
                         action="store_true")
 
+    parser.add_argument('--expert',
+                        help='add only expert-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--mmvision',
+                        help='add only mm-vision-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--coolshop',
+                        help='add only coolshop-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
+    parser.add_argument('--sharkgaming',
+                        help='add only sharkgaming-domain under the product-name,'
+                             'if this is the only optional flag',
+                        action="store_true")
+
     return parser.parse_args()
 
 
@@ -97,30 +117,23 @@ def get_product_name(link):
             return change_name(html_soup.find('h1', class_='product-title').text.lower())
     elif URL_domain == 'www.power.dk':
         return change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
+    elif URL_domain == 'www.expert.dk':
+        return change_name(html_soup.find('meta', property='og:title')['content'].lower())
+    elif URL_domain == 'www.mm-vision.dk':
+        return change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
+    elif URL_domain == 'www.coolshop.dk':
+        return change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
+    elif URL_domain == 'www.sharkgaming.dk':
+        return change_name(html_soup.find('div', class_='product-name').text.strip().lower())
     else:
         return None
-
-
-def ændre_æøå(navn):
-    """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
-    nyt_navn = ''
-    for bogstav in navn:
-        if bogstav in 'æøå':
-            if bogstav == 'æ':
-                bogstav = 'ae'
-            elif bogstav == 'ø':
-                bogstav = 'oe'
-            elif bogstav == 'å':
-                bogstav = 'aa'
-        nyt_navn += bogstav
-    return nyt_navn
 
 
 def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     json_object = json.loads('{}')
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power:
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
         if args.komplett:
             json_object.update({
                                     f"{komplett_domain}": {
@@ -211,6 +224,46 @@ def check_arguments():
                                         "dates": {}
                                     }
                                 })
+        if args.expert:
+            json_object.update({
+                                    f"{expert_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.mmvision:
+            json_object.update({
+                                    f"{mmvision_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.coolshop:
+            json_object.update({
+                                    f"{coolshop_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
+        if args.sharkgaming:
+            json_object.update({
+                                    f"{sharkgaming_domain}": {
+                                        "info": {
+                                            "part_num": "",
+                                            "url": ""
+                                        },
+                                        "dates": {}
+                                    }
+                                })
     else:
         json_object = {
                             f"{komplett_domain}": {
@@ -275,6 +328,34 @@ def check_arguments():
                                     "url": ""
                                 },
                                 "dates": {}
+                            },
+                            f"{expert_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{mmvision_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{coolshop_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
+                            },
+                            f"{sharkgaming_domain}": {
+                                "info": {
+                                    "part_num": "",
+                                    "url": ""
+                                },
+                                "dates": {}
                             }
                         }
     return json_object
@@ -314,6 +395,14 @@ def find_domain(domain):
         return 'eBay'
     elif domain == 'www.power.dk':
         return 'Power'
+    elif domain == 'www.expert.dk':
+        return 'Expert'
+    elif domain == 'www.mm-vision.dk':
+        return 'MMVision'
+    elif domain == 'www.coolshop.dk':
+        return 'Coolshop'
+    elif domain == 'www.sharkgaming.dk':
+        return 'Sharkgaming'
 
 
 def add_to_scraper(kategori, link, url_domain):
@@ -334,9 +423,9 @@ def main(kategori, link):
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
 
-    # Ændre æ, ø og/eller å
-    kategori = ændre_æøå(kategori)
-    produkt_navn = ændre_æøå(produkt_navn)
+    # Change æ, ø and/or å
+    kategori = change_æøå(kategori)
+    produkt_navn = change_æøå(produkt_navn)
 
     save_json(kategori, produkt_navn)
     add_to_scraper(kategori, link, URL_domain)
@@ -352,5 +441,9 @@ if __name__ == '__main__':
     amazon_domain = 'www.amazon.com'
     ebay_domain = 'www.ebay.com'
     power_domain = 'www.power.dk'
+    expert_domain = 'www.expert.dk'
+    mmvision_domain = 'www.mm-vision.dk'
+    coolshop_domain = 'www.coolshop.dk'
+    sharkgaming_domain = 'www.sharkgaming.dk'
     args = argparse_setup()
     main(args.category, args.url)
