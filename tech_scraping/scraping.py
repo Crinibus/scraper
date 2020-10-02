@@ -44,7 +44,7 @@ class Scraper:
         except Exception as err:
             logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
-        self.name = change_name(self.name)
+        self.name = change_æøå(change_name(self.name))
         self.date = str(datetime.today().strftime('%Y-%m-%d'))
         self.get_part_num()
         self.shorten_url()
