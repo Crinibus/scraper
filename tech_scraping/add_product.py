@@ -101,19 +101,19 @@ def get_product_name(link):
         return None
 
 
-def change_æøå(navn):
+def change_æøå(name):
     """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
-    nyt_navn = ''
-    for bogstav in navn:
-        if bogstav in 'æøå':
-            if bogstav == 'æ':
-                bogstav = 'ae'
-            elif bogstav == 'ø':
-                bogstav = 'oe'
-            elif bogstav == 'å':
-                bogstav = 'aa'
-        nyt_navn += bogstav
-    return nyt_navn
+    new_name = ''
+    for letter in name:
+        if letter in 'æøå':
+            if letter == 'æ':
+                letter = 'ae'
+            elif letter == 'ø':
+                letter = 'oe'
+            elif letter == 'å':
+                letter = 'aa'
+        new_name += letter
+    return new_name
 
 
 def check_arguments():
