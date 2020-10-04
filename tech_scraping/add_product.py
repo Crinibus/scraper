@@ -133,6 +133,8 @@ def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     json_object = json.loads('{}')
+
+    # Check for if any of the optional arguments is true
     if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay \
             or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
         if args.komplett:
