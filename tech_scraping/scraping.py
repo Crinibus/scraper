@@ -72,37 +72,37 @@ class Scraper:
     def get_part_num(self):
         """Get part number from URL or from HTML."""
         self.part_num = ''
-        if self.URL_domain == 'www.komplett.dk':
+        if self.URL_domain == domains['komplett']:
             self.part_num = self.URL.split('/')[4]
-        elif self.URL_domain == 'www.proshop.dk':
+        elif self.URL_domain == domains['proshop']:
             self.part_num = self.URL.split('/')[5]
-        elif self.URL_domain == 'www.computersalg.dk':
+        elif self.URL_domain == domains['computersalg']:
             self.part_num = self.URL.split('/')[4]
-        elif self.URL_domain == 'www.elgiganten.dk':
+        elif self.URL_domain == domains['elgiganten']:
             self.part_num = self.html_soup.find('p', class_='sku discrete').text.replace('Varenr.:\xa0', '')
-        elif self.URL_domain == 'www.avxperten.dk':
+        elif self.URL_domain == domains['avxperten']:
             self.part_num = self.html_soup.find('div', class_='description-foot').p.text.replace('Varenummer: ', '')
-        elif self.URL_domain == 'www.av-cables.dk':
+        elif self.URL_domain == domains['av-cables']:
             self.part_num = self.html_soup.find('div', class_='text-right model').text.strip().replace('[ ', '').replace(']', '').split(': ')[1]
-        elif self.URL_domain == 'www.amazon.com':
+        elif self.URL_domain == domains['amazon']:
             self.part_num = self.URL.split('/')[5]
-        elif self.URL_domain == 'www.ebay.com':
+        elif self.URL_domain == domains['ebay']:
             if self.URL.split('/')[3] == 'itm':
                 # Find "eBay item number"
                 self.part_num = self.html_soup.find('div', id='descItemNumber').text
             else:
                 # Find id number
                 self.part_num = self.URL.split('=')[1]
-        elif self.URL_domain == 'www.power.dk':
+        elif self.URL_domain == domains['power']:
             self.part_num = self.URL.split('/')[-2].replace('p-', '')
-        elif self.URL_domain == 'www.expert.dk':
+        elif self.URL_domain == domains['expert']:
             self.part_num = self.URL.split('/')[-2].replace('p-', '')
-        elif self.URL_domain == 'www.mm-vision.dk':
+        elif self.URL_domain == domains['mm-vision']:
             self.part_num = self.html_soup.find('input', type='radio')['value']
-        elif self.URL_domain == 'www.coolshop.dk':
+        elif self.URL_domain == domains['coolshop']:
             self.part_num = self.html_soup.find_all('div', id='attributeSku')[1].text.strip()
-        elif self.URL_domain == 'www.sharkgaming.dk' or self.URL_domain == 'sharkgaming.dk':
-            self.part_num = 'Non existing on Sharkgaming'
+        elif self.URL_domain == domains['sharkgaming']:
+            self.part_num = 'Not existing on Sharkgaming'
 
     def check_part_num(self):
         """
@@ -154,34 +154,34 @@ class Scraper:
         usually domain.dk/product_number.
         """
         self.short_url = ''
-        if self.URL_domain == 'www.komplett.dk':
+        if self.URL_domain == domains['komplett']:
             self.short_url = f'https://www.komplett.dk/product/{self.part_num}'
-        elif self.URL_domain == 'www.proshop.dk':
+        elif self.URL_domain == domains['proshop']:
             self.short_url = f'https://www.proshop.dk/{self.part_num}'
-        elif self.URL_domain == 'www.computersalg.dk':
+        elif self.URL_domain == domains['computersalg']:
             self.short_url = f'https://www.computersalg.dk/i/{self.part_num}'
-        elif self.URL_domain == 'www.elgiganten.dk':
+        elif self.URL_domain == domains['elgiganten']:
             self.short_url = f'https://www.elgiganten.dk/product/{self.part_num}/'
-        elif self.URL_domain == 'www.avxperten.dk':
+        elif self.URL_domain == domains['avxperten']:
             self.short_url = self.URL
-        elif self.URL_domain == 'www.av-cables.dk':
+        elif self.URL_domain == domains['av-cables']:
             self.short_url = self.URL
-        elif self.URL_domain == 'www.amazon.com':
+        elif self.URL_domain == domains['amazon']:
             self.short_url = self.URL
-        elif self.URL_domain == 'www.ebay.com':
+        elif self.URL_domain == domains['ebay']:
             if self.URL.split('/')[3] == 'itm':
                 self.short_url = f'https://www.ebay.com/itm/{self.part_num}'
             else:
                 self.short_url = self.URL.split('?')[0]
-        elif self.URL_domain == 'www.power.dk':
+        elif self.URL_domain == domains['power']:
             self.short_url = f'https://www.power.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
-        elif self.URL_domain == 'www.expert.dk':
+        elif self.URL_domain == domains['expert']:
             self.short_url = f'https://www.expert.dk/{self.URL.split("/")[3]}/p-{self.part_num}'
-        elif self.URL_domain == 'www.mm-vision.dk':
+        elif self.URL_domain == domains['mm-vision']:
             self.short_url = self.URL
-        elif self.URL_domain == 'www.coolshop.dk':
+        elif self.URL_domain == domains['coolshop']:
             self.short_url = f'https://www.coolshop.dk/produkt/{self.URL.split("/")[-2]}/'
-        elif self.URL_domain == 'www.sharkgaming.dk' or self.URL_domain == 'sharkgaming.dk':
+        elif self.URL_domain == domains['sharkgaming']:
             self.short_url = self.URL
 
     def print_info(self):
@@ -323,6 +323,23 @@ class Sharkgaming(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('div', class_='product-name').text.strip().lower()
         self.price = self.html_soup.find('span', class_='price').text.replace(' kr.', '').replace('.', '')
+
+
+domains = {
+    "komplett": "www.komplett.dk",
+    "proshop": "www.proshop.dk",
+    "computersalg": "www.computersalg.dk",
+    "elgiganten": "www.elgiganten.dk",
+    "avxperten": "www.avxperten.dk",
+    "av-cables": "www.av-cables.dk",
+    "amazon": "www.amazon.com",
+    "ebay": "www.ebay.com",
+    "power": "www.power.dk",
+    "expert": "www.expert.dk",
+    "mm-vision": "www.mm-vision.dk",
+    "coolshop": "www.coolshop.dk",
+    "sharkgaming": "sharkgaming.dk"
+}
 
 
 if __name__ == '__main__':
