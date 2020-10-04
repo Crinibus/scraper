@@ -96,34 +96,34 @@ def get_product_name(link):
     response = requests.get(link, headers=headers, cookies=cookies)
     html_soup = BeautifulSoup(response.text, 'html.parser')
 
-    if URL_domain == 'www.komplett.dk':
+    if URL_domain == domains['komplett']:
         return change_name(html_soup.find('div', class_='product-main-info__info').h1.span.text.lower())
-    elif URL_domain == 'www.proshop.dk':
+    elif URL_domain == domains['proshop']:
         return change_name(html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower())
-    elif URL_domain == 'www.computersalg.dk':
+    elif URL_domain == domains['computersalg']:
         return change_name(html_soup.find('h1', itemprop='name').text.lower())
-    elif URL_domain == 'www.elgiganten.dk':
+    elif URL_domain == domains['elgiganten']:
         return change_name(html_soup.find('h1', class_='product-title').text.lower())
-    elif URL_domain == 'www.avxperten.dk':
+    elif URL_domain == domains['avxperten']:
         return change_name(html_soup.find('div', class_='content-head').text.strip().lower())
-    elif URL_domain == 'www.av-cables.dk':
+    elif URL_domain == domains['av-cables']:
         return change_name(html_soup.find('h1', class_='title').text.lower())
-    elif URL_domain == 'www.amazon.com':
+    elif URL_domain == domains['amazon']:
         return change_name(html_soup.find('span', id='productTitle').text.strip().lower())
-    elif URL_domain == 'www.ebay.com':
+    elif URL_domain == domains['ebay']:
         if link.split('/')[3] == 'itm':
             return change_name(link.split('/')[4].replace('-', ' ').lower())
         else:
             return change_name(html_soup.find('h1', class_='product-title').text.lower())
-    elif URL_domain == 'www.power.dk':
+    elif URL_domain == domains['power']:
         return change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
-    elif URL_domain == 'www.expert.dk':
+    elif URL_domain == domains['expert']:
         return change_name(html_soup.find('meta', property='og:title')['content'].lower())
-    elif URL_domain == 'www.mm-vision.dk':
+    elif URL_domain == domains['mm-vision']:
         return change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
-    elif URL_domain == 'www.coolshop.dk':
+    elif URL_domain == domains['coolshop']:
         return change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
-    elif URL_domain == 'www.sharkgaming.dk':
+    elif URL_domain == domains['sharkgaming']:
         return change_name(html_soup.find('div', class_='product-name').text.strip().lower())
     else:
         return None
@@ -133,10 +133,13 @@ def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     json_object = json.loads('{}')
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
+
+    # Check for if any of the optional arguments is true
+    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay \
+            or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
         if args.komplett:
             json_object.update({
-                                    f"{komplett_domain}": {
+                                    f"{domains['komplett']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -146,7 +149,7 @@ def check_arguments():
                                 })
         if args.proshop:
             json_object.update({
-                                    f"{proshop_domain}": {
+                                    f"{domains['proshop']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -156,7 +159,7 @@ def check_arguments():
                                 })
         if args.computersalg:
             json_object.update({
-                                    f"{computersalg_domain}": {
+                                    f"{domains['computersalg']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -166,7 +169,7 @@ def check_arguments():
                                 })
         if args.elgiganten:
             json_object.update({
-                                    f"{elgiganten_domain}": {
+                                    f"{domains['elgiganten']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -176,7 +179,7 @@ def check_arguments():
                                 })
         if args.avxperten:
             json_object.update({
-                                    f"{avxperten_domain}": {
+                                    f"{domains['avxperten']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -186,7 +189,7 @@ def check_arguments():
                                 })
         if args.avcables:
             json_object.update({
-                                    f"{avcables_domain}": {
+                                    f"{domains['av-cables']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -196,7 +199,7 @@ def check_arguments():
                                 })
         if args.amazon:
             json_object.update({
-                                    f"{amazon_domain}": {
+                                    f"{domains['amazon']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -206,7 +209,7 @@ def check_arguments():
                                 })
         if args.ebay:
             json_object.update({
-                                    f"{ebay_domain}": {
+                                    f"{domains['ebay']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -216,7 +219,7 @@ def check_arguments():
                                 })
         if args.power:
             json_object.update({
-                                    f"{power_domain}": {
+                                    f"{domains['power']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -226,7 +229,7 @@ def check_arguments():
                                 })
         if args.expert:
             json_object.update({
-                                    f"{expert_domain}": {
+                                    f"{domains['expert']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -236,7 +239,7 @@ def check_arguments():
                                 })
         if args.mmvision:
             json_object.update({
-                                    f"{mmvision_domain}": {
+                                    f"{domains['mm-vision']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -246,7 +249,7 @@ def check_arguments():
                                 })
         if args.coolshop:
             json_object.update({
-                                    f"{coolshop_domain}": {
+                                    f"{domains['coolshop']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -256,7 +259,7 @@ def check_arguments():
                                 })
         if args.sharkgaming:
             json_object.update({
-                                    f"{sharkgaming_domain}": {
+                                    f"{domains['sharkgaming']}": {
                                         "info": {
                                             "part_num": "",
                                             "url": ""
@@ -266,91 +269,91 @@ def check_arguments():
                                 })
     else:
         json_object = {
-                            f"{komplett_domain}": {
+                            f"{domains['komplett']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{proshop_domain}": {
+                            f"{domains['proshop']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{computersalg_domain}": {
+                            f"{domains['computersalg']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{elgiganten_domain}": {
+                            f"{domains['elgiganten']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{avxperten_domain}": {
+                            f"{domains['avxperten']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{avcables_domain}": {
+                            f"{domains['av-cables']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{amazon_domain}": {
+                            f"{domains['amazon']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{ebay_domain}": {
+                            f"{domains['ebay']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{power_domain}": {
+                            f"{domains['power']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{expert_domain}": {
+                            f"{domains['expert']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{mmvision_domain}": {
+                            f"{domains['mm-vision']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{coolshop_domain}": {
+                            f"{domains['coolshop']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
                                 },
                                 "dates": {}
                             },
-                            f"{sharkgaming_domain}": {
+                            f"{domains['sharkgaming']}": {
                                 "info": {
                                     "part_num": "",
                                     "url": ""
@@ -377,31 +380,31 @@ def save_json(kategori, produkt_navn):
 
 def find_domain(domain):
     """Return the domain of the url without "www." and ".dk"."""
-    if domain == 'www.komplett.dk':
+    if domain == domains['komplett']:
         return 'Komplett'
-    elif domain == 'www.proshop.dk':
+    elif domain == domains['proshop']:
         return 'Proshop'
-    elif domain == 'www.computersalg.dk':
+    elif domain == domains['computersalg']:
         return 'Computersalg'
-    elif domain == 'www.elgiganten.dk':
+    elif domain == domains['elgiganten']:
         return 'Elgiganten'
-    elif domain == 'www.avxperten.dk':
+    elif domain == domains['avxperten']:
         return 'AvXperten'
-    elif domain == 'www.av-cables.dk':
+    elif domain == domains['av-cables']:
         return 'AvCables'
-    elif domain == 'www.amazon.com':
+    elif domain == domains['amazon']:
         return 'Amazon'
-    elif domain == 'www.ebay.com':
+    elif domain == domains['ebay']:
         return 'eBay'
-    elif domain == 'www.power.dk':
+    elif domain == domains['power']:
         return 'Power'
-    elif domain == 'www.expert.dk':
+    elif domain == domains['expert']:
         return 'Expert'
-    elif domain == 'www.mm-vision.dk':
+    elif domain == domains['mm-vision']:
         return 'MMVision'
-    elif domain == 'www.coolshop.dk':
+    elif domain == domains['coolshop']:
         return 'Coolshop'
-    elif domain == 'www.sharkgaming.dk':
+    elif domain == domains['sharkgaming']:
         return 'Sharkgaming'
 
 
@@ -431,19 +434,23 @@ def main(kategori, link):
     add_to_scraper(kategori, link, URL_domain)
 
 
+domains = {
+    "komplett": "www.komplett.dk",
+    "proshop": "www.proshop.dk",
+    "computersalg": "www.computersalg.dk",
+    "elgiganten": "www.elgiganten.dk",
+    "avxperten": "www.avxperten.dk",
+    "av-cables": "www.av-cables.dk",
+    "amazon": "www.amazon.com",
+    "ebay": "www.ebay.com",
+    "power": "www.power.dk",
+    "expert": "www.expert.dk",
+    "mm-vision": "www.mm-vision.dk",
+    "coolshop": "www.coolshop.dk",
+    "sharkgaming": "sharkgaming.dk"
+}
+
+
 if __name__ == '__main__':
-    komplett_domain = 'www.komplett.dk'
-    proshop_domain = 'www.proshop.dk'
-    computersalg_domain = 'www.computersalg.dk'
-    elgiganten_domain = 'www.elgiganten.dk'
-    avxperten_domain = 'www.avxperten.dk'
-    avcables_domain = 'www.av-cables.dk'
-    amazon_domain = 'www.amazon.com'
-    ebay_domain = 'www.ebay.com'
-    power_domain = 'www.power.dk'
-    expert_domain = 'www.expert.dk'
-    mmvision_domain = 'www.mm-vision.dk'
-    coolshop_domain = 'www.coolshop.dk'
-    sharkgaming_domain = 'www.sharkgaming.dk'
     args = argparse_setup()
     main(args.category, args.url)
