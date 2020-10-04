@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraping import change_name, change_æøå
+from scraping import change_name, change_æøå, domains
 import argparse
 
 
@@ -432,23 +432,6 @@ def main(kategori, link):
 
     save_json(kategori, produkt_navn)
     add_to_scraper(kategori, link, URL_domain)
-
-
-domains = {
-    "komplett": "www.komplett.dk",
-    "proshop": "www.proshop.dk",
-    "computersalg": "www.computersalg.dk",
-    "elgiganten": "www.elgiganten.dk",
-    "avxperten": "www.avxperten.dk",
-    "av-cables": "www.av-cables.dk",
-    "amazon": "www.amazon.com",
-    "ebay": "www.ebay.com",
-    "power": "www.power.dk",
-    "expert": "www.expert.dk",
-    "mm-vision": "www.mm-vision.dk",
-    "coolshop": "www.coolshop.dk",
-    "sharkgaming": "sharkgaming.dk"
-}
 
 
 if __name__ == '__main__':
