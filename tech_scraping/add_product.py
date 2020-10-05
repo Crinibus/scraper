@@ -268,99 +268,17 @@ def check_arguments():
                                     }
                                 })
     else:
-        json_object = {
-                            f"{domains['komplett']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['proshop']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['computersalg']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['elgiganten']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['avxperten']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['av-cables']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['amazon']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['ebay']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['power']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['expert']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['mm-vision']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['coolshop']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['sharkgaming']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            }
-                        }
+        for domain in domains:
+            json_object.update({
+                f"{domains[domain]}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
+
     return json_object
 
 
