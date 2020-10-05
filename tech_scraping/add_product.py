@@ -268,6 +268,7 @@ def check_arguments():
                                     }
                                 })
     else:
+        # If none of the optional arguments is giving (true), then add all of the domains to the json_object
         for domain in domains:
             json_object.update({
                 f"{domains[domain]}": {
