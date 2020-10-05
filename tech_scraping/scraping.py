@@ -191,12 +191,12 @@ class Scraper:
 
     def print_info(self):
         """Print info about the product in the terminal."""
-        print(f'Kategori: {self.cat}\n'
-              f'Navn: {self.name}\n'
-              f'Pris: {self.price} kr.\n'
-              f'Dato: {self.date}\n'
-              f'Fra domain: {self.URL_domain}\n'
-              f'Produkt nummer: {self.part_num}\n')
+        print(f'Category: {self.cat}\n'
+              f'Name: {self.name}\n'
+              f'Price: {self.price} kr.\n'
+              f'Date: {self.date}\n'
+              f'From domain: {self.URL_domain}\n'
+              f'Product number: {self.part_num}\n')
 
     def save_record(self):
         """Save the price of the product in the JSON-file."""
