@@ -12,6 +12,10 @@ def log_setup():
     # Gets or creates a logger
     logger = logging.getLogger(__name__)
 
+    # Check if logger already has a handler
+    if logger.hasHandlers():
+        logger.handlers.clear()
+
     # set log level (lowest level)
     logger.setLevel(logging.DEBUG)
 
@@ -27,22 +31,23 @@ def log_setup():
 
 class Scraper:
     def __init__(self, category, URL):
-        logger.debug(f'Initiating class "{self.__class__.__name__}"')
+        self.logger = log_setup()
+        self.logger.debug(f'Initiating class "{self.__class__.__name__}"')
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
-        logger.debug(f'Category: {self.cat}')
-        logger.debug(f'URL: {self.URL}')
+        self.logger.debug(f'Category: {self.cat}')
+        self.logger.debug(f'URL: {self.URL}')
 
         try:
             self.get_response()
         except Exception as err:
-            logger.error(f'Failed in method "{self.__class__.__name__}.get_response()": {err}', exc_info=True)
+            self.logger.error(f'Failed in method "{self.__class__.__name__}.get_response()": {err}', exc_info=True)
 
         try:
             self.get_info()
         except Exception as err:
-            logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
+            self.logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
 
         self.name = change_æøå(change_name(self.name))
         self.date = str(datetime.today().strftime('%Y-%m-%d'))
@@ -53,7 +58,7 @@ class Scraper:
         try:
             self.save_record()
         except Exception as err:
-            logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
+            self.logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
 
     def get_info(self):  # gets overwritten
         """Get name and price of product."""
@@ -62,11 +67,11 @@ class Scraper:
 
     def get_response(self):
         """Get response from URL."""
-        logger.info('Getting response from URL...')
+        self.logger.info('Getting response from URL...')
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
         cookies = dict(cookies_are='working')
         self.response = requests.get(self.URL, headers=headers, cookies=cookies)
-        logger.info('Got response from URL')
+        self.logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
 
     def get_part_num(self):
@@ -186,23 +191,23 @@ class Scraper:
 
     def print_info(self):
         """Print info about the product in the terminal."""
-        print(f'Kategori: {self.cat}\n'
-              f'Navn: {self.name}\n'
-              f'Pris: {self.price} kr.\n'
-              f'Dato: {self.date}\n'
-              f'Fra domain: {self.URL_domain}\n'
-              f'Produkt nummer: {self.part_num}\n')
+        print(f'Category: {self.cat}\n'
+              f'Name: {self.name}\n'
+              f'Price: {self.price} kr.\n'
+              f'Date: {self.date}\n'
+              f'From domain: {self.URL_domain}\n'
+              f'Product number: {self.part_num}\n')
 
     def save_record(self):
         """Save the price of the product in the JSON-file."""
-        logger.info('Saving record...')
+        self.logger.info('Saving record...')
         self.check_url()
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
             data[self.cat][self.name][self.URL_domain]["dates"][self.date] = {"price": self.price}
         with open('records.json', 'w') as json_file:
             json.dump(data, json_file, indent=2)
-        logger.info('Record saved')
+        self.logger.info('Record saved')
 
 
 def change_name(name):
@@ -343,7 +348,6 @@ domains = {
 
 
 if __name__ == '__main__':
-    logger = log_setup()
     Komplett('ssd', 'https://www.komplett.dk/product/1133452/hardware/lagring/harddiskssd/ssd-m2/corsair-force-series-mp600-1tb-m2-ssd#')
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-GeForce-RTX-2080-Ti-ROG-STRIX-OC-11GB-GDDR6-RAM-Grafikkort/2679518')
     Proshop('ssd', 'https://www.proshop.dk/SSD/Corsair-Force-MP600-NVMe-Gen4-M2-1TB/2779161')
@@ -352,7 +356,6 @@ if __name__ == '__main__':
     Proshop('gpu', 'https://www.proshop.dk/Grafikkort/ASUS-GeForce-RTX-3080-ROG-STRIX-OC-10GB-GDDR6X-RAM-Grafikkort/2876859')
     Komplett('baerbar', 'https://www.komplett.dk/product/1161770/gaming/gaming-pc/baerbar/msi-gl65-leopard-156-fhd-144-hz#')
     Komplett('baerbar', 'https://www.komplett.dk/product/1159920/gaming/gaming-pc/baerbar/asus-rog-strix-g-g712lw-173-fhd-144-hz#')
-    Komplett('baerbar', 'https://www.komplett.dk/product/1155443/gaming/gaming-pc/baerbar/asus-rog-strix-g512lw-156-fhd-144-hz')
     Komplett('baerbar', 'https://www.komplett.dk/product/1155433/gaming/gaming-pc/baerbar/asus-rog-zephyrus-g15-ga502iv-156-fhd-240-hz')
     Komplett('baerbar', 'https://www.komplett.dk/product/1157681/gaming/gaming-pc/baerbar/acer-nitro-5-an515-55-156-fhd-144-hz')
     Komplett('baerbar', 'https://www.komplett.dk/product/1159645/gaming/gaming-pc/baerbar/lenovo-legion-5i-156-fhd-120-hz')

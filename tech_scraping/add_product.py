@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraping import change_name, change_æøå
+from scraping import change_name, change_æøå, domains
 import argparse
 
 
@@ -268,99 +268,18 @@ def check_arguments():
                                     }
                                 })
     else:
-        json_object = {
-                            f"{domains['komplett']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['proshop']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['computersalg']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['elgiganten']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['avxperten']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['av-cables']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['amazon']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['ebay']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['power']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['expert']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['mm-vision']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['coolshop']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            },
-                            f"{domains['sharkgaming']}": {
-                                "info": {
-                                    "part_num": "",
-                                    "url": ""
-                                },
-                                "dates": {}
-                            }
-                        }
+        # If none of the optional arguments is giving (true), then add all of the domains to the json_object
+        for domain in domains:
+            json_object.update({
+                f"{domains[domain]}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
+
     return json_object
 
 
@@ -432,23 +351,6 @@ def main(kategori, link):
 
     save_json(kategori, produkt_navn)
     add_to_scraper(kategori, link, URL_domain)
-
-
-domains = {
-    "komplett": "www.komplett.dk",
-    "proshop": "www.proshop.dk",
-    "computersalg": "www.computersalg.dk",
-    "elgiganten": "www.elgiganten.dk",
-    "avxperten": "www.avxperten.dk",
-    "av-cables": "www.av-cables.dk",
-    "amazon": "www.amazon.com",
-    "ebay": "www.ebay.com",
-    "power": "www.power.dk",
-    "expert": "www.expert.dk",
-    "mm-vision": "www.mm-vision.dk",
-    "coolshop": "www.coolshop.dk",
-    "sharkgaming": "sharkgaming.dk"
-}
 
 
 if __name__ == '__main__':
