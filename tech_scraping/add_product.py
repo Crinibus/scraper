@@ -139,134 +139,134 @@ def check_arguments():
             or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
         if args.komplett:
             json_object.update({
-                                    f"{domains['komplett']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['komplett']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.proshop:
             json_object.update({
-                                    f"{domains['proshop']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['proshop']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.computersalg:
             json_object.update({
-                                    f"{domains['computersalg']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['computersalg']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.elgiganten:
             json_object.update({
-                                    f"{domains['elgiganten']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['elgiganten']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.avxperten:
             json_object.update({
-                                    f"{domains['avxperten']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['avxperten']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.avcables:
             json_object.update({
-                                    f"{domains['av-cables']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['av-cables']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.amazon:
             json_object.update({
-                                    f"{domains['amazon']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['amazon']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.ebay:
             json_object.update({
-                                    f"{domains['ebay']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['ebay']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.power:
             json_object.update({
-                                    f"{domains['power']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['power']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.expert:
             json_object.update({
-                                    f"{domains['expert']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['expert']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.mmvision:
             json_object.update({
-                                    f"{domains['mm-vision']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['mm-vision']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.coolshop:
             json_object.update({
-                                    f"{domains['coolshop']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['coolshop']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
         if args.sharkgaming:
             json_object.update({
-                                    f"{domains['sharkgaming']}": {
-                                        "info": {
-                                            "part_num": "",
-                                            "url": ""
-                                        },
-                                        "dates": {}
-                                    }
-                                })
+                f"{domains['sharkgaming']}": {
+                    "info": {
+                        "part_num": "",
+                        "url": ""
+                    },
+                    "dates": {}
+                }
+            })
     else:
         # If none of the optional arguments is giving (true), then add all of the domains to the json_object
         for domain in domains:
