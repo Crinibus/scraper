@@ -327,13 +327,13 @@ def find_domain(domain):
         return 'Sharkgaming'
 
 
-def add_to_scraper(kategori, link, url_domain):
+def add_to_scraper(category, link, url_domain):
     """Add line to scraping.py, so scraping.py can scrape the new product."""
     domain = find_domain(url_domain)
 
     with open('scraping.py', 'a+') as python_file:
-        python_file.write(f'    {domain}(\'{kategori}\', \'{link}\')\n')
-        print(f'{kategori}\n{link}')
+        python_file.write(f'    {domain}(\'{category}\', \'{link}\')\n')
+        print(f'{category}\n{link}')
 
 
 def main(category, link):
