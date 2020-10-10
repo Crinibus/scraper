@@ -283,16 +283,16 @@ def check_arguments():
     return json_object
 
 
-def save_json(kategori, produkt_navn):
+def save_json(category, product_name):
     """Save (category and) product-name in JSON-file."""
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
 
     with open('records.json', 'w') as json_file:
-        if kategori not in data.keys():
-            data[kategori] = {}
+        if category not in data.keys():
+            data[category] = {}
 
-        data[kategori][produkt_navn] = check_arguments()
+        data[category][product_name] = check_arguments()
 
         json.dump(data, json_file, indent=2)
 
@@ -336,21 +336,21 @@ def add_to_scraper(kategori, link, url_domain):
         print(f'{kategori}\n{link}')
 
 
-def main(kategori, link):
+def main(category, link):
     URL_domain = link.split('/')[2]
 
-    produkt_navn = get_product_name(link)
+    product_name = get_product_name(link)
 
-    if not produkt_navn:
+    if not product_name:
         print(f'Sorry, but I can\'t scrape from this domain: {URL_domain}')
         return
 
     # Change æ, ø and/or å
-    kategori = change_æøå(kategori)
-    produkt_navn = change_æøå(produkt_navn)
+    category = change_æøå(category)
+    product_name = change_æøå(product_name)
 
-    save_json(kategori, produkt_navn)
-    add_to_scraper(kategori, link, URL_domain)
+    save_json(category, product_name)
+    add_to_scraper(category, link, URL_domain)
 
 
 if __name__ == '__main__':
