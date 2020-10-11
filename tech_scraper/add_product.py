@@ -298,7 +298,7 @@ def save_json(category, product_name):
 
 
 def find_domain(domain):
-    """Return the domain of the url without "www." and ".dk"."""
+    """Return the domain name of the url. Used to determine which class to call in scrape_link.py"""
     if domain == domains['komplett']:
         return 'Komplett'
     elif domain == domains['proshop']:
