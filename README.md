@@ -18,7 +18,20 @@ First make sure you have the modules, run this in the terminal:
 <br/>
 
 # Tech scraper <a name="tech-scraper"></a>
-The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk, Av-Cables.dk, Amazon.com, eBay.com, Power.dk, Expert.dk, MM-Vision.dk, Coolshop.dk and Sharkgaming.dk
+The tech scraper can scrape prices on products from:
+- [Komplett.dk](https://www.komplett.dk/)
+- [Proshop.dk](https://www.proshop.dk/)
+- [Computersalg.dk](https://www.computersalg.dk/)
+- [Elgiganten.dk](https://www.elgiganten.dk/)
+- [AvXperten.dk](https://www.avxperten.dk/)
+- [Av-Cables.dk](https://www.av-cables.dk/)
+- [Amazon.com](https://www.amazon.com/)
+- [eBay.com](https://www.ebay.com/)
+- [Power.dk](https://www.power.dk/)
+- [Expert.dk](https://www.expert.dk/)
+- [MM-Vision.dk](https://www.mm-vision.dk/)
+- [Coolshop.dk](https://www.coolshop.dk/)
+- [Sharkgaming.dk](https://www.sharkgaming.dk/)
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
