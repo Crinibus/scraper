@@ -39,7 +39,7 @@ This adds the category (if new) and the product to the records.json file, and ad
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
 **OBS**: The url must have the "https://www." part.<br/>
-**OBS**: When using Amazon links, delete the part of the url after the last forward slash (/).<br/>
+**OBS**: When using Amazon links, delete everything after and including this "ref=sr".<br/>
 For example the link: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/ref=sr_1_2?dchild=1&qid=1601488833&s=computers-intl-ship&sr=1-2<br/>
 Should be: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/<br/>
 **OBS**: When using eBay links, delete everything after and including this "?_trkparms="<br/>
