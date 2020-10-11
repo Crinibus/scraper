@@ -286,7 +286,7 @@ class AvCables(Scraper):
 class Amazon(Scraper):
     def get_info(self):
         self.name = self.html_soup.find('span', id='productTitle').text.strip().lower()
-        self.price = self.html_soup.find('span', id='priceblock_ourprice').text.replace('$', '')
+        self.price = self.html_soup.find('span', id='priceblock_ourprice').text.replace('$', '').split('.')[0].replace(',', '')
 
 
 class eBay(Scraper):
