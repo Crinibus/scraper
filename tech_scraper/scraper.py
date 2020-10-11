@@ -347,4 +347,4 @@ domains = {
 
 
 if __name__ == '__main__':
-    temp = 'temporary'
+    print('If you want to scrape your products, then run "scrape_links.py" instead of this file')
