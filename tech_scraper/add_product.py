@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraping import change_name, change_æøå, domains
+from scraper import change_name, change_æøå, domains
 import argparse
 
 
