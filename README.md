@@ -18,7 +18,20 @@ First make sure you have the modules, run this in the terminal:
 <br/>
 
 # Tech scraper <a name="tech-scraper"></a>
-The tech scraper can scrape prices on products from Komplett.dk, Proshop.dk, Computersalg.dk, Elgiganten.dk, AvXperten.dk, Av-Cables.dk, Amazon.com, eBay.com, Power.dk, Expert.dk, MM-Vision.dk, Coolshop.dk and Sharkgaming.dk
+The tech scraper can scrape prices on products from:
+- [Komplett.dk](https://www.komplett.dk/)
+- [Proshop.dk](https://www.proshop.dk/)
+- [Computersalg.dk](https://www.computersalg.dk/)
+- [Elgiganten.dk](https://www.elgiganten.dk/)
+- [AvXperten.dk](https://www.avxperten.dk/)
+- [Av-Cables.dk](https://www.av-cables.dk/)
+- [Amazon.com](https://www.amazon.com/)
+- [eBay.com](https://www.ebay.com/)
+- [Power.dk](https://www.power.dk/)
+- [Expert.dk](https://www.expert.dk/)
+- [MM-Vision.dk](https://www.mm-vision.dk/)
+- [Coolshop.dk](https://www.coolshop.dk/)
+- [Sharkgaming.dk](https://www.sharkgaming.dk/)
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -46,7 +59,7 @@ This adds the category (if new) and the product to the records.json file, and ad
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
 **OBS**: The url must have the "https://www." part.<br/>
-**OBS**: When using Amazon links, delete the part of the url after the last forward slash (/).<br/>
+**OBS**: When using Amazon links, delete everything after and including this "ref=sr".<br/>
 For example the link: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/ref=sr_1_2?dchild=1&qid=1601488833&s=computers-intl-ship&sr=1-2<br/>
 Should be: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/<br/>
 **OBS**: When using eBay links, delete everything after and including this "?_trkparms="<br/>
