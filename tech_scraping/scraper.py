@@ -226,17 +226,16 @@ def change_name(name):
 
 def change_æøå(name):
     """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
-    new_name = ''
-    for letter in name:
-        if letter in 'æøå':
-            if letter == 'æ':
-                letter = 'ae'
-            elif letter == 'ø':
-                letter = 'oe'
-            elif letter == 'å':
-                letter = 'aa'
-        new_name += letter
-    return new_name
+    replace_letters = {
+        "æ": "ae",
+        "ø": "oe",
+        "å": "aa"
+    }
+
+    for letter in replace_letters:
+        name = name.replace(letter, replace_letters[letter])
+
+    return name
 
 
 class Komplett(Scraper):
