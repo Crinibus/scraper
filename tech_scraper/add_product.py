@@ -331,8 +331,8 @@ def add_to_scraper(category, link, url_domain):
     """Add line to scraping.py, so scraping.py can scrape the new product."""
     domain = find_domain(url_domain)
 
-    with open('scraping.py', 'a+') as python_file:
-        python_file.write(f'    {domain}(\'{category}\', \'{link}\')\n')
+    with open('scrape_links.py', 'a+') as python_file:
+        python_file.write(f'scraper.{domain}(\'{category}\', \'{link}\')\n')
         print(f'{category}\n{link}')
 
 
