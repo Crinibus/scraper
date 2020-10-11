@@ -25,7 +25,7 @@ Then just add products like described [here](#add-products).
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
 
-    python3 scraper.py
+    python3 scrape_links.py
 
 ## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
