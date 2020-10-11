@@ -36,7 +36,7 @@ The tech scraper can scrape prices on products from:
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
 
-    python3 scraper.py
+    python3 scrape_links.py
 
 ## Start from scratch <a name="start-scratch"></a>
 If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
