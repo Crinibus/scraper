@@ -132,13 +132,13 @@ def get_product_name(link):
 def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
-    json_object = json.loads('{}')
+    data = {}
 
     # Check for if any of the optional arguments is true
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay \
-            or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
+    if any([args.komplett, args.proshop, args.computersalg, args.elgiganten, args.avxperten, args.avcables,
+            args.amazon, args.ebay, args.power, args.expert, args.mmvision, args.coolshop, args.sharkgaming]):
         if args.komplett:
-            json_object.update({
+            data.update({
                 f"{domains['komplett']}": {
                     "info": {
                         "part_num": "",
@@ -148,7 +148,7 @@ def check_arguments():
                 }
             })
         if args.proshop:
-            json_object.update({
+            data.update({
                 f"{domains['proshop']}": {
                     "info": {
                         "part_num": "",
@@ -158,7 +158,7 @@ def check_arguments():
                 }
             })
         if args.computersalg:
-            json_object.update({
+            data.update({
                 f"{domains['computersalg']}": {
                     "info": {
                         "part_num": "",
@@ -168,7 +168,7 @@ def check_arguments():
                 }
             })
         if args.elgiganten:
-            json_object.update({
+            data.update({
                 f"{domains['elgiganten']}": {
                     "info": {
                         "part_num": "",
@@ -178,7 +178,7 @@ def check_arguments():
                 }
             })
         if args.avxperten:
-            json_object.update({
+            data.update({
                 f"{domains['avxperten']}": {
                     "info": {
                         "part_num": "",
@@ -188,7 +188,7 @@ def check_arguments():
                 }
             })
         if args.avcables:
-            json_object.update({
+            data.update({
                 f"{domains['av-cables']}": {
                     "info": {
                         "part_num": "",
@@ -198,7 +198,7 @@ def check_arguments():
                 }
             })
         if args.amazon:
-            json_object.update({
+            data.update({
                 f"{domains['amazon']}": {
                     "info": {
                         "part_num": "",
@@ -208,7 +208,7 @@ def check_arguments():
                 }
             })
         if args.ebay:
-            json_object.update({
+            data.update({
                 f"{domains['ebay']}": {
                     "info": {
                         "part_num": "",
@@ -218,7 +218,7 @@ def check_arguments():
                 }
             })
         if args.power:
-            json_object.update({
+            data.update({
                 f"{domains['power']}": {
                     "info": {
                         "part_num": "",
@@ -228,7 +228,7 @@ def check_arguments():
                 }
             })
         if args.expert:
-            json_object.update({
+            data.update({
                 f"{domains['expert']}": {
                     "info": {
                         "part_num": "",
@@ -238,7 +238,7 @@ def check_arguments():
                 }
             })
         if args.mmvision:
-            json_object.update({
+            data.update({
                 f"{domains['mm-vision']}": {
                     "info": {
                         "part_num": "",
@@ -248,7 +248,7 @@ def check_arguments():
                 }
             })
         if args.coolshop:
-            json_object.update({
+            data.update({
                 f"{domains['coolshop']}": {
                     "info": {
                         "part_num": "",
@@ -258,7 +258,7 @@ def check_arguments():
                 }
             })
         if args.sharkgaming:
-            json_object.update({
+            data.update({
                 f"{domains['sharkgaming']}": {
                     "info": {
                         "part_num": "",
@@ -269,8 +269,8 @@ def check_arguments():
             })
     else:
         # If none of the optional arguments is giving (true), then add all of the domains to the json_object
-        for domain in domains:
-            json_object.update({
+        for domain in domains.keys():
+            data.update({
                 f"{domains[domain]}": {
                     "info": {
                         "part_num": "",
@@ -280,7 +280,7 @@ def check_arguments():
                 }
             })
 
-    return json_object
+    return data
 
 
 def save_json(category, product_name):
