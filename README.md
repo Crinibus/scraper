@@ -1,4 +1,5 @@
 # Table of contents
+- [Contributing](#contributing)
 - [First setup](#first-setup)
 - [Tech scraper](#tech-scraper)
     - [Scrape products](#scrape-products)
@@ -9,6 +10,9 @@
     - [Scrape discounts](#scrape-discounts)
 
 <br/>
+
+## Contributing <a name="contributing"></a>
+Feel free to fork the project and create a pull request with new features or refactoring of the code.
 
 ## First setup <a name="first-setup"></a>
 First make sure you have the modules, run this in the terminal:
