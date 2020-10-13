@@ -132,155 +132,18 @@ def get_product_name(link):
 def check_arguments():
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
-    json_object = json.loads('{}')
+    data = {}
 
     # Check for if any of the optional arguments is true
-    if args.komplett or args.proshop or args.computersalg or args.elgiganten or args.avxperten or args.avcables or args.amazon or args.ebay \
-            or args.power or args.expert or args.mmvision or args.coolshop or args.sharkgaming:
-        if args.komplett:
-            json_object.update({
-                f"{domains['komplett']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.proshop:
-            json_object.update({
-                f"{domains['proshop']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.computersalg:
-            json_object.update({
-                f"{domains['computersalg']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.elgiganten:
-            json_object.update({
-                f"{domains['elgiganten']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.avxperten:
-            json_object.update({
-                f"{domains['avxperten']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.avcables:
-            json_object.update({
-                f"{domains['av-cables']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.amazon:
-            json_object.update({
-                f"{domains['amazon']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.ebay:
-            json_object.update({
-                f"{domains['ebay']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.power:
-            json_object.update({
-                f"{domains['power']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.expert:
-            json_object.update({
-                f"{domains['expert']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.mmvision:
-            json_object.update({
-                f"{domains['mm-vision']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.coolshop:
-            json_object.update({
-                f"{domains['coolshop']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.sharkgaming:
-            json_object.update({
-                f"{domains['sharkgaming']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
+    if any([args.komplett, args.proshop, args.computersalg, args.elgiganten, args.avxperten, args.avcables,
+            args.amazon, args.ebay, args.power, args.expert, args.mmvision, args.coolshop, args.sharkgaming]):
+        # Add only the chosen domain arguments to json-file
+        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains.keys() if args_domains[domain]]
     else:
         # If none of the optional arguments is giving (true), then add all of the domains to the json_object
-        for domain in domains:
-            json_object.update({
-                f"{domains[domain]}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
+        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains.keys()]
 
-    return json_object
+    return data
 
 
 def save_json(category, product_name):
@@ -298,7 +161,7 @@ def save_json(category, product_name):
 
 
 def find_domain(domain):
-    """Return the domain of the url without "www." and ".dk"."""
+    """Return the domain name of the url. Used to determine which class to call in scrape_link.py"""
     if domain == domains['komplett']:
         return 'Komplett'
     elif domain == domains['proshop']:
@@ -355,4 +218,21 @@ def main(category, link):
 
 if __name__ == '__main__':
     args = argparse_setup()
+
+    args_domains = {
+        "komplett": args.komplett,
+        "proshop": args.proshop,
+        "computersalg": args.computersalg,
+        "elgiganten": args.elgiganten,
+        "avxperten": args.avxperten,
+        "av-cables": args.avcables,
+        "amazon": args.amazon,
+        "ebay": args.ebay,
+        "power": args.power,
+        "expert": args.expert,
+        "mm-vision": args.mmvision,
+        "coolshop": args.coolshop,
+        "sharkgaming": args.sharkgaming
+    }
+
     main(args.category, args.url)
