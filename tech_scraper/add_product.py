@@ -138,10 +138,10 @@ def check_arguments():
     if any([args.komplett, args.proshop, args.computersalg, args.elgiganten, args.avxperten, args.avcables,
             args.amazon, args.ebay, args.power, args.expert, args.mmvision, args.coolshop, args.sharkgaming]):
         # Add only the chosen domain arguments to json-file
-        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains if args_domains[domain]]
+        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains.keys() if args_domains[domain]]
     else:
         # If none of the optional arguments is giving (true), then add all of the domains to the json_object
-        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains]
+        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains.keys()]
 
     return data
 
