@@ -215,11 +215,11 @@ def change_name(name):
     Change the name of the product, so if a similiar product is also
     being scraped, the similar products goes under the same name.
     """
-    if all(['asus', 'rtx', '2080', 'ti', 'rog', 'strix']) in name:
+    if all(elem in name for elem in ['asus', 'rtx', '2080', 'ti', 'rog', 'strix']):
         name = 'asus geforce rtx 2080 ti rog strix oc'
-    elif all(['asus', 'rtx', '3080', 'rog', 'strix', 'oc']) in name:
+    elif all(elem in name for elem in ['asus', 'rtx', '3080', 'rog', 'strix', 'oc']):
         name = 'asus geforce rtx 3080 rog strix oc'
-    elif all(['corsair', 'mp600', '1tb', 'm.2']) in name:
+    elif all(elem in name for elem in ['corsair', 'mp600', '1tb', 'm.2']):
         name = 'corsair force mp600 1tb m.2'
     return name
 
