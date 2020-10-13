@@ -137,148 +137,11 @@ def check_arguments():
     # Check for if any of the optional arguments is true
     if any([args.komplett, args.proshop, args.computersalg, args.elgiganten, args.avxperten, args.avcables,
             args.amazon, args.ebay, args.power, args.expert, args.mmvision, args.coolshop, args.sharkgaming]):
-        if args.komplett:
-            data.update({
-                f"{domains['komplett']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.proshop:
-            data.update({
-                f"{domains['proshop']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.computersalg:
-            data.update({
-                f"{domains['computersalg']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.elgiganten:
-            data.update({
-                f"{domains['elgiganten']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.avxperten:
-            data.update({
-                f"{domains['avxperten']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.avcables:
-            data.update({
-                f"{domains['av-cables']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.amazon:
-            data.update({
-                f"{domains['amazon']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.ebay:
-            data.update({
-                f"{domains['ebay']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.power:
-            data.update({
-                f"{domains['power']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.expert:
-            data.update({
-                f"{domains['expert']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.mmvision:
-            data.update({
-                f"{domains['mm-vision']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.coolshop:
-            data.update({
-                f"{domains['coolshop']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
-        if args.sharkgaming:
-            data.update({
-                f"{domains['sharkgaming']}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
+        # Add only the chosen domain arguments to json-file
+        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains if args_domains[domain]]
     else:
         # If none of the optional arguments is giving (true), then add all of the domains to the json_object
-        for domain in domains.keys():
-            data.update({
-                f"{domains[domain]}": {
-                    "info": {
-                        "part_num": "",
-                        "url": ""
-                    },
-                    "dates": {}
-                }
-            })
+        [data.update({f"{domains[domain]}": {"info": {"part_num": "", "url": ""}, "dates": {}}}) for domain in domains]
 
     return data
 
@@ -355,4 +218,21 @@ def main(category, link):
 
 if __name__ == '__main__':
     args = argparse_setup()
+
+    args_domains = {
+        "komplett": args.komplett,
+        "proshop": args.proshop,
+        "computersalg": args.computersalg,
+        "elgiganten": args.elgiganten,
+        "avxperten": args.avxperten,
+        "av-cables": args.avcables,
+        "amazon": args.amazon,
+        "ebay": args.ebay,
+        "power": args.power,
+        "expert": args.expert,
+        "mm-vision": args.mmvision,
+        "coolshop": args.coolshop,
+        "sharkgaming": args.sharkgaming
+    }
+
     main(args.category, args.url)
