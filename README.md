@@ -14,6 +14,8 @@
 ## Contributing <a name="contributing"></a>
 Feel free to fork the project and create a pull request with new features or refactoring of the code. Also feel free to make a issue with problems or suggestions to a new feature.
 
+<br/>
+
 ## First setup <a name="first-setup"></a>
 First make sure you have the modules, run this in the terminal:
 
