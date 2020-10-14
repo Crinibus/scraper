@@ -42,12 +42,18 @@ class Scraper:
         try:
             self.get_response()
         except Exception as err:
-            self.logger.error(f'Failed in method "{self.__class__.__name__}.get_response()": {err}', exc_info=True)
+            self.logger.error(
+                f'Failed in method "{self.__class__.__name__}.get_response()": {err}',
+                exc_info=True
+            )
 
         try:
             self.get_info()
         except Exception as err:
-            self.logger.error(f'Failed in method "{self.__class__.__name__}.get_info()": {err}', exc_info=True)
+            self.logger.error(
+                f'Failed in method "{self.__class__.__name__}.get_info()": {err}',
+                exc_info=True
+            )
 
         self.name = change_æøå(change_name(self.name))
         self.date = str(datetime.today().strftime('%Y-%m-%d'))
@@ -58,7 +64,10 @@ class Scraper:
         try:
             self.save_record()
         except Exception as err:
-            self.logger.error(f'Failed in method "{self.__class__.__name__}.save_record()": {err}', exc_info=True)
+            self.logger.error(
+                f'Failed in method "{self.__class__.__name__}.save_record()": {err}',
+                exc_info=True
+            )
 
     def get_info(self):  # gets overwritten
         """Get name and price of product."""
@@ -225,7 +234,10 @@ def change_name(name):
 
 
 def change_æøå(name):
-    """Change the letters æ, ø and å to international letters to avoid unicode and return the new name."""
+    """
+    Change the letters æ, ø and å to international letters to avoid unicode and
+    return the new name.
+    """
     replace_letters = {
         "æ": "ae",
         "ø": "oe",
