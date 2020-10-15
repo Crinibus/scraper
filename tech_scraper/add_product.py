@@ -162,32 +162,24 @@ def save_json(category, product_name):
 
 def find_domain(domain):
     """Return the domain name of the url. Used to determine which class to call in scrape_link.py"""
-    if domain == domains['komplett']:
-        return 'Komplett'
-    elif domain == domains['proshop']:
-        return 'Proshop'
-    elif domain == domains['computersalg']:
-        return 'Computersalg'
-    elif domain == domains['elgiganten']:
-        return 'Elgiganten'
-    elif domain == domains['avxperten']:
-        return 'AvXperten'
-    elif domain == domains['av-cables']:
-        return 'AvCables'
-    elif domain == domains['amazon']:
-        return 'Amazon'
-    elif domain == domains['ebay']:
-        return 'eBay'
-    elif domain == domains['power']:
-        return 'Power'
-    elif domain == domains['expert']:
-        return 'Expert'
-    elif domain == domains['mm-vision']:
-        return 'MMVision'
-    elif domain == domains['coolshop']:
-        return 'Coolshop'
-    elif domain == domains['sharkgaming']:
-        return 'Sharkgaming'
+
+    class_domains = {
+        "www.komplett.dk": "Komplett",
+        "www.proshop.dk": "Proshop",
+        "www.computersalg.dk": "Computersalg",
+        "www.elgiganten.dk": "Elgiganten",
+        "www.avxperten.dk": "AvXperten",
+        "www.av-cables.dk": "AvCables",
+        "www.amazon.com": "Amazon",
+        "www.ebay.com": "eBay",
+        "www.power.dk": "Power",
+        "www.expert.dk": "Expert",
+        "www.mm-vision.dk": "MMVision",
+        "www.coolshop.dk": "Coolshop",
+        "sharkgaming.dk": "Sharkgaming",
+    }
+
+    return class_domains[domain]
 
 
 def add_to_scraper(category, link, url_domain):
