@@ -7,7 +7,7 @@ import json
 import logging
 
 
-def log_setup():
+def log_setup() -> logging:
     """Setup and return logger."""
     # Gets or creates a logger
     logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ def log_setup():
 
 
 class Scraper:
-    def __init__(self, category, URL):
+    def __init__(self, category: str, URL: str):
         self.logger = log_setup()
         self.logger.debug(f'Initiating class "{self.__class__.__name__}"')
         self.cat = category
@@ -222,7 +222,7 @@ class Scraper:
 class Format:
     """Class with static methods for formatting"""
     @staticmethod
-    def change_name(name):
+    def change_name(name: str) -> str:
         """
         Change the name of the product, so if a similiar product is also
         being scraped, the similar products goes under the same name.
@@ -236,7 +236,7 @@ class Format:
         return name
 
     @staticmethod
-    def change_æøå(name):
+    def change_æøå(name: str) -> str:
         """
         Change the letters æ, ø and å to international letters to avoid unicode and
         return the new name.

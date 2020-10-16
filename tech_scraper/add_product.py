@@ -87,7 +87,7 @@ def argparse_setup():
     return parser.parse_args()
 
 
-def get_product_name(link):
+def get_product_name(link: str) -> str:
     """Get and return name of the product from the link."""
     URL_domain = link.split('/')[2]
 
@@ -129,7 +129,7 @@ def get_product_name(link):
         return None
 
 
-def check_arguments():
+def check_arguments() -> dict:
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     data = {}
@@ -146,7 +146,7 @@ def check_arguments():
     return data
 
 
-def save_json(category, product_name):
+def save_json(category: str, product_name: str):
     """Save (category and) product-name in JSON-file."""
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
@@ -160,7 +160,7 @@ def save_json(category, product_name):
         json.dump(data, json_file, indent=2)
 
 
-def find_domain(domain):
+def find_domain(domain: str) -> str:
     """Return the domain name of the url. Used to determine which class to call in scrape_link.py"""
 
     class_domains = {
@@ -182,7 +182,7 @@ def find_domain(domain):
     return class_domains[domain]
 
 
-def add_to_scraper(category, link, url_domain):
+def add_to_scraper(category: str, link: str, url_domain: str):
     """Add line to scraping.py, so scraping.py can scrape the new product."""
     domain = find_domain(url_domain)
 
@@ -191,7 +191,7 @@ def add_to_scraper(category, link, url_domain):
         print(f'{category}\n{link}')
 
 
-def main(category, link):
+def main(category: str, link: str):
     URL_domain = link.split('/')[2]
 
     product_name = get_product_name(link)
