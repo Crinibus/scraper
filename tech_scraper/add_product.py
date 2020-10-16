@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraper import change_name, change_æøå, domains
+from scraper import Format, domains
 import argparse
 
 
@@ -97,34 +97,34 @@ def get_product_name(link):
     html_soup = BeautifulSoup(response.text, 'html.parser')
 
     if URL_domain == domains['komplett']:
-        return change_name(html_soup.find('div', class_='product-main-info__info').h1.span.text.lower())
+        return Format.change_name(html_soup.find('div', class_='product-main-info__info').h1.span.text.lower())
     elif URL_domain == domains['proshop']:
-        return change_name(html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower())
+        return Format.change_name(html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower())
     elif URL_domain == domains['computersalg']:
-        return change_name(html_soup.find('h1', itemprop='name').text.lower())
+        return Format.change_name(html_soup.find('h1', itemprop='name').text.lower())
     elif URL_domain == domains['elgiganten']:
-        return change_name(html_soup.find('h1', class_='product-title').text.lower())
+        return Format.change_name(html_soup.find('h1', class_='product-title').text.lower())
     elif URL_domain == domains['avxperten']:
-        return change_name(html_soup.find('div', class_='content-head').text.strip().lower())
+        return Format.change_name(html_soup.find('div', class_='content-head').text.strip().lower())
     elif URL_domain == domains['av-cables']:
-        return change_name(html_soup.find('h1', class_='title').text.lower())
+        return Format.change_name(html_soup.find('h1', class_='title').text.lower())
     elif URL_domain == domains['amazon']:
-        return change_name(html_soup.find('span', id='productTitle').text.strip().lower())
+        return Format.change_name(html_soup.find('span', id='productTitle').text.strip().lower())
     elif URL_domain == domains['ebay']:
         if link.split('/')[3] == 'itm':
-            return change_name(link.split('/')[4].replace('-', ' ').lower())
+            return Format.change_name(link.split('/')[4].replace('-', ' ').lower())
         else:
-            return change_name(html_soup.find('h1', class_='product-title').text.lower())
+            return Format.change_name(html_soup.find('h1', class_='product-title').text.lower())
     elif URL_domain == domains['power']:
-        return change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
+        return Format.change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
     elif URL_domain == domains['expert']:
-        return change_name(html_soup.find('meta', property='og:title')['content'].lower())
+        return Format.change_name(html_soup.find('meta', property='og:title')['content'].lower())
     elif URL_domain == domains['mm-vision']:
-        return change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
+        return Format.change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
     elif URL_domain == domains['coolshop']:
-        return change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
+        return Format.change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
     elif URL_domain == domains['sharkgaming']:
-        return change_name(html_soup.find('div', class_='product-name').text.strip().lower())
+        return Format.change_name(html_soup.find('div', class_='product-name').text.strip().lower())
     else:
         return None
 
@@ -201,8 +201,8 @@ def main(category, link):
         return
 
     # Change æ, ø and/or å
-    category = change_æøå(category)
-    product_name = change_æøå(product_name)
+    category = Format.change_æøå(category)
+    product_name = Format.change_æøå(product_name)
 
     save_json(category, product_name)
     add_to_scraper(category, link, URL_domain)
