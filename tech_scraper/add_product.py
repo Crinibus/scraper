@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from scraper import change_name, change_æøå, domains
+from scraper import Format, domains
 import argparse
 
 
@@ -11,83 +11,113 @@ def argparse_setup():
     """Setup and return argparse."""
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('category',
-                        help='the category the product is going to be in',
-                        type=str)
+    parser.add_argument(
+        'category',
+        help='the category the product is going to be in',
+        type=str
+    )
 
-    parser.add_argument('url',
-                        help='the url to the product',
-                        type=str)
+    parser.add_argument(
+        'url',
+        help='the url to the product',
+        type=str
+    )
 
-    parser.add_argument('--komplett',
-                        help='add only komplett-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--komplett',
+        help='add only komplett-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--proshop',
-                        help='add only proshop-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--proshop',
+        help='add only proshop-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--computersalg',
-                        help='add only computersalg-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--computersalg',
+        help='add only computersalg-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--elgiganten',
-                        help='add only elgiganten-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--elgiganten',
+        help='add only elgiganten-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--avxperten',
-                        help='add only avxperten-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--avxperten',
+        help='add only avxperten-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--avcables',
-                        help='add only avcables-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--avcables',
+        help='add only avcables-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--amazon',
-                        help='add only amazon-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--amazon',
+        help='add only amazon-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--ebay',
-                        help='add only ebay-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--ebay',
+        help='add only ebay-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--power',
-                        help='add only power-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--power',
+        help='add only power-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--expert',
-                        help='add only expert-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--expert',
+        help='add only expert-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--mmvision',
-                        help='add only mm-vision-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--mmvision',
+        help='add only mm-vision-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--coolshop',
-                        help='add only coolshop-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--coolshop',
+        help='add only coolshop-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
-    parser.add_argument('--sharkgaming',
-                        help='add only sharkgaming-domain under the product-name,'
-                             'if this is the only optional flag',
-                        action="store_true")
+    parser.add_argument(
+        '--sharkgaming',
+        help='add only sharkgaming-domain under the product-name,'
+             'if this is the only optional flag',
+        action="store_true"
+    )
 
     return parser.parse_args()
 
 
-def get_product_name(link):
+def get_product_name(link: str) -> str:
     """Get and return name of the product from the link."""
     URL_domain = link.split('/')[2]
 
@@ -97,39 +127,39 @@ def get_product_name(link):
     html_soup = BeautifulSoup(response.text, 'html.parser')
 
     if URL_domain == domains['komplett']:
-        return change_name(html_soup.find('div', class_='product-main-info__info').h1.span.text.lower())
+        return Format.change_name(html_soup.find('div', class_='product-main-info__info').h1.span.text.lower())
     elif URL_domain == domains['proshop']:
-        return change_name(html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower())
+        return Format.change_name(html_soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower())
     elif URL_domain == domains['computersalg']:
-        return change_name(html_soup.find('h1', itemprop='name').text.lower())
+        return Format.change_name(html_soup.find('h1', itemprop='name').text.lower())
     elif URL_domain == domains['elgiganten']:
-        return change_name(html_soup.find('h1', class_='product-title').text.lower())
+        return Format.change_name(html_soup.find('h1', class_='product-title').text.lower())
     elif URL_domain == domains['avxperten']:
-        return change_name(html_soup.find('div', class_='content-head').text.strip().lower())
+        return Format.change_name(html_soup.find('div', class_='content-head').text.strip().lower())
     elif URL_domain == domains['av-cables']:
-        return change_name(html_soup.find('h1', class_='title').text.lower())
+        return Format.change_name(html_soup.find('h1', class_='title').text.lower())
     elif URL_domain == domains['amazon']:
-        return change_name(html_soup.find('span', id='productTitle').text.strip().lower())
+        return Format.change_name(html_soup.find('span', id='productTitle').text.strip().lower())
     elif URL_domain == domains['ebay']:
         if link.split('/')[3] == 'itm':
-            return change_name(link.split('/')[4].replace('-', ' ').lower())
+            return Format.change_name(link.split('/')[4].replace('-', ' ').lower())
         else:
-            return change_name(html_soup.find('h1', class_='product-title').text.lower())
+            return Format.change_name(html_soup.find('h1', class_='product-title').text.lower())
     elif URL_domain == domains['power']:
-        return change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
+        return Format.change_name(html_soup.find('title').text.replace(' - Power.dk', '').lower())
     elif URL_domain == domains['expert']:
-        return change_name(html_soup.find('meta', property='og:title')['content'].lower())
+        return Format.change_name(html_soup.find('meta', property='og:title')['content'].lower())
     elif URL_domain == domains['mm-vision']:
-        return change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
+        return Format.change_name(html_soup.find('h1', itemprop='name').text.strip().lower())
     elif URL_domain == domains['coolshop']:
-        return change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
+        return Format.change_name(html_soup.find('div', class_='thing-header').text.strip().lower())
     elif URL_domain == domains['sharkgaming']:
-        return change_name(html_soup.find('div', class_='product-name').text.strip().lower())
+        return Format.change_name(html_soup.find('div', class_='product-name').text.strip().lower())
     else:
         return None
 
 
-def check_arguments():
+def check_arguments() -> dict:
     """Check if any of the optional domain arguments is giving to the script
        and returns those that are as one json-object."""
     data = {}
@@ -146,7 +176,7 @@ def check_arguments():
     return data
 
 
-def save_json(category, product_name):
+def save_json(category: str, product_name: str):
     """Save (category and) product-name in JSON-file."""
     with open('records.json', 'r') as json_file:
         data = json.load(json_file)
@@ -160,7 +190,7 @@ def save_json(category, product_name):
         json.dump(data, json_file, indent=2)
 
 
-def find_domain(domain):
+def find_domain(domain: str) -> str:
     """Return the domain name of the url. Used to determine which class to call in scrape_link.py"""
 
     class_domains = {
@@ -182,7 +212,7 @@ def find_domain(domain):
     return class_domains[domain]
 
 
-def add_to_scraper(category, link, url_domain):
+def add_to_scraper(category: str, link: str, url_domain: str):
     """Add line to scraping.py, so scraping.py can scrape the new product."""
     domain = find_domain(url_domain)
 
@@ -191,7 +221,7 @@ def add_to_scraper(category, link, url_domain):
         print(f'{category}\n{link}')
 
 
-def main(category, link):
+def main(category: str, link: str):
     URL_domain = link.split('/')[2]
 
     product_name = get_product_name(link)
@@ -201,8 +231,8 @@ def main(category, link):
         return
 
     # Change æ, ø and/or å
-    category = change_æøå(category)
-    product_name = change_æøå(product_name)
+    category = Format.change_æøå(category)
+    product_name = Format.change_æøå(product_name)
 
     save_json(category, product_name)
     add_to_scraper(category, link, URL_domain)

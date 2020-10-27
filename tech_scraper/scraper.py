@@ -7,7 +7,7 @@ import json
 import logging
 
 
-def log_setup():
+def log_setup() -> logging:
     """Setup and return logger."""
     # Gets or creates a logger
     logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ def log_setup():
 
 
 class Scraper:
-    def __init__(self, category, URL):
+    def __init__(self, category: str, URL: str):
         self.logger = log_setup()
         self.logger.debug(f'Initiating class "{self.__class__.__name__}"')
         self.cat = category
@@ -55,7 +55,7 @@ class Scraper:
                 exc_info=True
             )
 
-        self.name = change_æøå(change_name(self.name))
+        self.name = Format.change_æøå(Format.change_name(self.name))
         self.date = str(datetime.today().strftime('%Y-%m-%d'))
         self.get_part_num()
         self.shorten_url()
@@ -219,35 +219,38 @@ class Scraper:
         self.logger.info('Record saved')
 
 
-def change_name(name):
-    """
-    Change the name of the product, so if a similiar product is also
-    being scraped, the similar products goes under the same name.
-    """
-    if all(elem in name for elem in ['asus', 'rtx', '2080', 'ti', 'rog', 'strix']):
-        name = 'asus geforce rtx 2080 ti rog strix oc'
-    elif all(elem in name for elem in ['asus', 'rtx', '3080', 'rog', 'strix', 'oc']):
-        name = 'asus geforce rtx 3080 rog strix oc'
-    elif all(elem in name for elem in ['corsair', 'mp600', '1tb', 'm.2']):
-        name = 'corsair force mp600 1tb m.2'
-    return name
+class Format:
+    """Class with static methods for formatting"""
+    @staticmethod
+    def change_name(name: str) -> str:
+        """
+        Change the name of the product, so if a similiar product is also
+        being scraped, the similar products goes under the same name.
+        """
+        if all(elem in name for elem in ['asus', 'rtx', '2080', 'ti', 'rog', 'strix']):
+            name = 'asus geforce rtx 2080 ti rog strix oc'
+        elif all(elem in name for elem in ['asus', 'rtx', '3080', 'rog', 'strix', 'oc']):
+            name = 'asus geforce rtx 3080 rog strix oc'
+        elif all(elem in name for elem in ['corsair', 'mp600', '1tb', 'm.2']):
+            name = 'corsair force mp600 1tb m.2'
+        return name
 
+    @staticmethod
+    def change_æøå(name: str) -> str:
+        """
+        Change the letters æ, ø and å to international letters to avoid unicode and
+        return the new name.
+        """
+        replace_letters = {
+            "æ": "ae",
+            "ø": "oe",
+            "å": "aa"
+        }
 
-def change_æøå(name):
-    """
-    Change the letters æ, ø and å to international letters to avoid unicode and
-    return the new name.
-    """
-    replace_letters = {
-        "æ": "ae",
-        "ø": "oe",
-        "å": "aa"
-    }
+        for letter in replace_letters:
+            name = name.replace(letter, replace_letters[letter])
 
-    for letter in replace_letters:
-        name = name.replace(letter, replace_letters[letter])
-
-    return name
+        return name
 
 
 class Komplett(Scraper):
