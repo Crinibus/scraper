@@ -36,7 +36,7 @@ class Scraper:
         self.cat = category
         self.URL = URL
         self.URL_domain = self.URL.split('/')[2]
-        self.logger.debug(f'Category: {self.cat}')
+        # self.logger.debug(f'Category: {self.cat}')
         self.logger.debug(f'URL: {self.URL}')
 
         try:
@@ -76,11 +76,11 @@ class Scraper:
 
     def get_response(self):
         """Get response from URL."""
-        self.logger.info('Getting response from URL...')
+        # self.logger.info('Getting response from URL...')
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"}
         cookies = dict(cookies_are='working')
         self.response = requests.get(self.URL, headers=headers, cookies=cookies)
-        self.logger.info('Got response from URL')
+        # self.logger.info('Got response from URL')
         self.html_soup = BeautifulSoup(self.response.text, 'html.parser')
 
     def get_part_num(self):
@@ -209,7 +209,7 @@ class Scraper:
 
     def save_record(self):
         """Save the price of the product in the JSON-file."""
-        self.logger.info('Saving record...')
+        # self.logger.info('Saving record...')
         self.check_url()
         with open('records.json', 'r') as json_file:
             data = json.load(json_file)
