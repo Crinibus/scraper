@@ -8,9 +8,19 @@ def argparse_setup():
     parser = argparse.ArgumentParser()
 
     # optional argument
-    parser.add_argument('--all',
-                        help='Show graphs for all products',
-                        action="store_true")
+    parser.add_argument(
+        '--all',
+        help='Show graphs for all products',
+        action="store_true"
+    )
+    
+    # optional argument
+    parser.add_argument(
+        '-p',
+        '--partnum',
+        help='Show graph for only the product with the specified partnumber',
+        type=str
+    )
 
     return parser.parse_args()
 
@@ -93,10 +103,39 @@ def show_all():
             plt.show()
 
 
+def find_partnum(partnum):
+    """Show graph with the same partnumber as the argument/parameter partnum"""
+    data = read_records()
+
+    dates = []
+    prices = []
+
+    for category in data:
+        for product in data[category]:
+            for domain in data[category][product]:
+                part_num = data[category][product][domain]['info']['part_num']
+                if part_num == partnum:
+                    # Get dates and prices for the product
+                    dates = [date for date in data[category][product][domain]['dates']]
+                    prices = [int(data[category][product][domain]['dates'][date]['price']) for date in dates]
+                    
+                    # Plot graph
+                    plt.plot(dates, prices, marker='o', linestyle='-')
+                    plt.legend([domain])
+                    plt.style.use('seaborn-darkgrid')
+                    plt.xticks(rotation=65)
+                    plt.title(f'Prices of {product.capitalize()}')
+                    plt.ylabel('Price')
+                    plt.xlabel('Day')
+                    plt.show()
+                    return
+    print('Couldn\'t find the specified partnumber in records.json')
+
+
 if __name__ == '__main__':
     args = argparse_setup()
 
     if args.all:
         show_all()
-    else:
-        asus_2080ti()
+    if args.partnum:
+        find_partnum(args.partnum)
