@@ -33,35 +33,6 @@ def read_records():
     return data
 
 
-def asus_2080ti():
-    """Show graph for ASUS RTX 2080 TI ROG Strix graphics cards."""
-    data = read_records()
-
-    # Get dates
-    komplett_dates = [date for date in data['gpu']['asus geforce rtx 2080 ti rog strix oc']['www.komplett.dk']['dates']]
-    proshop_dates = [date for date in data['gpu']['asus geforce rtx 2080 ti rog strix oc']['www.proshop.dk']['dates']]
-
-    # Get prices
-    komplett_prices = [int(data['gpu']['asus geforce rtx 2080 ti rog strix oc']['www.komplett.dk']['dates'][date]['price']) for date in komplett_dates]
-    proshop_prices = [int(data['gpu']['asus geforce rtx 2080 ti rog strix oc']['www.proshop.dk']['dates'][date]['price']) for date in proshop_dates]
-
-    # Plotting
-    plt.plot(komplett_dates, komplett_prices,
-             proshop_dates, proshop_prices,
-             marker='o', linestyle='-')
-
-    # Styling
-    plt.style.use('seaborn-darkgrid')
-    plt.title('Prices of ASUS 2080 TI ROG Strix')
-    plt.xlabel('Day')
-    plt.ylabel('Price')
-    plt.xticks(rotation=70)
-    plt.legend(['Komplett', 'Proshop'])
-
-    # Show graph
-    plt.show()
-
-
 def show_all():
     """Show graphs for all products."""
     data = read_records()
