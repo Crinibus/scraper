@@ -13,7 +13,7 @@ def argparse_setup():
         help='Show graphs for all products',
         action="store_true"
     )
-    
+
     # optional argument
     parser.add_argument(
         '-p',
@@ -89,7 +89,7 @@ def find_partnum(partnum):
                     # Get dates and prices for the product
                     dates = [date for date in data[category][product][domain]['dates']]
                     prices = [int(data[category][product][domain]['dates'][date]['price']) for date in dates]
-                    
+
                     # Plot graph
                     plt.plot(dates, prices, marker='o', linestyle='-')
                     plt.legend([domain])
@@ -105,7 +105,7 @@ def find_partnum(partnum):
 
 if __name__ == '__main__':
     args = argparse_setup()
-
+    
     if args.all:
         show_all()
     if args.partnum:
