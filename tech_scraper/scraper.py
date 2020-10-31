@@ -229,10 +229,20 @@ class Format:
         """
         if all(elem in name for elem in ['asus', 'rtx', '2080', 'ti', 'rog', 'strix']):
             name = 'asus geforce rtx 2080 ti rog strix oc'
-        elif all(elem in name for elem in ['asus', 'rtx', '3080', 'rog', 'strix', 'oc']):
-            name = 'asus geforce rtx 3080 rog strix oc'
         elif all(elem in name for elem in ['corsair', 'mp600', '1tb', 'm.2']):
             name = 'corsair force mp600 1tb m.2'
+        elif all(elem in name for elem in ['asus', 'rtx', '3090', 'rog', 'strix', 'oc']):
+            name = 'asus geforce rtx 3090 rog strix oc'
+        elif all(elem in name for elem in ['asus', 'rtx', '3090', 'tuf', 'oc']):
+            name = 'asus geforce rtx 3090 tuf oc'
+        elif all(elem in name for elem in ['asus', 'rtx', '3080', 'rog', 'strix', 'oc']):
+            name = 'asus geforce rtx 3080 rog strix oc'
+        elif all(elem in name for elem in ['asus', 'rtx', '3080', 'tuf', 'oc']):
+            name = 'asus geforce rtx 3080 tuf oc'
+        elif all(elem in name for elem in ['asus', 'rtx', '3070', 'rog', 'strix', 'oc']):
+            name = 'asus geforce rtx 3070 rog strix oc'
+        elif all(elem in name for elem in ['asus', 'rtx', '3070', 'tuf', 'oc']):
+            name = 'asus geforce rtx 3070 tuf oc'
         return name
 
     @staticmethod
