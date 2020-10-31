@@ -105,7 +105,7 @@ def find_partnum(partnum):
 
 if __name__ == '__main__':
     args = argparse_setup()
-    
+
     if args.all:
         show_all()
     if args.partnum:
