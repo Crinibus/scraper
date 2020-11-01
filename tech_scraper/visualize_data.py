@@ -19,7 +19,7 @@ def argparse_setup():
         '-p',
         '--partnum',
         help='Show graph for only the product with the specified partnumber',
-        type=str
+        action='append'
     )
 
     return parser.parse_args()
@@ -109,4 +109,5 @@ if __name__ == '__main__':
     if args.all:
         show_all()
     if args.partnum:
-        find_partnum(args.partnum)
+        for partnum in args.partnum:
+            find_partnum(partnum)
