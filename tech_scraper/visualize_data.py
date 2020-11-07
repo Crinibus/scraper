@@ -151,7 +151,6 @@ def find_category(_category):
                 plt.xlabel('Day')
                 plt.show()
         else:
-            print('cat does not match')
             continue
 
 
