@@ -162,6 +162,7 @@ if __name__ == '__main__':
     if args.partnum:
         for partnum in args.partnum:
             find_partnum(partnum)
+
     if args.category:
         for category in args.category:
             find_category(category)
