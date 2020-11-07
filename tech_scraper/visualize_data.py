@@ -136,12 +136,12 @@ def find_category(_category):
                 # If two domains, show both graph for both domains on the same graph
                 if len(dates_1) > 0 and len(dates_2) > 0:
                     plt.plot(dates_1, prices_1,
-                            dates_2, prices_2,
-                            marker='o', linestyle='-')
+                             dates_2, prices_2,
+                             marker='o', linestyle='-')
                     plt.legend([f'{domains[0]}', f'{domains[1]}'])
                 else:
                     plt.plot(dates_1, prices_1,
-                            marker='o', linestyle='-')
+                             marker='o', linestyle='-')
                     plt.legend([f'{domains[0]}'])
 
                 plt.style.use('seaborn-darkgrid')
