@@ -22,6 +22,14 @@ def argparse_setup():
         action='append'
     )
 
+    # optional argument
+    parser.add_argument(
+        '-c',
+        '--category',
+        help='Show graph for only the products with the specified category',
+        action='append'
+    )
+
     return parser.parse_args()
 
 
@@ -103,6 +111,50 @@ def find_partnum(partnum):
     print('Couldn\'t find the specified partnumber in records.json')
 
 
+def find_category(_category):
+    data = read_records()
+
+    for category in data:
+        if category == _category:
+            for product in data[category]:
+                dates_1 = []
+                prices_1 = []
+                dates_2 = []
+                prices_2 = []
+                domains = []
+                for domain in data[category][product]:
+                    if len(dates_1) == 0:
+                        dates_1 = [date for date in data[category][product][domain]['dates']]
+                        prices_1 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_1]
+                    else:
+                        dates_2 = [date for date in data[category][product][domain]['dates']]
+                        prices_2 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_2]
+
+                    domains.append(domain)
+
+                # Check for more than one domain
+                # If two domains, show both graph for both domains on the same graph
+                if len(dates_1) > 0 and len(dates_2) > 0:
+                    plt.plot(dates_1, prices_1,
+                            dates_2, prices_2,
+                            marker='o', linestyle='-')
+                    plt.legend([f'{domains[0]}', f'{domains[1]}'])
+                else:
+                    plt.plot(dates_1, prices_1,
+                            marker='o', linestyle='-')
+                    plt.legend([f'{domains[0]}'])
+
+                plt.style.use('seaborn-darkgrid')
+                plt.xticks(rotation=65)
+                plt.title(f'Prices of {product.capitalize()}')
+                plt.ylabel('Price')
+                plt.xlabel('Day')
+                plt.show()
+        else:
+            print('cat does not match')
+            continue
+
+
 if __name__ == '__main__':
     args = argparse_setup()
 
@@ -111,3 +163,6 @@ if __name__ == '__main__':
     if args.partnum:
         for partnum in args.partnum:
             find_partnum(partnum)
+    if args.category:
+        for category in args.category:
+            find_category(category)
