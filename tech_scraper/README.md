@@ -5,6 +5,9 @@
 - [Adding products](#adding-products)
     - [Links to scrape from](#links-to-scrape-from)
     - [Optional arguments](#optional-arguments)
+- [Visualize data](#visualize-data)
+    - [Command examples](#command-examples)
+    - [Available flags](#available-flags)
 
 <br/>
 
@@ -92,3 +95,66 @@ There is some optional arguments you can use when running add_product.py, these 
 -     --sharkgaming
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
+
+
+## Visualize data <a name="visualize-data"></a>
+To visualize your data run the "visualize_data.py" script with some arguments.
+
+See all available flags [here](#available-flags).
+
+By using the ```--all``` flag you will get graphs for all products in records.json.
+
+By using the ```--partnum``` or ```-p``` and specify a partnumber you will only get the graph for the specified partnumber. You can specify multiple partnumbers just by adding multiple ```--partnum``` or ```-p``` flags.
+
+By using the ```--category``` or ```-c``` you will get graphs for all the product in the specified category. You can specify multiple categories just by adding multiple ```--category``` or ```-c``` flags.
+
+
+### Command examples <a name="command-examples"></a>
+**Show graphs for all products**
+
+To show graphs for all products, run the following command:
+
+    python3 visualize_data.py --all
+
+**Show graph(s) for specific products**
+
+To show a graph for only one product, run the following command where ```<partnumber>``` is the partnumber of the product you want a graph for:
+
+    python3 visualize_data.py --partnum <partnumber>
+
+For multiple products, just add another flag, like so:
+
+    python3 visualize_data.py --partnum <partnumber> --partnum <partnumber>
+
+You can also just use the short flag name, like so:
+
+    python3 visualize_data.py -p <partnumber>
+
+**Show graphs for products in one or more categories**
+
+To show graphs for all products in one category, run the following command where ```<category>``` is the category you want graph from:
+
+    python3 visualize_data.py --category <category>
+
+For multiple categories, just add another flag, like so:
+
+    python3 visualize_data.py --category <category> --category <category> 
+
+You can also just use the short flag name, like so:
+
+    python3 visualize_data.py -c <category>
+
+
+
+### Available flags <a name="available-flags"></a>
+When running visualize_data.py you must use atleast one flag, the available flags are:
+
+-     --all
+
+-     --partnum <partnum>
+
+-     -p <partnum>
+
+-     --category <category>
+
+-     -c <category>
