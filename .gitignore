@@ -9,3 +9,4 @@ fakta_scraper/.vscode/settings.json
 tech_scraping/__pycache__/scraping.cpython-37.pyc
 .vscode/launch.json
 tech_scraper/.vscode/settings.json
+tech_scraper/__pycache__/*
