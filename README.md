@@ -6,6 +6,7 @@
     - [Start from scratch](#start-scratch)
     - [Adding products](#adding-products)
         - [Optional arguments](#optional-arguments)
+    - [User settings]()
     - [Visualize data](#visualize-data)
         - [Command examples](#command-examples)
         - [Available flags](#available-flags)
@@ -108,6 +109,9 @@ There is some optional arguments you can use when running add_product.py, these 
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
 
+
+## User settings <a name="user-settings"></a>
+See the [README in tech_scraper](../tech_scraper/README.md)
 
 
 ## Visualize data <a name="visualize-data"></a>

@@ -5,6 +5,7 @@
 - [Adding products](#adding-products)
     - [Links to scrape from](#links-to-scrape-from)
     - [Optional arguments](#optional-arguments)
+- [User settings](#user-settings)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
     - [Available flags](#available-flags)
@@ -96,6 +97,23 @@ There is some optional arguments you can use when running add_product.py, these 
 
 When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
 
+
+## User settings <a name="user-settings"></a>
+User settings can be added and changed in the file settings.ini.
+
+Right now there is only one category of user settings, which is "ChangeName".  Under this category you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
+
+When adding a new setting under the category "ChangeName" in settings.ini, there must be a line with ```keywords<n>``` and a line with ```valuewords<n>```, where ```<n>``` is the "link" between keywords and valuewords. E.g. ```valuewords3``` is the value to ```keywords3```.
+
+In ```keywords<n>``` you set the keywords (seperated by a comma) that the product name must have for to be changed to what ```valuewords<n>``` is equal to. Example if the user settings is the following:
+
+```
+[ChangeName]
+keywords1 = asus,3080,rog,strix,oc
+valuewords1 = asus geforce rtx 3080 rog strix oc
+```
+
+The script checks if a product name has all of the words in ```keywords1```, it gets changed to what ```valuewords1``` is.
 
 ## Visualize data <a name="visualize-data"></a>
 To visualize your data run the "visualize_data.py" script with some arguments.
