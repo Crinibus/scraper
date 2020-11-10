@@ -111,7 +111,7 @@ When using one or more of "domain" arguments, only the chosen domains gets added
 
 
 ## User settings <a name="user-settings"></a>
-See the [README in tech_scraper](../tech_scraper/README.md)
+See the [README in tech_scraper](./tech_scraper/README.md#user-settings)
 
 
 ## Visualize data <a name="visualize-data"></a>
