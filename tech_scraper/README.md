@@ -14,13 +14,15 @@
 
 ## First setup <a name="first-setup"></a>
 Make sure you have the modules, run this in the terminal:
-
-    pip install -r requirements.txt
+```
+pip install -r requirements.txt
+```
 
 ## Start from scratch <a name="start-scratch"></a>
 If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
-
-    {}
+```
+{}
+```
 
 Then delete the lines under the last if-statement in scraper.py. 
 
@@ -28,16 +30,19 @@ Then just add products like described [here](#add-products).
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
-
-    python3 scrape_links.py
+```
+python3 scrape_links.py
+```
 
 ## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
-
-    python3 add_product.py <category> <url>
+```
+python3 add_product.py <category> <url>
+```
 e.g.
-
-    python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
+```
+python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
+```
 
 This adds the category (if new) and the product to the records.json file, and adds a line at the end of the scraper.py file so the script can scrape price of the new product.
 
@@ -131,37 +136,43 @@ By using the ```--category``` or ```-c``` you will get graphs for all the produc
 **Show graphs for all products**
 
 To show graphs for all products, run the following command:
-
-    python3 visualize_data.py --all
+```
+python3 visualize_data.py --all
+```
 
 **Show graph(s) for specific products**
 
 To show a graph for only one product, run the following command where ```<partnumber>``` is the partnumber of the product you want a graph for:
-
-    python3 visualize_data.py --partnum <partnumber>
+```
+python3 visualize_data.py --partnum <partnumber>
+```
 
 For multiple products, just add another flag, like so:
-
-    python3 visualize_data.py --partnum <partnumber> --partnum <partnumber>
+```
+python3 visualize_data.py --partnum <partnumber> --partnum <partnumber>
+```
 
 You can also just use the short flag name, like so:
-
-    python3 visualize_data.py -p <partnumber>
+```
+python3 visualize_data.py -p <partnumber>
+```
 
 **Show graphs for products in one or more categories**
 
 To show graphs for all products in one category, run the following command where ```<category>``` is the category you want graph from:
-
-    python3 visualize_data.py --category <category>
+```
+python3 visualize_data.py --category <category>
+```
 
 For multiple categories, just add another flag, like so:
-
-    python3 visualize_data.py --category <category> --category <category> 
+```
+python3 visualize_data.py --category <category> --category <category> 
+```
 
 You can also just use the short flag name, like so:
-
-    python3 visualize_data.py -c <category>
-
+```
+python3 visualize_data.py -c <category>
+```
 
 
 ### Available flags <a name="available-flags"></a>

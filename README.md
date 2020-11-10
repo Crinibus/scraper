@@ -21,9 +21,18 @@ Feel free to fork the project and create a pull request with new features or ref
 <br/>
 
 ## First setup <a name="first-setup"></a>
-First make sure you have the modules, run this in the terminal:
+Clone this repository and move into the repository:
+```
+git clone https://github.com/Crinibus/scraper.git
+```
+```
+cd scraper
+```
 
-    pip install -r requirements.txt
+Then make sure you have the modules, run this in the terminal:
+```
+pip install -r requirements.txt
+```
 
 <br/>
 
@@ -45,25 +54,28 @@ The tech scraper can scrape prices on products from:
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
-
-    python3 scrape_links.py
+```
+python3 scrape_links.py
+```
 
 ## Start from scratch <a name="start-scratch"></a>
 If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
-
-    {}
-
+```
+{}
+```
 Then delete the lines under the last if-statement in scraper.py. 
 
 Then just add products like described [here](#add-products).
 
 ## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
-
-    python3 add_product.py <category> <url>
+```
+python3 add_product.py <category> <url>
+```
 e.g.
-
-    python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
+```
+python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
+```
 
 This adds the category (if new) and the product to the records.json file, and adds a line at the end of the scraper.py file so the script can scrape price of the new product.
 
@@ -130,37 +142,43 @@ By using the ```--category``` or ```-c``` you will get graphs for all the produc
 **Show graphs for all products**
 
 To show graphs for all products, run the following command:
-
-    python3 visualize_data.py --all
+```
+python3 visualize_data.py --all
+```
 
 **Show graph(s) for specific products**
 
 To show a graph for only one product, run the following command where ```<partnumber>``` is the partnumber of the product you want a graph for:
-
-    python3 visualize_data.py --partnum <partnumber>
+```
+python3 visualize_data.py --partnum <partnumber>
+```
 
 For multiple products, just add another flag, like so:
-
-    python3 visualize_data.py --partnum <partnumber> --partnum <partnumber>
+```
+python3 visualize_data.py --partnum <partnumber> --partnum <partnumber>
+```
 
 You can also just use the short flag name, like so:
-
-    python3 visualize_data.py -p <partnumber>
+```
+python3 visualize_data.py -p <partnumber>
+```
 
 **Show graphs for products in one or more categories**
 
 To show graphs for all products in one category, run the following command where ```<category>``` is the category you want graph from:
-
-    python3 visualize_data.py --category <category>
+```
+python3 visualize_data.py --category <category>
+```
 
 For multiple categories, just add another flag, like so:
-
-    python3 visualize_data.py --category <category> --category <category> 
+```
+python3 visualize_data.py --category <category> --category <category> 
+```
 
 You can also just use the short flag name, like so:
-
-    python3 visualize_data.py -c <category>
-
+```
+python3 visualize_data.py -c <category>
+```
 
 
 ### Available flags <a name="available-flags"></a>
@@ -186,11 +204,11 @@ The Fakta scraper can scrape discounts from this week discounts. <br/>
 ## Scrape discounts <a name="scrape-discounts"></a>
 For now you can only search for keywords and get the discounts that match the keywords.
 To scrape for discounts about for example Kellogg products, you only have to add the keyword "Kellogg" as a argument when running the fakta_scraper.py script:
-
-    python3 fakta_scraper.py kellogg
-
+```
+python3 fakta_scraper.py kellogg
+```
 You can search for multiple keyword by just adding them as arguments, as such:
-
-    python fakta_scraper.py <keyword_1> <keyword_2> <keyword_3>
-
+```
+python fakta_scraper.py <keyword_1> <keyword_2> <keyword_3>
+```
 The discounts is printed in the terminal.
