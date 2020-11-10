@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import json
 import logging
+from configparser import ConfigParser
 
 
 def log_setup() -> logging:
@@ -27,6 +28,13 @@ def log_setup() -> logging:
     # add file handler to logger
     logger.addHandler(file_handler)
     return logger
+
+
+def read_config() -> ConfigParser:
+    """Read user settings in settings.ini"""
+    config = ConfigParser()
+    config.read('settings.ini')
+    return config
 
 
 class Scraper:
@@ -226,23 +234,20 @@ class Format:
         """
         Change the name of the product, so if a similiar product is also
         being scraped, the similar products goes under the same name.
+
+        Settings are in settings.ini
         """
-        if all(elem in name for elem in ['asus', 'rtx', '2080', 'ti', 'rog', 'strix']):
-            name = 'asus geforce rtx 2080 ti rog strix oc'
-        elif all(elem in name for elem in ['corsair', 'mp600', '1tb', 'm.2']):
-            name = 'corsair force mp600 1tb m.2'
-        elif all(elem in name for elem in ['asus', 'rtx', '3090', 'rog', 'strix', 'oc']):
-            name = 'asus geforce rtx 3090 rog strix oc'
-        elif all(elem in name for elem in ['asus', 'rtx', '3090', 'tuf', 'oc']):
-            name = 'asus geforce rtx 3090 tuf oc'
-        elif all(elem in name for elem in ['asus', 'rtx', '3080', 'rog', 'strix', 'oc']):
-            name = 'asus geforce rtx 3080 rog strix oc'
-        elif all(elem in name for elem in ['asus', 'rtx', '3080', 'tuf', 'oc']):
-            name = 'asus geforce rtx 3080 tuf oc'
-        elif all(elem in name for elem in ['asus', 'rtx', '3070', 'rog', 'strix', 'oc']):
-            name = 'asus geforce rtx 3070 rog strix oc'
-        elif all(elem in name for elem in ['asus', 'rtx', '3070', 'tuf', 'oc']):
-            name = 'asus geforce rtx 3070 tuf oc'
+
+        config = read_config()
+
+        changeNameSetting = config['ChangeName']
+
+        for item in changeNameSetting:
+            if 'key' in item:
+                key_list = changeNameSetting[item].split(',')
+                value_key = f'valuewords{item[-1]}'
+                if all(elem in name for elem in key_list):
+                    return changeNameSetting[value_key]
         return name
 
     @staticmethod
