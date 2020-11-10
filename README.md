@@ -21,7 +21,13 @@ Feel free to fork the project and create a pull request with new features or ref
 <br/>
 
 ## First setup <a name="first-setup"></a>
-First make sure you have the modules, run this in the terminal:
+Clone this repository and move into the repository:
+
+    git clone https://github.com/Crinibus/scraper.git
+
+    cd scraper
+
+Then make sure you have the modules, run this in the terminal:
 
     pip install -r requirements.txt
 
