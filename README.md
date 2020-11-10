@@ -6,7 +6,7 @@
     - [Start from scratch](#start-scratch)
     - [Adding products](#adding-products)
         - [Optional arguments](#optional-arguments)
-    - [User settings]()
+    - [User settings](#user-settings)
     - [Visualize data](#visualize-data)
         - [Command examples](#command-examples)
         - [Available flags](#available-flags)
