@@ -79,7 +79,7 @@ def show_all():
 
 
 def find_partnum(partnum):
-    """Show graph with the same partnumber as the argument/parameter partnum"""
+    """Show graph for the product with the same partnumber as the argument/parameter partnum"""
     data = read_records()
 
     dates = []
@@ -88,7 +88,9 @@ def find_partnum(partnum):
     for category in data:
         for product in data[category]:
             for domain in data[category][product]:
+                # Get partnumber
                 part_num = data[category][product][domain]['info']['part_num']
+
                 if part_num == partnum:
                     # Get dates and prices for the product
                     dates = [date for date in data[category][product][domain]['dates']]
