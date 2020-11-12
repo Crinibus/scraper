@@ -33,7 +33,7 @@ def argparse_setup():
     return parser.parse_args()
 
 
-def read_records():
+def read_records() -> dict:
     """Read and return data from records.json."""
     with open('records.json', 'r') as jsonfile:
         data = json.load(jsonfile)
@@ -78,7 +78,7 @@ def show_all():
             plt.show()
 
 
-def find_partnum(partnum):
+def find_partnum(partnum: str):
     """Show graph for the product with the same partnumber as the argument/parameter partnum"""
     data = read_records()
 
@@ -109,7 +109,7 @@ def find_partnum(partnum):
     print('Couldn\'t find the specified partnumber in records.json')
 
 
-def find_category(_category):
+def find_category(_category: str):
     data = read_records()
 
     visu_data = {}
