@@ -57,9 +57,14 @@ def show_all():
                 visu_data[product][domain] = {'dates': [], 'prices': []}
 
                 # Get dates, prices and partnumber
-                visu_data[product][domain]['dates'] = [date for date in data[category][product][domain]['dates']]
-                visu_data[product][domain]['prices'] = [int(data[category][product][domain]['dates'][date]['price']) for date in visu_data[product][domain]['dates']]
-                partnumbers.append(data[category][product][domain]['info']['part_num'])
+                dates = [date for date in data[category][product][domain]['dates']]
+                prices = [int(data[category][product][domain]['dates'][date]['price']) for date in dates]
+                partnumber = data[category][product][domain]['info']['part_num']
+
+                # Save dates, prices and partnumber
+                visu_data[product][domain]['dates'] = dates
+                visu_data[product][domain]['prices'] = prices
+                partnumbers.append(partnumber)
 
             # Make a graph for the product with all it's domains
             for domain in visu_data[product].keys():
@@ -101,7 +106,8 @@ def find_partnum(partnum: str):
                     plt.legend([domain])
                     plt.style.use('seaborn-darkgrid')
                     plt.xticks(rotation=65)
-                    plt.title(f'Prices of {product.capitalize()}')
+                    plt.title(f'Prices of {product.capitalize()}\n'
+                              f'Partnumber: {part_num}')
                     plt.ylabel('Price')
                     plt.xlabel('Day')
                     plt.show()
@@ -125,9 +131,14 @@ def find_category(_category: str):
                     visu_data[product][domain] = {'dates': [], 'prices': []}
 
                     # Get dates, prices and partnumber
-                    visu_data[product][domain]['dates'] = [date for date in data[category][product][domain]['dates']]
-                    visu_data[product][domain]['prices'] = [int(data[category][product][domain]['dates'][date]['price']) for date in visu_data[product][domain]['dates']]
-                    partnumbers.append(data[category][product][domain]['info']['part_num'])
+                    dates = [date for date in data[category][product][domain]['dates']]
+                    prices = [int(data[category][product][domain]['dates'][date]['price']) for date in dates]
+                    partnumber = data[category][product][domain]['info']['part_num']
+
+                    # Save dates, prices and partnumber
+                    visu_data[product][domain]['dates'] = dates
+                    visu_data[product][domain]['prices'] = prices
+                    partnumbers.append(partnumber)
 
                 # Make a graph for the product with all it's domains
                 for domain in visu_data[product].keys():
