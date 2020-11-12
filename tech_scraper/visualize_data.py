@@ -1,11 +1,11 @@
 import json
 import matplotlib.pyplot as plt
-import argparse
+from argparse import ArgumentParser
 
 
-def argparse_setup():
+def argparse_setup() -> ArgumentParser:
     """Setup and return argparse."""
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
 
     # optional argument
     parser.add_argument(
