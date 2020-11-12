@@ -1,11 +1,11 @@
 import json
 import matplotlib.pyplot as plt
-import argparse
+from argparse import ArgumentParser
 
 
-def argparse_setup():
+def argparse_setup() -> ArgumentParser:
     """Setup and return argparse."""
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
 
     # optional argument
     parser.add_argument(
@@ -33,7 +33,7 @@ def argparse_setup():
     return parser.parse_args()
 
 
-def read_records():
+def read_records() -> dict:
     """Read and return data from records.json."""
     with open('records.json', 'r') as jsonfile:
         data = json.load(jsonfile)
@@ -45,45 +45,41 @@ def show_all():
     """Show graphs for all products."""
     data = read_records()
 
+    visu_data = {}
+
     for category in data:
         for product in data[category]:
-            dates_1 = []
-            prices_1 = []
-            dates_2 = []
-            prices_2 = []
-            domains = []
+            visu_data[product] = {}
+            partnumbers = []
+
             for domain in data[category][product]:
-                if len(dates_1) == 0:
-                    dates_1 = [date for date in data[category][product][domain]['dates']]
-                    prices_1 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_1]
-                else:
-                    dates_2 = [date for date in data[category][product][domain]['dates']]
-                    prices_2 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_2]
+                # Add keys under domain in product
+                visu_data[product][domain] = {'dates': [], 'prices': []}
 
-                domains.append(domain)
+                # Get dates, prices and partnumber
+                visu_data[product][domain]['dates'] = [date for date in data[category][product][domain]['dates']]
+                visu_data[product][domain]['prices'] = [int(data[category][product][domain]['dates'][date]['price']) for date in visu_data[product][domain]['dates']]
+                partnumbers.append(data[category][product][domain]['info']['part_num'])
 
-            # Check for more than one domain
-            # If two domains, show both graph for both domains on the same graph
-            if len(dates_1) > 0 and len(dates_2) > 0:
-                plt.plot(dates_1, prices_1,
-                         dates_2, prices_2,
-                         marker='o', linestyle='-')
-                plt.legend([f'{domains[0]}', f'{domains[1]}'])
-            else:
-                plt.plot(dates_1, prices_1,
-                         marker='o', linestyle='-')
-                plt.legend([f'{domains[0]}'])
+            # Make a graph for the product with all it's domains
+            for domain in visu_data[product].keys():
+                plt.plot(list(visu_data[product][domain]['dates']),
+                         list(visu_data[product][domain]['prices']),
+                         marker='o',
+                         linestyle='-')
 
+            plt.legend(list(visu_data[product].keys()))
             plt.style.use('seaborn-darkgrid')
             plt.xticks(rotation=65)
-            plt.title(f'Prices of {product.capitalize()}')
+            plt.title(f'Prices of {product.capitalize()}\n'
+                      f'Partnumber(s): {", ".join(partnumbers)}')
             plt.ylabel('Price')
             plt.xlabel('Day')
             plt.show()
 
 
-def find_partnum(partnum):
-    """Show graph with the same partnumber as the argument/parameter partnum"""
+def find_partnum(partnum: str):
+    """Show graph for the product with the same partnumber as the argument/parameter partnum"""
     data = read_records()
 
     dates = []
@@ -92,7 +88,9 @@ def find_partnum(partnum):
     for category in data:
         for product in data[category]:
             for domain in data[category][product]:
+                # Get partnumber
                 part_num = data[category][product][domain]['info']['part_num']
+
                 if part_num == partnum:
                     # Get dates and prices for the product
                     dates = [date for date in data[category][product][domain]['dates']]
@@ -111,42 +109,38 @@ def find_partnum(partnum):
     print('Couldn\'t find the specified partnumber in records.json')
 
 
-def find_category(_category):
+def find_category(_category: str):
     data = read_records()
+
+    visu_data = {}
 
     for category in data:
         if category == _category:
             for product in data[category]:
-                dates_1 = []
-                prices_1 = []
-                dates_2 = []
-                prices_2 = []
-                domains = []
+                visu_data[product] = {}
+                partnumbers = []
+
                 for domain in data[category][product]:
-                    if len(dates_1) == 0:
-                        dates_1 = [date for date in data[category][product][domain]['dates']]
-                        prices_1 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_1]
-                    else:
-                        dates_2 = [date for date in data[category][product][domain]['dates']]
-                        prices_2 = [int(data[category][product][domain]['dates'][date]['price']) for date in dates_2]
+                    # Add keys under domain in product
+                    visu_data[product][domain] = {'dates': [], 'prices': []}
 
-                    domains.append(domain)
+                    # Get dates, prices and partnumber
+                    visu_data[product][domain]['dates'] = [date for date in data[category][product][domain]['dates']]
+                    visu_data[product][domain]['prices'] = [int(data[category][product][domain]['dates'][date]['price']) for date in visu_data[product][domain]['dates']]
+                    partnumbers.append(data[category][product][domain]['info']['part_num'])
 
-                # Check for more than one domain
-                # If two domains, show both graph for both domains on the same graph
-                if len(dates_1) > 0 and len(dates_2) > 0:
-                    plt.plot(dates_1, prices_1,
-                             dates_2, prices_2,
-                             marker='o', linestyle='-')
-                    plt.legend([f'{domains[0]}', f'{domains[1]}'])
-                else:
-                    plt.plot(dates_1, prices_1,
-                             marker='o', linestyle='-')
-                    plt.legend([f'{domains[0]}'])
+                # Make a graph for the product with all it's domains
+                for domain in visu_data[product].keys():
+                    plt.plot(list(visu_data[product][domain]['dates']),
+                             list(visu_data[product][domain]['prices']),
+                             marker='o',
+                             linestyle='-')
 
+                plt.legend(list(visu_data[product].keys()))
                 plt.style.use('seaborn-darkgrid')
                 plt.xticks(rotation=65)
-                plt.title(f'Prices of {product.capitalize()}')
+                plt.title(f'Prices of {product.capitalize()}\n'
+                          f'Partnumber(s): {", ".join(partnumbers)}')
                 plt.ylabel('Price')
                 plt.xlabel('Day')
                 plt.show()
