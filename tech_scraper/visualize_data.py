@@ -101,7 +101,8 @@ def find_partnum(partnum: str):
                     plt.legend([domain])
                     plt.style.use('seaborn-darkgrid')
                     plt.xticks(rotation=65)
-                    plt.title(f'Prices of {product.capitalize()}')
+                    plt.title(f'Prices of {product.capitalize()}\n'
+                              f'Partnumber: {part_num}')
                     plt.ylabel('Price')
                     plt.xlabel('Day')
                     plt.show()
