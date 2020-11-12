@@ -55,13 +55,13 @@ def show_all():
             for domain in data[category][product]:
                 # Add keys under domain in product
                 visu_data[product][domain] = {'dates': [], 'prices': []}
-                
+
                 # Get dates, prices and partnumber
                 visu_data[product][domain]['dates'] = [date for date in data[category][product][domain]['dates']]
                 visu_data[product][domain]['prices'] = [int(data[category][product][domain]['dates'][date]['price']) for date in visu_data[product][domain]['dates']]
                 partnumbers.append(data[category][product][domain]['info']['part_num'])
 
-            # Make a graph for the product with all it's domains 
+            # Make a graph for the product with all it's domains
             for domain in visu_data[product].keys():
                 plt.plot(list(visu_data[product][domain]['dates']),
                          list(visu_data[product][domain]['prices']),
@@ -72,7 +72,7 @@ def show_all():
             plt.style.use('seaborn-darkgrid')
             plt.xticks(rotation=65)
             plt.title(f'Prices of {product.capitalize()}\n'
-                        f'Partnumber(s): {", ".join(partnumbers)}')
+                      f'Partnumber(s): {", ".join(partnumbers)}')
             plt.ylabel('Price')
             plt.xlabel('Day')
             plt.show()
@@ -123,18 +123,18 @@ def find_category(_category):
                 for domain in data[category][product]:
                     # Add keys under domain in product
                     visu_data[product][domain] = {'dates': [], 'prices': []}
-                    
+
                     # Get dates, prices and partnumber
                     visu_data[product][domain]['dates'] = [date for date in data[category][product][domain]['dates']]
                     visu_data[product][domain]['prices'] = [int(data[category][product][domain]['dates'][date]['price']) for date in visu_data[product][domain]['dates']]
                     partnumbers.append(data[category][product][domain]['info']['part_num'])
 
-                # Make a graph for the product with all it's domains 
+                # Make a graph for the product with all it's domains
                 for domain in visu_data[product].keys():
                     plt.plot(list(visu_data[product][domain]['dates']),
-                            list(visu_data[product][domain]['prices']),
-                            marker='o',
-                            linestyle='-')
+                             list(visu_data[product][domain]['prices']),
+                             marker='o',
+                             linestyle='-')
 
                 plt.legend(list(visu_data[product].keys()))
                 plt.style.use('seaborn-darkgrid')
