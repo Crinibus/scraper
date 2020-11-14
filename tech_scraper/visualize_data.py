@@ -1,6 +1,6 @@
 import json
-import matplotlib.pyplot as plt
 from argparse import ArgumentParser
+import plotly.graph_objs as go
 
 
 def argparse_setup() -> ArgumentParser:
@@ -66,21 +66,33 @@ def show_all():
                 visu_data[product][domain]['prices'] = prices
                 partnumbers.append(partnumber)
 
-            # Make a graph for the product with all it's domains
-            for domain in visu_data[product].keys():
-                plt.plot(list(visu_data[product][domain]['dates']),
-                         list(visu_data[product][domain]['prices']),
-                         marker='o',
-                         linestyle='-')
+            # Plotly figure
+            fig = go.Figure()
 
-            plt.legend(list(visu_data[product].keys()))
-            plt.style.use('seaborn-darkgrid')
-            plt.xticks(rotation=65)
-            plt.title(f'Prices of {product.capitalize()}\n'
-                      f'Partnumber(s): {", ".join(partnumbers)}')
-            plt.ylabel('Price')
-            plt.xlabel('Day')
-            plt.show()
+            # List with colors for graph lines
+            colors = ['aqua', 'red', 'green']
+
+            # Make a graph for the product with all it's domains
+            for index, domain in enumerate(visu_data[product].keys()):
+
+                fig.add_trace(go.Scatter(
+                    x=list(visu_data[product][domain]['dates']),
+                    y=list(visu_data[product][domain]['prices']),
+                    name=domain,
+                    line=dict(color=colors[index], width=2),
+                    hovertemplate='Price: %{y:.0f}'
+                ))
+
+            fig.update_traces(mode='markers+lines')
+            fig.update_layout(
+                title=f'Prices of {product.capitalize()} -> Partnumber(s): {", ".join(partnumbers)}',
+                xaxis_title='Date',
+                yaxis_title='Price',
+                hovermode='x',
+                separators='.,'
+            )
+
+            fig.show()
 
 
 def find_partnum(partnum: str):
@@ -101,16 +113,31 @@ def find_partnum(partnum: str):
                     dates = [date for date in data[category][product][domain]['dates']]
                     prices = [int(data[category][product][domain]['dates'][date]['price']) for date in dates]
 
-                    # Plot graph
-                    plt.plot(dates, prices, marker='o', linestyle='-')
-                    plt.legend([domain])
-                    plt.style.use('seaborn-darkgrid')
-                    plt.xticks(rotation=65)
-                    plt.title(f'Prices of {product.capitalize()}\n'
-                              f'Partnumber: {part_num}')
-                    plt.ylabel('Price')
-                    plt.xlabel('Day')
-                    plt.show()
+                    # Plotly figure
+                    fig = go.Figure()
+
+                    # Color of graph line
+                    _color = 'red'
+
+                    # Make graph
+                    fig.add_trace(go.Scatter(
+                        x=dates,
+                        y=prices,
+                        name=domain,
+                        line=dict(color=_color, width=2),
+                        hovertemplate='Price: %{y:.0f}'
+                    ))
+
+                    fig.update_traces(mode='markers+lines')
+                    fig.update_layout(
+                        title=f'Prices of {product.capitalize()} -> Partnumber: {part_num}',
+                        xaxis_title='Date',
+                        yaxis_title='Price',
+                        hovermode='x',
+                        separators='.,'
+                    )
+
+                    fig.show()
                     return
     print('Couldn\'t find the specified partnumber in records.json')
 
@@ -140,21 +167,33 @@ def find_category(_category: str):
                     visu_data[product][domain]['prices'] = prices
                     partnumbers.append(partnumber)
 
-                # Make a graph for the product with all it's domains
-                for domain in visu_data[product].keys():
-                    plt.plot(list(visu_data[product][domain]['dates']),
-                             list(visu_data[product][domain]['prices']),
-                             marker='o',
-                             linestyle='-')
+                # Plotly figure
+                fig = go.Figure()
 
-                plt.legend(list(visu_data[product].keys()))
-                plt.style.use('seaborn-darkgrid')
-                plt.xticks(rotation=65)
-                plt.title(f'Prices of {product.capitalize()}\n'
-                          f'Partnumber(s): {", ".join(partnumbers)}')
-                plt.ylabel('Price')
-                plt.xlabel('Day')
-                plt.show()
+                # List with colors for graph lines
+                colors = ['aqua', 'red', 'green']
+
+                # Make a graph for the product with all it's domains
+                for index, domain in enumerate(visu_data[product].keys()):
+
+                    fig.add_trace(go.Scatter(
+                        x=list(visu_data[product][domain]['dates']),
+                        y=list(visu_data[product][domain]['prices']),
+                        name=domain,
+                        line=dict(color=colors[index], width=2),
+                        hovertemplate='Price: %{y:.0f}'
+                    ))
+
+                fig.update_traces(mode='markers+lines')
+                fig.update_layout(
+                    title=f'Prices of {product.capitalize()} -> Partnumber(s): {", ".join(partnumbers)}',
+                    xaxis_title='Date',
+                    yaxis_title='Price',
+                    hovermode='x',
+                    separators='.,'
+                )
+                
+                fig.show()
         else:
             continue
 
