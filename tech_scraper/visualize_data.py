@@ -192,7 +192,7 @@ def find_category(_category: str):
                     hovermode='x',
                     separators='.,'
                 )
-                
+
                 fig.show()
         else:
             continue

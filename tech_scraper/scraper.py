@@ -65,7 +65,15 @@ class Scraper:
 
         self.name = Format.change_æøå(Format.change_name(self.name))
         self.date = str(datetime.today().strftime('%Y-%m-%d'))
-        self.get_part_num()
+
+        try:
+            self.get_part_num()
+        except Exception as err:
+            self.logger.error(
+                f'Failed in method "{self.__class__.__name__}.get_part_num()": {err}',
+                exc_info=True
+            )
+
         self.shorten_url()
         self.check_part_num()
 
