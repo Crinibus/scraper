@@ -16,7 +16,7 @@
 <br/>
 
 ## Contributing <a name="contributing"></a>
-Feel free to fork the project and create a pull request with new features or refactoring of the code. Also feel free to make a issue with problems or suggestions to a new feature.
+Feel free to fork the project and create a pull request with new features or refactoring of the code. Also feel free to make issues with problems or suggestions to new features.
 
 <br/>
 
