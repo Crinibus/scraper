@@ -24,7 +24,7 @@ If you want to start from scratch with no data in the records.json file, then ju
 {}
 ```
 
-Then delete the lines under the last if-statement in scraper.py. 
+Then delete all the lines in file "scrape_links.py" apart from the import line at the top.
 
 Then just add products like described [here](#add-products).
 
