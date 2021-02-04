@@ -75,7 +75,14 @@ class Scraper:
             )
 
         self.shorten_url()
-        self.check_part_num()
+
+        try:
+            self.check_part_num()
+        except Exception as err:
+            self.logger.error(
+                f'Failed in method "{self.__class__.__name__}.check_part_num()": {err}',
+                exc_info=True
+            )
 
         try:
             self.save_record()
