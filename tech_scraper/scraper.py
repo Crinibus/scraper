@@ -260,7 +260,7 @@ class Format:
         for item in changeNameSetting:
             if 'key' in item:
                 key_list = changeNameSetting[item].split(',')
-                value_key = f'valuewords{item[-1]}'
+                value_key = f'valuewords{item.strip("keywords")}'
                 if all(elem in name for elem in key_list):
                     return changeNameSetting[value_key]
         return name
