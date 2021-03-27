@@ -1,15 +1,15 @@
 # Table of contents
 - [Contributing](#contributing)
 - [First setup](#first-setup)
-- [Tech scraper](#tech-scraper)
-    - [Scrape products](#scrape-products)
-    - [Start from scratch](#start-scratch)
-    - [Adding products](#adding-products)
-        - [Optional arguments](#optional-arguments)
-    - [User settings](#user-settings)
-    - [Visualize data](#visualize-data)
-        - [Command examples](#command-examples)
-        - [Available flags](#available-flags)
+- [Start from scratch](#start-scratch)
+- [Scrape products](#scrape-products)
+- [Adding products](#adding-products)
+    - [Links to scrape from](#links-to-scrape-from)
+    - [Optional arguments](#optional-arguments)
+- [User settings](#user-settings)
+- [Visualize data](#visualize-data)
+    - [Command examples](#command-examples)
+    - [Available flags](#available-flags)
 
 <br/>
 
@@ -34,21 +34,15 @@ pip install -r requirements.txt
 
 <br/>
 
-# Tech scraper <a name="tech-scraper"></a>
-The tech scraper can scrape prices on products from:
-- [Komplett.dk](https://www.komplett.dk/)
-- [Proshop.dk](https://www.proshop.dk/)
-- [Computersalg.dk](https://www.computersalg.dk/)
-- [Elgiganten.dk](https://www.elgiganten.dk/)
-- [AvXperten.dk](https://www.avxperten.dk/)
-- [Av-Cables.dk](https://www.av-cables.dk/)
-- [Amazon.com](https://www.amazon.com/)
-- [eBay.com](https://www.ebay.com/)
-- [Power.dk](https://www.power.dk/)
-- [Expert.dk](https://www.expert.dk/)
-- [MM-Vision.dk](https://www.mm-vision.dk/)
-- [Coolshop.dk](https://www.coolshop.dk/)
-- [Sharkgaming.dk](https://www.sharkgaming.dk/)
+## Start from scratch <a name="start-scratch"></a>
+If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
+```
+{}
+```
+
+Then delete all the lines in file "scrape_links.py" apart from the import line at the top.
+
+Then just add products like described [here](#add-products).
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
@@ -56,20 +50,12 @@ To scrape prices of products run this in the terminal:
 python3 scrape_links.py
 ```
 
-## Start from scratch <a name="start-scratch"></a>
-If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
-```
-{}
-```
-Then delete the lines under the last if-statement in scraper.py. 
-
-Then just add products like described [here](#add-products).
-
 ## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
 ```
 python3 add_product.py <category> <url>
 ```
+
 e.g.
 ```
 python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
@@ -86,7 +72,21 @@ Should be: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK
 For example the link: https://www.ebay.com/itm/Samsung-Galaxy-Note-20-Ultra-256GB-12GB-RAM-SM-N986B-DS-FACTORY-UNLOCKED-6-9/193625604205?_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D225074%26meid%3Dd6c93f1458884e65bcc434e38f6f303c%26pid%3D100970%26rk%3D8%26rkt%3D8%26mehot%3Dpp%26sd%3D402319206529%26itm%3D193625604205%26pmt%3D0%26noa%3D1%26pg%3D2380057%26brand%3DSamsung&_trksid=p2380057.c100970.m5481&_trkparms=pageci%3A6ffa204c-042b-11eb-baa4-3a1cc2bb9aea%7Cparentrq%3Ae60676341740a4d6b1579293fff1b710%7Ciid%3A1<br/>
 Should be: https://www.ebay.com/itm/Samsung-Galaxy-Note-20-Ultra-256GB-12GB-RAM-SM-N986B-DS-FACTORY-UNLOCKED-6-9/193625604205
 
-
+### Links to scrape from <a name="links-to-scrape-from"></a>
+This scraper can (so far) scrape prices on products from:
+- [Komplett.dk](https://www.komplett.dk/)
+- [Proshop.dk](https://www.proshop.dk/)
+- [Computersalg.dk](https://www.computersalg.dk/)
+- [Elgiganten.dk](https://www.elgiganten.dk/)
+- [AvXperten.dk](https://www.avxperten.dk/)
+- [Av-Cables.dk](https://www.av-cables.dk/)
+- [Amazon.com](https://www.amazon.com/)
+- [eBay.com](https://www.ebay.com/)
+- [Power.dk](https://www.power.dk/)
+- [Expert.dk](https://www.expert.dk/)
+- [MM-Vision.dk](https://www.mm-vision.dk/)
+- [Coolshop.dk](https://www.coolshop.dk/)
+- [Sharkgaming.dk](https://www.sharkgaming.dk/)
 
 ### Optional arguments <a name="optional-arguments"></a>
 There is some optional arguments you can use when running add_product.py, these are:
@@ -121,8 +121,21 @@ When using one or more of "domain" arguments, only the chosen domains gets added
 
 
 ## User settings <a name="user-settings"></a>
-See the [README in tech_scraper](./tech_scraper/README.md#user-settings)
+User settings can be added and changed in the file settings.ini.
 
+Right now there is only one category of user settings, which is "ChangeName".  Under this category you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
+
+When adding a new setting under the category "ChangeName" in settings.ini, there must be a line with ```keywords<n>``` and a line with ```valuewords<n>```, where ```<n>``` is the "link" between keywords and valuewords. E.g. ```valuewords3``` is the value to ```keywords3```.
+
+In ```keywords<n>``` you set the keywords (seperated by a comma) that the product name must have for to be changed to what ```valuewords<n>``` is equal to. Example if the user settings is the following:
+
+```
+[ChangeName]
+keywords1 = asus,3080,rog,strix,oc
+valuewords1 = asus geforce rtx 3080 rog strix oc
+```
+
+The script checks if a product name has all of the words in ```keywords1```, it gets changed to what ```valuewords1``` is.
 
 ## Visualize data <a name="visualize-data"></a>
 To visualize your data run the "visualize_data.py" script with some arguments.
