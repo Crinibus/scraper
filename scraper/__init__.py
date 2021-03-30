@@ -1,1 +1,2 @@
-from scraper.scrape import Scraper
+from .scrape import Scraper
+from .arguments import argparse_setup
