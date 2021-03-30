@@ -5,6 +5,7 @@ from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.domains import Info, domains, get_website_name
 from scraper.filemanager import Logger, Filemanager
 from scraper.format import Format
+import logging
 
 
 class Scraper:
@@ -13,7 +14,9 @@ class Scraper:
         self.url = url
         self.website_name = get_website_name(url)
         self.info = Info
-        self.logger = Logger.create_logger("Scraper")
+        # self.logger = Logger.create_logger("Scraper")
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug(f"{self.website_name} -> {self.url}")
 
     def scrape_info(self) -> None:
         soup = self.request_url()
@@ -30,6 +33,7 @@ class Scraper:
     def save_info(self) -> None:
         data = self.update_data()
         Filemanager.save_record_data(data)
+        self.logger.debug(f"{self.url} -> saved data")
 
     def update_data(self) -> dict:
         short_url = Format.shorten_url(self.website_name, self.url, self.info)
