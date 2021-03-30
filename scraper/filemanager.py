@@ -51,23 +51,29 @@ class Config:
         return config['ChangeName']
 
 
-def log_setup() -> logging:
-    """Setup and return logger."""
-    # Gets or creates a logger
-    logger = logging.getLogger("Scraper")
+class Logger:
+    @staticmethod
+    def create_logger(logger_name: str) -> logging:
+        """Setup and return logger."""
+        # Gets or creates a logger
+        logger = logging.getLogger(logger_name)
 
-    # Check if logger already has a handler
-    if logger.hasHandlers():
-        logger.handlers.clear()
+        # Check if logger already has a handler
+        if logger.hasHandlers():
+            logger.handlers.clear()
 
-    # set log level (lowest level)
-    logger.setLevel(logging.DEBUG)
+        # set log level (lowest level)
+        logger.setLevel(logging.DEBUG)
 
-    # define file handler and set formatter
-    file_handler = logging.FileHandler('logfile.log')
-    formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
-    file_handler.setFormatter(formatter)
+        # define file handler and set formatter
+        file_handler = logging.FileHandler(f'{Filemanager.get_root_path()}/scraper/logfile.log')
+        formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+        file_handler.setFormatter(formatter)
 
-    # add file handler to logger
-    logger.addHandler(file_handler)
-    return logger
+        # add file handler to logger
+        logger.addHandler(file_handler)
+        return logger
+
+    @staticmethod
+    def get_logger(logger_name: str) -> logging:
+        return logging.getLogger(logger_name)

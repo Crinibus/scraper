@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.domains import Info, domains, get_website_name
-from scraper.filemanager import log_setup, Filemanager
+from scraper.filemanager import Logger, Filemanager
 from scraper.format import Format
 
 
@@ -13,7 +13,7 @@ class Scraper:
         self.url = url
         self.website_name = get_website_name(url)
         self.info = Info
-        self.logger = log_setup()
+        self.logger = Logger.create_logger("Scraper")
 
     def scrape_info(self) -> None:
         soup = self.request_url()
