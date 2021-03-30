@@ -3,6 +3,9 @@ import threading
 from scraper import Scraper, argparse_setup
 
 
+import logging.config
+
+
 def main():
     args = argparse_setup()
 
@@ -38,4 +41,5 @@ def scrape():
 
 
 if __name__ == "__main__":
+    logging.config.fileConfig(fname="scraper/logging.ini")
     main()
