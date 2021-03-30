@@ -31,14 +31,14 @@ def proshop(soup: BeautifulSoup) -> Info:
     name = soup.find('div', class_='col-xs-12 col-sm-7').h1.text.lower()
     try:
         # find normal price
-        price = float(soup.find('span', class_='site-currency-attention').text.split(',')[0].replace('.', ''))
+        price = float(soup.find('span', class_='site-currency-attention').text.replace('.', '').replace(",", ".").strip(" kr"))
     except AttributeError:
         try:
             # find discount price
-            price = float(soup.find('div', class_='site-currency-attention site-currency-campaign').text.split(',')[0].replace('.', ''))
+            price = float(soup.find('div', class_='site-currency-attention site-currency-campaign').text.replace('.', '').replace(",", ".").strip(" kr"))
         except AttributeError:
             # if campaign is sold out (udsolgt)
-            price = float(soup.find('div', class_='site-currency-attention').text.split(',')[0].replace('.', ''))
+            price = float(soup.find('div', class_='site-currency-attention').text.replace('.', '').replace(",", ".").strip(" kr"))
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
     partnum = int(json.loads(script_tag).get("sku"))
@@ -47,7 +47,7 @@ def proshop(soup: BeautifulSoup) -> Info:
 
 def computersalg(soup: BeautifulSoup) -> Info:
     name = soup.find('h1', itemprop='name').text.lower()
-    price = float(soup.find('span', itemprop='price').text.strip().split(',')[0].replace('.', ''))
+    price = float(soup.find('span', itemprop='price').text.strip().replace('.', '').replace(",", "."))
     currency = soup.find("span", itemprop="priceCurrency").get("content")
     partnum = int(soup.find("h2", class_="productIdentifierHeadline").span.text)
     return Info(name, price, currency, partnum)
@@ -72,7 +72,7 @@ def avxperten(soup: BeautifulSoup) -> Info:
 
 def avcables(soup: BeautifulSoup) -> Info:
     name = soup.find('h1', class_='title').text.lower()
-    price = float(soup.find('div', class_='regular-price').text.strip().replace('Pris:   ', '').split(',')[0])
+    price = float(soup.find('div', class_='regular-price').text.strip().replace('Pris:   ', '').replace("Tilbudspris:   ", "").split(',')[0])
     currency = soup.find("meta", property="og:price:currency").get("content")
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     partnum = json.loads(script_tag).get("sku")
@@ -81,10 +81,15 @@ def avcables(soup: BeautifulSoup) -> Info:
 
 def amazon(soup: BeautifulSoup) -> Info:
     name = soup.find('span', id='productTitle').text.strip().lower()
-    price = float(soup.find('span', id='priceblock_ourprice').text.replace('$', '').split('.')[0].replace(',', ''))
+    try:
+        # Normal price
+        price = float(soup.find('span', id='priceblock_ourprice').text.replace('$', '').replace(',', ''))
+    except AttributeError:
+        # Deal price
+        price = float(soup.find('span', id='priceblock_dealprice').text.replace('$', '').replace(',', ''))
     script_tag = soup.find_all("script", type="a-state")[15].contents[0]
     currency = json.loads(script_tag).get("currencyCode")
-    asin = soup.find("input", id="attach-baseAsin").get("value")
+    asin = soup.find("input", id="ASIN").get("value")
     return Info(name, price, currency, asin=asin)
 
 
@@ -108,7 +113,7 @@ def ebay(soup: BeautifulSoup) -> Info:
 
 def power(soup: BeautifulSoup) -> Info:
     name = soup.find('title').text.replace(' - Power.dk', '').lower()
-    price = float(soup.find('meta', property='product:price:amount')['content'].split(',')[0])
+    price = float(soup.find('meta', property='product:price:amount')['content'].replace(",", "."))
     currency = soup.find("meta", property="product:price:currency").get("content")
     partnum = int(soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-"))
     return Info(name, price, currency, partnum)
@@ -116,7 +121,7 @@ def power(soup: BeautifulSoup) -> Info:
 
 def expert(soup: BeautifulSoup) -> Info:
     name = soup.find('meta', property='og:title')['content'].lower()
-    price = float(soup.find('meta', property='product:price:amount')['content'].split(',')[0])
+    price = float(soup.find('meta', property='product:price:amount')['content'].replace(",", "."))
     currency = soup.find("meta", property="product:price:currency").get("content")
     partnum = int(soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-"))
     return Info(name, price, currency, partnum)
@@ -140,8 +145,8 @@ def coolshop(soup: BeautifulSoup) -> Info:
 
 
 def sharkgaming(soup: BeautifulSoup) -> Info:
-    name = soup.find('div', class_='product-name').text.strip().lower()
-    price = float(soup.find('span', class_='price').text.replace(' kr.', '').replace('.', ''))
+    name = soup.find("meta", property="og:title").get("content")
+    price = float(soup.find("meta", property="product:price:amount").get("content"))
     currency = soup.find("meta", property="product:price:currency").get("content")
     partnum = int(soup.find("meta", itemprop="productID").get("content"))
     return Info(name, price, currency, partnum)
