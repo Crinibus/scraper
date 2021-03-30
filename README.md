@@ -64,13 +64,8 @@ python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-k
 This adds the category (if new) and the product to the records.json file, and adds a line at the end of the scraper.py file so the script can scrape price of the new product.
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
-**OBS**: The url must have the "https://www." part.<br/>
-**OBS**: When using Amazon links, delete everything after and including this "ref=sr".<br/>
-For example the link: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/ref=sr_1_2?dchild=1&qid=1601488833&s=computers-intl-ship&sr=1-2<br/>
-Should be: https://www.amazon.com/NVIDIA-GEFORCE-RTX-2080-Founders/dp/B07HWMDDMK/<br/>
-**OBS**: When using eBay links, delete everything after and including this "?_trkparms="<br/>
-For example the link: https://www.ebay.com/itm/Samsung-Galaxy-Note-20-Ultra-256GB-12GB-RAM-SM-N986B-DS-FACTORY-UNLOCKED-6-9/193625604205?_trkparms=aid%3D111001%26algo%3DREC.SEED%26ao%3D1%26asc%3D225074%26meid%3Dd6c93f1458884e65bcc434e38f6f303c%26pid%3D100970%26rk%3D8%26rkt%3D8%26mehot%3Dpp%26sd%3D402319206529%26itm%3D193625604205%26pmt%3D0%26noa%3D1%26pg%3D2380057%26brand%3DSamsung&_trksid=p2380057.c100970.m5481&_trkparms=pageci%3A6ffa204c-042b-11eb-baa4-3a1cc2bb9aea%7Cparentrq%3Ae60676341740a4d6b1579293fff1b710%7Ciid%3A1<br/>
-Should be: https://www.ebay.com/itm/Samsung-Galaxy-Note-20-Ultra-256GB-12GB-RAM-SM-N986B-DS-FACTORY-UNLOCKED-6-9/193625604205
+**OBS**: The url must have the "https://" part.<br/>
+
 
 ### Links to scrape from <a name="links-to-scrape-from"></a>
 This scraper can (so far) scrape prices on products from:
