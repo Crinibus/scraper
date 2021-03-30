@@ -38,10 +38,10 @@ class Scraper:
 
         product_info = data[self.category][self.info.name][self.website_name]
 
-        if self.info.partnum:
-            product_info["info"].update({"url": short_url, "partnum": self.info.partnum})
-        else:
-            product_info["info"].update({"url": short_url, "partnum": self.info.asin})  # Amazon
+        # Get product id either from info.partnum or info.asin (only Amazon)
+        product_id = self.info.partnum if self.info.partnum else self.info.asin
+
+        product_info["info"].update({"url": short_url, "id": product_id})
         product_info["dates"].update({date: {"price": self.info.price}})
 
         return data
