@@ -1,15 +1,18 @@
 import pandas as pd
 import threading
-from scraper import Scraper
+from scraper import Scraper, argparse_setup
 
 
 def main():
-    products_df = pd.read_csv("./scraper/products.csv", sep=",", header=0)
+    args = argparse_setup()
 
-    # Create instances of class "Scraper"
-    # products = [
-    #     Scraper(data["category"], data["url"]) for _, data in products_df.iterrows()
-    # ]
+    if args.scrape:
+        print("Scraping...")
+        scrape()
+
+
+def scrape():
+    products_df = pd.read_csv("./scraper/products.csv", sep=",", header=0)
 
     # Create instances of class "Scraper"
     products = [
