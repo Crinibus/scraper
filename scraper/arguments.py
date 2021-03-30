@@ -115,5 +115,5 @@ def validate_arguments(parser: ArgumentParser) -> None:
     """Validate arguments"""
     args = parser.parse_args()
 
-    if args.category and not args.url:
-        parser.error("When using --category, then --url is required")
+    if (args.category and not args.url) or (not args.category and args.url):
+        parser.error("When using --category or either --url, then both --category and --url is required")
