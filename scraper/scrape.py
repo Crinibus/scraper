@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.domains import Info, domains, get_website_name
-from scraper.filemanager import Logger, Filemanager
+from scraper.filemanager import Filemanager
 from scraper.format import Format
 import logging
 
@@ -14,7 +14,6 @@ class Scraper:
         self.url = url
         self.website_name = get_website_name(url)
         self.info = Info
-        # self.logger = Logger.create_logger("Scraper")
         self.logger = logging.getLogger(__name__)
         self.logger.debug(f"{self.website_name} -> {self.url}")
 
