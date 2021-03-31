@@ -10,6 +10,10 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
+        "-a", "--add", help="Add a product", action="store_true",
+    )
+
+    parser.add_argument(
         "--reset", help="delete data for each product in records.json, such as prices of each recorded day", action="store_true",
     )
 
@@ -123,5 +127,6 @@ def validate_arguments(parser: ArgumentParser) -> None:
     """Validate arguments"""
     args = parser.parse_args()
 
-    if (args.category and not args.url) or (not args.category and args.url):
-        parser.error("When using --category or either --url, then both --category and --url is required")
+    if args.add:
+        if not args.category or not args.url:
+            parser.error("When using --add, then --category and --url is required")
