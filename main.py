@@ -1,20 +1,26 @@
 import pandas as pd
 import threading
-from scraper import Scraper, argparse_setup
-
-
 import logging.config
+import scraper
+from scraper import Scraper  # , argparse_setup, add_product
 
 
 def main():
-    args = argparse_setup()
+    args = scraper.argparse_setup()
+
+    if args.reset:
+        reset()
+
+    if args.add:
+        scraper.add_product(args)
 
     if args.scrape:
-        print("Scraping...")
         scrape()
 
 
 def scrape():
+    print("Scraping...")
+
     products_df = pd.read_csv("./scraper/products.csv", sep=",", header=0)
 
     # Create instances of class "Scraper"
@@ -38,6 +44,11 @@ def scrape():
     # Save scraped data for each product (sequentially)
     for product in products:
         product.save_info()
+
+
+def reset():
+    print("Resetting data...")
+    pass
 
 
 if __name__ == "__main__":
