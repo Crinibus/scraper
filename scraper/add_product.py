@@ -20,4 +20,6 @@ def add_product(args):
         }
     )
 
+    Filemanager.save_record_data(data)
+
     new_product.save_info()
