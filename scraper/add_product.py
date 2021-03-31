@@ -10,13 +10,10 @@ def add_product(args):
 
     data = Filemanager.get_record_data()
 
-    # overriding existing products, not what I want
-    data.update(
+    data[args.category].update(
         {
-            args.category: {
-                new_product.info.name: {
-                    new_product.website_name: {"info": {}, "dates": {}}
-                }
+            new_product.info.name: {
+                new_product.website_name: {"info": {}, "dates": {}}
             }
         }
     )
@@ -24,3 +21,4 @@ def add_product(args):
     Filemanager.save_record_data(data)
 
     new_product.save_info()
+    pass
