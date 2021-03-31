@@ -2,7 +2,6 @@ import pandas as pd
 import threading
 import logging.config
 import scraper
-from scraper import Scraper  # , argparse_setup, add_product
 
 
 def main():
@@ -25,7 +24,7 @@ def scrape():
 
     # Create instances of class "Scraper"
     products = [
-        Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])
+        scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])
     ]
 
     # Create threads
