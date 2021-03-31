@@ -10,6 +10,7 @@ def add_product(args):
 
     data = Filemanager.get_record_data()
 
+    # overriding existing products, not what I want
     data.update(
         {
             args.category: {
