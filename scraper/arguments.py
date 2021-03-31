@@ -10,6 +10,14 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
+        "--reset", help="delete data for each product in records.json, such as prices of each recorded day", action="store_true",
+    )
+
+    parser.add_argument(
+        "--hard-reset", help="delete all content in records.json and products.csv", action="store_true",
+    )
+
+    parser.add_argument(
         "-c", "--category", help="the category the product is going to be in", type=str
     )
 
