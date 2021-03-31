@@ -38,7 +38,7 @@ class Format:
         for item in user_product_names:
             if "key" in item:
                 key_list = user_product_names[item].split(',')
-                value_key = f'valuewords{item.strip("keywords")}'
+                value_key = f'value{item.strip("key")}'
                 if all(elem in product_name for elem in key_list):
                     return user_product_names[value_key]
         return product_name
