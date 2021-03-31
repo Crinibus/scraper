@@ -18,11 +18,12 @@ class Scraper:
         self.logger.debug(f"{self.website_name} -> {self.url}")
 
     def scrape_info(self) -> None:
-        soup = self.request_url()
+        soup = Scraper.request_url(self.url)
         self.get_info(soup)
 
-    def request_url(self) -> BeautifulSoup:
-        response = requests.get(self.url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES)
+    @staticmethod
+    def request_url(url: str) -> BeautifulSoup:
+        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES)
         return BeautifulSoup(response.text, "html.parser")
 
     def get_info(self, soup: BeautifulSoup) -> None:
