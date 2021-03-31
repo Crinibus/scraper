@@ -21,4 +21,11 @@ def add_product(args):
     Filemanager.save_record_data(data)
 
     new_product.save_info()
+
+
+def add_product_to_records():
+    pass
+
+
+def add_product_to_csv():
     pass
