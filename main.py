@@ -10,6 +10,9 @@ def main():
     if args.reset:
         reset()
 
+    if args.hard_reset:
+        hard_reset()
+
     if args.add:
         scraper.add_product(args)
 
@@ -47,7 +50,21 @@ def scrape():
 
 def reset():
     print("Resetting data...")
-    pass
+    data = scraper.Filemanager.get_record_data()
+
+    for category in data.values():
+        for product in category.values():
+            for website in product.values():
+                website["info"] = {"id": "", "url": ""}
+                website["dates"] = {}
+
+    scraper.Filemanager.save_record_data(data)
+
+
+def hard_reset():
+    print("Hard resetting data...")
+    data = {}
+    scraper.Filemanager.save_record_data(data)
 
 
 if __name__ == "__main__":
