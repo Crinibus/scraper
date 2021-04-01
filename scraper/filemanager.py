@@ -1,8 +1,10 @@
 import pathlib
 # from configparser import ConfigParser, SectionProxy
 import configparser
-import logging
+# import logging
+import pandas as pd
 import json
+import csv
 
 
 class Filemanager:
@@ -23,6 +25,17 @@ class Filemanager:
             json.dump(data, file, ensure_ascii=False, indent=2)
 
     @staticmethod
+    def append_csv(filename: str, data: list):
+        with open(filename, "a", encoding="utf8", newline="") as file:
+            csv_writer = csv.writer(file)
+            csv_writer.writerow(data)
+
+    @staticmethod
+    def clear_csv(filename: str):
+        with open(filename, "w", encoding="utf8") as file:
+            file.truncate()
+
+    @staticmethod
     def get_record_data() -> dict:
         data = Filemanager.read_json(f"{Filemanager.get_root_path()}/scraper/records.json")
         return data
@@ -30,6 +43,21 @@ class Filemanager:
     @staticmethod
     def save_record_data(data: dict) -> None:
         Filemanager.write_json(f"{Filemanager.get_root_path()}/scraper/records.json", data)
+
+    @staticmethod
+    def get_products_data() -> pd.DataFrame:
+        df = pd.read_csv(f"{Filemanager.get_root_path()}/scraper/products.csv", sep=",", header=0)
+        return df
+
+    @staticmethod
+    def add_product_to_csv(category: str, url: str) -> None:
+        data = [category, url]
+        Filemanager.append_csv(f"{Filemanager.get_root_path()}/scraper/products.csv", data)
+
+    @staticmethod
+    def clear_product_csv():
+        Filemanager.clear_csv(f"{Filemanager.get_root_path()}/scraper/products.csv")
+        Filemanager.add_product_to_csv("category", "url")  # header for csv pandas.DataFrame
 
 
 class Config:
