@@ -12,8 +12,7 @@ def add_product(args) -> None:
 
     if product_added:
         Filemanager.add_product_to_csv(new_product.category, new_product.url)
-
-    new_product.save_info()
+        new_product.save_info()
 
 
 def add_product_to_records(product: Scraper) -> bool:
