@@ -23,8 +23,11 @@ class Scraper:
 
     @staticmethod
     def request_url(url: str) -> BeautifulSoup:
-        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES)
-        return BeautifulSoup(response.text, "html.parser")
+        try:
+            response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES)
+            return BeautifulSoup(response.text, "html.parser")
+        except requests.exceptions.RequestException:  # temporary try expect for all requests errors
+            logging.getLogger(__name__).exception("Module requests exception")
 
     def get_info(self, soup: BeautifulSoup) -> None:
         website_function = get_website_function(self.website_name)
