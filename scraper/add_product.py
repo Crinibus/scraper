@@ -22,43 +22,39 @@ def add_product_to_records(product: Scraper) -> bool:
     category_exist = True if data.get(product.category) else False
 
     if category_exist:
-        product_name_exist = True if data[product.category].get(product.info.name) else False
+        product_name_exist = (
+            True if data[product.category].get(product.info.name) else False
+        )
         if product_name_exist:
-            product_and_website_exist = True if data[product.category][product.info.name].get(product.website_name) else False
+            product_and_website_exist = (
+                True
+                if data[product.category][product.info.name].get(product.website_name)
+                else False
+            )
 
             if product_and_website_exist:
-                user_input = input("A product with the same name and from the same website already exist in your data, do you want to override this product? (y/n) > ")
+                user_input = input(
+                    "A product with the same name and from the same website already exist in your data, do you want to override this product? (y/n) > "
+                )
                 if user_input.lower() in ("n", "no"):
                     print("Product was not overridden")
                     return False
 
             data[product.category][product.info.name].update(
-                {
-                    product.website_name: {"info": {}, "dates": {}}
-                }
+                {product.website_name: {"info": {}, "dates": {}}}
             )
         else:
             data[product.category].update(
-                {
-                    product.info.name: {
-                        product.website_name: {"info": {}, "dates": {}}
-                    }
-                }
+                {product.info.name: {product.website_name: {"info": {}, "dates": {}}}}
             )
     else:
         data.update(
             {
                 product.category: {
-                    product.info.name: {
-                        product.website_name: {"info": {}, "dates": {}}
-                    }
+                    product.info.name: {product.website_name: {"info": {}, "dates": {}}}
                 }
             }
         )
 
     Filemanager.save_record_data(data)
     return True
-
-
-# def add_product_to_csv(product: Scraper):
-#     Filemanager.add_product_data(product.category, product.url)
