@@ -15,7 +15,7 @@ class Scraper:
         self.website_name = get_website_name(url)
         self.info = Info
         self.logger = logging.getLogger(__name__)
-        self.logger.debug(f"{self.website_name} -> {self.url}")
+        self.logger.debug(f"Instantiating Scraper: {self.category} - {self.url}")
 
     def scrape_info(self) -> None:
         soup = Scraper.request_url(self.url)
@@ -33,7 +33,7 @@ class Scraper:
     def save_info(self) -> None:
         data = self.update_data()
         Filemanager.save_record_data(data)
-        self.logger.debug(f"{self.url} -> saved data")
+        self.logger.debug(f"Saving info: {self.category} - {self.url}")
 
     def update_data(self) -> dict:
         short_url = Format.shorten_url(self.website_name, self.url, self.info)

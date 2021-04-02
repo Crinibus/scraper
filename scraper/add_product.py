@@ -1,9 +1,12 @@
+import logging
 from scraper.scrape import Scraper
 from scraper.filemanager import Filemanager
 
 
 def add_product(args) -> None:
     print("Adding product...")
+    logger = logging.getLogger(__name__)
+    logger.info(f"Adding product: {args.category} - {args.url}")
 
     new_product = Scraper(args.category, args.url)
     new_product.scrape_info()
@@ -13,6 +16,8 @@ def add_product(args) -> None:
     if product_added:
         Filemanager.add_product_to_csv(new_product.category, new_product.url)
         new_product.save_info()
+    else:
+        logger.info("Adding product cancelled")
 
 
 def add_product_to_records(product: Scraper) -> bool:
