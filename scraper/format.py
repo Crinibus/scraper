@@ -1,5 +1,15 @@
+from dataclasses import dataclass
 from scraper.filemanager import Config
-from scraper.domains import Info
+
+
+@dataclass
+class Info:
+    """Scraped info about product"""
+    name: str
+    price: float
+    currency: str
+    partnum: int = None
+    asin: str = None
 
 
 class Format:

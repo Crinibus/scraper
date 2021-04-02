@@ -2,9 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
-from scraper.domains import Info, domains, get_website_name
+from scraper.domains import domains, get_website_name
 from scraper.filemanager import Filemanager
-from scraper.format import Format
+from scraper.format import Format, Info
 import logging
 
 

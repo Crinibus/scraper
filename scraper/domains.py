@@ -1,21 +1,12 @@
 from bs4 import BeautifulSoup
-from dataclasses import dataclass
 import json
+from scraper.format import Format, Info
 
 
 def get_website_name(url: str) -> str:
     domain = url.split('/')[2]
     website_name = domain.strip("www.").split(".")[0]
     return website_name
-
-
-@dataclass
-class Info:
-    name: str
-    price: float
-    currency: str
-    partnum: int = None
-    asin: str = None
 
 
 def komplett(soup: BeautifulSoup) -> Info:
