@@ -11,7 +11,7 @@ class Filemanager:
     @staticmethod
     def get_root_path() -> str:
         """Return root path of this repository"""
-        return pathlib.Path().parent.absolute()
+        return pathlib.Path(__file__).parent.parent.absolute()
 
     @staticmethod
     def read_json(filename: str) -> dict:
