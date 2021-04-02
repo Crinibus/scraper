@@ -1,3 +1,5 @@
+import logging
+from typing import Callable
 from bs4 import BeautifulSoup
 import json
 from scraper.format import Format, Info
@@ -7,6 +9,14 @@ def get_website_name(url: str) -> str:
     domain = url.split('/')[2]
     website_name = domain.strip("www.").split(".")[0]
     return website_name
+
+
+def get_website_function(website_name: str) -> Callable[[BeautifulSoup], Info]:
+    try:
+        website_function = domains[website_name]
+    except KeyError:
+        logging.getLogger(__name__).exception("KeyError on dict 'domains'")
+    return website_function
 
 
 def komplett(soup: BeautifulSoup) -> Info:
