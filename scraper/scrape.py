@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
-from scraper.domains import domains, get_website_name
+from scraper.domains import get_website_function, get_website_name
 from scraper.filemanager import Filemanager
 from scraper.format import Format, Info
 import logging
@@ -27,8 +27,8 @@ class Scraper:
         return BeautifulSoup(response.text, "html.parser")
 
     def get_info(self, soup: BeautifulSoup) -> None:
-        domain_function = domains.get(self.website_name)
-        self.info = domain_function(soup)
+        website_function = get_website_function(self.website_name)
+        self.info = website_function(soup)
 
     def save_info(self) -> None:
         data = self.update_data()
