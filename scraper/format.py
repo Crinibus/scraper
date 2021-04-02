@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 from scraper.filemanager import Config
 
 
@@ -37,7 +38,10 @@ class Format:
             else:
                 short_url = url.split('?')[0]
         else:
-            short_url = short_urls.get(website_name)
+            try:
+                short_url = short_urls[website_name]
+            except KeyError:
+                logging.getLogger(__name__).exception("KeyError on dict 'short_urls'")
 
         return short_url
 
