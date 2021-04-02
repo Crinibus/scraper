@@ -68,5 +68,11 @@ def hard_reset():
 
 
 if __name__ == "__main__":
-    logging.config.fileConfig(fname="scraper/logging.ini")
+    logfile_path = f"{Filemanager.get_root_path()}\\scraper\\logfile.log"
+
+    logging.config.fileConfig(
+        fname=f"{Filemanager.get_root_path()}/scraper/logging.ini",
+        defaults={"logfilename": f"{Filemanager.get_root_path()}/scraper/logfile.log"}
+    )
+
     main()
