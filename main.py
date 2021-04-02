@@ -1,4 +1,4 @@
-import pandas as pd
+from scraper.filemanager import Filemanager
 import threading
 import logging.config
 import scraper
@@ -23,7 +23,7 @@ def main():
 def scrape():
     print("Scraping...")
 
-    products_df = pd.read_csv("./scraper/products.csv", sep=",", header=0)
+    products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
     products = [
