@@ -43,7 +43,11 @@ class Scraper:
         date = datetime.today().strftime('%Y-%m-%d')
         data = Filemanager.get_record_data()
 
-        product_info = data[self.category][self.info.name][self.website_name]
+        try:
+            product_info = data[self.category][self.info.name][self.website_name]
+        except KeyError:
+            self.logger.exception("KeyError on dict 'data'")
+            return data
 
         # Get product id either from info.partnum or info.asin (only Amazon)
         product_id = self.info.partnum if self.info.partnum else self.info.asin
