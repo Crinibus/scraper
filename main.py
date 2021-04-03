@@ -1,6 +1,6 @@
 from scraper.filemanager import Filemanager
 import threading
-# import logging.config
+import logging.config
 import logging
 import scraper
 
