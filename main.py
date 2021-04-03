@@ -1,4 +1,3 @@
-from scraper.filemanager import Filemanager
 import threading
 import logging.config
 import logging
@@ -13,7 +12,6 @@ def main():
 
     if args.hard_reset:
         hard_reset()
-        Filemanager.clear_product_csv()
 
     if args.add:
         scraper.add_product(args)
