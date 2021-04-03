@@ -1,6 +1,7 @@
 from scraper.filemanager import Filemanager
 import threading
-import logging.config
+# import logging.config
+import logging
 import scraper
 
 
@@ -51,6 +52,8 @@ def scrape():
 
 def reset():
     print("Resetting data...")
+    logging.getLogger(__name__).info("Resetting data")
+
     data = scraper.Filemanager.get_record_data()
 
     for category in data.values():
@@ -64,8 +67,11 @@ def reset():
 
 def hard_reset():
     print("Hard resetting data...")
+    logging.getLogger(__name__).info("Hard resetting data")
+
     data = {}
     scraper.Filemanager.save_record_data(data)
+    scraper.Filemanager.clear_product_csv()
 
 
 if __name__ == "__main__":
