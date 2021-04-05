@@ -48,6 +48,10 @@ def scrape():
         product.save_info()
 
 
+def scrape_with_threads():
+    pass
+
+
 def reset():
     print("Resetting data...")
     logging.getLogger(__name__).info("Resetting data")
