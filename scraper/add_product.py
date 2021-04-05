@@ -19,9 +19,9 @@ def add_product(args) -> None:
     new_product = Scraper(args.category, args.url)
     new_product.scrape_info()
 
-    product_added = add_product_to_records(new_product)
+    is_product_added = add_product_to_records(new_product)
 
-    if product_added:
+    if is_product_added:
         Filemanager.add_product_to_csv(new_product.category, new_product.url)
         new_product.save_info()
     else:
