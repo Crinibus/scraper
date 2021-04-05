@@ -1,12 +1,20 @@
 import logging
 from scraper.scrape import Scraper
 from scraper.filemanager import Filemanager
+from scraper.domains import get_website_name, domains
 
 
 def add_product(args) -> None:
     print("Adding product...")
     logger = logging.getLogger(__name__)
     logger.info(f"Adding product: {args.category} - {args.url}")
+
+    website_name = get_website_name(args.url)
+
+    if website_name not in domains.keys():
+        print(f"Can't scrape from this website: {website_name}")
+        logger.info("Not support website to scrape from")
+        return
 
     new_product = Scraper(args.category, args.url)
     new_product.scrape_info()
