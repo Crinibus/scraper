@@ -13,10 +13,7 @@ def get_website_name(url: str) -> str:
 
 
 def get_website_function(website_name: str) -> Callable[[BeautifulSoup], Info]:
-    try:
-        website_function = domains[website_name]
-    except KeyError:
-        logging.getLogger(__name__).exception("KeyError on dict 'domains'")
+    website_function = domains[website_name]
     return website_function
 
 
