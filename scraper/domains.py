@@ -7,7 +7,8 @@ from scraper.format import Format, Info
 
 def get_website_name(url: str) -> str:
     domain = url.split('/')[2]
-    website_name = domain.strip("www.").split(".")[0]
+    website_name_list = domain.strip("www.").split(".")[:-1]  # Remove "www." and the TLD/DNS name (such as ".com")
+    website_name = ".".join(website_name_list)
     return website_name
 
 
