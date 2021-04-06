@@ -11,6 +11,7 @@ class Info:
     currency: str
     partnum: int = None
     asin: str = None
+    valid: bool = True
 
 
 class Format:
