@@ -18,6 +18,7 @@ class Scraper:
         self.logger.debug(f"Instantiating Scraper: {self.category} - {self.url}")
 
     def scrape_info(self) -> None:
+        self.logger.debug(f"Scraping: {self.category} - {self.url}")
         soup = Scraper.request_url(self.url)
         self.get_info(soup)
 
