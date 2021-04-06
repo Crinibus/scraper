@@ -31,8 +31,12 @@ class Scraper:
             logging.getLogger(__name__).exception("Module requests exception")
 
     def get_info(self, soup: BeautifulSoup) -> None:
-        website_function = get_website_function(self.website_name)
-        self.info = website_function(soup)
+        try:
+            website_function = get_website_function(self.website_name)
+            self.info = website_function(soup)
+        except AttributeError:
+            self.logger.exception(f"Could not get all the data needed from url: {self.url}")
+            self.info = Info(None, None, None, valid=False)
 
     def save_info(self) -> None:
         data = self.update_data()
