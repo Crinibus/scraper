@@ -39,9 +39,10 @@ class Scraper:
             self.info = Info(None, None, None, valid=False)
 
     def save_info(self) -> None:
-        data = self.update_data()
-        self.logger.debug(f"Saving info: {self.category} - {self.url}")
-        Filemanager.save_record_data(data)
+        if self.info.valid:
+            data = self.update_data()
+            self.logger.debug(f"Saving info: {self.category} - {self.url}")
+            Filemanager.save_record_data(data)
 
     def update_data(self) -> dict:
         short_url = Format.shorten_url(self.website_name, self.url, self.info)
