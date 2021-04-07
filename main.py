@@ -7,6 +7,9 @@ import scraper
 def main():
     args = scraper.argparse_setup()
 
+    if args.visualize:
+        visualize(args)
+
     if args.reset:
         reset()
 
@@ -65,6 +68,19 @@ def scrape_with_threads():
     # Save scraped data for each product (sequentially)
     for product in products:
         product.save_info()
+
+
+def visualize(args):
+    if args.show_all:
+        scraper.show_all_products()
+
+    if args.visualize_categories:
+        for category in args.visualize_categories:
+            scraper.show_category(category)
+
+    if args.visualize_ids:
+        for id in args.visualize_ids:
+            scraper.show_id(id)
 
 
 def reset():
