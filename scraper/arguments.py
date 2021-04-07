@@ -3,22 +3,32 @@ from argparse import ArgumentParser
 
 def argparse_setup() -> ArgumentParser.parse_args:
     """Setup and return argparse."""
-    parser = ArgumentParser()
+    parser = ArgumentParser(description="")
 
     parser.add_argument(
-        "-s", "--scrape", help="scrape product prices", action="store_true",
+        "-s",
+        "--scrape",
+        help="scrape product prices",
+        action="store_true",
     )
 
     parser.add_argument(
-        "-a", "--add", help="Add a product", action="store_true",
+        "-a",
+        "--add",
+        help="Add a product",
+        action="store_true",
     )
 
     parser.add_argument(
-        "--reset", help="delete data for each product in records.json, such as prices of each recorded day", action="store_true",
+        "--reset",
+        help="delete data for each product in records.json, such as prices of each recorded day",
+        action="store_true",
     )
 
     parser.add_argument(
-        "--hard-reset", help="delete all content in records.json and products.csv", action="store_true",
+        "--hard-reset",
+        help="delete all content in records.json and products.csv",
+        action="store_true",
     )
 
     parser.add_argument(
@@ -31,13 +41,39 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument("-u", "--url", help="the url to the product", type=str)
 
-    parser.add_argument("-v", "--visualize", help="visualize your data", action="store_true", dest="visualize")
+    parser.add_argument(
+        "-v",
+        "--visualize",
+        help="visualize your data",
+        action="store_true",
+        dest="visualize",
+    )
 
-    parser.add_argument("-va", "--visualize-all", help="show graph for all products", action="store_true", dest="show_all")
+    parser.add_argument(
+        "-va",
+        "--visualize-all",
+        help="show graph for all products",
+        action="store_true",
+        dest="show_all",
+    )
 
-    parser.add_argument("-vc", "--visualize-category", help="show graph for the products with the specified categories", type=str, nargs="*", dest="visualize_categories")
+    parser.add_argument(
+        "-vc",
+        "--visualize-category",
+        help="show graph for the products with the specified categories",
+        type=str,
+        nargs="*",
+        dest="visualize_categories",
+    )
 
-    parser.add_argument("-id", "--visualize-id", help="show graph for the products with the specified ids", type=str, nargs="*", dest="visualize_ids")
+    parser.add_argument(
+        "-id",
+        "--visualize-id",
+        help="show graph for the products with the specified ids",
+        type=str,
+        nargs="*",
+        dest="visualize_ids",
+    )
 
     validate_arguments(parser)
 
