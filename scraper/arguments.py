@@ -31,6 +31,14 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument("-u", "--url", help="the url to the product", type=str)
 
+    parser.add_argument("-v", "--visualize", help="visualize your data", action="store_true", dest="visualize")
+
+    parser.add_argument("-va", "--visualize-all", help="show graph for all products", action="store_true", dest="show_all")
+
+    parser.add_argument("-vc", "--visualize-category", help="show graph for the products with the specified categories", type=str, nargs="*", dest="visualize_categories")
+
+    parser.add_argument("-id", "--visualize-id", help="show graph for the products with the specified ids", type=str, nargs="*", dest="visualize_ids")
+
     validate_arguments(parser)
 
     return parser.parse_args()
