@@ -14,8 +14,7 @@ def get_website_name(url: str) -> str:
 
 
 def get_website_function(website_name: str) -> Callable[[BeautifulSoup], Info]:
-    website_function = domains[website_name]
-    return website_function
+    return domains[website_name]
 
 
 def komplett(soup: BeautifulSoup) -> Info:
