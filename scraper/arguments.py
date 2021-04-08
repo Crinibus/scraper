@@ -64,6 +64,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         type=str,
         nargs="*",
         dest="visualize_categories",
+        metavar="category",
     )
 
     parser.add_argument(
@@ -73,6 +74,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         type=str,
         nargs="*",
         dest="visualize_ids",
+        metavar="id",
     )
 
     validate_arguments(parser)
