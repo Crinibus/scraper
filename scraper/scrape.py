@@ -25,7 +25,9 @@ class Scraper:
     @staticmethod
     def request_url(url: str) -> BeautifulSoup:
         try:
-            response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES)
+            response = requests.get(
+                url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES
+            )
             return BeautifulSoup(response.text, "html.parser")
         except requests.exceptions.RequestException:  # temporary try expect for all requests errors
             logging.getLogger(__name__).exception("Module requests exception")
@@ -35,7 +37,9 @@ class Scraper:
             website_function = get_website_function(self.website_name)
             self.info = website_function(soup)
         except AttributeError:
-            self.logger.exception(f"Could not get all the data needed from url: {self.url}")
+            self.logger.exception(
+                f"Could not get all the data needed from url: {self.url}"
+            )
             self.info = Info(None, None, None, valid=False)
 
     def save_info(self) -> None:
@@ -46,7 +50,7 @@ class Scraper:
 
     def update_data(self) -> dict:
         short_url = Format.shorten_url(self.website_name, self.url, self.info)
-        date = datetime.today().strftime('%Y-%m-%d')
+        date = datetime.today().strftime("%Y-%m-%d")
         data = Filemanager.get_record_data()
 
         try:

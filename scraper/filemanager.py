@@ -1,7 +1,5 @@
 import pathlib
-# from configparser import ConfigParser, SectionProxy
 import configparser
-# import logging
 import pandas as pd
 import json
 import csv
@@ -37,27 +35,37 @@ class Filemanager:
 
     @staticmethod
     def get_record_data() -> dict:
-        data = Filemanager.read_json(f"{Filemanager.get_root_path()}/scraper/records.json")
+        data = Filemanager.read_json(
+            f"{Filemanager.get_root_path()}/scraper/records.json"
+        )
         return data
 
     @staticmethod
     def save_record_data(data: dict) -> None:
-        Filemanager.write_json(f"{Filemanager.get_root_path()}/scraper/records.json", data)
+        Filemanager.write_json(
+            f"{Filemanager.get_root_path()}/scraper/records.json", data
+        )
 
     @staticmethod
     def get_products_data() -> pd.DataFrame:
-        df = pd.read_csv(f"{Filemanager.get_root_path()}/scraper/products.csv", sep=",", header=0)
+        df = pd.read_csv(
+            f"{Filemanager.get_root_path()}/scraper/products.csv", sep=",", header=0
+        )
         return df
 
     @staticmethod
     def add_product_to_csv(category: str, url: str) -> None:
         data = [category, url]
-        Filemanager.append_csv(f"{Filemanager.get_root_path()}/scraper/products.csv", data)
+        Filemanager.append_csv(
+            f"{Filemanager.get_root_path()}/scraper/products.csv", data
+        )
 
     @staticmethod
     def clear_product_csv():
         Filemanager.clear_csv(f"{Filemanager.get_root_path()}/scraper/products.csv")
-        Filemanager.add_product_to_csv("category", "url")  # header for csv pandas.DataFrame
+        Filemanager.add_product_to_csv(
+            "category", "url"
+        )  # header for csv to use in pandas.DataFrame
 
 
 class Config:
@@ -69,11 +77,11 @@ class Config:
 
     @staticmethod
     def write(filename: str, config: configparser.ConfigParser) -> None:
-        with open(filename, 'w') as default_file:
+        with open(filename, "w") as default_file:
             config.write(default_file)
 
     @staticmethod
     def get_user_product_names() -> configparser.SectionProxy:
         """Get section 'ChangeName' from settings.ini file"""
         config = Config.read(f"{Filemanager.get_root_path()}/scraper/settings.ini")
-        return config['ChangeName']
+        return config["ChangeName"]

@@ -11,21 +11,23 @@ def show_id(id: str):
             for website_name, website_info in product_info.items():
                 if id == str(website_info["id"]):
                     fig = go.Figure()
-                    fig.add_trace(go.Scatter(
-                        name=website_name,
-                        x=website_info["dates"],
-                        y=website_info["prices"],
-                        line={"color": WEBSITE_COLORS[website_name], "width": 2},
-                        hovertemplate="Price: %{y:.0f}",
-                    ))
+                    fig.add_trace(
+                        go.Scatter(
+                            name=website_name,
+                            x=website_info["dates"],
+                            y=website_info["prices"],
+                            line={"color": WEBSITE_COLORS[website_name], "width": 2},
+                            hovertemplate="Price: %{y:.0f}",
+                        )
+                    )
 
-                    fig.update_traces(mode='markers+lines')
+                    fig.update_traces(mode="markers+lines")
                     fig.update_layout(
                         title=f"Price(s) of {product_name.upper()}",
                         xaxis_title="Date",
                         yaxis_title="Price",
                         hovermode="x",
-                        separators=".,"
+                        separators=".,",
                     )
 
                     fig.show()
@@ -39,21 +41,23 @@ def show_category(category: str):
             for product_name, product_info in category_info.items():
                 fig = go.Figure()
                 for website_name, website_info in product_info.items():
-                    fig.add_trace(go.Scatter(
-                        name=website_name,
-                        x=website_info["dates"],
-                        y=website_info["prices"],
-                        line={"color": WEBSITE_COLORS[website_name], "width": 2},
-                        hovertemplate="Price: %{y:.0f}",
-                    ))
+                    fig.add_trace(
+                        go.Scatter(
+                            name=website_name,
+                            x=website_info["dates"],
+                            y=website_info["prices"],
+                            line={"color": WEBSITE_COLORS[website_name], "width": 2},
+                            hovertemplate="Price: %{y:.0f}",
+                        )
+                    )
 
-                fig.update_traces(mode='markers+lines')
+                fig.update_traces(mode="markers+lines")
                 fig.update_layout(
                     title=f"Price(s) of {product_name.upper()}",
                     xaxis_title="Date",
                     yaxis_title="Price",
                     hovermode="x",
-                    separators=".,"
+                    separators=".,",
                 )
 
                 fig.show()
@@ -66,21 +70,23 @@ def show_all_products():
         for product_name, product_info in category_info.items():
             fig = go.Figure()
             for website_name, website_info in product_info.items():
-                fig.add_trace(go.Scatter(
-                    name=website_name,
-                    x=website_info["dates"],
-                    y=website_info["prices"],
-                    line={"color": WEBSITE_COLORS[website_name], "width": 2},
-                    hovertemplate="Price: %{y:.0f}",
-                ))
+                fig.add_trace(
+                    go.Scatter(
+                        name=website_name,
+                        x=website_info["dates"],
+                        y=website_info["prices"],
+                        line={"color": WEBSITE_COLORS[website_name], "width": 2},
+                        hovertemplate="Price: %{y:.0f}",
+                    )
+                )
 
-            fig.update_traces(mode='markers+lines')
+            fig.update_traces(mode="markers+lines")
             fig.update_layout(
                 title=f"Price(s) of {product_name.upper()}",
                 xaxis_title="Date",
                 yaxis_title="Price",
                 hovermode="x",
-                separators=".,"
+                separators=".,",
             )
 
             fig.show()
@@ -102,6 +108,8 @@ def format_data() -> dict:
                 prices = [website_info["dates"][date]["price"] for date in dates]
                 id = website_info["info"]["id"]
 
-                data[category_name][product_name].update({website_name: {"dates": dates, "prices": prices, "id": id}})
+                data[category_name][product_name].update(
+                    {website_name: {"dates": dates, "prices": prices, "id": id}}
+                )
 
     return data
