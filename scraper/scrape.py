@@ -62,7 +62,7 @@ class Scraper:
         # Get product id either from info.partnum or info.asin (only Amazon)
         product_id = self.info.partnum if self.info.partnum else self.info.asin
 
-        product_info["info"].update({"url": short_url, "id": product_id})
+        product_info["info"].update({"url": short_url, "id": product_id, "currency": self.info.currency})
         product_info["dates"].update({date: {"price": self.info.price}})
 
         return data

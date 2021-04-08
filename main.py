@@ -92,7 +92,7 @@ def reset():
     for category in data.values():
         for product in category.values():
             for website in product.values():
-                website["info"] = {"id": "", "url": ""}
+                website["info"] = {"id": "", "url": "", "currency": ""}
                 website["dates"] = {}
 
     scraper.Filemanager.save_record_data(data)
