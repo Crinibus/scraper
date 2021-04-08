@@ -1,4 +1,3 @@
-import logging
 from typing import Callable
 from bs4 import BeautifulSoup
 import json
