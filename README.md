@@ -1,6 +1,5 @@
-# ---Under heavy development---
-
 # Table of contents
+- [Intro](#intro)
 - [Contributing](#contributing)
 - [First setup](#first-setup)
 - [Start from scratch](#start-scratch)
@@ -15,10 +14,19 @@
 
 <br/>
 
+
+## Intro <a name="intro"></a>
+With this program you can easily scrape and track prices on product at multiple websites. <br/>
+This program can also visualize price over time of the products being tracked. That can be helpful if you want to buy a product in the future and wants to know if a discount might be around the corner.
+
+<br/>
+
+
 ## Contributing <a name="contributing"></a>
 Feel free to fork the project and create a pull request with new features or refactoring of the code. Also feel free to make issues with problems or suggestions to new features.
 
 <br/>
+
 
 ## First setup <a name="first-setup"></a>
 Clone this repository and move into the repository:
@@ -36,37 +44,57 @@ pip install -r requirements.txt
 
 <br/>
 
-## Start from scratch <a name="start-scratch"></a>
-If you want to start from scratch with no data in the records.json file, then just delete all the content in records.json apart from two curly brackets:
-```
-{}
-```
 
-Then delete all the lines in file "scrape_links.py" apart from the import line at the top.
+## Start from scratch <a name="start-scratch"></a>
+If you want to start from scratch with no data in the records.json file, then just run the following command:
+```
+python3 main.py --hard-reset
+```
 
 Then just add products like described [here](#add-products).
+
+<br/>
+
+If you just want to reset your data for each product, just delete all data-points inside each product, then run this command:
+```
+python3 main.py --reset
+```
+This deletes all the data inside each product, such as id, url and and dates with prices.
+
+<br/>
+
 
 ## Scrape products <a name="scrape-products"></a>
 To scrape prices of products run this in the terminal:
 ```
-python3 scrape_links.py
+python3 main.py -s
 ```
+To scrape with threads run the same command but with the ```--threads``` argument:
+```
+python3 main.py -s --threads
+```
+
+<br/>
+
 
 ## Add products <a name="add-products"></a>
 Before scraping a new product, run a similar line to this:
 ```
-python3 add_product.py <category> <url>
+python3 main.py -a -c <category> -u <url>
 ```
 
 e.g.
 ```
-python3 add_product.py gpu https://www.komplett.dk/product/1135037/hardware/pc-komponenter/grafikkort/msi-geforce-rtx-2080-super-gaming-x-trio
+python3 main.py -a -c vr -u https://www.komplett.dk/product/1168594/gaming/spiludstyr/vr/vr-briller/oculus-quest-2-vr-briller
 ```
 
-This adds the category (if new) and the product to the records.json file, and adds a line at the end of the scraper.py file so the script can scrape price of the new product.
+This adds the category (if new) and the product to the records.json file, and adds a line at the end of the products.csv file so the script can scrape price of the new product.
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
 **OBS**: The url must have the "https://" part.<br/>
+**OBS**: If an error occures when adding a product, then the error might happen because the url has a "&" in it, when this happens then just put quotation mark around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
+
+<br/>
 
 
 ### Links to scrape from <a name="links-to-scrape-from"></a>
@@ -85,36 +113,7 @@ This scraper can (so far) scrape prices on products from:
 - [Coolshop.dk](https://www.coolshop.dk/)
 - [Sharkgaming.dk](https://www.sharkgaming.dk/)
 
-### Optional arguments <a name="optional-arguments"></a>
-There is some optional arguments you can use when running add_product.py, these are:
-
--     --komplett
-
--     --proshop
-
--     --computersalg
-
--     --elgiganten
-
--     --avxperten
-
--     --avcables
-
--     --amazon
-
--     --ebay
-
--     --power
-
--     --expert
-
--     --mmvision
-
--     --coolshop
-
--     --sharkgaming
-
-When using one or more of "domain" arguments, only the chosen domains gets added to records.json under the product name. 
+<br/>
 
 
 ## User settings <a name="user-settings"></a>
@@ -122,28 +121,28 @@ User settings can be added and changed in the file settings.ini.
 
 Right now there is only one category of user settings, which is "ChangeName".  Under this category you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
 
-When adding a new setting under the category "ChangeName" in settings.ini, there must be a line with ```keywords<n>``` and a line with ```valuewords<n>```, where ```<n>``` is the "link" between keywords and valuewords. E.g. ```valuewords3``` is the value to ```keywords3```.
+When adding a new setting under the category "ChangeName" in settings.ini, there must be a line with ```key<n>``` and a line with ```value<n>```, where ```<n>``` is the "link" between keywords and valuewords. E.g. ```value3``` is the value to ```key3```.
 
-In ```keywords<n>``` you set the keywords (seperated by a comma) that the product name must have for to be changed to what ```valuewords<n>``` is equal to. Example if the user settings is the following:
+In ```key<n>``` you set the keywords (seperated by a comma) that the product name must have for to be changed to what ```value<n>``` is equal to. Example if the user settings is the following:
 
 ```
 [ChangeName]
-keywords1 = asus,3080,rog,strix,oc
-valuewords1 = asus geforce rtx 3080 rog strix oc
+key1 = asus,3080,rog,strix,oc
+value1 = asus geforce rtx 3080 rog strix oc
 ```
 
-The script checks if a product name has all of the words in ```keywords1```, it gets changed to what ```valuewords1``` is.
+The script checks if a product name has all of the words in ```key1```, it gets changed to what ```value1``` is.
+
+<br/>
+
 
 ## Visualize data <a name="visualize-data"></a>
-To visualize your data run the "visualize_data.py" script with some arguments.
+To visualize your data, just run main.py with the ```-v``` or ```--visualize``` argument and then specify which products you want to be visualized. These are your options for how you want to visualize your products:
 
-See all available flags [here](#available-flags).
+- ```-va``` or ```--visualize-all``` to visualize all your products
+- ```-vc [<category> [<category> ...]]``` or ```--visualize-category [<category> [<category> ...]]``` to visualize all products in one or more categories
+- ```-id [<id> [<id> ...]]``` or ```--visualize-id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
 
-By using the ```--all``` flag you will get graphs for all products in records.json.
-
-By using the ```--partnum``` or ```-p``` and specify a partnumber you will only get the graph for the specified partnumber. You can specify multiple partnumbers just by adding multiple ```--partnum``` or ```-p``` flags.
-
-By using the ```--category``` or ```-c``` you will get graphs for all the product in the specified category. You can specify multiple categories just by adding multiple ```--category``` or ```-c``` flags.
 
 
 ### Command examples <a name="command-examples"></a>
@@ -151,53 +150,30 @@ By using the ```--category``` or ```-c``` you will get graphs for all the produc
 
 To show graphs for all products, run the following command:
 ```
-python3 visualize_data.py --all
+python3 main.py -v -va
 ```
 
 **Show graph(s) for specific products**
 
-To show a graph for only one product, run the following command where ```<partnumber>``` is the partnumber of the product you want a graph for:
+To show a graph for only one product, run the following command where ```<id>``` is the id of the product you want a graph for:
 ```
-python3 visualize_data.py --partnum <partnumber>
-```
-
-For multiple products, just add another flag, like so:
-```
-python3 visualize_data.py --partnum <partnumber> --partnum <partnumber>
+python3 main.py -v -id <id>
 ```
 
-You can also just use the short flag name, like so:
+For multiple products, just add another id, like so:
 ```
-python3 visualize_data.py -p <partnumber>
+python3 main.py -v -id <id> <id>
 ```
+
 
 **Show graphs for products in one or more categories**
 
 To show graphs for all products in one category, run the following command where ```<category>``` is the category you want graph from:
 ```
-python3 visualize_data.py --category <category>
+python3 main.py -v -vc <category>
 ```
 
 For multiple categories, just add another flag, like so:
 ```
-python3 visualize_data.py --category <category> --category <category> 
+python3 main.py -v -vc <category> <category>
 ```
-
-You can also just use the short flag name, like so:
-```
-python3 visualize_data.py -c <category>
-```
-
-
-### Available flags <a name="available-flags"></a>
-When running visualize_data.py you must use atleast one flag, the available flags are:
-
--     --all
-
--     --partnum <partnum>
-
--     -p <partnum>
-
--     --category <category>
-
--     -c <category>
