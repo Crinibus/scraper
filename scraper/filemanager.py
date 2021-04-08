@@ -85,3 +85,9 @@ class Config:
         """Get section 'ChangeName' from settings.ini file"""
         config = Config.read(f"{Filemanager.get_root_path()}/scraper/settings.ini")
         return config["ChangeName"]
+
+    @staticmethod
+    def get_key_values(elements: list):
+        for elem in elements:
+            if "key" in elem:
+                yield elem
