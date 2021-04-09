@@ -78,7 +78,7 @@ python3 main.py -s --threads
 
 
 ## Add products <a name="add-products"></a>
-Before scraping a new product, run a similar line to this:
+To add a single product, use the following command, where you replace ````<category>``` and ```<url>``` with your category and url:
 ```
 python3 main.py -a -c <category> -u <url>
 ```
@@ -89,6 +89,13 @@ python3 main.py -a -c vr -u https://www.komplett.dk/product/1168594/gaming/spilu
 ```
 
 This adds the category (if new) and the product to the records.json file, and adds a line at the end of the products.csv file so the script can scrape price of the new product.
+
+<br/>
+
+To add multiple products at once, just add specify another category and url with ```-c <category>``` and ```-u <url>```. E.g. with the following command I add two products:
+```
+python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
+``` 
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
 **OBS**: The url must have the "https://" part.<br/>
