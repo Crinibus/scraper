@@ -32,10 +32,16 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
-        "-c", "--category", help="the category the product is going to be in", type=str, action="append"
+        "-c",
+        "--category",
+        help="the category the product is going to be in",
+        type=str,
+        action="append",
     )
 
-    parser.add_argument("-u", "--url", help="the url to the product", type=str, action="append")
+    parser.add_argument(
+        "-u", "--url", help="the url to the product", type=str, action="append"
+    )
 
     parser.add_argument(
         "--threads", help="use threads when scraping product info", action="store_true"
