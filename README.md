@@ -39,7 +39,7 @@ cd scraper
 
 Then make sure you have the modules, run this in the terminal:
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 <br/>
