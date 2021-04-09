@@ -4,19 +4,19 @@ from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name, domains
 
 
-def add_product(args) -> None:
+def add_product(category, url) -> None:
     print("Adding product...")
     logger = logging.getLogger(__name__)
-    logger.info(f"Adding product: {args.category} - {args.url}")
+    logger.info(f"Adding product: {category} - {url}")
 
-    website_name = get_website_name(args.url)
+    website_name = get_website_name(url)
 
     if website_name not in domains.keys():
         print(f"Can't scrape from this website: {website_name}")
         logger.info("Not support website to scrape from")
         return
 
-    new_product = Scraper(args.category, args.url)
+    new_product = Scraper(category, url)
     new_product.scrape_info()
 
     is_product_added = add_product_to_records(new_product)
