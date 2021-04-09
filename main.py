@@ -17,7 +17,7 @@ def main():
         hard_reset()
 
     if args.add:
-        scraper.add_product(args)
+        add_products(args)
 
     if args.scrape:
         if args.threads:
@@ -68,6 +68,11 @@ def scrape_with_threads():
     # Save scraped data for each product (sequentially)
     for product in products:
         product.save_info()
+
+
+def add_products(args):
+    for category, url in zip(args.category, args.url):
+        scraper.add_product(category, url)
 
 
 def visualize(args):
