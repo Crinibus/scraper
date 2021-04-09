@@ -87,6 +87,10 @@ def visualize(args):
         for id in args.visualize_ids:
             scraper.show_id(id)
 
+    if args.visualize_names:
+        for name in args.visualize_names:
+            scraper.show_name(name)
+
 
 def reset():
     print("Resetting data...")

@@ -3,7 +3,7 @@ from scraper.filemanager import Filemanager
 from scraper.constants import WEBSITE_COLORS
 
 
-def show_id(id: str):
+def show_id(id: str) -> None:
     data = format_data()
 
     for category_name, category_info in data.items():
@@ -13,7 +13,7 @@ def show_id(id: str):
                     fig = go.Figure()
                     fig.add_trace(
                         go.Scatter(
-                            name=website_name,
+                            name=website_name.capitalize(),
                             x=website_info["dates"],
                             y=website_info["prices"],
                             line={"color": WEBSITE_COLORS[website_name], "width": 2},
@@ -33,7 +33,7 @@ def show_id(id: str):
                     fig.show()
 
 
-def show_category(category: str):
+def show_category(category: str) -> None:
     data = format_data()
 
     for category_name, category_info in data.items():
@@ -43,7 +43,7 @@ def show_category(category: str):
                 for website_name, website_info in product_info.items():
                     fig.add_trace(
                         go.Scatter(
-                            name=website_name,
+                            name=website_name.capitalize(),
                             x=website_info["dates"],
                             y=website_info["prices"],
                             line={"color": WEBSITE_COLORS[website_name], "width": 2},
@@ -63,7 +63,37 @@ def show_category(category: str):
                 fig.show()
 
 
-def show_all_products():
+def show_name(name: str) -> None:
+    data = format_data()
+
+    for category_name, category_info in data.items():
+        for product_name, product_info in category_info.items():
+            if name == product_name:
+                fig = go.Figure()
+                for website_name, website_info in product_info.items():
+                    fig.add_trace(
+                        go.Scatter(
+                            name=website_name.capitalize(),
+                            x=website_info["dates"],
+                            y=website_info["prices"],
+                            line={"color": WEBSITE_COLORS[website_name], "width": 2},
+                            hovertemplate="Price: %{y:.0f}",
+                        )
+                    )
+
+                fig.update_traces(mode="markers+lines")
+                fig.update_layout(
+                    title=f"Price(s) of {product_name.upper()}",
+                    xaxis_title="Date",
+                    yaxis_title="Price",
+                    hovermode="x",
+                    separators=".,",
+                )
+
+                fig.show()
+
+
+def show_all_products() -> None:
     data = format_data()
 
     for category_name, category_info in data.items():
@@ -72,7 +102,7 @@ def show_all_products():
             for website_name, website_info in product_info.items():
                 fig.add_trace(
                     go.Scatter(
-                        name=website_name,
+                        name=website_name.capitalize(),
                         x=website_info["dates"],
                         y=website_info["prices"],
                         line={"color": WEBSITE_COLORS[website_name], "width": 2},

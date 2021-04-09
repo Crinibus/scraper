@@ -83,6 +83,16 @@ def argparse_setup() -> ArgumentParser.parse_args:
         metavar="id",
     )
 
+    parser.add_argument(
+        "-vn",
+        "--visualize-name",
+        help="show graph for product with the specified name(s)",
+        type=str,
+        nargs="*",
+        dest="visualize_names",
+        metavar="name"
+    )
+
     validate_arguments(parser)
 
     return parser.parse_args()

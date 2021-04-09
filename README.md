@@ -4,13 +4,11 @@
 - [First setup](#first-setup)
 - [Start from scratch](#start-scratch)
 - [Scrape products](#scrape-products)
-- [Adding products](#adding-products)
+- [Add products](#add-products)
     - [Links to scrape from](#links-to-scrape-from)
-    - [Optional arguments](#optional-arguments)
 - [User settings](#user-settings)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
-    - [Available flags](#available-flags)
 
 <br/>
 
