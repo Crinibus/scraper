@@ -97,7 +97,7 @@ python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
 **OBS**: The url must have the "https://" part.<br/>
-**OBS**: If an error occures when adding a product, then the error might happen because the url has a "&" in it, when this happens then just put quotation mark around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
+**OBS**: If an error occures when adding a product, then the error might happen because the url has a "&" in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
 
 <br/>
 
@@ -147,7 +147,7 @@ To visualize your data, just run main.py with the ```-v``` or ```--visualize``` 
 - ```-va``` or ```--visualize-all``` to visualize all your products
 - ```-vc [<category> [<category> ...]]``` or ```--visualize-category [<category> [<category> ...]]``` to visualize all products in one or more categories
 - ```-id [<id> [<id> ...]]``` or ```--visualize-id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
-
+- ```-vn [<name> [<name> ...]]``` or ```--visualize-name [<name> ...]]``` to visualize one or more products with the specified name(s)
 
 
 ### Command examples <a name="command-examples"></a>
@@ -178,7 +178,22 @@ To show graphs for all products in one category, run the following command where
 python3 main.py -v -vc <category>
 ```
 
-For multiple categories, just add another flag, like so:
+For multiple categories, just add another category, like so:
 ```
 python3 main.py -v -vc <category> <category>
 ```
+
+
+**Show graps for products with a specific name**
+
+To show graphs for product(s) with a specific name, run the following command where ```<name>``` is the name of the product(s) you want graphs for:
+```
+python3 main.py -v -vn <name>
+```
+
+For multiple products with different names, just add another name, like so:
+```
+python3 main.py -v -vn <name> <name2>
+```
+
+If the name of a product has multiple words in it, then just add quotation marks around the name.
