@@ -225,7 +225,7 @@ def coolshop(soup: BeautifulSoup) -> Info:
 
 
 def sharkgaming(soup: BeautifulSoup) -> Info:
-    name = soup.find("meta", property="og:title").get("content")
+    name = soup.find("meta", property="og:title").get("content").lower()
     product_user_name = Format.get_user_product_name(name)
     price = float(soup.find("meta", property="product:price:amount").get("content"))
     currency = soup.find("meta", property="product:price:currency").get("content")
