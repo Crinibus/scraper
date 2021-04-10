@@ -76,6 +76,7 @@ def add_products(args):
 
 
 def visualize(args):
+    print("Visualizing...")
     if args.show_all:
         scraper.show_all_products()
 
