@@ -4,6 +4,7 @@ from scraper.constants import WEBSITE_COLORS
 
 
 def show_id(id: str) -> None:
+    print(f"Visualizing product with id: {id}")
     data = format_data()
 
     for category_name, category_info in data.items():
@@ -34,6 +35,7 @@ def show_id(id: str) -> None:
 
 
 def show_category(category: str) -> None:
+    print(f"Visualizing products in category: {category}")
     data = format_data()
 
     for category_name, category_info in data.items():
@@ -64,6 +66,7 @@ def show_category(category: str) -> None:
 
 
 def show_name(name: str) -> None:
+    print(f"Visualizing product with name: {name}")
     data = format_data()
 
     for category_name, category_info in data.items():
@@ -94,6 +97,7 @@ def show_name(name: str) -> None:
 
 
 def show_all_products() -> None:
+    print("Visualizing all products")
     data = format_data()
 
     for category_name, category_info in data.items():
