@@ -7,7 +7,6 @@ def show_id(id: str) -> None:
     print(f"Visualizing product with id: {id}")
     data = format_data()
 
-    # test
     for category_name, category_info in data.items():
         for product_name, product_info in category_info.items():
             for website_name, website_info in product_info.items():
