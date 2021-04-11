@@ -44,7 +44,7 @@ pip3 install -r requirements.txt
 
 
 ## Start from scratch <a name="start-scratch"></a>
-If you want to start from scratch with no data in the records.json file, then just run the following command:
+If you want to start from scratch with no data in the records.json and products.csv files, then just run the following command:
 ```
 python3 main.py --hard-reset
 ```
