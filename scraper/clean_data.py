@@ -17,8 +17,14 @@ def clean_data() -> None:
                         new_datapoints.append(datapoint)
                         continue
 
+                    previous_datapoint = datapoints[index - 1]
+                    next_datapoint = datapoints[index + 1]
+
                     # Skip unnecessary datapoints
-                    if datapoint["price"] == datapoints[index - 1]["price"] and datapoint["price"] == datapoints[index + 1]["price"]:
+                    if (
+                        datapoint["price"] == previous_datapoint["price"]
+                        and datapoint["price"] == next_datapoint["price"]
+                    ):
                         continue
 
                     new_datapoints.append(datapoint)

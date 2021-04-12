@@ -33,16 +33,12 @@ class Filemanager:
 
     @staticmethod
     def get_record_data() -> dict:
-        data = Filemanager.read_json(
-            f"{Filemanager.root_path}/scraper/records.json"
-        )
+        data = Filemanager.read_json(f"{Filemanager.root_path}/scraper/records.json")
         return data
 
     @staticmethod
     def save_record_data(data: dict) -> None:
-        Filemanager.write_json(
-            f"{Filemanager.root_path}/scraper/records.json", data
-        )
+        Filemanager.write_json(f"{Filemanager.root_path}/scraper/records.json", data)
 
     @staticmethod
     def get_products_data() -> pd.DataFrame:
@@ -54,16 +50,13 @@ class Filemanager:
     @staticmethod
     def add_product_to_csv(category: str, url: str) -> None:
         data = [category, url]
-        Filemanager.append_csv(
-            f"{Filemanager.root_path}/scraper/products.csv", data
-        )
+        Filemanager.append_csv(f"{Filemanager.root_path}/scraper/products.csv", data)
 
     @staticmethod
     def clear_product_csv():
         Filemanager.clear_csv(f"{Filemanager.root_path}/scraper/products.csv")
-        Filemanager.add_product_to_csv(
-            "category", "url"
-        )  # header for csv to use in pandas.DataFrame
+        # header for csv to use in pandas.DataFrame
+        Filemanager.add_product_to_csv("category", "url")
 
 
 class Config:

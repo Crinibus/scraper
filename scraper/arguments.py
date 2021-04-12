@@ -90,7 +90,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         type=str,
         nargs="*",
         dest="visualize_names",
-        metavar="name"
+        metavar="name",
     )
 
     parser.add_argument(

@@ -26,7 +26,9 @@ def add_product(category, url) -> None:
         Filemanager.add_product_to_csv(new_product.category, new_product.url)
         new_product.save_info()
     else:
-        user_input = input("A product with the same name and from the same website already exist in your data, do you want to override this product? (y/n) > ")
+        user_input = input(
+            "A product with the same name and from the same website already exist in your data, do you want to override this product? (y/n) > "
+        )
         if user_input.lower() in ("y", "yes"):
             print("Overriding product...")
             add_product_to_records(new_product)
@@ -61,13 +63,19 @@ def add_product_to_records(product: Scraper) -> None:
             )
         else:
             data[product.category].update(
-                {product.info.name: {product.website_name: {"info": {}, "datapoints": []}}}
+                {
+                    product.info.name: {
+                        product.website_name: {"info": {}, "datapoints": []}
+                    }
+                }
             )
     else:
         data.update(
             {
                 product.category: {
-                    product.info.name: {product.website_name: {"info": {}, "datapoints": []}}
+                    product.info.name: {
+                        product.website_name: {"info": {}, "datapoints": []}
+                    }
                 }
             }
         )
