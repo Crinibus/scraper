@@ -7,6 +7,9 @@ import scraper
 def main():
     args = scraper.argparse_setup()
 
+    if args.clean_data:
+        scraper.clean_data()
+
     if args.visualize:
         visualize(args)
 
@@ -103,7 +106,7 @@ def reset():
         for product in category.values():
             for website in product.values():
                 website["info"] = {"id": "", "url": "", "currency": ""}
-                website["dates"] = {}
+                website["datapoints"] = []
 
     scraper.Filemanager.save_record_data(data)
 

@@ -9,6 +9,7 @@
 - [User settings](#user-settings)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
+- [Clean up data](#clean-up-data)
 
 <br/>
 
@@ -25,6 +26,16 @@ Feel free to fork the project and create a pull request with new features or ref
 
 <br/>
 
+
+## UPDATE TO HOW DATA IS STORED IN V1.1
+In version v1.1, I have changed how data is stored in "records.json". "dates" under each product have been changed to "datapoints" and now a list containing dicts with "date" and "price" keys. <br/>
+If you want to update your data to be compatible with version v1.1, then open a interactive python session where this repository is located and run the following commands:
+```
+>>> from scraper.format import Format
+>>> Format.format_old_records_to_new()
+```
+
+<br/>
 
 ## First setup <a name="first-setup"></a>
 Clone this repository and move into the repository:
@@ -57,7 +68,7 @@ If you just want to reset your data for each product, just delete all data-point
 ```
 python3 main.py --reset
 ```
-This deletes all the data inside each product, such as id, url and and dates with prices.
+This deletes all the data inside each product, such as id, url and all datapoints.
 
 <br/>
 
@@ -197,3 +208,12 @@ python3 main.py -v -vn <name> <name2>
 ```
 
 If the name of a product has multiple words in it, then just add quotation marks around the name.
+
+<br/>
+
+
+## Clean up data <a name="clean-up-data"></a>
+If you want to clean up your data, meaning you want to remove unnecessary datapoints (datapoints that have the same price as the datapoint before and after it), then run the following command:
+```
+python3 main.py --clean-data
+```

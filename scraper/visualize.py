@@ -135,11 +135,10 @@ def format_data() -> dict:
         data.update({category_name: {}})
         for product_name, product_info in category_info.items():
             data[category_name].update({product_name: {}})
-
             for website_name, website_info in product_info.items():
 
-                dates = [date for date in website_info["dates"]]
-                prices = [website_info["dates"][date]["price"] for date in dates]
+                dates = [datapoint["date"] for datapoint in website_info["datapoints"]]
+                prices = [datapoint["price"] for datapoint in website_info["datapoints"]]
                 id = website_info["info"]["id"]
 
                 data[category_name][product_name].update(
