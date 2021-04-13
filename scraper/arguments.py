@@ -90,7 +90,14 @@ def argparse_setup() -> ArgumentParser.parse_args:
         type=str,
         nargs="*",
         dest="visualize_names",
-        metavar="name"
+        metavar="name",
+    )
+
+    parser.add_argument(
+        "--clean-data",
+        help="clean data, so unnecessary datapoints is removed from records",
+        action="store_true",
+        dest="clean_data",
     )
 
     validate_arguments(parser)

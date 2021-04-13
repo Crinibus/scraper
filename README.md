@@ -9,6 +9,7 @@
 - [User settings](#user-settings)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
+- [Clean up data](#clean-up-data)
 
 <br/>
 
@@ -25,6 +26,16 @@ Feel free to fork the project and create a pull request with new features or ref
 
 <br/>
 
+
+## UPDATE TO HOW DATA IS STORED IN V1.1
+In version v1.1, I have changed how data is stored in "records.json". "dates" under each product have been changed to "datapoints" and now a list containing dicts with "date" and "price" keys. <br/>
+If you want to update your data to be compatible with version v1.1, then open a interactive python session where this repository is located and run the following commands:
+```
+>>> from scraper.format import Format
+>>> Format.format_old_records_to_new()
+```
+
+<br/>
 
 ## First setup <a name="first-setup"></a>
 Clone this repository and move into the repository:
@@ -44,7 +55,7 @@ pip3 install -r requirements.txt
 
 
 ## Start from scratch <a name="start-scratch"></a>
-If you want to start from scratch with no data in the records.json file, then just run the following command:
+If you want to start from scratch with no data in the records.json and products.csv files, then just run the following command:
 ```
 python3 main.py --hard-reset
 ```
@@ -57,7 +68,7 @@ If you just want to reset your data for each product, just delete all data-point
 ```
 python3 main.py --reset
 ```
-This deletes all the data inside each product, such as id, url and and dates with prices.
+This deletes all the data inside each product, such as id, url and all datapoints.
 
 <br/>
 
@@ -97,7 +108,7 @@ python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
 
 **OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
 **OBS**: The url must have the "https://" part.<br/>
-**OBS**: If an error occures when adding a product, then the error might happen because the url has a "&" in it, when this happens then just put quotation mark around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
+**OBS**: If an error occures when adding a product, then the error might happen because the url has a "&" in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
 
 <br/>
 
@@ -147,7 +158,7 @@ To visualize your data, just run main.py with the ```-v``` or ```--visualize``` 
 - ```-va``` or ```--visualize-all``` to visualize all your products
 - ```-vc [<category> [<category> ...]]``` or ```--visualize-category [<category> [<category> ...]]``` to visualize all products in one or more categories
 - ```-id [<id> [<id> ...]]``` or ```--visualize-id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
-
+- ```-vn [<name> [<name> ...]]``` or ```--visualize-name [<name> ...]]``` to visualize one or more products with the specified name(s)
 
 
 ### Command examples <a name="command-examples"></a>
@@ -178,7 +189,31 @@ To show graphs for all products in one category, run the following command where
 python3 main.py -v -vc <category>
 ```
 
-For multiple categories, just add another flag, like so:
+For multiple categories, just add another category, like so:
 ```
 python3 main.py -v -vc <category> <category>
+```
+
+
+**Show graps for products with a specific name**
+
+To show graphs for product(s) with a specific name, run the following command where ```<name>``` is the name of the product(s) you want graphs for:
+```
+python3 main.py -v -vn <name>
+```
+
+For multiple products with different names, just add another name, like so:
+```
+python3 main.py -v -vn <name> <name2>
+```
+
+If the name of a product has multiple words in it, then just add quotation marks around the name.
+
+<br/>
+
+
+## Clean up data <a name="clean-up-data"></a>
+If you want to clean up your data, meaning you want to remove unnecessary datapoints (datapoints that have the same price as the datapoint before and after it), then run the following command:
+```
+python3 main.py --clean-data
 ```

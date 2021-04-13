@@ -7,6 +7,9 @@ import scraper
 def main():
     args = scraper.argparse_setup()
 
+    if args.clean_data:
+        scraper.clean_data()
+
     if args.visualize:
         visualize(args)
 
@@ -76,6 +79,7 @@ def add_products(args):
 
 
 def visualize(args):
+    print("Visualizing...")
     if args.show_all:
         scraper.show_all_products()
 
@@ -102,7 +106,7 @@ def reset():
         for product in category.values():
             for website in product.values():
                 website["info"] = {"id": "", "url": "", "currency": ""}
-                website["dates"] = {}
+                website["datapoints"] = []
 
     scraper.Filemanager.save_record_data(data)
 
@@ -118,8 +122,8 @@ def hard_reset():
 
 if __name__ == "__main__":
     logging.config.fileConfig(
-        fname=f"{scraper.Filemanager.get_root_path()}/scraper/logging.ini",
-        defaults={"logfilename": f"{scraper.Filemanager.get_root_path()}/scraper/logfile.log"}
+        fname=f"{scraper.Filemanager.root_path}/scraper/logging.ini",
+        defaults={"logfilename": f"{scraper.Filemanager.root_path}/scraper/logfile.log"}
     )
 
     main()
