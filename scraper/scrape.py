@@ -66,10 +66,13 @@ class Scraper:
             {"url": short_url, "id": product_id, "currency": self.info.currency}
         )
 
-        latest_datapoint = product_info["datapoints"][-1]
+        if len(product_info["datapoints"]) >= 1:
+            latest_datapoint = product_info["datapoints"][-1]
 
-        if latest_datapoint["date"] == date:
-            latest_datapoint["price"] = self.info.price
+            if latest_datapoint["date"] == date:
+                latest_datapoint["price"] = self.info.price
+            else:
+                product_info["datapoints"].append({"date": date, "price": self.info.price})
         else:
             product_info["datapoints"].append({"date": date, "price": self.info.price})
 

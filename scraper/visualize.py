@@ -32,6 +32,7 @@ def show_id(id: str) -> None:
                     )
 
                     fig.show()
+                    return
 
 
 def show_category(category: str) -> None:
@@ -63,6 +64,7 @@ def show_category(category: str) -> None:
                 )
 
                 fig.show()
+            return
 
 
 def show_name(name: str) -> None:
@@ -94,6 +96,7 @@ def show_name(name: str) -> None:
                 )
 
                 fig.show()
+                return
 
 
 def show_all_products() -> None:
