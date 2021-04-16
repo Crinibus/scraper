@@ -26,7 +26,7 @@ def show_id(id: str) -> None:
 
 
 def show_category(category: str) -> None:
-    print(f"Visualizing products in category: {category.capitalize()}")
+    print(f"Visualizing products in category: {category.lower()}")
 
     for product_info in get_products_with_category(category):
         product_name = product_info["name"]
@@ -47,7 +47,7 @@ def show_category(category: str) -> None:
 
 
 def show_name(name: str) -> None:
-    print(f"Visualizing product with name: {name.capitalize()}")
+    print(f"Visualizing product with name: {name.lower()}")
 
     product_info = get_product_with_name(name)
 
