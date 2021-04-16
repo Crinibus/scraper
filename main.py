@@ -36,7 +36,8 @@ def scrape():
 
     # Create instances of class "Scraper"
     products = [
-        scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])
+        scraper.Scraper(category, url)
+        for category, url in zip(products_df["category"], products_df["url"])
     ]
 
     # Scrape and save scraped data for each product (sequentially)
@@ -52,13 +53,12 @@ def scrape_with_threads():
 
     # Create instances of class "Scraper"
     products = [
-        scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])
+        scraper.Scraper(category, url)
+        for category, url in zip(products_df["category"], products_df["url"])
     ]
 
     # Create threads
-    threads = [
-        threading.Thread(target=product.scrape_info) for product in products
-    ]
+    threads = [threading.Thread(target=product.scrape_info) for product in products]
 
     # Start scraping on all threads
     for thread in threads:
@@ -123,7 +123,9 @@ def hard_reset():
 if __name__ == "__main__":
     logging.config.fileConfig(
         fname=f"{scraper.Filemanager.root_path}/scraper/logging.ini",
-        defaults={"logfilename": f"{scraper.Filemanager.root_path}/scraper/logfile.log"}
+        defaults={
+            "logfilename": f"{scraper.Filemanager.root_path}/scraper/logfile.log"
+        },
     )
 
     main()
