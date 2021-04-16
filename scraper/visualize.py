@@ -149,9 +149,9 @@ def add_scatter_plot(
 def get_products_with_category(category_name: str) -> dict:
     data = format_data()
 
-    for product in data["products"]:
-        if product["category"] == category_name:
-            yield product
+    for product_info in data["products"]:
+        if product_info["category"].lower() == category_name.lower():
+            yield product_info
 
 
 def get_product_with_id(id: str) -> dict:
