@@ -5,17 +5,17 @@
 - [Start from scratch](#start-scratch)
 - [Scrape products](#scrape-products)
 - [Add products](#add-products)
-    - [Links to scrape from](#links-to-scrape-from)
+    - [Websites to scrape from](#websites-to-scrape-from)
 - [User settings](#user-settings)
+- [Clean up data](#clean-up-data)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
-- [Clean up data](#clean-up-data)
 
 <br/>
 
 
 ## Intro <a name="intro"></a>
-With this program you can easily scrape and track prices on product at multiple websites. <br/>
+With this program you can easily scrape and track prices on product at multiple [websites](#websites-to-scrape-from). <br/>
 This program can also visualize price over time of the products being tracked. That can be helpful if you want to buy a product in the future and wants to know if a discount might be around the corner.
 
 <br/>
@@ -113,7 +113,7 @@ python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
 <br/>
 
 
-### Links to scrape from <a name="links-to-scrape-from"></a>
+### Websites to scrape from <a name="websites-to-scrape-from"></a>
 This scraper can (so far) scrape prices on products from:
 - [Komplett.dk](https://www.komplett.dk/)
 - [Proshop.dk](https://www.proshop.dk/)
@@ -149,6 +149,14 @@ value1 = asus geforce rtx 3080 rog strix oc
 
 The script checks if a product name has all of the words in ```key1```, it gets changed to what ```value1``` is.
 
+<br/>
+
+
+## Clean up data <a name="clean-up-data"></a>
+If you want to clean up your data, meaning you want to remove unnecessary datapoints (datapoints that have the same price as the datapoint before and after it), then run the following command:
+```
+python3 main.py --clean-data
+```
 <br/>
 
 
@@ -208,12 +216,3 @@ python3 main.py -v -vn <name> <name2>
 ```
 
 If the name of a product has multiple words in it, then just add quotation marks around the name.
-
-<br/>
-
-
-## Clean up data <a name="clean-up-data"></a>
-If you want to clean up your data, meaning you want to remove unnecessary datapoints (datapoints that have the same price as the datapoint before and after it), then run the following command:
-```
-python3 main.py --clean-data
-```
