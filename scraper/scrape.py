@@ -41,6 +41,11 @@ class Scraper:
                 f"Could not get all the data needed from url: {self.url}"
             )
             self.info = Info(None, None, None, valid=False)
+        except ValueError:
+            self.logger.exception(
+                f"Could not get a price, maybe the product is no longer for sale - url: {self.url}"
+            )
+            self.info = Info(None, None, None, valid=False)
 
     def save_info(self) -> None:
         if self.info.valid:
