@@ -66,6 +66,7 @@ class Format:
         for category_info in records_data.values():
             for product_info in category_info.values():
                 for website_info in product_info.values():
+                    website_info["info"].update({"currency": "TBD"})
                     website_info.update({"datapoints": []})
 
                     for date_name, date_info in website_info["dates"].items():

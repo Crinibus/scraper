@@ -1,3 +1,4 @@
+from typing import Generator
 import plotly.graph_objs as go
 from scraper.filemanager import Filemanager
 from scraper.constants import WEBSITE_COLORS
@@ -146,7 +147,7 @@ def add_scatter_plot(
     )
 
 
-def get_products_with_category(category_name: str) -> dict:
+def get_products_with_category(category_name: str) -> Generator[dict, None, None]:
     data = format_data()
 
     for product_info in data["products"]:
@@ -175,7 +176,7 @@ def get_product_with_name(name: str) -> dict:
             return product_info
 
 
-def get_all_products() -> dict:
+def get_all_products() -> Generator[dict, None, None]:
     data = format_data()
 
     for product_info in data["products"]:
