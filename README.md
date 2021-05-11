@@ -115,14 +115,14 @@ python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
 
 ### Websites to scrape from <a name="websites-to-scrape-from"></a>
 This scraper can (so far) scrape prices on products from:
+- [Amazon.com](https://www.amazon.com/)
+- [eBay.com](https://www.ebay.com/)
 - [Komplett.dk](https://www.komplett.dk/)
 - [Proshop.dk](https://www.proshop.dk/)
 - [Computersalg.dk](https://www.computersalg.dk/)
 - [Elgiganten.dk](https://www.elgiganten.dk/)
 - [AvXperten.dk](https://www.avxperten.dk/)
 - [Av-Cables.dk](https://www.av-cables.dk/)
-- [Amazon.com](https://www.amazon.com/)
-- [eBay.com](https://www.ebay.com/)
 - [Power.dk](https://www.power.dk/)
 - [Expert.dk](https://www.expert.dk/)
 - [MM-Vision.dk](https://www.mm-vision.dk/)
