@@ -1,5 +1,6 @@
 import pathlib
 import configparser
+from typing import Generator
 import pandas as pd
 import json
 import csv
@@ -53,7 +54,7 @@ class Filemanager:
         Filemanager.append_csv(f"{Filemanager.root_path}/scraper/products.csv", data)
 
     @staticmethod
-    def clear_product_csv():
+    def clear_product_csv() -> None:
         Filemanager.clear_csv(f"{Filemanager.root_path}/scraper/products.csv")
         # header for csv to use in pandas.DataFrame
         Filemanager.add_product_to_csv("category", "url")
@@ -78,7 +79,7 @@ class Config:
         return config["ChangeName"]
 
     @staticmethod
-    def get_key_values(elements: list):
+    def get_key_values(elements: list) -> Generator[str, None, None]:
         for elem in elements:
             if "key" in elem:
                 yield elem
