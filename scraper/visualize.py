@@ -86,10 +86,8 @@ def show_all_products() -> None:
         fig.show()
 
 
-def format_data() -> dict:
+def format_data() -> Generator[dict, None, None]:
     records_data = Filemanager.get_record_data()
-
-    data = {"products": []}
 
     for category_name, category_info in records_data.items():
         for product_name, product_info in category_info.items():
@@ -112,9 +110,7 @@ def format_data() -> dict:
                     }
                 )
 
-            data["products"].append(product_data)
-
-    return data
+            yield product_data
 
 
 def config_figure(figure: go.Figure, figure_title: str) -> None:
@@ -148,17 +144,13 @@ def add_scatter_plot(
 
 
 def get_products_with_category(category_name: str) -> Generator[dict, None, None]:
-    data = format_data()
-
-    for product_info in data["products"]:
+    for product_info in format_data():
         if product_info["category"].lower() == category_name.lower():
             yield product_info
 
 
 def get_product_with_id(id: str) -> dict:
-    data = format_data()
-
-    for product_info in data["products"]:
+    for product_info in format_data():
         for website_info in product_info["websites"]:
             if id == str(website_info["id"]):
                 return {
@@ -169,15 +161,11 @@ def get_product_with_id(id: str) -> dict:
 
 
 def get_product_with_name(name: str) -> dict:
-    data = format_data()
-
-    for product_info in data["products"]:
+    for product_info in format_data():
         if product_info["name"].lower() == name.lower():
             return product_info
 
 
 def get_all_products() -> Generator[dict, None, None]:
-    data = format_data()
-
-    for product_info in data["products"]:
+    for product_info in format_data():
         yield product_info
