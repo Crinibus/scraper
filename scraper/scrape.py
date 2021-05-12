@@ -36,14 +36,9 @@ class Scraper:
         try:
             website_function = get_website_function(self.website_name)
             self.info = website_function(soup)
-        except AttributeError:
+        except (AttributeError, ValueError):
             self.logger.warning(
                 f"Could not get all the data needed from url: {self.url}"
-            )
-            self.info = Info(None, None, None, valid=False)
-        except ValueError:
-            self.logger.warning(
-                f"Could not get a price, maybe the product is no longer for sale - url: {self.url}"
             )
             self.info = Info(None, None, None, valid=False)
 
