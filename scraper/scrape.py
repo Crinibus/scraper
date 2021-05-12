@@ -26,7 +26,7 @@ class Scraper:
     def request_url(url: str) -> BeautifulSoup:
         try:
             response = requests.get(
-                url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES
+                url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10
             )
             return BeautifulSoup(response.text, "html.parser")
         except requests.exceptions.RequestException:  # temporary try expect for all requests errors
