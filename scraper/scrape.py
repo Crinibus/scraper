@@ -72,7 +72,9 @@ class Scraper:
             if latest_datapoint["date"] == date:
                 latest_datapoint["price"] = self.info.price
             else:
-                product_info["datapoints"].append({"date": date, "price": self.info.price})
+                product_info["datapoints"].append(
+                    {"date": date, "price": self.info.price}
+                )
         else:
             product_info["datapoints"].append({"date": date, "price": self.info.price})
 
