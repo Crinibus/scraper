@@ -99,7 +99,9 @@ def format_data() -> Generator[dict, None, None]:
 
             for website_name, website_info in product_info.items():
                 dates = [datapoint["date"] for datapoint in website_info["datapoints"]]
-                prices = [datapoint["price"] for datapoint in website_info["datapoints"]]
+                prices = [
+                    datapoint["price"] for datapoint in website_info["datapoints"]
+                ]
                 product_data["websites"].append(
                     {
                         "website_name": website_name,

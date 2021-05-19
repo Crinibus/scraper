@@ -26,7 +26,7 @@ class Scraper:
     def request_url(url: str) -> BeautifulSoup:
         try:
             response = requests.get(
-                url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES
+                url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10
             )
             return BeautifulSoup(response.text, "html.parser")
         except requests.exceptions.RequestException:  # temporary try expect for all requests errors
@@ -36,14 +36,9 @@ class Scraper:
         try:
             website_function = get_website_function(self.website_name)
             self.info = website_function(soup)
-        except AttributeError:
+        except (AttributeError, ValueError):
             self.logger.warning(
                 f"Could not get all the data needed from url: {self.url}"
-            )
-            self.info = Info(None, None, None, valid=False)
-        except ValueError:
-            self.logger.warning(
-                f"Could not get a price, maybe the product is no longer for sale - url: {self.url}"
             )
             self.info = Info(None, None, None, valid=False)
 
@@ -77,7 +72,9 @@ class Scraper:
             if latest_datapoint["date"] == date:
                 latest_datapoint["price"] = self.info.price
             else:
-                product_info["datapoints"].append({"date": date, "price": self.info.price})
+                product_info["datapoints"].append(
+                    {"date": date, "price": self.info.price}
+                )
         else:
             product_info["datapoints"].append({"date": date, "price": self.info.price})
 
