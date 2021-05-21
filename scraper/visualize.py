@@ -2,6 +2,7 @@ from typing import Generator
 import plotly.graph_objs as go
 from scraper.filemanager import Filemanager
 from scraper.constants import WEBSITE_COLORS
+from datetime import datetime
 
 
 def show_id(id: str) -> None:
@@ -22,7 +23,11 @@ def show_id(id: str) -> None:
         product_info["prices"],
     )
 
-    config_figure(fig, f"Price(s) of {product_name.upper()} - ID {product_info['id']}")
+    title = f"Price(s) of {product_name.upper()} - ID {product_info['id']}"
+
+    title_with_status = append_status_to_title(title, product_info["dates"])
+
+    config_figure(fig, title_with_status)
     fig.show()
 
 
@@ -33,6 +38,8 @@ def show_category(category: str) -> None:
         product_name = product_info["name"]
         fig = go.Figure()
 
+        is_up_to_date = False
+
         for website_info in product_info["websites"]:
             add_scatter_plot(
                 fig,
@@ -43,7 +50,14 @@ def show_category(category: str) -> None:
                 website_info["prices"],
             )
 
-        config_figure(fig, f"Price(s) of {product_name.upper()}")
+            if check_if_date_up_to_date(website_info["dates"]):
+                is_up_to_date = True
+
+        title = f"Price(s) of {product_name.upper()}"
+
+        title_with_status = append_status_to_title_bool(title, is_up_to_date)
+
+        config_figure(fig, title_with_status)
         fig.show()
 
 
@@ -53,6 +67,9 @@ def show_name(name: str) -> None:
     product_info = get_product_with_name(name)
 
     fig = go.Figure()
+
+    is_up_to_date = False
+
     for website_info in product_info["websites"]:
         add_scatter_plot(
             fig,
@@ -63,7 +80,14 @@ def show_name(name: str) -> None:
             website_info["prices"],
         )
 
-    config_figure(fig, f"Price(s) of {name.upper()}")
+        if check_if_date_up_to_date(website_info["dates"]):
+            is_up_to_date = True
+
+    title = f"Price(s) of {name.upper()}"
+
+    title_with_status = append_status_to_title_bool(title, is_up_to_date)
+
+    config_figure(fig, title_with_status)
     fig.show()
 
 
@@ -72,6 +96,9 @@ def show_all_products() -> None:
 
     for product_info in get_all_products():
         fig = go.Figure()
+
+        is_up_to_date = False
+
         for website_info in product_info["websites"]:
             add_scatter_plot(
                 fig,
@@ -82,7 +109,14 @@ def show_all_products() -> None:
                 website_info["prices"],
             )
 
-        config_figure(fig, f"Price(s) of {product_info['name'].upper()}")
+            if check_if_date_up_to_date(website_info["dates"]):
+                is_up_to_date = True
+
+        title = f"Price(s) of {product_info['name'].upper()}"
+
+        title_with_status = append_status_to_title_bool(title, is_up_to_date)
+
+        config_figure(fig, title_with_status)
         fig.show()
 
 
@@ -171,3 +205,30 @@ def get_product_with_name(name: str) -> dict:
 def get_all_products() -> Generator[dict, None, None]:
     for product_info in format_data():
         yield product_info
+
+
+def check_if_date_up_to_date(dates: list) -> bool:
+    if len(dates) == 0:
+        return False
+
+    if dates[-1] == datetime.today().strftime("%Y-%m-%d"):
+        return True
+    else:
+        return False
+
+
+def append_status_to_title(title: str, dates: list) -> str:
+    if len(dates) == 0:
+        return f"{title} - NO DATAPOINTS"
+
+    if dates[-1] == datetime.today().strftime("%Y-%m-%d"):
+        return f"{title} - UP TO DATE"
+    else:
+        return f"{title} - OUTDATED"
+
+
+def append_status_to_title_bool(title: str, up_to_date: bool) -> str:
+    if up_to_date:
+        return f"{title} - UP TO DATE"
+    else:
+        return f"{title} - OUTDATED"
