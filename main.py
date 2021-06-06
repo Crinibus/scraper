@@ -1,6 +1,7 @@
 import threading
 import logging.config
 import logging
+import time
 import scraper
 
 
@@ -42,6 +43,8 @@ def scrape():
 
     # Scrape and save scraped data for each product (sequentially)
     for product in products:
+        print(product.url)
+        time.sleep(scraper.REQUEST_DELAY)
         product.scrape_info()
         product.save_info()
 
@@ -62,6 +65,7 @@ def scrape_with_threads():
 
     # Start scraping on all threads
     for thread in threads:
+        time.sleep(scraper.REQUEST_DELAY)
         thread.start()
 
     # Wait for all threads to finish

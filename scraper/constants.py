@@ -20,3 +20,5 @@ WEBSITE_COLORS = {
     "coolshop": "mediumblue",
     "sharkgaming": "midnightblue",
 }
+
+REQUEST_DELAY = 0  # seconds
