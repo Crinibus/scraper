@@ -30,7 +30,7 @@ class Scraper:
             )
             return BeautifulSoup(response.text, "html.parser")
         except requests.exceptions.RequestException:  # temporary try expect for all requests errors
-            logging.getLogger(__name__).exception("Module requests exception")
+            logging.getLogger(__name__).exception(f"Module requests exception with url: {url}")
 
     def get_info(self, soup: BeautifulSoup) -> None:
         try:
