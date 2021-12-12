@@ -6,9 +6,13 @@ from datetime import datetime
 
 
 def show_id(id: str) -> None:
-    print(f"Visualizing product with id: {id}")
-
     product_data = get_product_with_id(id)
+
+    if not product_data:
+        print(f"Couldn't find product with id: {id}")
+        return
+
+    print(f"Visualizing product with id: {id}")
 
     product_name = product_data["name"]
     product_info = product_data["info"]
@@ -62,9 +66,13 @@ def show_category(category: str) -> None:
 
 
 def show_name(name: str) -> None:
-    print(f"Visualizing product with name: {name.lower()}")
-
     product_info = get_product_with_name(name)
+
+    if not product_info:
+        print(f"Couldn't find product with name: {name.lower()}")
+        return
+
+    print(f"Visualizing product with name: {name.lower()}")
 
     fig = go.Figure()
 
@@ -194,12 +202,14 @@ def get_product_with_id(id: str) -> dict:
                     "category": product_info["category"],
                     "info": website_info,
                 }
+    return None
 
 
 def get_product_with_name(name: str) -> dict:
     for product_info in format_data():
         if product_info["name"].lower() == name.lower():
             return product_info
+    return None
 
 
 def get_all_products() -> Generator[dict, None, None]:
