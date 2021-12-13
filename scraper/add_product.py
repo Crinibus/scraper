@@ -13,7 +13,7 @@ def add_product(category, url) -> None:
 
     if website_name not in domains.keys():
         print(f"Can't scrape from this website: {website_name}")
-        logger.info("Not support website to scrape from")
+        logger.info(f"Not supported website to scrape from: {website_name}")
         return
 
     new_product = Scraper(category, url)
