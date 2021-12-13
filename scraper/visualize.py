@@ -223,8 +223,8 @@ def check_if_date_up_to_date(dates: list) -> bool:
 
     if dates[-1] == datetime.today().strftime("%Y-%m-%d"):
         return True
-    else:
-        return False
+
+    return False
 
 
 def append_status_to_title(title: str, dates: list) -> str:
@@ -233,12 +233,12 @@ def append_status_to_title(title: str, dates: list) -> str:
 
     if dates[-1] == datetime.today().strftime("%Y-%m-%d"):
         return f"{title} - UP TO DATE"
-    else:
-        return f"{title} - OUTDATED"
+
+    return f"{title} - OUTDATED"
 
 
 def append_status_to_title_bool(title: str, up_to_date: bool) -> str:
     if up_to_date:
         return f"{title} - UP TO DATE"
-    else:
-        return f"{title} - OUTDATED"
+
+    return f"{title} - OUTDATED"
