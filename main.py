@@ -36,10 +36,7 @@ def scrape():
     products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
-    products = [
-        scraper.Scraper(category, url)
-        for category, url in zip(products_df["category"], products_df["url"])
-    ]
+    products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
 
     # Scrape and save scraped data for each product (sequentially)
     for product in products:
@@ -55,10 +52,7 @@ def scrape_with_threads():
     products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
-    products = [
-        scraper.Scraper(category, url)
-        for category, url in zip(products_df["category"], products_df["url"])
-    ]
+    products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
 
     # Create threads
     threads = [threading.Thread(target=product.scrape_info) for product in products]
