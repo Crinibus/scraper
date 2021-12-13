@@ -9,6 +9,11 @@ import csv
 class Filemanager:
     # root path of this repository
     root_path = pathlib.Path(__file__).parent.parent.absolute()
+    products_json_path = f"{root_path}/scraper/records.json"
+    products_csv_path = f"{root_path}/scraper/products.csv"
+    settings_ini_path = f"{root_path}/scraper/settings.ini"
+    logging_ini_path = f"{root_path}/scraper/logging.ini"
+    logfile_path = f"{root_path}/scraper/logfile.log"
 
     @staticmethod
     def read_json(filename: str) -> dict:
@@ -34,28 +39,28 @@ class Filemanager:
 
     @staticmethod
     def get_record_data() -> dict:
-        data = Filemanager.read_json(f"{Filemanager.root_path}/scraper/records.json")
+        data = Filemanager.read_json(Filemanager.products_json_path)
         return data
 
     @staticmethod
     def save_record_data(data: dict) -> None:
-        Filemanager.write_json(f"{Filemanager.root_path}/scraper/records.json", data)
+        Filemanager.write_json(Filemanager.products_json_path, data)
 
     @staticmethod
     def get_products_data() -> pd.DataFrame:
         df = pd.read_csv(
-            f"{Filemanager.root_path}/scraper/products.csv", sep=",", header=0
+            Filemanager.products_csv_path, sep=",", header=0
         )
         return df
 
     @staticmethod
     def add_product_to_csv(category: str, url: str) -> None:
         data = [category, url]
-        Filemanager.append_csv(f"{Filemanager.root_path}/scraper/products.csv", data)
+        Filemanager.append_csv(Filemanager.products_csv_path, data)
 
     @staticmethod
     def clear_product_csv() -> None:
-        Filemanager.clear_csv(f"{Filemanager.root_path}/scraper/products.csv")
+        Filemanager.clear_csv(Filemanager.products_csv_path)
         # header for csv to use in pandas.DataFrame
         Filemanager.add_product_to_csv("category", "url")
 
@@ -75,7 +80,7 @@ class Config:
     @staticmethod
     def get_user_product_names() -> configparser.SectionProxy:
         """Get section 'ChangeName' from settings.ini file"""
-        config = Config.read(f"{Filemanager.root_path}/scraper/settings.ini")
+        config = Config.read(Filemanager.settings_ini_path)
         return config["ChangeName"]
 
     @staticmethod
