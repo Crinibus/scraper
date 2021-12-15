@@ -1,9 +1,10 @@
 from .scrape import Scraper
 from .arguments import argparse_setup
-from .add_product import add_product
+from .add_product import add_products
 from .filemanager import Filemanager
-from .visualize import show_id, show_category, show_all_products, show_name
-from .clean_data import clean_data
+from .visualize import visualize_data
+from .clean_data import clean_records_data
 from .constants import REQUEST_DELAY
+from .reset_data import reset, hard_reset
 
 __author__ = "Crinibus"

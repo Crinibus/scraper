@@ -1,7 +1,7 @@
 from scraper.filemanager import Filemanager
 
 
-def clean_data() -> None:
+def clean_records_data() -> None:
     print("Cleaning data...")
     records_data = Filemanager.get_record_data()
 

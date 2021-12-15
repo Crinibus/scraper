@@ -1,8 +1,27 @@
-from typing import Generator
+from typing import Generator, List
 import plotly.graph_objs as go
 from scraper.filemanager import Filemanager
 from scraper.constants import WEBSITE_COLORS
 from datetime import datetime
+
+
+def visualize_data(show_all: bool, categories: List[str], ids: List[str], names: List[str]):
+    print("Visualizing...")
+
+    if show_all:
+        show_all_products()
+
+    if categories:
+        for category in categories:
+            show_category(category)
+
+    if ids:
+        for id in ids:
+            show_id(id)
+
+    if names:
+        for name in names:
+            show_name(name)
 
 
 def show_id(id: str) -> None:
@@ -141,9 +160,8 @@ def format_data() -> Generator[dict, None, None]:
 
             for website_name, website_info in product_info.items():
                 dates = [datapoint["date"] for datapoint in website_info["datapoints"]]
-                prices = [
-                    datapoint["price"] for datapoint in website_info["datapoints"]
-                ]
+                prices = [datapoint["price"] for datapoint in website_info["datapoints"]]
+
                 product_data["websites"].append(
                     {
                         "website_name": website_name,
