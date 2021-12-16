@@ -9,19 +9,19 @@ def main():
     args = scraper.argparse_setup()
 
     if args.clean_data:
-        scraper.clean_data()
+        scraper.clean_records_data()
 
     if args.visualize:
-        visualize(args)
+        scraper.visualize_data(args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names)
 
     if args.reset:
-        reset()
+        scraper.reset()
 
     if args.hard_reset:
-        hard_reset()
+        scraper.hard_reset()
 
     if args.add:
-        add_products(args)
+        scraper.add_products(args.category, args.url)
 
     if args.scrape:
         if args.threads:
@@ -36,10 +36,7 @@ def scrape():
     products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
-    products = [
-        scraper.Scraper(category, url)
-        for category, url in zip(products_df["category"], products_df["url"])
-    ]
+    products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
 
     # Scrape and save scraped data for each product (sequentially)
     for product in products:
@@ -55,10 +52,7 @@ def scrape_with_threads():
     products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
-    products = [
-        scraper.Scraper(category, url)
-        for category, url in zip(products_df["category"], products_df["url"])
-    ]
+    products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
 
     # Create threads
     threads = [threading.Thread(target=product.scrape_info) for product in products]
@@ -77,59 +71,10 @@ def scrape_with_threads():
         product.save_info()
 
 
-def add_products(args):
-    for category, url in zip(args.category, args.url):
-        scraper.add_product(category, url)
-
-
-def visualize(args):
-    print("Visualizing...")
-    if args.show_all:
-        scraper.show_all_products()
-
-    if args.visualize_categories:
-        for category in args.visualize_categories:
-            scraper.show_category(category)
-
-    if args.visualize_ids:
-        for id in args.visualize_ids:
-            scraper.show_id(id)
-
-    if args.visualize_names:
-        for name in args.visualize_names:
-            scraper.show_name(name)
-
-
-def reset():
-    print("Resetting data...")
-    logging.getLogger(__name__).info("Resetting data")
-
-    data = scraper.Filemanager.get_record_data()
-
-    for category in data.values():
-        for product in category.values():
-            for website in product.values():
-                website["info"] = {"id": "", "url": "", "currency": ""}
-                website["datapoints"] = []
-
-    scraper.Filemanager.save_record_data(data)
-
-
-def hard_reset():
-    print("Hard resetting data...")
-    logging.getLogger(__name__).info("Hard resetting data")
-
-    data = {}
-    scraper.Filemanager.save_record_data(data)
-    scraper.Filemanager.clear_product_csv()
-
-
 if __name__ == "__main__":
     logging.config.fileConfig(
-        fname=f"{scraper.Filemanager.root_path}/scraper/logging.ini",
-        defaults={
-            "logfilename": f"{scraper.Filemanager.root_path}/scraper/logfile.log"
-        },
+        fname=scraper.Filemanager.logging_ini_path,
+        defaults={"logfilename": scraper.Filemanager.logfile_path},
     )
 
     main()
