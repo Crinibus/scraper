@@ -39,13 +39,9 @@ def argparse_setup() -> ArgumentParser.parse_args:
         action="append",
     )
 
-    parser.add_argument(
-        "-u", "--url", help="the url to the product", type=str, action="append"
-    )
+    parser.add_argument("-u", "--url", help="the url to the product", type=str, action="append")
 
-    parser.add_argument(
-        "--threads", help="use threads when scraping product info", action="store_true"
-    )
+    parser.add_argument("--threads", help="use threads when scraping product info", action="store_true")
 
     parser.add_argument(
         "-v",
@@ -112,3 +108,10 @@ def validate_arguments(parser: ArgumentParser) -> None:
     if args.add:
         if not args.category or not args.url:
             parser.error("When using --add, then --category and --url is required")
+
+    if args.visualize:
+        if not any([args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names]):
+            parser.error(
+                "When using --visualize, then one of the following is required: "
+                "--visualize-all, --visualize-category, --visualize-id, --visualize-name"
+            )
