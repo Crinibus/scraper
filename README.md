@@ -87,7 +87,7 @@ python3 main.py -s --threads
 
 
 ## Add products <a name="add-products"></a>
-To add a single product, use the following command, where you replace ````<category>``` and ```<url>``` with your category and url:
+To add a single product, use the following command, where you replace ```<category>``` and ```<url>``` with your category and url:
 ```
 python3 main.py -a -c <category> -u <url>
 ```
