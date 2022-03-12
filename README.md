@@ -160,6 +160,14 @@ python3 main.py --clean-data
 <br/>
 
 
+## Search products and categories
+You can search for product names and categories you have in your records.json by using the argument ```--search [<word> ...]```. The search is like a keyword search, so e.g. if you enter ```--search logitech``` all product names and categories that contains the word "logitech" are found. 
+
+You can search with multiple keywords, just seperate them with a space: ```--search logitech corsair```. Here all the product names and categories that contains the words "logitech" or "corsair" are found.
+
+<br/>
+
+
 ## Visualize data <a name="visualize-data"></a>
 To visualize your data, just run main.py with the ```-v``` or ```--visualize``` argument and then specify which products you want to be visualized. These are your options for how you want to visualize your products:
 
