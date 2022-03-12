@@ -23,6 +23,9 @@ def main():
     if args.add:
         scraper.add_products(args.category, args.url)
 
+    if args.search:
+        scraper.search(args.search)
+
     if args.scrape:
         if args.threads:
             scrape_with_threads()
