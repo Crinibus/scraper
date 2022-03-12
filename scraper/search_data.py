@@ -5,7 +5,7 @@ from .filemanager import Filemanager
 def search(queries: List[str]):
     print("Searching...")
 
-    for product_name in queries:
+    for query in queries:
         search_functions = [search_product_name, search_categories]
         searching_for_names = [
             ("product names", "product name(s)"),
@@ -13,38 +13,16 @@ def search(queries: List[str]):
         ]
 
         for search_function, searching_for_name in zip(search_functions, searching_for_names):
-            results = search_function(product_name)
+            results = search_function(query)
 
             if not results:
-                print(f"\nFound nothing for search term '{product_name}' when searching for {searching_for_name[0]}")
+                print(f"\nFound nothing for search term '{query}' when searching for {searching_for_name[0]}")
                 continue
 
-            print(f"\nFound these {searching_for_name[1]} with search term '{product_name}':")
+            print(f"\nFound these {searching_for_name[1]} with search term '{query}':")
             for result in results:
                 print(f"> {result}")
         print()
-
-    # for product_name in queries:
-    #     results = search_product_name(product_name)
-
-    #     if not results:
-    #         print(f"\nFound nothing for search term '{product_name}' when searching for product names")
-    #         continue
-
-    #     print(f"\nFound these product names with search term '{product_name}':")
-    #     for result in results:
-    #         print(f"> {result}")
-
-    # for category in queries:
-    #     results = search_categories(category)
-
-    #     if not results:
-    #         print(f"\nFound nothing for search term '{category}' when searching for category names")
-    #         continue
-
-    #     print(f"\nFound these product names with search term '{category}':")
-    #     for result in results:
-    #         print(f"> {result}")
 
 
 def search_product_name(product_name_search: str):
