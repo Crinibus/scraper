@@ -115,7 +115,7 @@ python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
 
 ### Websites to scrape from <a name="websites-to-scrape-from"></a>
 This scraper can (so far) scrape prices on products from:
-- [Amazon.com](https://www.amazon.com/)
+- [Amazon](https://www.amazon.com/)*
 - [eBay.com](https://www.ebay.com/)
 - [Komplett.dk](https://www.komplett.dk/)
 - [Proshop.dk](https://www.proshop.dk/)
@@ -128,6 +128,10 @@ This scraper can (so far) scrape prices on products from:
 - [MM-Vision.dk](https://www.mm-vision.dk/)
 - [Coolshop.dk](https://www.coolshop.dk/)
 - [Sharkgaming.dk](https://www.sharkgaming.dk/)
+
+****OBS these Amazon domains should work: [.com](https://www.amazon.com/), [.ca](https://www.amazon.ca/), [.es](https://www.amazon.es/), [.fr](https://www.amazon.fr/), [.de](https://www.amazon.de/) and [.it](https://www.amazon.it/)<br/>
+The listed Amazon domains is from my quick testing with one or two products from each domain.<br/>
+If you find that some other Amazon domains works or some of the listed doesn't please create an issue.***
 
 <br/>
 
