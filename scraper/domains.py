@@ -215,6 +215,17 @@ def sharkgaming(soup: BeautifulSoup) -> Info:
     return Info(product_user_name, price, currency, id)
 
 
+def newegg(soup: BeautifulSoup) -> Info:
+    script_data_raw = soup.find_all("script", type="application/ld+json")[2].text
+    product_data = json.loads(script_data_raw)
+    name = product_data.get("name")
+    product_user_name = Format.get_user_product_name(name)
+    price = float(product_data.get("offers").get("price"))
+    currency = product_data.get("offers").get("priceCurrency")
+    id = product_data.get("sku")
+    return Info(product_user_name, price, currency, id)
+
+
 domains = {
     "komplett": komplett,
     "proshop": proshop,
@@ -229,4 +240,5 @@ domains = {
     "mm-vision": mmvision,
     "coolshop": coolshop,
     "sharkgaming": sharkgaming,
+    "newegg": newegg,
 }
