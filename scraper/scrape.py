@@ -40,7 +40,7 @@ class Scraper:
             self.logger.warning(
                 f"Could not get all the data needed from url: {self.url}"
             )
-            self.info = Info(None, None, None, valid=False)
+            self.info = Info(None, None, None, None, valid=False)
 
     def save_info(self) -> None:
         if self.info.valid:
@@ -59,11 +59,8 @@ class Scraper:
             self.logger.exception("KeyError on dict 'data'")
             return data
 
-        # Get product id either from info.partnum or info.asin (only Amazon)
-        product_id = self.info.partnum if self.info.partnum else self.info.asin
-
         product_info["info"].update(
-            {"url": short_url, "id": product_id, "currency": self.info.currency}
+            {"url": short_url, "id": self.info.id, "currency": self.info.currency}
         )
 
         if len(product_info["datapoints"]) >= 1:
