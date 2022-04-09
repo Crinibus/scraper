@@ -121,22 +121,8 @@ def avcables(soup: BeautifulSoup) -> Info:
 def amazon(soup: BeautifulSoup) -> Info:
     name = soup.find("span", id="productTitle").text.strip().lower()
     product_user_name = Format.get_user_product_name(name)
-    try:
-        # Normal price
-        price = float(
-            soup.find("span", id="priceblock_ourprice")
-            .text.replace("$", "")
-            .replace(",", "")
-        )
-    except AttributeError:
-        # Deal price
-        price = float(
-            soup.find("span", id="priceblock_dealprice")
-            .text.replace("$", "")
-            .replace(",", "")
-        )
-    script_tag = soup.find_all("script", type="a-state")[15].contents[0]
-    currency = json.loads(script_tag).get("currencyCode")
+    price = float(soup.find("input", id="attach-base-product-price").get("value"))
+    currency = soup.find("input", id="attach-currency-of-preference").get("value")
     id = soup.find("input", id="ASIN").get("value")
     return Info(product_user_name, price, currency, id)
 
