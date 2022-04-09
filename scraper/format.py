@@ -30,6 +30,7 @@ class Format:
             "mmvision": url,
             "coolshop": f'https://www.coolshop.dk/produkt/{url.split("/")[-2]}/',
             "sharkgaming": url,
+            "newegg": f"https://www.newegg.com/p/{info.id}",
         }
 
         if website_name == "ebay":
