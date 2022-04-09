@@ -25,8 +25,8 @@ def komplett(soup: BeautifulSoup) -> Info:
     )
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
-    partnum = int(soup.find("span", itemprop="sku").text)
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find("span", itemprop="sku").text
+    return Info(product_user_name, price, currency, id)
 
 
 def proshop(soup: BeautifulSoup) -> Info:
@@ -61,8 +61,8 @@ def proshop(soup: BeautifulSoup) -> Info:
             )
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
-    partnum = int(json.loads(script_tag).get("sku"))
-    return Info(product_user_name, price, currency, partnum)
+    id = json.loads(script_tag).get("sku")
+    return Info(product_user_name, price, currency, id)
 
 
 def computersalg(soup: BeautifulSoup) -> Info:
@@ -75,8 +75,8 @@ def computersalg(soup: BeautifulSoup) -> Info:
         .replace(",", ".")
     )
     currency = soup.find("span", itemprop="priceCurrency").get("content")
-    partnum = int(soup.find("h2", class_="productIdentifierHeadline").span.text)
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find("h2", class_="productIdentifierHeadline").span.text
+    return Info(product_user_name, price, currency, id)
 
 
 def elgiganten(soup: BeautifulSoup) -> Info:
@@ -88,8 +88,8 @@ def elgiganten(soup: BeautifulSoup) -> Info:
         .replace(u"\xa0", "")
     )
     currency = soup.find("meta", itemprop="priceCurrency").get("content")
-    partnum = int(soup.find("meta", itemprop="sku").get("content"))
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find("meta", itemprop="sku").get("content")
+    return Info(product_user_name, price, currency, id)
 
 
 def avxperten(soup: BeautifulSoup) -> Info:
@@ -98,8 +98,8 @@ def avxperten(soup: BeautifulSoup) -> Info:
     price = float(soup.find("div", class_="price").text.replace(u"\xa0DKK", ""))
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
-    partnum = int(json.loads(script_tag).get("sku"))
-    return Info(product_user_name, price, currency, partnum)
+    id = json.loads(script_tag).get("sku")
+    return Info(product_user_name, price, currency, id)
 
 
 def avcables(soup: BeautifulSoup) -> Info:
@@ -114,8 +114,8 @@ def avcables(soup: BeautifulSoup) -> Info:
     )
     currency = soup.find("meta", property="og:price:currency").get("content")
     script_tag = soup.find("script", type="application/ld+json").contents[0]
-    partnum = json.loads(script_tag).get("sku")
-    return Info(product_user_name, price, currency, partnum)
+    id = json.loads(script_tag).get("sku")
+    return Info(product_user_name, price, currency, id)
 
 
 def amazon(soup: BeautifulSoup) -> Info:
@@ -137,8 +137,8 @@ def amazon(soup: BeautifulSoup) -> Info:
         )
     script_tag = soup.find_all("script", type="a-state")[15].contents[0]
     currency = json.loads(script_tag).get("currencyCode")
-    asin = soup.find("input", id="ASIN").get("value")
-    return Info(product_user_name, price, currency, asin=asin)
+    id = soup.find("input", id="ASIN").get("value")
+    return Info(product_user_name, price, currency, id)
 
 
 def ebay(soup: BeautifulSoup) -> Info:
@@ -152,7 +152,7 @@ def ebay(soup: BeautifulSoup) -> Info:
     if url.split("/")[3] == "itm":
         price = float(soup.find("span", itemprop="price").get("content"))
         currency = soup.find("span", itemprop="priceCurrency").get("content")
-        partnum = int(soup.find("div", id="descItemNumber").text)
+        id = soup.find("div", id="descItemNumber").text
     else:
         price = float(
             soup.find("div", class_="display-price")
@@ -168,9 +168,9 @@ def ebay(soup: BeautifulSoup) -> Info:
             .get("offers")[0]
             .get("priceCurrency")
         )
-        partnum = int(soup.find("div", class_="item-details").a.get("data-itemid"))
+        id = soup.find("div", class_="item-details").a.get("data-itemid")
 
-    return Info(product_user_name, price, currency, partnum)
+    return Info(product_user_name, price, currency, id)
 
 
 def power(soup: BeautifulSoup) -> Info:
@@ -180,10 +180,8 @@ def power(soup: BeautifulSoup) -> Info:
         soup.find("meta", property="product:price:amount")["content"].replace(",", ".")
     )
     currency = soup.find("meta", property="product:price:currency").get("content")
-    partnum = int(
-        soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
-    )
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
+    return Info(product_user_name, price, currency, id)
 
 
 def expert(soup: BeautifulSoup) -> Info:
@@ -193,10 +191,8 @@ def expert(soup: BeautifulSoup) -> Info:
         soup.find("meta", property="product:price:amount")["content"].replace(",", ".")
     )
     currency = soup.find("meta", property="product:price:currency").get("content")
-    partnum = int(
-        soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
-    )
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
+    return Info(product_user_name, price, currency, id)
 
 
 def mmvision(soup: BeautifulSoup) -> Info:
@@ -209,8 +205,8 @@ def mmvision(soup: BeautifulSoup) -> Info:
     )
     script_tag = soup.find_all("script", type="application/ld+json")[1].contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
-    partnum = int(json.loads(script_tag).get("productID"))
-    return Info(product_user_name, price, currency, partnum)
+    id = json.loads(script_tag).get("productID")
+    return Info(product_user_name, price, currency, id)
 
 
 def coolshop(soup: BeautifulSoup) -> Info:
@@ -220,8 +216,8 @@ def coolshop(soup: BeautifulSoup) -> Info:
         soup.find("meta", property="product:price:amount")["content"].split(".")[0]
     )
     currency = soup.find("meta", property="product:price:currency").get("content")
-    partnum = int(soup.find_all("div", id="attributeSku")[1].text.strip())
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find_all("div", id="attributeSku")[1].text.strip()
+    return Info(product_user_name, price, currency, id)
 
 
 def sharkgaming(soup: BeautifulSoup) -> Info:
@@ -229,8 +225,8 @@ def sharkgaming(soup: BeautifulSoup) -> Info:
     product_user_name = Format.get_user_product_name(name)
     price = float(soup.find("meta", property="product:price:amount").get("content"))
     currency = soup.find("meta", property="product:price:currency").get("content")
-    partnum = int(soup.find("meta", itemprop="productID").get("content"))
-    return Info(product_user_name, price, currency, partnum)
+    id = soup.find("meta", itemprop="productID").get("content")
+    return Info(product_user_name, price, currency, id)
 
 
 domains = {

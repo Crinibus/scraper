@@ -9,8 +9,7 @@ class Info:
     name: str
     price: float
     currency: str
-    partnum: int = None
-    asin: str = None
+    id: str
     valid: bool = True
 
 
@@ -19,15 +18,15 @@ class Format:
     def shorten_url(website_name: str, url: str, info: Info) -> str:
 
         short_urls = {
-            "komplett": f"https://www.komplett.dk/product/{info.partnum}",
-            "proshop": f"https://www.proshop.dk/{info.partnum}",
-            "computersalg": f"https://www.computersalg.dk/i/{info.partnum}",
-            "elgiganten": f"https://www.elgiganten.dk/product/{info.partnum}/",
+            "komplett": f"https://www.komplett.dk/product/{info.id}",
+            "proshop": f"https://www.proshop.dk/{info.id}",
+            "computersalg": f"https://www.computersalg.dk/i/{info.id}",
+            "elgiganten": f"https://www.elgiganten.dk/product/{info.id}/",
             "avxperten": url,
             "avcables": url,
             "amazon": url,
-            "power": f'https://www.power.dk/{url.split("/")[3]}/p-{info.partnum}',
-            "expert": f'https://www.expert.dk/{url.split("/")[3]}/p-{info.partnum}',
+            "power": f'https://www.power.dk/{url.split("/")[3]}/p-{info.id}',
+            "expert": f'https://www.expert.dk/{url.split("/")[3]}/p-{info.id}',
             "mmvision": url,
             "coolshop": f'https://www.coolshop.dk/produkt/{url.split("/")[-2]}/',
             "sharkgaming": url,
@@ -35,7 +34,7 @@ class Format:
 
         if website_name == "ebay":
             if url.split("/")[3] == "itm":
-                short_url = f"https://www.ebay.com/itm/{info.partnum}"
+                short_url = f"https://www.ebay.com/itm/{info.id}"
             else:
                 short_url = url.split("?")[0]
         else:
