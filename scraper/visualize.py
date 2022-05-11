@@ -5,15 +5,15 @@ from scraper.constants import WEBSITE_COLORS
 from datetime import datetime
 
 
-def visualize_data(show_all: bool, categories: List[str], ids: List[str], names: List[str]):
+def visualize_data(show_all: bool, categories: List[str], ids: List[str], names: List[str], only_up_to_date: bool):
     print("Visualizing...")
 
     if show_all:
-        show_all_products()
+        show_all_products(only_up_to_date)
 
     if categories:
         for category in categories:
-            show_category(category)
+            show_category(category, only_up_to_date)
 
     if ids:
         for id in ids:
@@ -54,7 +54,7 @@ def show_id(id: str) -> None:
     fig.show()
 
 
-def show_category(category: str) -> None:
+def show_category(category: str, only_up_to_date: bool) -> None:
     print(f"Visualizing products in category: {category.lower()}")
 
     for product_info in get_products_with_category(category):
@@ -75,6 +75,9 @@ def show_category(category: str) -> None:
 
             if check_if_date_up_to_date(website_info["dates"]):
                 is_up_to_date = True
+
+        if only_up_to_date and not is_up_to_date:
+            continue
 
         title = f"Price(s) of {product_name.upper()}"
 
@@ -118,8 +121,11 @@ def show_name(name: str) -> None:
     fig.show()
 
 
-def show_all_products() -> None:
-    print("Visualizing all products")
+def show_all_products(only_up_to_date: bool) -> None:
+    if only_up_to_date:
+        print("Visualizing all products that are up to date...")
+    else:
+        print("Visualizing all products...")
 
     for product_info in get_all_products():
         fig = go.Figure()
@@ -138,6 +144,9 @@ def show_all_products() -> None:
 
             if check_if_date_up_to_date(website_info["dates"]):
                 is_up_to_date = True
+
+        if only_up_to_date and not is_up_to_date:
+            continue
 
         title = f"Price(s) of {product_info['name'].upper()}"
 
