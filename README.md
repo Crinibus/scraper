@@ -229,3 +229,15 @@ python3 main.py -v -vn <name> <name2>
 ```
 
 If the name of a product has multiple words in it, then just add quotation marks around the name.
+
+
+**Only show graph for products that are up to date**
+
+To only show graphs for the products that are up to date, use the flag ```--up-to-date``` or ```-utd```, like so:
+```
+python3 main.py -v -va -utd
+```
+The use of the flag ```-utd``` is only implemented when visualizing all products like the example above or when visualizing all products in a category:
+```
+python3 main.py -v -vc gpu -utd
+```
