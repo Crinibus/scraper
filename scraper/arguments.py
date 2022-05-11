@@ -78,6 +78,14 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
+        "-utd",
+        "--up-to-date",
+        help="show only graph for a product if the latest product price is today",
+        action="store_true",
+        dest="up_to_date",
+    )
+
+    parser.add_argument(
         "--search",
         help="search for product names with the specified name(s)",
         type=str,
