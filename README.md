@@ -181,6 +181,8 @@ To visualize your data, just run main.py with the ```-v``` or ```--visualize``` 
 - ```-id [<id> [<id> ...]]``` or ```--visualize-id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
 - ```-vn [<name> [<name> ...]]``` or ```--visualize-name [<name> ...]]``` to visualize one or more products with the specified name(s)
 
+### Example graph
+![](https://user-images.githubusercontent.com/57172157/171033112-908f6420-6c7a-44ef-ba67-8a4a73bbd96e.png)
 
 ### Command examples <a name="command-examples"></a>
 **Show graphs for all products**
