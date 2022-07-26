@@ -24,7 +24,7 @@ class Scraper:
 
     def save_info(self) -> None:
         if not self.product_info.valid:
-            print("Product info is not valid")
+            print(f"Product info is not valid - category: '{self.category}' - url: '{self.url}'")
             return
 
         save_product(self.category, self.url, self.website_handler.website_name, self.product_info)
