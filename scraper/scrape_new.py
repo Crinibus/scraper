@@ -57,7 +57,7 @@ def save_product(category: str, url: str, website_name: str, product_info: Info)
     Filemanager.save_record_data(data)
 
 
-def get_product_data(data: dict, category: str, name: str, website_name: str):
+def get_product_data(data: dict, category: str, name: str, website_name: str) -> dict:
     try:
         product_data = data[category][name][website_name]
         return product_data
@@ -68,7 +68,7 @@ def get_product_data(data: dict, category: str, name: str, website_name: str):
         return None
 
 
-def add_product_datapoint(product_data: dict, price: float):
+def add_product_datapoint(product_data: dict, price: float) -> None:
     date = datetime.today().strftime("%Y-%m-%d")
     product_datapoints = product_data["datapoints"]
 
