@@ -234,10 +234,8 @@ class EbayHandler(BaseWebsiteHandler):
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         if self.soup_url.split("/")[3] == "itm":
-            print("this is with itm")
             price = float(soup.find("span", itemprop="price").get("content"))
         else:
-            print("this is with WITHOUT itm")
             price = float(soup.find("div", class_="display-price").text.replace("DKK ", "").replace(",", ""))
 
         return price
