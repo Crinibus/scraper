@@ -135,18 +135,29 @@ class ComputerSalgHandler(BaseWebsiteHandler):
 
 
 class ElgigantenHandler(BaseWebsiteHandler):
-    # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.elgiganten.dk/product/mobil-tablet-smartwatch/mobiltelefon/sony-xperia-10-iv-5g-smartphone-6128gb-mint/457019
+    def _get_common_data(self, soup) -> None:
+        self.elgiganten_api_data = self._get_json_api_data()
+
     def _get_product_name(self, soup: BeautifulSoup) -> str:
         return soup.find("h1", class_="product-title").text.lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        return float(soup.find("div", class_="product-price-container").text.strip().replace("\xa0", ""))
+        return self.elgiganten_api_data["data"]["product"]["currentPricing"]["price"]["value"]
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", itemprop="priceCurrency").get("content")
+        return self.elgiganten_api_data["data"]["product"]["currentPricing"]["price"]["currency"]
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", itemprop="sku").get("content")
+        return self.url.split("/")[-1]
+
+    def _get_json_api_data(self) -> dict:
+        # API link to get price and currency
+        # The API link has a placeholder for where the product id should be "{id_number}" 
+        elgiganten_api_link = "https://www.elgiganten.dk/cxorchestrator/dk/api?appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%229bfbc062032a2a6b924883b81508af5c77bbfc5f66cc41c7ffd7d519885ac5e4%22%7D%7D"
+        id = self.url.split("/")[-1]
+        api_link = elgiganten_api_link.replace("{id_number}", id)
+        response = request_url(api_link)
+        return response.json()
 
 
 class AvXpertenHandler(BaseWebsiteHandler):
@@ -195,13 +206,25 @@ class AmazonHandler(BaseWebsiteHandler):
         return soup.find("span", id="productTitle").text.strip().lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        return float(soup.find("input", id="attach-base-product-price").get("value"))
+        try:
+            print("first")
+            return float(soup.find("input", id="attach-base-product-price").get("value"))
+        except:
+            print("second")
+            return float(soup.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", ""))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
-        return soup.find("input", id="attach-currency-of-preference").get("value")
+        try:
+            return soup.find("input", id="attach-currency-of-preference").get("value")
+        except:
+            return soup.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
-        return soup.find("input", id="ASIN").get("value")
+        try:
+            return soup.find("input", id="ASIN").get("value")
+        except:
+            asin_json = json.loads(soup.find("span", id="cr-state-object").get("data-state"))
+            return asin_json["asin"]
 
 
 class EbayHandler(BaseWebsiteHandler):
