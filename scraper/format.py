@@ -23,7 +23,7 @@ class Format:
             "computersalg": f"https://www.computersalg.dk/i/{info.id}",
             "elgiganten": f"https://www.elgiganten.dk/product/{info.id}/",
             "avxperten": url,
-            "avcables": url,
+            "av-cables": url,
             "amazon": url,
             "power": f'https://www.power.dk/{url.split("/")[3]}/p-{info.id}',
             "expert": f'https://www.expert.dk/{url.split("/")[3]}/p-{info.id}',
