@@ -1,9 +1,20 @@
 from typing import Callable
+import requests
+from requests import Response
 from bs4 import BeautifulSoup
 import json
 import logging
 from abc import ABC, abstractmethod
 from scraper.format import Format, Info
+from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
+
+
+def request_url(url: str) -> Response:
+    try:
+        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10)
+        return response
+    except requests.exceptions.RequestException:  # temporary try expect for all requests errors
+        logging.getLogger(__name__).exception(f"Module requests exception with url: {url}")
 
 
 class BaseWebsiteHandler(ABC):
@@ -12,20 +23,26 @@ class BaseWebsiteHandler(ABC):
         self.url = url
         self.website_name = get_website_name(url)
 
-    def get_product_info(self, soup: BeautifulSoup) -> Info:
+    def get_product_info(self) -> Info:
         try:
-            self._get_common_data(soup)
-            raw_name = self._get_product_name(soup)
+            request_data = self._request_product_data()
+            self._get_common_data(request_data)
+            raw_name = self._get_product_name(request_data)
             name = Format.get_user_product_name(raw_name)
-            price = self._get_product_price(soup)
-            currency = self._get_product_currency(soup)
-            id = self._get_product_id(soup)
+            price = self._get_product_price(request_data)
+            currency = self._get_product_currency(request_data)
+            id = self._get_product_id(request_data)
             return Info(name, price, currency, id)
         except (AttributeError, ValueError, TypeError):
             logging.getLogger(__name__).exception(f"Could not get all the data needed from url: {self.url}")
             return Info(None, None, None, None, valid=False)
 
-    def _get_common_data(self, soup):
+    def _request_product_data(self) -> BeautifulSoup:
+        # option for each specific class to change how the request data is being handled
+        response = request_url(self.url)
+        return BeautifulSoup(response.text, "html.parser")
+
+    def _get_common_data(self, soup) -> None:
         # if the same data needs to be accessed from more than one of the abstract methods,
         # then you can use this method to store the data as a instance variable,
         # so that the other methods can access the data

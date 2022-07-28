@@ -1,7 +1,4 @@
-import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
-from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.domains import get_website_handler
 from scraper.filemanager import Filemanager
 from scraper.format import Format, Info
@@ -17,8 +14,7 @@ class Scraper:
 
     def scrape_info(self) -> None:
         logging.getLogger(__name__).debug(f"Scraping: {self.category} - {self.url}")
-        soup = request_url(self.url)
-        self.product_info = self.website_handler.get_product_info(soup)
+        self.product_info = self.website_handler.get_product_info()
 
     def save_info(self) -> None:
         if not self.product_info or not self.product_info.valid:
@@ -36,14 +32,6 @@ class Scraper:
         print(f"Product currency: {self.product_info.currency}")
         print(f"Product id: {self.product_info.id}")
         print(f"Product valid: {self.product_info.valid}")
-
-
-def request_url(url: str) -> BeautifulSoup:
-    try:
-        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10)
-        return BeautifulSoup(response.text, "html.parser")
-    except requests.exceptions.RequestException:  # temporary try expect for all requests errors
-        logging.getLogger(__name__).exception(f"Module requests exception with url: {url}")
 
 
 def save_product(category: str, url: str, website_name: str, product_info: Info) -> None:
