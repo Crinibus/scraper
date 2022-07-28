@@ -1,7 +1,330 @@
 from typing import Callable
 from bs4 import BeautifulSoup
 import json
+import logging
+from abc import ABC, abstractmethod
 from scraper.format import Format, Info
+
+
+class BaseWebsiteHandler(ABC):
+    def __init__(self, url: str) -> None:
+        # super().__init__()
+        self.url = url
+        self.website_name = get_website_name(url)
+
+    def get_product_info(self, soup: BeautifulSoup) -> Info:
+        try:
+            self._get_common_data(soup)
+            raw_name = self._get_product_name(soup)
+            name = Format.get_user_product_name(raw_name)
+            price = self._get_product_price(soup)
+            currency = self._get_product_currency(soup)
+            id = self._get_product_id(soup)
+            return Info(name, price, currency, id)
+        except (AttributeError, ValueError, TypeError):
+            logging.getLogger(__name__).exception(f"Could not get all the data needed from url: {self.url}")
+            return Info(None, None, None, None, valid=False)
+
+    def _get_common_data(self, soup):
+        # if the same data needs to be accessed from more than one of the abstract methods,
+        # then you can use this method to store the data as a instance variable,
+        # so that the other methods can access the data
+        pass
+
+    @abstractmethod
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        pass
+
+    @abstractmethod
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        pass
+
+    @abstractmethod
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        pass
+
+    @abstractmethod
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        pass
+
+
+class KomplettHandler(BaseWebsiteHandler):
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("div", class_="product-main-info__info").h1.span.text.lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("span", class_="product-price-now").text.strip(",-").replace(".", ""))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        script_tag = soup.find("script", type="application/ld+json").contents[0]
+        currency = json.loads(script_tag).get("offers").get("priceCurrency")
+        return currency
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("span", itemprop="sku").text
+
+
+class ProshopHandler(BaseWebsiteHandler):
+    def _get_common_data(self, soup):
+        soup_script_tag = soup.find("script", type="application/ld+json").contents[0]
+        self.soup_script_tag_json = json.loads(soup_script_tag)
+
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("div", class_="col-xs-12 col-sm-7").h1.text.lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        try:
+            # find normal price
+            price = float(
+                soup.find("span", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
+            )
+        except AttributeError:
+            try:
+                # find discount price
+                price = float(
+                    soup.find("div", class_="site-currency-attention site-currency-campaign")
+                    .text.replace(".", "")
+                    .replace(",", ".")
+                    .strip(" kr")
+                )
+            except AttributeError:
+                # if campaign is sold out (udsolgt)
+                price = float(
+                    soup.find("div", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
+                )
+        return price
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
+        return currency
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        id = self.soup_script_tag_json.get("sku")
+        return id
+
+
+class ComputerSalgHandler(BaseWebsiteHandler):
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("h1", itemprop="name").text.lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("span", itemprop="price").text.strip().replace(".", "").replace(",", "."))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("span", itemprop="priceCurrency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("h2", class_="productIdentifierHeadline").span.text
+
+
+class ElgigantenHandler(BaseWebsiteHandler):
+    # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.elgiganten.dk/product/mobil-tablet-smartwatch/mobiltelefon/sony-xperia-10-iv-5g-smartphone-6128gb-mint/457019
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("h1", class_="product-title").text.lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("div", class_="product-price-container").text.strip().replace("\xa0", ""))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", itemprop="priceCurrency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", itemprop="sku").get("content")
+
+
+class AvXpertenHandler(BaseWebsiteHandler):
+    def _get_common_data(self, soup):
+        soup_script_tag = soup.find("script", type="application/ld+json").contents[0]
+        self.soup_script_tag_json = json.loads(soup_script_tag)
+
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("div", class_="content-head").text.strip().lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("div", class_="price").text.replace("\xa0DKK", ""))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return self.soup_script_tag_json.get("offers").get("priceCurrency")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return self.soup_script_tag_json.get("sku")
+
+
+class AvCablesHandler(BaseWebsiteHandler):
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("h1", class_="title").text.lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(
+            soup.find("div", class_="regular-price")
+            .text.strip()
+            .replace("Pris:   ", "")
+            .replace("Tilbudspris:   ", "")
+            .split(",")[0]
+        )
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="og:price:currency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        script_tag = soup.find("script", type="application/ld+json").contents[0]
+        id = json.loads(script_tag).get("sku")
+        return id
+
+
+class AmazonHandler(BaseWebsiteHandler):
+    # TODO: FIX GETTING INFO FROM THIS LINK: https://www.amazon.com/PlayStation-5-Console/dp/B09DFCB66S/?_encoding=UTF8&pd_rd_w=mNmTx&content-id=amzn1.sym.90935d8a-16d8-44ec-9874-f910bf2faf89&pf_rd_p=90935d8a-16d8-44ec-9874-f910bf2faf89&pf_rd_r=1RRG12NVBKDZZ01140TG&pd_rd_wg=juN0N&pd_rd_r=672a737c-4c52-4022-a216-2d88acad8f0a&ref_=pd_gw_crs_zg_bs_468642
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("span", id="productTitle").text.strip().lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("input", id="attach-base-product-price").get("value"))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("input", id="attach-currency-of-preference").get("value")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("input", id="ASIN").get("value")
+
+
+class EbayHandler(BaseWebsiteHandler):
+    def _get_common_data(self, soup):
+        self.soup_url = soup.find("meta", property="og:url").get("content")
+
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="og:title").get("content").strip("  | eBay").lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        if self.soup_url.split("/")[3] == "itm":
+            print("this is with itm")
+            price = float(soup.find("span", itemprop="price").get("content"))
+        else:
+            print("this is with WITHOUT itm")
+            price = float(soup.find("div", class_="display-price").text.replace("DKK ", "").replace(",", ""))
+
+        return price
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        if self.soup_url.split("/")[3] == "itm":
+            currency = soup.find("span", itemprop="priceCurrency").get("content")
+        else:
+            script_tag = soup.find("script", type="application/ld+json").contents[0]
+            currency = (
+                json.loads(script_tag)
+                .get("mainEntity")
+                .get("offers")
+                .get("itemOffered")[0]
+                .get("offers")[0]
+                .get("priceCurrency")
+            )
+
+        return currency
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        if self.soup_url.split("/")[3] == "itm":
+            id = soup.find("div", id="descItemNumber").text
+        else:
+            id = soup.find("div", class_="item-details").a.get("data-itemid")
+
+        return id
+
+
+class PowerHandler(BaseWebsiteHandler):
+    # TODO: FIX GETTING INFO FROM THIS LINK: https://www.power.dk/tv-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/jbl-tune-760-nc-over-ear-hovedtelefoner-sort/p-1192020/
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("title").text.replace(" - Power.dk", "").lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="product:price:currency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
+
+
+class ExpertHandler(BaseWebsiteHandler):
+    # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.expert.dk/mobil/mobiltelefoner/apple-iphone-13-pro-128-gb-skyfri-blaa/p-1204160/
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="og:title")["content"].lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="product:price:currency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
+
+
+class MMVisionHandler(BaseWebsiteHandler):
+    # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.mm-vision.dk/visiongaming/vision-first-gaming-VG-pc
+    def _get_common_data(self, soup):
+        soup_script_tag = soup.find_all("script", type="application/ld+json")[1].contents[0]
+        self.soup_script_tag_json = json.loads(soup_script_tag)
+
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("h1", itemprop="name").text.strip().lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("h3", class_="product-price text-right").text.replace(",-", "").replace(".", ""))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
+        return currency
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        id = self.soup_script_tag_json.get("productID")
+        return id
+
+
+class CoolshopHandler(BaseWebsiteHandler):
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.coolshop.dk/produkt/23C5P8/
+        return soup.find("div", class_="thing-header").text.strip().lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("meta", property="product:price:amount")["content"].split(".")[0])
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="product:price:currency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find_all("div", id="attributeSku")[1].text.strip()
+
+
+class SharkGamingHandler(BaseWebsiteHandler):
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="og:title").get("content").lower()
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("meta", property="product:price:amount").get("content"))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", property="product:price:currency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", itemprop="productID").get("content")
+
+
+class NeweggHandler(BaseWebsiteHandler):
+    def _get_common_data(self, soup):
+        script_data_raw = soup.find_all("script", type="application/ld+json")[2].text
+        self.product_data = json.loads(script_data_raw)
+
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        return self.product_data.get("name")
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(self.product_data.get("offers").get("price"))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return self.product_data.get("offers").get("priceCurrency")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return self.product_data.get("sku")
 
 
 def get_website_name(url: str) -> str:
@@ -13,16 +336,49 @@ def get_website_name(url: str) -> str:
     return website_name
 
 
-def get_website_function(website_name: str) -> Callable[[BeautifulSoup], Info]:
-    return domains[website_name]
+def get_website_handler(url: str) -> BaseWebsiteHandler:
+    website_name = get_website_name(url).lower()
+
+    match website_name:
+        case "komplett":
+            return KomplettHandler(url)
+        case "proshop":
+            return ProshopHandler(url)
+        case "computersalg":
+            return ComputerSalgHandler(url)
+        case "elgiganten":
+            return ElgigantenHandler(url)
+        case "avxperten":
+            return AvXpertenHandler(url)
+        case "av-cables":
+            return AvCablesHandler(url)
+        case "amazon":
+            return AmazonHandler(url)
+        case "ebay":
+            return EbayHandler(url)
+        case "power":
+            return PowerHandler(url)
+        case "expert":
+            return ExpertHandler(url)
+        case "mm-vision":
+            return MMVisionHandler(url)
+        case "coolshop":
+            return CoolshopHandler(url)
+        case "sharkgaming":
+            return SharkGamingHandler(url)
+        case "newegg":
+            return NeweggHandler(url)
+        case _:
+            logging.getLogger(__name__).error(
+                f"Can't find a website handler - website: '{website_name}' possibly not supported"
+            )
+            return None
 
 
 def komplett(soup: BeautifulSoup) -> Info:
     name = soup.find("div", class_="product-main-info__info").h1.span.text.lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("span", class_="product-price-now").text.strip(",-").replace(".", "")
-    )
+    price = float(soup.find("span", class_="product-price-now").text.strip(",-").replace(".", ""))
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
     id = soup.find("span", itemprop="sku").text
@@ -34,19 +390,12 @@ def proshop(soup: BeautifulSoup) -> Info:
     product_user_name = Format.get_user_product_name(name)
     try:
         # find normal price
-        price = float(
-            soup.find("span", class_="site-currency-attention")
-            .text.replace(".", "")
-            .replace(",", ".")
-            .strip(" kr")
-        )
+        price = float(soup.find("span", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr"))
     except AttributeError:
         try:
             # find discount price
             price = float(
-                soup.find(
-                    "div", class_="site-currency-attention site-currency-campaign"
-                )
+                soup.find("div", class_="site-currency-attention site-currency-campaign")
                 .text.replace(".", "")
                 .replace(",", ".")
                 .strip(" kr")
@@ -54,10 +403,7 @@ def proshop(soup: BeautifulSoup) -> Info:
         except AttributeError:
             # if campaign is sold out (udsolgt)
             price = float(
-                soup.find("div", class_="site-currency-attention")
-                .text.replace(".", "")
-                .replace(",", ".")
-                .strip(" kr")
+                soup.find("div", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
             )
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
@@ -68,12 +414,7 @@ def proshop(soup: BeautifulSoup) -> Info:
 def computersalg(soup: BeautifulSoup) -> Info:
     name = soup.find("h1", itemprop="name").text.lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("span", itemprop="price")
-        .text.strip()
-        .replace(".", "")
-        .replace(",", ".")
-    )
+    price = float(soup.find("span", itemprop="price").text.strip().replace(".", "").replace(",", "."))
     currency = soup.find("span", itemprop="priceCurrency").get("content")
     id = soup.find("h2", class_="productIdentifierHeadline").span.text
     return Info(product_user_name, price, currency, id)
@@ -82,11 +423,7 @@ def computersalg(soup: BeautifulSoup) -> Info:
 def elgiganten(soup: BeautifulSoup) -> Info:
     name = soup.find("h1", class_="product-title").text.lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("div", class_="product-price-container")
-        .text.strip()
-        .replace(u"\xa0", "")
-    )
+    price = float(soup.find("div", class_="product-price-container").text.strip().replace("\xa0", ""))
     currency = soup.find("meta", itemprop="priceCurrency").get("content")
     id = soup.find("meta", itemprop="sku").get("content")
     return Info(product_user_name, price, currency, id)
@@ -95,7 +432,7 @@ def elgiganten(soup: BeautifulSoup) -> Info:
 def avxperten(soup: BeautifulSoup) -> Info:
     name = soup.find("div", class_="content-head").text.strip().lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(soup.find("div", class_="price").text.replace(u"\xa0DKK", ""))
+    price = float(soup.find("div", class_="price").text.replace("\xa0DKK", ""))
     script_tag = soup.find("script", type="application/ld+json").contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
     id = json.loads(script_tag).get("sku")
@@ -128,9 +465,7 @@ def amazon(soup: BeautifulSoup) -> Info:
 
 
 def ebay(soup: BeautifulSoup) -> Info:
-    name = (
-        soup.find("meta", property="og:title").get("content").strip("  | eBay").lower()
-    )
+    name = soup.find("meta", property="og:title").get("content").strip("  | eBay").lower()
     product_user_name = Format.get_user_product_name(name)
 
     url = soup.find("meta", property="og:url").get("content")
@@ -140,19 +475,10 @@ def ebay(soup: BeautifulSoup) -> Info:
         currency = soup.find("span", itemprop="priceCurrency").get("content")
         id = soup.find("div", id="descItemNumber").text
     else:
-        price = float(
-            soup.find("div", class_="display-price")
-            .text.replace("DKK ", "")
-            .replace(",", "")
-        )
+        price = float(soup.find("div", class_="display-price").text.replace("DKK ", "").replace(",", ""))
         script_tag = soup.find("script", type="application/ld+json").contents[0]
         currency = (
-            json.loads(script_tag)
-            .get("mainEntity")
-            .get("offers")
-            .get("itemOffered")[0]
-            .get("offers")[0]
-            .get("priceCurrency")
+            json.loads(script_tag).get("mainEntity").get("offers").get("itemOffered")[0].get("offers")[0].get("priceCurrency")
         )
         id = soup.find("div", class_="item-details").a.get("data-itemid")
 
@@ -162,9 +488,7 @@ def ebay(soup: BeautifulSoup) -> Info:
 def power(soup: BeautifulSoup) -> Info:
     name = soup.find("title").text.replace(" - Power.dk", "").lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("meta", property="product:price:amount")["content"].replace(",", ".")
-    )
+    price = float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
     currency = soup.find("meta", property="product:price:currency").get("content")
     id = soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
     return Info(product_user_name, price, currency, id)
@@ -173,9 +497,7 @@ def power(soup: BeautifulSoup) -> Info:
 def expert(soup: BeautifulSoup) -> Info:
     name = soup.find("meta", property="og:title")["content"].lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("meta", property="product:price:amount")["content"].replace(",", ".")
-    )
+    price = float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
     currency = soup.find("meta", property="product:price:currency").get("content")
     id = soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
     return Info(product_user_name, price, currency, id)
@@ -184,11 +506,7 @@ def expert(soup: BeautifulSoup) -> Info:
 def mmvision(soup: BeautifulSoup) -> Info:
     name = soup.find("h1", itemprop="name").text.strip().lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("h3", class_="product-price text-right")
-        .text.replace(",-", "")
-        .replace(".", "")
-    )
+    price = float(soup.find("h3", class_="product-price text-right").text.replace(",-", "").replace(".", ""))
     script_tag = soup.find_all("script", type="application/ld+json")[1].contents[0]
     currency = json.loads(script_tag).get("offers").get("priceCurrency")
     id = json.loads(script_tag).get("productID")
@@ -198,9 +516,7 @@ def mmvision(soup: BeautifulSoup) -> Info:
 def coolshop(soup: BeautifulSoup) -> Info:
     name = soup.find("div", class_="thing-header").text.strip().lower()
     product_user_name = Format.get_user_product_name(name)
-    price = float(
-        soup.find("meta", property="product:price:amount")["content"].split(".")[0]
-    )
+    price = float(soup.find("meta", property="product:price:amount")["content"].split(".")[0])
     currency = soup.find("meta", property="product:price:currency").get("content")
     id = soup.find_all("div", id="attributeSku")[1].text.strip()
     return Info(product_user_name, price, currency, id)
