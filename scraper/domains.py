@@ -207,10 +207,8 @@ class AmazonHandler(BaseWebsiteHandler):
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         try:
-            print("first")
             return float(soup.find("input", id="attach-base-product-price").get("value"))
         except:
-            print("second")
             return float(soup.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", ""))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
