@@ -56,7 +56,7 @@ def check_if_product_exists(product: Scraper) -> bool:
     data = Filemanager.get_record_data()
 
     try:
-        data[product.category][product.info.name][product.website_name]
+        data[product.category][product.product_info.name][product.website_handler.website_name]
     except KeyError:
         return False
 
@@ -66,15 +66,15 @@ def check_if_product_exists(product: Scraper) -> bool:
 def add_product_to_records(product: Scraper) -> None:
     data = Filemanager.get_record_data()
 
-    empty_product_dict = {product.website_name: {"info": {}, "datapoints": []}}
+    empty_product_dict = {product.website_handler.website_name: {"info": {}, "datapoints": []}}
 
     if not data.get(product.category):
-        data.update({product.category: {product.info.name: empty_product_dict}})
+        data.update({product.category: {product.product_info.name: empty_product_dict}})
 
-    if data[product.category].get(product.info.name):
-        data[product.category][product.info.name].update(empty_product_dict)
+    if data[product.category].get(product.product_info.name):
+        data[product.category][product.product_info.name].update(empty_product_dict)
     else:
-        data[product.category].update({product.info.name: empty_product_dict})
+        data[product.category].update({product.product_info.name: empty_product_dict})
 
     Filemanager.save_record_data(data)
 
