@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-from typing import Type
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.filemanager import Filemanager
 from scraper.format import Format, Info
@@ -19,12 +18,13 @@ class Scraper:
         self.product_info: Info
 
     def scrape_info(self) -> None:
+        logging.getLogger(__name__).debug(f"Scraping: {self.category} - {self.url}")
         soup = request_url(self.url)
         self.product_info = self.website_handler.get_product_info(soup)
 
     def save_info(self) -> None:
-        if not self.product_info.valid:
-            print(f"Product info is not valid - category: '{self.category}' - url: '{self.url}'")
+        if not self.product_info or not self.product_info.valid:
+            print(f"Product info is not valid - category: '{self.category}' - url: {self.url}")
             return
 
         save_product(self.category, self.url, self.website_handler.website_name, self.product_info)
@@ -72,15 +72,17 @@ def add_product_datapoint(product_data: dict, price: float) -> None:
     date = datetime.today().strftime("%Y-%m-%d")
     product_datapoints = product_data["datapoints"]
 
+    new_datapoint = {"date": date, "price": price}
+
     if len(product_datapoints) == 0:
-        product_datapoints.append({"date": date, "price": price})
+        product_datapoints.append(new_datapoint)
         return
 
     latest_datapoint = product_datapoints[-1]
     if latest_datapoint["date"] == date:
         latest_datapoint["price"] = price
     else:
-        product_datapoints.append({"date": date, "price": price})
+        product_datapoints.append(new_datapoint)
 
 
 # ------------------------------ FILE: domains.py ------------------------------
@@ -98,7 +100,7 @@ class BaseWebsiteHandler(ABC):
             id = self._get_product_id(soup)
             return Info(name, price, currency, id)
         except (AttributeError, ValueError):
-            logging.getLogger(__name__).warning(f"Could not get all the data needed from url: {self.url}")
+            logging.getLogger(__name__).exception(f"Could not get all the data needed from url: {self.url}")
             return Info(None, None, None, None, valid=False)
 
     @abstractmethod
