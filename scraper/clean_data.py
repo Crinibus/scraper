@@ -1,8 +1,10 @@
+import logging
 from scraper.filemanager import Filemanager
 
 
 def clean_records_data() -> None:
     print("Cleaning data...")
+    logging.getLogger(__name__).info("Cleaning records data")
     records_data = Filemanager.get_record_data()
 
     for category_info in records_data.values():
