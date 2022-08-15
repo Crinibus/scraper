@@ -142,7 +142,7 @@ class ElgigantenHandler(BaseWebsiteHandler):
         return soup.find("h1", class_="product-title").text.lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        return self.elgiganten_api_data["data"]["product"]["currentPricing"]["price"]["value"]
+        return float(self.elgiganten_api_data["data"]["product"]["currentPricing"]["price"]["value"])
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
         return self.elgiganten_api_data["data"]["product"]["currentPricing"]["price"]["currency"]
@@ -152,7 +152,7 @@ class ElgigantenHandler(BaseWebsiteHandler):
 
     def _get_json_api_data(self) -> dict:
         # API link to get price and currency
-        # The API link has a placeholder for where the product id should be "{id_number}" 
+        # The API link has a placeholder for where the product id should be "{id_number}"
         elgiganten_api_link = "https://www.elgiganten.dk/cxorchestrator/dk/api?appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%229bfbc062032a2a6b924883b81508af5c77bbfc5f66cc41c7ffd7d519885ac5e4%22%7D%7D"
         id = self.url.split("/")[-1]
         api_link = elgiganten_api_link.replace("{id_number}", id)
@@ -166,7 +166,7 @@ class AvXpertenHandler(BaseWebsiteHandler):
         self.soup_script_tag_json = json.loads(soup_script_tag)
 
     def _get_product_name(self, soup: BeautifulSoup) -> str:
-        return soup.find("div", class_="content-head").text.strip().lower()
+        return soup.find("div", class_="content-head").h1.text.strip().lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         return float(soup.find("div", class_="price").text.replace("\xa0DKK", ""))
@@ -197,7 +197,7 @@ class AvCablesHandler(BaseWebsiteHandler):
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         script_tag = soup.find("script", type="application/ld+json").contents[0]
         id = json.loads(script_tag).get("sku")
-        return id
+        return str(id)
 
 
 class AmazonHandler(BaseWebsiteHandler):
@@ -268,9 +268,13 @@ class EbayHandler(BaseWebsiteHandler):
 class PowerHandler(BaseWebsiteHandler):
     # TODO: FIX GETTING INFO FROM THIS LINK: https://www.power.dk/tv-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/jbl-tune-760-nc-over-ear-hovedtelefoner-sort/p-1192020/
     def _get_product_name(self, soup: BeautifulSoup) -> str:
+        # CAN USE API (SEE UNDER PRICE) FOR GETTING THE NAME
         return soup.find("title").text.replace(" - Power.dk", "").lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
+        # NEED AN XML PARSER
+        # API: https://www.power.dk/umbraco/api/product/getproductsbyids?ids=1204127
+        # CAN ALSO USE THIS API FOR GETTING THE NAME
         return float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
@@ -281,9 +285,8 @@ class PowerHandler(BaseWebsiteHandler):
 
 
 class ExpertHandler(BaseWebsiteHandler):
-    # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.expert.dk/mobil/mobiltelefoner/apple-iphone-13-pro-128-gb-skyfri-blaa/p-1204160/
     def _get_product_name(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", property="og:title")["content"].lower()
+        return soup.find("title").text.strip(" - Expert.dk").lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         return float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
@@ -296,7 +299,6 @@ class ExpertHandler(BaseWebsiteHandler):
 
 
 class MMVisionHandler(BaseWebsiteHandler):
-    # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.mm-vision.dk/visiongaming/vision-first-gaming-VG-pc
     def _get_common_data(self, soup):
         soup_script_tag = soup.find_all("script", type="application/ld+json")[1].contents[0]
         self.soup_script_tag_json = json.loads(soup_script_tag)
@@ -305,7 +307,7 @@ class MMVisionHandler(BaseWebsiteHandler):
         return soup.find("h1", itemprop="name").text.strip().lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        return float(soup.find("h3", class_="product-price text-right").text.replace(",-", "").replace(".", ""))
+        return float(soup.find("h3", class_="product-price text-right").text.strip("fra ").strip(",-"))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
         currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
@@ -318,8 +320,7 @@ class MMVisionHandler(BaseWebsiteHandler):
 
 class CoolshopHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
-        # TODO: UPDATE TO GET INFO FROM THIS LINK: https://www.coolshop.dk/produkt/23C5P8/
-        return soup.find("div", class_="thing-header").text.strip().lower()
+        return soup.find("div", class_="thing-header").h1.text.strip().replace("\n", " ").lower()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         return float(soup.find("meta", property="product:price:amount")["content"].split(".")[0])
