@@ -63,11 +63,15 @@ amazon_handler._get_common_data(amazon_soup)
 # ebay_soup_two = ebay_handler_two._request_product_data()
 # ebay_handler_two._get_common_data(ebay_soup_two)
 
-expert_handler = ExpertHandler("https://www.expert.dk/hoejtalere-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-sort/p-1106907/")
+expert_handler = ExpertHandler(
+    "https://www.expert.dk/hoejtalere-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-sort/p-1106907/"
+)
 expert_soup = expert_handler._request_product_data()
 expert_handler._get_common_data(expert_soup)
 
-power_handler = PowerHandler("https://www.power.dk/tv-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-blaa/p-1185731/")
+power_handler = PowerHandler(
+    "https://www.power.dk/tv-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-blaa/p-1185731/"
+)
 power_soup = power_handler._request_product_data()
 power_handler._get_common_data(power_soup)
 
@@ -83,7 +87,9 @@ sharkgaming_handler = SharkGamingHandler("https://sharkgaming.dk/asus-gladius-ii
 sharkgaming_soup = sharkgaming_handler._request_product_data()
 sharkgaming_handler._get_common_data(sharkgaming_soup)
 
-newegg_handler = NeweggHandler("https://www.newegg.com/sony-wh1000xm4b-bluetooth-headset-black/p/0G6-001C-00614?Description=sony%20xm4&cm_re=sony_xm4-_-0G6-001C-00614-_-Product&quicklink=true")
+newegg_handler = NeweggHandler(
+    "https://www.newegg.com/sony-wh1000xm4b-bluetooth-headset-black/p/0G6-001C-00614?Description=sony%20xm4&cm_re=sony_xm4-_-0G6-001C-00614-_-Product&quicklink=true"
+)
 newegg_soup = newegg_handler._request_product_data()
 newegg_handler._get_common_data(newegg_soup)
 
