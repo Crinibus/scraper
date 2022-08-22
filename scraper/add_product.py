@@ -5,6 +5,10 @@ from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name, VALID_DOMAINS
 
 
+class WebsiteNotSupported(Exception):
+    pass
+
+
 def add_products(categories: List[str], urls: List[str]):
     for category, url in zip(categories, urls):
         add_product(category, url)
@@ -20,7 +24,7 @@ def add_product(category: str, url: str) -> None:
     if website_name not in VALID_DOMAINS:
         print(f"Can't scrape from this website: {website_name}")
         logger.info(f"Not supported website to scrape from: {website_name}")
-        return
+        raise WebsiteNotSupported(f"'{website_name}' is currently not supported")
 
     new_product = Scraper(category, url)
     new_product.scrape_info()
