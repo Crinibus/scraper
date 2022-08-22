@@ -55,13 +55,17 @@ amazon_handler = AmazonHandler(
 amazon_soup = amazon_handler._request_product_data()
 amazon_handler._get_common_data(amazon_soup)
 
-# ebay_handler_one = EbayHandler("FIND URL WITH 'itm' IN URL")
-# ebay_soup_one = ebay_handler_one._request_product_data()
-# ebay_handler_one._get_common_data(ebay_soup_one)
+# for url that start with 'ebay.com/itm/'
+ebay_handler_one = EbayHandler(
+    "https://www.ebay.com/itm/155128459642?epid=22054478105&hash=item241e60717a:g:nowAAOSwHEhjAlzO&amdata=enc%3AAQAHAAAA4LMHjNBkMpfJDlyVI6QTBN1%2BiYamXWvqqlvriQi3Cbl%2Bay%2FtN1VElZvDJLRAMF%2BX0P7Ncfftm426MaZHR6pIjWBNelsx4rcdPCNqYPqi2ysh%2FUNDN7OLZz7X3hN9XEXJx14Io3yUo9pCjeXv4PPB0aahIXRjGLOI1JyCEXsX0%2BT3bVzcFAjAzy3h8YbkiL5UPSivxJXmmP67otGdNAC2FuZXJytgg2TqGDt84TpWd0cLWi3yJUFFvejDv1t34NGGTnEAWCJVCnzWdQXvWe0vIeq3Ypx78jd6z98VYe%2BQsu%2B6%7Ctkp%3ABFBM_qm26Nhg"
+)
+ebay_soup_one = ebay_handler_one._request_product_data()
+ebay_handler_one._get_common_data(ebay_soup_one)
 
-# ebay_handler_two = EbayHandler("FIND URL WITHOUT 'itm' IN URL")
-# ebay_soup_two = ebay_handler_two._request_product_data()
-# ebay_handler_two._get_common_data(ebay_soup_two)
+# for url that start with 'ebay.com/p/'
+ebay_handler_two = EbayHandler("https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc")
+ebay_soup_two = ebay_handler_two._request_product_data()
+ebay_handler_two._get_common_data(ebay_soup_two)
 
 expert_handler = ExpertHandler(
     "https://www.expert.dk/hoejtalere-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-sort/p-1106907/"
@@ -283,60 +287,62 @@ class TestAmazonHandler:
         assert id == "B08HDKHSSN"
 
 
-# # OBS: There is two Ebay versions - WITH 'itm' IN URL
-# class TestEbayHandlerVersionOne:
-#     def test_get_product_info(self):
-#         actual = ebay_handler_one.get_product_info()
-#         assert isinstance(actual, Info)
-#         assert actual.valid == True
+# OBS: There is two Ebay versions - This is for url that start with 'ebay.com/itm/'
+class TestEbayHandler_with_itm:
+    def test_get_product_info(self):
+        actual = ebay_handler_one.get_product_info()
+        assert isinstance(actual, Info)
+        assert actual.valid == True
 
-#     def test_get_name(self):
-#         actual = ebay_handler_one._get_product_name(ebay_soup_one).lower()
-#         expected = "SET TITLE".lower()
-#         assert isinstance(actual, str)
-#         assert actual == expected
+    def test_get_name(self):
+        actual = ebay_handler_one._get_product_name(ebay_soup_one).lower()
+        expected = "Sony WH-1000XM5 Bluetooth Wireless Noise Canceling Headphones".lower()
+        assert isinstance(actual, str)
+        assert actual == expected
 
-#     def test_get_price(self):
-#         price = ebay_handler_one._get_product_price(ebay_soup_one)
-#         assert isinstance(price, float)
+    def test_get_price(self):
+        price = ebay_handler_one._get_product_price(ebay_soup_one)
+        assert isinstance(price, float)
 
-#     def test_get_currency(self):
-#         currency = ebay_handler_one._get_product_currency(ebay_soup_one)
-#         assert isinstance(currency, str)
-#         assert currency == "USD"
+    def test_get_currency(self):
+        currency = ebay_handler_one._get_product_currency(ebay_soup_one)
+        assert isinstance(currency, str)
+        assert len(currency) == 3
+        assert currency == "USD"
 
-#     def test_get_id(self):
-#         id = ebay_handler_one._get_product_id(ebay_soup_one)
-#         assert isinstance(id, str)
-#         assert id == "SET ID"
+    def test_get_id(self):
+        id = ebay_handler_one._get_product_id(ebay_soup_one)
+        assert isinstance(id, str)
+        assert id == "155128459642"
 
 
-# # OBS: There is two Ebay versions - WITHOUT 'itm' IN URL
-# class TestEbayHandlerVersionTwo:
-#     def test_get_product_info(self):
-#         actual = ebay_handler_two.get_product_info()
-#         assert isinstance(actual, Info)
-#         assert actual.valid == True
+# OBS: There is two Ebay versions - This is for url that start with 'ebay.com/p/'
+class TestEbayHandler_with_p:
+    def test_get_product_info(self):
+        actual = ebay_handler_two.get_product_info()
+        assert isinstance(actual, Info)
+        assert actual.valid == True
 
-#     def test_get_name(self):
-#         actual = ebay_handler_two._get_product_name(ebay_soup_two).lower()
-#         expected = "SET TITLE".lower()
-#         assert isinstance(actual, str)
-#         assert actual == expected
+    def test_get_name(self):
+        actual = ebay_handler_two._get_product_name(ebay_soup_two).lower()
+        expected = "Etude House Collagen Eye Patch Korea Cosmetics 10 Sheets".lower()
+        assert isinstance(actual, str)
+        assert actual == expected
 
-#     def test_get_price(self):
-#         price = ebay_handler_two._get_product_price(ebay_soup_two)
-#         assert isinstance(price, float)
+    def test_get_price(self):
+        price = ebay_handler_two._get_product_price(ebay_soup_two)
+        assert isinstance(price, float)
 
-#     def test_get_currency(self):
-#         currency = ebay_handler_two._get_product_currency(ebay_soup_two)
-#         assert isinstance(currency, str)
-#         assert currency == "USD"
+    def test_get_currency(self):
+        currency = ebay_handler_two._get_product_currency(ebay_soup_two)
+        assert isinstance(currency, str)
+        assert len(currency) == 3
+        # assert currency == "DKK"
 
-#     def test_get_id(self):
-#         id = ebay_handler_two._get_product_id(ebay_soup_two)
-#         assert isinstance(id, str)
-#         assert id == "SET ID"
+    def test_get_id(self):
+        id = ebay_handler_two._get_product_id(ebay_soup_two)
+        assert isinstance(id, str)
+        assert id == "181677611772"
 
 
 class TestPowerHandler:
