@@ -37,7 +37,7 @@ class Scraper:
 def save_product(category: str, url: str, website_handler: BaseWebsiteHandler, product_info: Info) -> None:
     data = Filemanager.get_record_data()
 
-    product_data = get_product_data(data, category, product_info.name, website_name)
+    product_data = get_product_data(data, category, product_info.name, website_handler.website_name)
 
     if not product_data:
         return
