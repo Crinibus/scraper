@@ -22,6 +22,7 @@ class BaseWebsiteHandler(ABC):
         # super().__init__()
         self.url = url
         self.website_name = get_website_name(url)
+        self.info: Info = None
 
     def get_product_info(self) -> Info:
         try:
@@ -32,7 +33,8 @@ class BaseWebsiteHandler(ABC):
             price = self._get_product_price(request_data)
             currency = self._get_product_currency(request_data)
             id = self._get_product_id(request_data)
-            return Info(name, price, currency, id)
+            self.info = Info(name, price, currency, id)
+            return self.info
         except (AttributeError, ValueError, TypeError):
             logging.getLogger(__name__).exception(f"Could not get all the data needed from url: {self.url}")
             return Info(None, None, None, None, valid=False)
@@ -230,7 +232,10 @@ class EbayHandler(BaseWebsiteHandler):
         self.soup_url = soup.find("meta", property="og:url").get("content")
 
     def _get_product_name(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", property="og:title").get("content").strip("  | eBay")
+        try:
+            return soup.find("h1", class_="product-title").text
+        except:
+            return soup.find("meta", property="og:title").get("content").strip("  | eBay")
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         if self.soup_url.split("/")[3] == "itm":
@@ -266,37 +271,39 @@ class EbayHandler(BaseWebsiteHandler):
 
 
 class PowerHandler(BaseWebsiteHandler):
-    # TODO: FIX GETTING INFO FROM THIS LINK: https://www.power.dk/tv-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/jbl-tune-760-nc-over-ear-hovedtelefoner-sort/p-1192020/
+    def _get_common_data(self, soup) -> None:
+        self.id = self.url.split("/")[-2].strip("p-")
+        self.api_json = request_url(f"https://www.power.dk/api/v2/products?ids={self.id}").json()
+
     def _get_product_name(self, soup: BeautifulSoup) -> str:
-        # CAN USE API (SEE UNDER PRICE) FOR GETTING THE NAME
-        return soup.find("title").text.replace(" - Power.dk", "")
+        return self.api_json[0].get("title")
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        # NEED AN XML PARSER
-        # API: https://www.power.dk/umbraco/api/product/getproductsbyids?ids=1204127
-        # NEW API: https://www.power.dk/api/v2/products?ids=1192020
-        # CAN ALSO USE THIS API FOR GETTING THE NAME
-        return float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
+        return float(self.api_json[0].get("price"))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", property="product:price:currency").get("content")
+        return "DKK"
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
+        return self.id
 
 
 class ExpertHandler(BaseWebsiteHandler):
+    def _get_common_data(self, soup) -> None:
+        self.id = self.url.split("/")[-2].strip("p-")
+        self.api_json = request_url(f"https://www.expert.dk/api/v2/products?ids={self.id}").json()
+
     def _get_product_name(self, soup: BeautifulSoup) -> str:
-        return soup.find("title").text.strip(" - Expert.dk")
+        return self.api_json[0].get("title")
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        return float(soup.find("meta", property="product:price:amount")["content"].replace(",", "."))
+        return float(self.api_json[0].get("price"))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", property="product:price:currency").get("content")
+        return "DKK"
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
-        return soup.find("meta", property="og:url").get("content").split("/")[-2].strip("p-")
+        return self.id
 
 
 class MMVisionHandler(BaseWebsiteHandler):
@@ -308,7 +315,7 @@ class MMVisionHandler(BaseWebsiteHandler):
         return soup.find("h1", itemprop="name").text.strip()
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
-        return float(soup.find("h3", class_="product-price text-right").text.strip("fra ").strip(",-"))
+        return float(soup.find("h3", class_="product-price text-right").text.strip("fra ").strip().strip(",-"))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
         currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
