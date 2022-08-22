@@ -1,5 +1,5 @@
 from datetime import datetime
-from scraper.domains import get_website_handler
+from scraper.domains import BaseWebsiteHandler, get_website_handler
 from scraper.filemanager import Filemanager
 from scraper.format import Format, Info
 import logging
@@ -21,7 +21,7 @@ class Scraper:
             print(f"Product info is not valid - category: '{self.category}' - url: {self.url}")
             return
 
-        save_product(self.category, self.url, self.website_handler.website_name, self.product_info)
+        save_product(self.category, self.url, self.website_handler, self.product_info)
 
     def print_info(self) -> None:
         print(f"\nCategory: {self.category}")
@@ -34,7 +34,7 @@ class Scraper:
         print(f"Product valid: {self.product_info.valid}")
 
 
-def save_product(category: str, url: str, website_name: str, product_info: Info) -> None:
+def save_product(category: str, url: str, website_handler: BaseWebsiteHandler, product_info: Info) -> None:
     data = Filemanager.get_record_data()
 
     product_data = get_product_data(data, category, product_info.name, website_name)
@@ -42,7 +42,7 @@ def save_product(category: str, url: str, website_name: str, product_info: Info)
     if not product_data:
         return
 
-    short_url = Format.shorten_url(website_name, url, product_info)
+    short_url = website_handler.get_short_url()
     product_data["info"].update({"url": short_url, "id": product_info.id, "currency": product_info.currency})
 
     # doesn't return anything because the function mutates the dictionary in the variable 'product_data',

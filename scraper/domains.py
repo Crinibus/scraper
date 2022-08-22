@@ -66,6 +66,10 @@ class BaseWebsiteHandler(ABC):
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         pass
 
+    @abstractmethod
+    def get_short_url(self) -> str:
+        pass
+
 
 class KomplettHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
@@ -81,6 +85,11 @@ class KomplettHandler(BaseWebsiteHandler):
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return soup.find("span", itemprop="sku").text
+
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        return f"https://www.komplett.dk/product/{self.info.id}"
 
 
 class ProshopHandler(BaseWebsiteHandler):
@@ -121,6 +130,11 @@ class ProshopHandler(BaseWebsiteHandler):
         id = self.soup_script_tag_json.get("sku")
         return id
 
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        return f"https://www.proshop.dk/{self.info.id}"
+
 
 class ComputerSalgHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
@@ -134,6 +148,11 @@ class ComputerSalgHandler(BaseWebsiteHandler):
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return soup.find("h2", class_="productIdentifierHeadline").span.text
+
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        return f"https://www.computersalg.dk/i/{self.info.id}"
 
 
 class ElgigantenHandler(BaseWebsiteHandler):
@@ -161,6 +180,11 @@ class ElgigantenHandler(BaseWebsiteHandler):
         response = request_url(api_link)
         return response.json()
 
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        return f"https://www.elgiganten.dk/product/{self.info.id}"
+
 
 class AvXpertenHandler(BaseWebsiteHandler):
     def _get_common_data(self, soup):
@@ -179,6 +203,8 @@ class AvXpertenHandler(BaseWebsiteHandler):
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return self.soup_script_tag_json.get("sku")
 
+    def get_short_url(self) -> str:
+        return self.url
 
 class AvCablesHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
@@ -200,6 +226,9 @@ class AvCablesHandler(BaseWebsiteHandler):
         script_tag = soup.find("script", type="application/ld+json").contents[0]
         id = json.loads(script_tag).get("sku")
         return str(id)
+
+    def get_short_url(self) -> str:
+        return self.url
 
 
 class AmazonHandler(BaseWebsiteHandler):
@@ -225,6 +254,9 @@ class AmazonHandler(BaseWebsiteHandler):
         except:
             asin_json = json.loads(soup.find("span", id="cr-state-object").get("data-state"))
             return asin_json["asin"]
+
+    def get_short_url(self) -> str:
+        return self.url
 
 
 class EbayHandler(BaseWebsiteHandler):
@@ -269,6 +301,14 @@ class EbayHandler(BaseWebsiteHandler):
 
         return id
 
+    def get_short_url(self) -> str:
+        if self.url.split("/")[3] != "itm":
+            return self.url.split("?")[0]
+
+        if not self.info:
+            return None
+        return f"https://www.ebay.com/itm/{self.info.id}"
+
 
 class PowerHandler(BaseWebsiteHandler):
     def _get_common_data(self, soup) -> None:
@@ -287,6 +327,12 @@ class PowerHandler(BaseWebsiteHandler):
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return self.id
 
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        url_id = self.url.split('/')[3]
+        return f"https://www.power.dk/{url_id}/p-{self.info.id}"
+
 
 class ExpertHandler(BaseWebsiteHandler):
     def _get_common_data(self, soup) -> None:
@@ -304,6 +350,12 @@ class ExpertHandler(BaseWebsiteHandler):
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return self.id
+
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        url_id = self.url.split("/")[3]
+        return f'https://www.expert.dk/{url_id}/p-{self.info.id}'
 
 
 class MMVisionHandler(BaseWebsiteHandler):
@@ -325,6 +377,9 @@ class MMVisionHandler(BaseWebsiteHandler):
         id = self.soup_script_tag_json.get("productID")
         return id
 
+    def get_short_url(self) -> str:
+        return self.url
+
 
 class CoolshopHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
@@ -339,6 +394,10 @@ class CoolshopHandler(BaseWebsiteHandler):
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return soup.find_all("div", id="attributeSku")[1].text.strip()
 
+    def get_short_url(self) -> str:
+        url_id = self.url.split("/")[-2]
+        return f'https://www.coolshop.dk/produkt/{url_id}/'
+
 
 class SharkGamingHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
@@ -352,6 +411,9 @@ class SharkGamingHandler(BaseWebsiteHandler):
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return json.loads(soup.find_all("script", type="application/ld+json")[3].text).get("productID")
+
+    def get_short_url(self) -> str:
+        return self.url
 
 
 class NeweggHandler(BaseWebsiteHandler):
@@ -370,6 +432,11 @@ class NeweggHandler(BaseWebsiteHandler):
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         return self.product_data.get("sku")
+
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        return f"https://www.newegg.com/p/{self.info.id}"
 
 
 def get_website_name(url: str) -> str:
