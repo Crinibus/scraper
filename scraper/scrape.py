@@ -23,16 +23,6 @@ class Scraper:
 
         save_product(self.category, self.url, self.website_handler, self.product_info)
 
-    def print_info(self) -> None:
-        print(f"\nCategory: {self.category}")
-        print(f"URL: {self.url}")
-        print(f"Website: {self.website_handler.website_name}")
-        print(f"Product name: {self.product_info.name}")
-        print(f"Product price: {self.product_info.price}")
-        print(f"Product currency: {self.product_info.currency}")
-        print(f"Product id: {self.product_info.id}")
-        print(f"Product valid: {self.product_info.valid}")
-
 
 def save_product(category: str, url: str, website_handler: BaseWebsiteHandler, product_info: Info) -> None:
     data = Filemanager.get_record_data()
