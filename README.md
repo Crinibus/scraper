@@ -1,7 +1,7 @@
 # Table of contents
 - [Intro](#intro)
 - [Contributing](#contributing)
-- [First setup](#first-setup)
+- [Installation](#installation)
 - [Start from scratch](#start-scratch)
 - [Scrape products](#scrape-products)
 - [Add products](#add-products)
@@ -37,7 +37,7 @@ If you want to update your data to be compatible with version v1.1, then open a 
 
 <br/>
 
-## First setup <a name="first-setup"></a>
+## Installation <a name="installation"></a>
 Clone this repository and move into the repository:
 ```
 git clone https://github.com/Crinibus/scraper.git
