@@ -1,7 +1,7 @@
 from datetime import datetime
 from scraper.domains import BaseWebsiteHandler, get_website_handler
 from scraper.filemanager import Filemanager
-from scraper.format import Format, Info
+from scraper.format import Info
 import logging
 
 

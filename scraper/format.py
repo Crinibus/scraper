@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import logging
 from scraper.filemanager import Config, Filemanager
 
 
