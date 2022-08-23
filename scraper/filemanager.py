@@ -48,9 +48,7 @@ class Filemanager:
 
     @staticmethod
     def get_products_data() -> pd.DataFrame:
-        df = pd.read_csv(
-            Filemanager.products_csv_path, sep=",", header=0
-        )
+        df = pd.read_csv(Filemanager.products_csv_path, sep=",", header=0)
         return df
 
     @staticmethod

@@ -20,7 +20,7 @@ WEBSITE_COLORS = {
     "mm-vision": "mediumspringgreen",
     "coolshop": "mediumblue",
     "sharkgaming": "midnightblue",
-    "newegg": "#f7c20a"
+    "newegg": "#f7c20a",
 }
 
 REQUEST_DELAY = 0  # seconds

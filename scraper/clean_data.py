@@ -23,10 +23,7 @@ def clean_records_data() -> None:
                     next_datapoint = datapoints[index + 1]
 
                     # Skip unnecessary datapoints
-                    if (
-                        datapoint["price"] == previous_datapoint["price"]
-                        and datapoint["price"] == next_datapoint["price"]
-                    ):
+                    if datapoint["price"] == previous_datapoint["price"] and datapoint["price"] == next_datapoint["price"]:
                         continue
 
                     new_datapoints.append(datapoint)

@@ -5,6 +5,7 @@ from scraper.filemanager import Config, Filemanager
 @dataclass
 class Info:
     """Scraped info about product"""
+
     name: str
     price: float
     currency: str
@@ -37,9 +38,7 @@ class Format:
                     website_info.update({"datapoints": []})
 
                     for date_name, date_info in website_info["dates"].items():
-                        website_info["datapoints"].append(
-                            {"date": date_name, "price": float(date_info["price"])}
-                        )
+                        website_info["datapoints"].append({"date": date_name, "price": float(date_info["price"])})
 
                     website_info.pop("dates")
 
