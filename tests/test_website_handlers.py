@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from scraper.domains import (
     AmazonHandler,
     AvCablesHandler,
@@ -98,7 +99,29 @@ newegg_soup = newegg_handler._request_product_data()
 newegg_handler._get_common_data(newegg_soup)
 
 
-class TestKomplettHandler:
+class BaseTestWebsiteHandler(ABC):
+    @abstractmethod
+    def test_get_product_info(self):
+        pass
+
+    @abstractmethod
+    def test_get_name(self):
+        pass
+
+    @abstractmethod
+    def test_get_price(self):
+        pass
+
+    @abstractmethod
+    def test_get_currency(self):
+        pass
+
+    @abstractmethod
+    def test_get_id(self):
+        pass
+
+
+class TestKomplettHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = komplett_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -125,7 +148,7 @@ class TestKomplettHandler:
         assert id == "1168438"
 
 
-class TestProshopHandler:
+class TestProshopHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = proshop_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -152,7 +175,7 @@ class TestProshopHandler:
         assert id == "2883832"
 
 
-class TestComputersalgHandler:
+class TestComputersalgHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = computersalg_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -179,7 +202,7 @@ class TestComputersalgHandler:
         assert id == "6647865"
 
 
-class TestElgigantenHandler:
+class TestElgigantenHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = elgiganten_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -206,7 +229,7 @@ class TestElgigantenHandler:
         assert id == "200693"
 
 
-class TestAvXpertenHandler:
+class TestAvXpertenHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = avxperten_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -233,7 +256,7 @@ class TestAvXpertenHandler:
         assert id == "33590"
 
 
-class TestAvCablesHandler:
+class TestAvCablesHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = avcables_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -260,7 +283,7 @@ class TestAvCablesHandler:
         assert id == "833015"
 
 
-class TestAmazonHandler:
+class TestAmazonHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = amazon_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -288,7 +311,7 @@ class TestAmazonHandler:
 
 
 # OBS: There is two Ebay versions - This is for url that start with 'ebay.com/itm/'
-class TestEbayHandler_with_itm:
+class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = ebay_handler_one.get_product_info()
         assert isinstance(actual, Info)
@@ -317,7 +340,7 @@ class TestEbayHandler_with_itm:
 
 
 # OBS: There is two Ebay versions - This is for url that start with 'ebay.com/p/'
-class TestEbayHandler_with_p:
+class TestEbayHandler_with_p(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = ebay_handler_two.get_product_info()
         assert isinstance(actual, Info)
@@ -345,7 +368,7 @@ class TestEbayHandler_with_p:
         assert id == "181677611772"
 
 
-class TestPowerHandler:
+class TestPowerHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = power_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -372,7 +395,7 @@ class TestPowerHandler:
         assert id == "1185731"
 
 
-class TestExpertHandler:
+class TestExpertHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = expert_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -399,7 +422,7 @@ class TestExpertHandler:
         assert id == "1106907"
 
 
-class TestMMVisionHandler:
+class TestMMVisionHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = mmvision_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -426,7 +449,7 @@ class TestMMVisionHandler:
         assert id == "6987132"
 
 
-class TestCoolshopHandler:
+class TestCoolshopHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = coolshop_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -453,7 +476,7 @@ class TestCoolshopHandler:
         assert id == "1177871"
 
 
-class TestSharkGamingHandler:
+class TestSharkGamingHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = sharkgaming_handler.get_product_info()
         assert isinstance(actual, Info)
@@ -480,7 +503,7 @@ class TestSharkGamingHandler:
         assert id == "90MP00U1-B0UA00"
 
 
-class TestNeweggHandler:
+class TestNeweggHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = newegg_handler.get_product_info()
         assert isinstance(actual, Info)
