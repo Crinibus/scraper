@@ -487,7 +487,7 @@ def get_website_handler(url: str) -> BaseWebsiteHandler:
             return None
 
 
-VALID_DOMAINS = {
+SUPPORTED_DOMAINS = {
     "komplett",
     "proshop",
     "computersalg",

@@ -2,7 +2,7 @@ from typing import List
 import logging
 from scraper.scrape import Scraper
 from scraper.filemanager import Filemanager
-from scraper.domains import get_website_name, VALID_DOMAINS
+from scraper.domains import get_website_name, SUPPORTED_DOMAINS
 
 
 class WebsiteNotSupported(Exception):
@@ -21,7 +21,7 @@ def add_product(category: str, url: str) -> None:
 
     website_name = get_website_name(url)
 
-    if website_name not in VALID_DOMAINS:
+    if website_name not in SUPPORTED_DOMAINS:
         print(f"Can't scrape from this website: {website_name}")
         logger.info(f"Not supported website to scrape from: {website_name}")
         raise WebsiteNotSupported(f"'{website_name}' is currently not supported")
