@@ -7,6 +7,7 @@ testData = [
     ("https//www.proshop.dk"),
 ]
 
+
 # Tests to make sure the websites that are supported can be added to be scraped
 @pytest.mark.parametrize("url", testData)
 def test_add_product(url, mocker):
