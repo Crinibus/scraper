@@ -18,6 +18,8 @@
 With this program you can easily scrape and track prices on product at multiple [websites](#websites-to-scrape-from). <br/>
 This program can also visualize price over time of the products being tracked. That can be helpful if you want to buy a product in the future and wants to know if a discount might be around the corner.
 
+**Requires** `python 3.10+`
+
 <br/>
 
 
@@ -38,6 +40,8 @@ If you want to update your data to be compatible with version v1.1, then open a 
 <br/>
 
 ## Installation <a name="installation"></a>
+**Requires** `python 3.10+`
+
 Clone this repository and move into the repository:
 ```
 git clone https://github.com/Crinibus/scraper.git
