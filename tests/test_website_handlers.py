@@ -57,16 +57,16 @@ amazon_soup = amazon_handler._request_product_data()
 amazon_handler._get_common_data(amazon_soup)
 
 # for url that start with 'ebay.com/itm/'
-ebay_handler_one = EbayHandler(
+ebay_handler_with_item = EbayHandler(
     "https://www.ebay.com/itm/155128459642?epid=22054478105&hash=item241e60717a:g:nowAAOSwHEhjAlzO&amdata=enc%3AAQAHAAAA4LMHjNBkMpfJDlyVI6QTBN1%2BiYamXWvqqlvriQi3Cbl%2Bay%2FtN1VElZvDJLRAMF%2BX0P7Ncfftm426MaZHR6pIjWBNelsx4rcdPCNqYPqi2ysh%2FUNDN7OLZz7X3hN9XEXJx14Io3yUo9pCjeXv4PPB0aahIXRjGLOI1JyCEXsX0%2BT3bVzcFAjAzy3h8YbkiL5UPSivxJXmmP67otGdNAC2FuZXJytgg2TqGDt84TpWd0cLWi3yJUFFvejDv1t34NGGTnEAWCJVCnzWdQXvWe0vIeq3Ypx78jd6z98VYe%2BQsu%2B6%7Ctkp%3ABFBM_qm26Nhg"
 )
-ebay_soup_one = ebay_handler_one._request_product_data()
-ebay_handler_one._get_common_data(ebay_soup_one)
+ebay_soup_with_itm = ebay_handler_with_item._request_product_data()
+ebay_handler_with_item._get_common_data(ebay_soup_with_itm)
 
 # for url that start with 'ebay.com/p/'
-ebay_handler_two = EbayHandler("https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc")
-ebay_soup_two = ebay_handler_two._request_product_data()
-ebay_handler_two._get_common_data(ebay_soup_two)
+ebay_handler_with_p = EbayHandler("https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc")
+ebay_soup_with_p = ebay_handler_with_p._request_product_data()
+ebay_handler_with_p._get_common_data(ebay_soup_with_p)
 
 expert_handler = ExpertHandler(
     "https://www.expert.dk/hoejtalere-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-sort/p-1106907/"
@@ -122,7 +122,8 @@ class BaseTestWebsiteHandler(ABC):
 
 
 class TestKomplettHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=komplett_soup)
         actual = komplett_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -149,7 +150,8 @@ class TestKomplettHandler(BaseTestWebsiteHandler):
 
 
 class TestProshopHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=proshop_soup)
         actual = proshop_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -176,7 +178,8 @@ class TestProshopHandler(BaseTestWebsiteHandler):
 
 
 class TestComputersalgHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=computersalg_soup)
         actual = computersalg_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -203,7 +206,8 @@ class TestComputersalgHandler(BaseTestWebsiteHandler):
 
 
 class TestElgigantenHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=elgiganten_soup)
         actual = elgiganten_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -230,7 +234,8 @@ class TestElgigantenHandler(BaseTestWebsiteHandler):
 
 
 class TestAvXpertenHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=avxperten_soup)
         actual = avxperten_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -257,7 +262,8 @@ class TestAvXpertenHandler(BaseTestWebsiteHandler):
 
 
 class TestAvCablesHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=avcables_soup)
         actual = avcables_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -284,7 +290,8 @@ class TestAvCablesHandler(BaseTestWebsiteHandler):
 
 
 class TestAmazonHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=amazon_soup)
         actual = amazon_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -312,64 +319,67 @@ class TestAmazonHandler(BaseTestWebsiteHandler):
 
 # OBS: There is two Ebay versions - This is for url that start with 'ebay.com/itm/'
 class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
-        actual = ebay_handler_one.get_product_info()
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=ebay_soup_with_itm)
+        actual = ebay_handler_with_item.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self):
-        actual = ebay_handler_one._get_product_name(ebay_soup_one).lower()
+        actual = ebay_handler_with_item._get_product_name(ebay_soup_with_itm).lower()
         expected = "Sony WH-1000XM5 Bluetooth Wireless Noise Canceling Headphones".lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self):
-        price = ebay_handler_one._get_product_price(ebay_soup_one)
+        price = ebay_handler_with_item._get_product_price(ebay_soup_with_itm)
         assert isinstance(price, float)
 
     def test_get_currency(self):
-        currency = ebay_handler_one._get_product_currency(ebay_soup_one)
+        currency = ebay_handler_with_item._get_product_currency(ebay_soup_with_itm)
         assert isinstance(currency, str)
         assert len(currency) == 3
         assert currency == "USD"
 
     def test_get_id(self):
-        id = ebay_handler_one._get_product_id(ebay_soup_one)
+        id = ebay_handler_with_item._get_product_id(ebay_soup_with_itm)
         assert isinstance(id, str)
         assert id == "155128459642"
 
 
 # OBS: There is two Ebay versions - This is for url that start with 'ebay.com/p/'
 class TestEbayHandler_with_p(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
-        actual = ebay_handler_two.get_product_info()
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=ebay_soup_with_p)
+        actual = ebay_handler_with_p.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self):
-        actual = ebay_handler_two._get_product_name(ebay_soup_two).lower()
+        actual = ebay_handler_with_p._get_product_name(ebay_soup_with_p).lower()
         expected = "Etude House Collagen Eye Patch Korea Cosmetics 10 Sheets".lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self):
-        price = ebay_handler_two._get_product_price(ebay_soup_two)
+        price = ebay_handler_with_p._get_product_price(ebay_soup_with_p)
         assert isinstance(price, float)
 
     def test_get_currency(self):
-        currency = ebay_handler_two._get_product_currency(ebay_soup_two)
+        currency = ebay_handler_with_p._get_product_currency(ebay_soup_with_p)
         assert isinstance(currency, str)
         assert len(currency) == 3
         # assert currency == "DKK"
 
     def test_get_id(self):
-        id = ebay_handler_two._get_product_id(ebay_soup_two)
+        id = ebay_handler_with_p._get_product_id(ebay_soup_with_p)
         assert isinstance(id, str)
         assert id == "181677611772"
 
 
 class TestPowerHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=power_soup)
         actual = power_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -396,7 +406,8 @@ class TestPowerHandler(BaseTestWebsiteHandler):
 
 
 class TestExpertHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=expert_soup)
         actual = expert_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -423,7 +434,8 @@ class TestExpertHandler(BaseTestWebsiteHandler):
 
 
 class TestMMVisionHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=mmvision_soup)
         actual = mmvision_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -450,7 +462,8 @@ class TestMMVisionHandler(BaseTestWebsiteHandler):
 
 
 class TestCoolshopHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=coolshop_soup)
         actual = coolshop_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -477,7 +490,8 @@ class TestCoolshopHandler(BaseTestWebsiteHandler):
 
 
 class TestSharkGamingHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=sharkgaming_soup)
         actual = sharkgaming_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
@@ -504,7 +518,8 @@ class TestSharkGamingHandler(BaseTestWebsiteHandler):
 
 
 class TestNeweggHandler(BaseTestWebsiteHandler):
-    def test_get_product_info(self):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=newegg_soup)
         actual = newegg_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
