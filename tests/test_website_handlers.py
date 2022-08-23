@@ -58,7 +58,7 @@ amazon_handler._get_common_data(amazon_soup)
 
 # for url that start with 'ebay.com/itm/'
 ebay_handler_with_item = EbayHandler(
-    "https://www.ebay.com/itm/155128459642?epid=22054478105&hash=item241e60717a:g:nowAAOSwHEhjAlzO&amdata=enc%3AAQAHAAAA4LMHjNBkMpfJDlyVI6QTBN1%2BiYamXWvqqlvriQi3Cbl%2Bay%2FtN1VElZvDJLRAMF%2BX0P7Ncfftm426MaZHR6pIjWBNelsx4rcdPCNqYPqi2ysh%2FUNDN7OLZz7X3hN9XEXJx14Io3yUo9pCjeXv4PPB0aahIXRjGLOI1JyCEXsX0%2BT3bVzcFAjAzy3h8YbkiL5UPSivxJXmmP67otGdNAC2FuZXJytgg2TqGDt84TpWd0cLWi3yJUFFvejDv1t34NGGTnEAWCJVCnzWdQXvWe0vIeq3Ypx78jd6z98VYe%2BQsu%2B6%7Ctkp%3ABFBM_qm26Nhg"
+    "https://www.ebay.com/itm/265771092654"
 )
 ebay_soup_with_itm = ebay_handler_with_item._request_product_data()
 ebay_handler_with_item._get_common_data(ebay_soup_with_itm)
@@ -327,7 +327,7 @@ class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
 
     def test_get_name(self):
         actual = ebay_handler_with_item._get_product_name(ebay_soup_with_itm).lower()
-        expected = "Sony WH-1000XM5 Bluetooth Wireless Noise Canceling Headphones".lower()
+        expected = "BRAND NEW Sony PS5 Playstation 5 Blu-Ray Disc Edition Console  -Fast Delivery".lower()
         assert isinstance(actual, str)
         assert actual == expected
 
@@ -344,7 +344,7 @@ class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
     def test_get_id(self):
         id = ebay_handler_with_item._get_product_id(ebay_soup_with_itm)
         assert isinstance(id, str)
-        assert id == "155128459642"
+        assert id == "265771092654"
 
 
 # OBS: There is two Ebay versions - This is for url that start with 'ebay.com/p/'
