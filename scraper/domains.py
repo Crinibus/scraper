@@ -1,4 +1,3 @@
-from typing import Callable
 import requests
 from requests import Response
 from bs4 import BeautifulSoup
@@ -204,6 +203,7 @@ class AvXpertenHandler(BaseWebsiteHandler):
     def get_short_url(self) -> str:
         return self.url
 
+
 class AvCablesHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
         return soup.find("h1", class_="title").text
@@ -327,7 +327,7 @@ class PowerHandler(BaseWebsiteHandler):
     def get_short_url(self) -> str:
         if not self.info:
             return None
-        url_id = self.url.split('/')[3]
+        url_id = self.url.split("/")[3]
         return f"https://www.power.dk/{url_id}/p-{self.info.id}"
 
 
@@ -352,7 +352,7 @@ class ExpertHandler(BaseWebsiteHandler):
         if not self.info:
             return None
         url_id = self.url.split("/")[3]
-        return f'https://www.expert.dk/{url_id}/p-{self.info.id}'
+        return f"https://www.expert.dk/{url_id}/p-{self.info.id}"
 
 
 class MMVisionHandler(BaseWebsiteHandler):
@@ -393,7 +393,7 @@ class CoolshopHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         url_id = self.url.split("/")[-2]
-        return f'https://www.coolshop.dk/produkt/{url_id}/'
+        return f"https://www.coolshop.dk/produkt/{url_id}/"
 
 
 class SharkGamingHandler(BaseWebsiteHandler):
