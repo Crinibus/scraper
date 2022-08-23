@@ -125,7 +125,7 @@ class TestKomplettHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = komplett_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = komplett_handler._get_product_name(komplett_soup).lower()
@@ -152,7 +152,7 @@ class TestProshopHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = proshop_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = proshop_handler._get_product_name(proshop_soup).lower()
@@ -179,7 +179,7 @@ class TestComputersalgHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = computersalg_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = computersalg_handler._get_product_name(computersalg_soup).lower()
@@ -206,7 +206,7 @@ class TestElgigantenHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = elgiganten_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = elgiganten_handler._get_product_name(elgiganten_soup).lower()
@@ -233,7 +233,7 @@ class TestAvXpertenHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = avxperten_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = avxperten_handler._get_product_name(avxperten_soup).lower()
@@ -260,7 +260,7 @@ class TestAvCablesHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = avcables_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = avcables_handler._get_product_name(avcables_soup).lower()
@@ -287,7 +287,7 @@ class TestAmazonHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = amazon_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = amazon_handler._get_product_name(amazon_soup).lower()
@@ -315,7 +315,7 @@ class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = ebay_handler_one.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = ebay_handler_one._get_product_name(ebay_soup_one).lower()
@@ -344,7 +344,7 @@ class TestEbayHandler_with_p(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = ebay_handler_two.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = ebay_handler_two._get_product_name(ebay_soup_two).lower()
@@ -372,7 +372,7 @@ class TestPowerHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = power_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = power_handler._get_product_name(power_soup).lower()
@@ -399,7 +399,7 @@ class TestExpertHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = expert_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = expert_handler._get_product_name(expert_soup).lower()
@@ -426,7 +426,7 @@ class TestMMVisionHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = mmvision_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = mmvision_handler._get_product_name(mmvision_soup).lower()
@@ -453,7 +453,7 @@ class TestCoolshopHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = coolshop_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = coolshop_handler._get_product_name(coolshop_soup).lower()
@@ -480,7 +480,7 @@ class TestSharkGamingHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = sharkgaming_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = sharkgaming_handler._get_product_name(sharkgaming_soup).lower()
@@ -507,7 +507,7 @@ class TestNeweggHandler(BaseTestWebsiteHandler):
     def test_get_product_info(self):
         actual = newegg_handler.get_product_info()
         assert isinstance(actual, Info)
-        assert actual.valid == True
+        assert actual.valid
 
     def test_get_name(self):
         actual = newegg_handler._get_product_name(newegg_soup).lower()
