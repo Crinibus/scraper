@@ -264,7 +264,7 @@ class EbayHandler(BaseWebsiteHandler):
         try:
             return soup.find("h1", class_="product-title").text
         except (AttributeError, ValueError, TypeError):
-            return soup.find("meta", property="og:title").get("content").strip("  | eBay")
+            return soup.find("meta", property="og:title").get("content").replace("  | eBay", "")
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         if self.soup_url.split("/")[3] == "itm":
