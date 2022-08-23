@@ -21,10 +21,10 @@ class Scraper:
             print(f"Product info is not valid - category: '{self.category}' - url: {self.url}")
             return
 
-        save_product(self.category, self.url, self.website_handler, self.product_info)
+        save_product(self.category, self.website_handler, self.product_info)
 
 
-def save_product(category: str, url: str, website_handler: BaseWebsiteHandler, product_info: Info) -> None:
+def save_product(category: str, website_handler: BaseWebsiteHandler, product_info: Info) -> None:
     data = Filemanager.get_record_data()
 
     product_data = get_product_data(data, category, product_info.name, website_handler.website_name)
