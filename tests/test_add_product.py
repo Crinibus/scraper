@@ -2,7 +2,7 @@ import pytest
 
 from scraper.add_product import add_product
 
-testData = [
+test_domains = [
     "https://www.amazon.com/",
     "https://www.ebay.com/",
     "https://www.komplett.dk/",
@@ -21,7 +21,7 @@ testData = [
 
 
 # Tests to make sure the websites that are supported can be added to be scraped
-@pytest.mark.parametrize("url", testData)
+@pytest.mark.parametrize("url", test_domains)
 def test_add_product(url, mocker):
     mocker.patch("scraper.Scraper.scrape_info", return_value=None)
     mocker.patch("scraper.Scraper.save_info", return_value=None)
