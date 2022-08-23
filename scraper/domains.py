@@ -232,7 +232,6 @@ class AvCablesHandler(BaseWebsiteHandler):
 
 
 class AmazonHandler(BaseWebsiteHandler):
-    # TODO: FIX GETTING INFO FROM THIS LINK: https://www.amazon.com/PlayStation-5-Console/dp/B09DFCB66S/?_encoding=UTF8&pd_rd_w=mNmTx&content-id=amzn1.sym.90935d8a-16d8-44ec-9874-f910bf2faf89&pf_rd_p=90935d8a-16d8-44ec-9874-f910bf2faf89&pf_rd_r=1RRG12NVBKDZZ01140TG&pd_rd_wg=juN0N&pd_rd_r=672a737c-4c52-4022-a216-2d88acad8f0a&ref_=pd_gw_crs_zg_bs_468642
     def _get_product_name(self, soup: BeautifulSoup) -> str:
         return soup.find("span", id="productTitle").text.strip()
 
