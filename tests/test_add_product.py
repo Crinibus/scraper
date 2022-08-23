@@ -3,8 +3,20 @@ import pytest
 from scraper.add_product import add_product
 
 testData = [
-    ("https//www.komplett.dk"),
-    ("https//www.proshop.dk"),
+    "https://www.amazon.com/",
+    "https://www.ebay.com/",
+    "https://www.komplett.dk/",
+    "https://www.proshop.dk/",
+    "https://www.computersalg.dk/",
+    "https://www.elgiganten.dk/",
+    "https://www.avxperten.dk/",
+    "https://www.av-cables.dk/",
+    "https://www.power.dk/",
+    "https://www.expert.dk/",
+    "https://www.mm-vision.dk/",
+    "https://www.coolshop.dk/",
+    "https://www.sharkgaming.dk/",
+    "https://www.newegg.com/",
 ]
 
 
