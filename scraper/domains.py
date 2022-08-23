@@ -12,7 +12,7 @@ def request_url(url: str) -> Response:
     try:
         response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10)
         return response
-    except requests.exceptions.RequestException:  # temporary try expect for all requests errors
+    except requests.exceptions.RequestException:
         logging.getLogger(__name__).exception(f"Module requests exception with url: {url}")
 
 
