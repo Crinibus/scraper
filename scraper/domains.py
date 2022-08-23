@@ -238,19 +238,19 @@ class AmazonHandler(BaseWebsiteHandler):
     def _get_product_price(self, soup: BeautifulSoup) -> float:
         try:
             return float(soup.find("input", id="attach-base-product-price").get("value"))
-        except:
+        except (AttributeError, ValueError, TypeError):
             return float(soup.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", ""))
 
     def _get_product_currency(self, soup: BeautifulSoup) -> str:
         try:
             return soup.find("input", id="attach-currency-of-preference").get("value")
-        except:
+        except (AttributeError, ValueError, TypeError):
             return soup.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
 
     def _get_product_id(self, soup: BeautifulSoup) -> str:
         try:
             return soup.find("input", id="ASIN").get("value")
-        except:
+        except (AttributeError, ValueError, TypeError):
             asin_json = json.loads(soup.find("span", id="cr-state-object").get("data-state"))
             return asin_json["asin"]
 
@@ -265,7 +265,7 @@ class EbayHandler(BaseWebsiteHandler):
     def _get_product_name(self, soup: BeautifulSoup) -> str:
         try:
             return soup.find("h1", class_="product-title").text
-        except:
+        except (AttributeError, ValueError, TypeError):
             return soup.find("meta", property="og:title").get("content").strip("  | eBay")
 
     def _get_product_price(self, soup: BeautifulSoup) -> float:
