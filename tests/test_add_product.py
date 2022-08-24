@@ -30,5 +30,5 @@ def test_add_product(url, mocker):
     mocker.patch("scraper.add_product.check_if_product_exists_csv", return_value=False)
     mocker.patch("scraper.add_product.add_product_to_records", return_value=None)
 
-    # expecting no exceptions
+    # expect no exceptions to raise
     add_product("test", url)
