@@ -29,13 +29,8 @@ def add_product(category: str, url: str) -> None:
     new_product = Scraper(category, url)
     new_product.scrape_info()
 
-    product_exists = check_if_product_exists(new_product)
-
-    if not product_exists:
-        add_product_to_records(new_product)
-        if not check_if_product_exists_csv(new_product):
-            Filemanager.add_product_to_csv(new_product.category, new_product.url)
-        new_product.save_info()
+    if not check_if_product_exists(new_product):
+        save_product(new_product)
         return
 
     user_input = input(
@@ -45,12 +40,7 @@ def add_product(category: str, url: str) -> None:
 
     if user_input.lower() in ("y", "yes"):
         print("Overriding product...")
-        add_product_to_records(new_product)
-
-        if not check_if_product_exists_csv(new_product):
-            Filemanager.add_product_to_csv(new_product.category, new_product.url)
-
-        new_product.save_info()
+        save_product(new_product)
     else:
         print("Product was not added nor overrided")
         logger.info("Adding product cancelled")
@@ -69,6 +59,15 @@ def check_if_product_exists(product: Scraper) -> bool:
         return False
 
     return True
+
+
+def save_product(product: Scraper):
+    add_product_to_records(product)
+
+    if not check_if_product_exists_csv(product):
+        Filemanager.add_product_to_csv(product.category, product.url)
+
+    product.save_info()
 
 
 def add_product_to_records(product: Scraper) -> None:
