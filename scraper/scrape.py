@@ -51,6 +51,7 @@ def get_product_data(data: dict, category: str, name: str, website_name: str) ->
         logging.getLogger(__name__).exception(
             f"KeyError on dict 'data' with category: '{category}', name: '{name}' and website_name: '{website_name}'"
         )
+        print("ERROR - KeyError - check logfile.log")
         return None
 
 
