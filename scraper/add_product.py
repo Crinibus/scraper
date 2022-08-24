@@ -1,12 +1,9 @@
 from typing import List
 import logging
+from scraper.exceptions import WebsiteNotSupported
 from scraper.scrape import Scraper
 from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name, SUPPORTED_DOMAINS
-
-
-class WebsiteNotSupported(Exception):
-    pass
 
 
 def add_products(categories: List[str], urls: List[str]):
