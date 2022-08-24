@@ -12,9 +12,7 @@ def add_products(categories: List[str], urls: List[str]):
 
 
 def add_product(category: str, url: str) -> None:
-    print("Adding product...")
     logger = logging.getLogger(__name__)
-    logger.info(f"Adding product: {category} - {url}")
 
     website_name = get_website_name(url)
 
@@ -22,6 +20,9 @@ def add_product(category: str, url: str) -> None:
         print(f"Can't scrape from this website: {website_name}")
         logger.info(f"Not supported website to scrape from: {website_name}")
         raise WebsiteNotSupported(f"'{website_name}' is currently not supported")
+
+    print(f"Adding product with category '{category}' and url '{url[0:min(50, len(url))]}'...")
+    logger.info(f"Adding product with category '{category}' and url '{url}'")
 
     new_product = Scraper(category, url)
     new_product.scrape_info()
