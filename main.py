@@ -45,7 +45,6 @@ def scrape():
 
     # Scrape and save scraped data for each product (sequentially)
     for product in products:
-        print(product.url)
         time.sleep(scraper.REQUEST_DELAY)
         product.scrape_info()
         product.save_info()
