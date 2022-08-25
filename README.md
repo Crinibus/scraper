@@ -87,7 +87,8 @@ To scrape with threads run the same command but with the ```--threads``` argumen
 python3 main.py -s --threads
 ```
 
-You can change the time between each time a url is being request by changing the field 'request_delay' in the file scraper/settings.ini under the 'Scraping' section.
+You can change the time between each time a url is being request by changing the field ```request_delay``` in the file scraper/settings.ini under the 'Scraping' section.
+
 Default is 0 seconds, but to avoid the website you scrape products from thinking you are DDOS attacting them or you being restricted from scraping on their websites temporarily, set the request_delay in settings.ini to a higher number of seconds, e.g. 5 seconds.
 
 <br/>
