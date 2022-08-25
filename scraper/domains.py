@@ -270,7 +270,7 @@ class EbayHandler(BaseWebsiteHandler):
         if self.soup_url.split("/")[3] == "itm":
             price = float(soup.find("span", itemprop="price").get("content"))
         else:
-            price = float(soup.find("div", class_="display-price").text.replace("DKK ", "").replace(",", ""))
+            price = float(soup.find("div", class_="display-price").text.replace("DKK ", "").replace("$", "").replace(",", ""))
 
         return price
 
