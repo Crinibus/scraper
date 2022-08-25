@@ -12,7 +12,9 @@ def main():
         scraper.clean_records_data()
 
     if args.visualize:
-        scraper.visualize_data(args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names, args.up_to_date)
+        scraper.visualize_data(
+            args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names, args.up_to_date
+        )
 
     if args.reset:
         scraper.reset()
@@ -43,7 +45,6 @@ def scrape():
 
     # Scrape and save scraped data for each product (sequentially)
     for product in products:
-        print(product.url)
         time.sleep(scraper.REQUEST_DELAY)
         product.scrape_info()
         product.save_info()

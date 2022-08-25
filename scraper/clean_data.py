@@ -1,8 +1,10 @@
+import logging
 from scraper.filemanager import Filemanager
 
 
 def clean_records_data() -> None:
     print("Cleaning data...")
+    logging.getLogger(__name__).info("Cleaning records data")
     records_data = Filemanager.get_record_data()
 
     for category_info in records_data.values():
@@ -21,10 +23,7 @@ def clean_records_data() -> None:
                     next_datapoint = datapoints[index + 1]
 
                     # Skip unnecessary datapoints
-                    if (
-                        datapoint["price"] == previous_datapoint["price"]
-                        and datapoint["price"] == next_datapoint["price"]
-                    ):
+                    if datapoint["price"] == previous_datapoint["price"] and datapoint["price"] == next_datapoint["price"]:
                         continue
 
                     new_datapoints.append(datapoint)

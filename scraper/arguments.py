@@ -125,6 +125,10 @@ def validate_arguments(parser: ArgumentParser) -> None:
     if args.add:
         if not args.category or not args.url:
             parser.error("When using --add, then --category and --url is required")
+        if len(args.category) > len(args.url):
+            parser.error("Specified more categories than urls")
+        if len(args.category) < len(args.url):
+            parser.error("Specified more urls than categories")
 
     if args.visualize:
         if not any([args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names]):

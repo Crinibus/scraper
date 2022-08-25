@@ -17,10 +17,10 @@ WEBSITE_COLORS = {
     "ebay": "crimson",
     "power": "salmon",
     "expert": "olivedrab",
-    "mm-vision": "mediumspringgreen	",
+    "mm-vision": "mediumspringgreen",
     "coolshop": "mediumblue",
     "sharkgaming": "midnightblue",
-    "newegg": "#f7c20a"
+    "newegg": "#f7c20a",
 }
 
 REQUEST_DELAY = 0  # seconds

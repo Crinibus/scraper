@@ -1,4 +1,5 @@
 .vscode/
 __pycache__/
+.pytest_cache/
 
 test_new_features.py
