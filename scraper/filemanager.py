@@ -86,3 +86,8 @@ class Config:
         for elem in elements:
             if "key" in elem:
                 yield elem
+
+    @staticmethod
+    def get_request_delay() -> int:
+        config = Config.read(Filemanager.settings_ini_path)
+        return int(config["Scraping"]["request_delay"])
