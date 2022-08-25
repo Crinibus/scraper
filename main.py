@@ -38,6 +38,7 @@ def main():
 def scrape():
     print("Scraping...")
 
+    request_delay = scraper.Config.get_request_delay()
     products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
@@ -45,7 +46,7 @@ def scrape():
 
     # Scrape and save scraped data for each product (sequentially)
     for product in products:
-        time.sleep(scraper.REQUEST_DELAY)
+        time.sleep(request_delay)
         product.scrape_info()
         product.save_info()
 
@@ -53,6 +54,7 @@ def scrape():
 def scrape_with_threads():
     print("Scraping with threads...")
 
+    request_delay = scraper.Config.get_request_delay()
     products_df = scraper.Filemanager.get_products_data()
 
     # Create instances of class "Scraper"
@@ -63,7 +65,7 @@ def scrape_with_threads():
 
     # Start scraping on all threads
     for thread in threads:
-        time.sleep(scraper.REQUEST_DELAY)
+        time.sleep(request_delay)
         thread.start()
 
     # Wait for all threads to finish

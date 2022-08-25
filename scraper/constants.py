@@ -22,5 +22,3 @@ WEBSITE_COLORS = {
     "sharkgaming": "midnightblue",
     "newegg": "#f7c20a",
 }
-
-REQUEST_DELAY = 0  # seconds
