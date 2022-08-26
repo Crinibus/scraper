@@ -17,6 +17,7 @@ test_domains = [
     "https://www.coolshop.dk/",
     "https://www.sharkgaming.dk/",
     "https://www.newegg.com/",
+    "https://www.hifiklubben.dk/",
 ]
 
 

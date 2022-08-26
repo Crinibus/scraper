@@ -436,6 +436,27 @@ class NeweggHandler(BaseWebsiteHandler):
         return f"https://www.newegg.com/p/{self.info.id}"
 
 
+class HifiKlubbenHandler(BaseWebsiteHandler):
+    def _get_product_name(self, soup: BeautifulSoup) -> str:
+        brand_name = soup.find("span", class_="product-page__brand-name").text
+        model_name = soup.find("span", class_="product-page__model-name").text
+        return f"{brand_name} {model_name}"
+
+    def _get_product_price(self, soup: BeautifulSoup) -> float:
+        return float(soup.find("meta", itemprop="price").get("content"))
+
+    def _get_product_currency(self, soup: BeautifulSoup) -> str:
+        return soup.find("meta", itemprop="priceCurrency").get("content")
+
+    def _get_product_id(self, soup: BeautifulSoup) -> str:
+        return self.url.split("/")[4]
+
+    def get_short_url(self) -> str:
+        if not self.info:
+            return None
+        return f"https://www.hifiklubben.dk/{self.info.id}"
+
+
 def get_website_name(url: str) -> str:
     domain = url.split("/")[2]
 
@@ -477,6 +498,8 @@ def get_website_handler(url: str) -> BaseWebsiteHandler:
             return SharkGamingHandler(url)
         case "newegg":
             return NeweggHandler(url)
+        case "hifiklubben":
+            return HifiKlubbenHandler(url)
         case _:
             logging.getLogger(__name__).error(
                 f"Can't find a website handler - website: '{website_name}' possibly not supported"
@@ -499,4 +522,5 @@ SUPPORTED_DOMAINS = {
     "coolshop",
     "sharkgaming",
     "newegg",
+    "hifiklubben",
 }
