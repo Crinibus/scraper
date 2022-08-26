@@ -34,6 +34,9 @@ def main():
         else:
             scrape()
 
+    if args.latest_datapoint:
+        scraper.print_latest_datapoints(args.visualize_names, args.visualize_ids)
+
 
 def scrape():
     print("Scraping...")
