@@ -14,6 +14,7 @@ from scraper.domains import (
     PowerHandler,
     ProshopHandler,
     SharkGamingHandler,
+    HifiKlubbenHandler,
 )
 from scraper.format import Info
 
@@ -57,9 +58,7 @@ amazon_soup = amazon_handler._request_product_data()
 amazon_handler._get_common_data(amazon_soup)
 
 # for url that start with 'ebay.com/itm/'
-ebay_handler_with_item = EbayHandler(
-    "https://www.ebay.com/itm/265771092654"
-)
+ebay_handler_with_item = EbayHandler("https://www.ebay.com/itm/265771092654")
 ebay_soup_with_itm = ebay_handler_with_item._request_product_data()
 ebay_handler_with_item._get_common_data(ebay_soup_with_itm)
 
@@ -97,6 +96,12 @@ newegg_handler = NeweggHandler(
 )
 newegg_soup = newegg_handler._request_product_data()
 newegg_handler._get_common_data(newegg_soup)
+
+hifiklubben_handler = HifiKlubbenHandler(
+    "https://www.hifiklubben.dk/sennheiser-momentum-4-wireless-hoeretelefoner/senmomentum4bk/"
+)
+hifiklubben_soup = hifiklubben_handler._request_product_data()
+hifiklubben_handler._get_common_data(hifiklubben_soup)
 
 
 class BaseTestWebsiteHandler(ABC):
@@ -543,3 +548,31 @@ class TestNeweggHandler(BaseTestWebsiteHandler):
         id = newegg_handler._get_product_id(newegg_soup)
         assert isinstance(id, str)
         assert id == "0G6-001C-00614"
+
+
+class TestHifiKlubbenHandler(BaseTestWebsiteHandler):
+    def test_get_product_info(self, mocker):
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=hifiklubben_soup)
+        actual = hifiklubben_handler.get_product_info()
+        assert isinstance(actual, Info)
+        assert actual.valid
+
+    def test_get_name(self):
+        actual = hifiklubben_handler._get_product_name(hifiklubben_soup).lower()
+        expected = "SENNHEISER MOMENTUM 4 WIRELESS".lower()
+        assert isinstance(actual, str)
+        assert actual == expected
+
+    def test_get_price(self):
+        price = hifiklubben_handler._get_product_price(hifiklubben_soup)
+        assert isinstance(price, float)
+
+    def test_get_currency(self):
+        currency = hifiklubben_handler._get_product_currency(hifiklubben_soup)
+        assert isinstance(currency, str)
+        assert currency == "DKK"
+
+    def test_get_id(self):
+        id = hifiklubben_handler._get_product_id(hifiklubben_soup)
+        assert isinstance(id, str)
+        assert id == "senmomentum4bk"
