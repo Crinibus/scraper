@@ -5,6 +5,8 @@ from .filemanager import Filemanager
 def search(queries: List[str]):
     print("Searching...")
 
+    records_data = Filemanager.get_record_data()
+
     for query in queries:
         search_functions = [search_product_name, search_categories]
         searching_for_names = [
@@ -13,7 +15,7 @@ def search(queries: List[str]):
         ]
 
         for search_function, searching_for_name in zip(search_functions, searching_for_names):
-            results = search_function(query)
+            results = search_function(query, records_data)
 
             if not results:
                 print(f"\nFound nothing for search term '{query}' when searching for {searching_for_name[0]}")
@@ -25,9 +27,7 @@ def search(queries: List[str]):
         print()
 
 
-def search_product_name(product_name_search: str) -> List[str]:
-    records_data = Filemanager.get_record_data()
-
+def search_product_name(product_name_search: str, records_data: dict) -> List[str]:
     matched_products = []
 
     for category_dict in records_data.values():
@@ -39,9 +39,7 @@ def search_product_name(product_name_search: str) -> List[str]:
     return matched_products
 
 
-def search_categories(category_search: str) -> List[str]:
-    records_data = Filemanager.get_record_data()
-
+def search_categories(category_search: str, records_data: dict) -> List[str]:
     matched_categories = []
 
     for category_name in records_data.keys():
