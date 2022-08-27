@@ -25,19 +25,21 @@ def search(queries: List[str]):
         print()
 
 
-def search_product_name(product_name_search: str):
+def search_product_name(product_name_search: str) -> List[str]:
     records_data = Filemanager.get_record_data()
 
-    matched_product_names = []
+    matched_products = []
 
-    for category_info in records_data.values():
-        for product_name in category_info.keys():
+    for category_dict in records_data.values():
+        for product_name, product_dict in category_dict.items():
             if product_name_search.lower() in product_name.lower():
-                matched_product_names.append(product_name)
-    return matched_product_names
+                for website_name, website_dict in product_dict.items():
+                    id = website_dict["info"]["id"]
+                    matched_products.append(f"{product_name} - {website_name.capitalize()} - {id}")
+    return matched_products
 
 
-def search_categories(category_search: str):
+def search_categories(category_search: str) -> List[str]:
     records_data = Filemanager.get_record_data()
 
     matched_categories = []
