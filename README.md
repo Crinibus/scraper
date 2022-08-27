@@ -68,11 +68,11 @@ Then just add products like described [here](#add-products).
 
 <br/>
 
-If you just want to reset your data for each product, just delete all data-points inside each product, then run this command:
+If you just want to reset your data for each product, just delete all datapoints inside each product, then run this command:
 ```
 python3 main.py --reset
 ```
-This deletes all the data inside each product, such as id, url and all datapoints.
+This deletes the data inside each product, such as id, url and all datapoints.
 
 <br/>
 
@@ -109,10 +109,13 @@ To add multiple products at once, just add specify another category and url with
 ```
 python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
 ``` 
+This is equivalent to the above:
+```
+python3 main.py -a -c <category> <category2> -u <url> <url2>
+```
 
-**OBS**: The category can only be one word, so add a underscore instead of a space if needed.<br/>
-**OBS**: The url must have the "https://" part.<br/>
-**OBS**: If an error occures when adding a product, then the error might happen because the url has a "&" in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
+**OBS**: The url must have the ```https://``` part.<br/>
+**OBS**: If an error occures when adding a product, then the error might happen because the url has a ```&``` in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
 
 <br/>
 
@@ -180,10 +183,10 @@ You can search with multiple keywords, just seperate them with a space: ```--sea
 ## Visualize data <a name="visualize-data"></a>
 To visualize your data, just run main.py with the ```-v``` or ```--visualize``` argument and then specify which products you want to be visualized. These are your options for how you want to visualize your products:
 
-- ```-va``` or ```--visualize-all``` to visualize all your products
-- ```-vc [<category> [<category> ...]]``` or ```--visualize-category [<category> [<category> ...]]``` to visualize all products in one or more categories
-- ```-id [<id> [<id> ...]]``` or ```--visualize-id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
-- ```-vn [<name> [<name> ...]]``` or ```--visualize-name [<name> ...]]``` to visualize one or more products with the specified name(s)
+- ```--all``` to visualize all your products
+- ```-c [<category> [<category> ...]]``` or ```--category [<category> [<category> ...]]``` to visualize all products in one or more categories
+- ```--id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
+- ```-n [<name> [<name> ...]]``` or ```--name [<name> ...]]``` to visualize one or more products with the specified name(s)
 
 ### Example graph
 ![](https://user-images.githubusercontent.com/57172157/171033112-908f6420-6c7a-44ef-ba67-8a4a73bbd96e.png)
@@ -193,19 +196,19 @@ To visualize your data, just run main.py with the ```-v``` or ```--visualize``` 
 
 To show graphs for all products, run the following command:
 ```
-python3 main.py -v -va
+python3 main.py -v --all
 ```
 
 **Show graph(s) for specific products**
 
 To show a graph for only one product, run the following command where ```<id>``` is the id of the product you want a graph for:
 ```
-python3 main.py -v -id <id>
+python3 main.py -v --id <id>
 ```
 
 For multiple products, just add another id, like so:
 ```
-python3 main.py -v -id <id> <id>
+python3 main.py -v --id <id> <id>
 ```
 
 
@@ -213,12 +216,12 @@ python3 main.py -v -id <id> <id>
 
 To show graphs for all products in one category, run the following command where ```<category>``` is the category you want graph from:
 ```
-python3 main.py -v -vc <category>
+python3 main.py -v -c <category>
 ```
 
 For multiple categories, just add another category, like so:
 ```
-python3 main.py -v -vc <category> <category>
+python3 main.py -v -c <category> <category>
 ```
 
 
@@ -226,12 +229,12 @@ python3 main.py -v -vc <category> <category>
 
 To show graphs for product(s) with a specific name, run the following command where ```<name>``` is the name of the product(s) you want graphs for:
 ```
-python3 main.py -v -vn <name>
+python3 main.py -v --name <name>
 ```
 
 For multiple products with different names, just add another name, like so:
 ```
-python3 main.py -v -vn <name> <name2>
+python3 main.py -v --name <name> <name2>
 ```
 
 If the name of a product has multiple words in it, then just add quotation marks around the name.
@@ -241,9 +244,9 @@ If the name of a product has multiple words in it, then just add quotation marks
 
 To only show graphs for the products that are up to date, use the flag ```--up-to-date``` or ```-utd```, like so:
 ```
-python3 main.py -v -va -utd
+python3 main.py -v --all -utd
 ```
 The use of the flag ```-utd``` is only implemented when visualizing all products like the example above or when visualizing all products in a category:
 ```
-python3 main.py -v -vc gpu -utd
+python3 main.py -v -c gpu -utd
 ```
