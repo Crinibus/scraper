@@ -87,10 +87,6 @@ To scrape with threads run the same command but with the ```--threads``` argumen
 python3 main.py -s --threads
 ```
 
-You can change the time between each time a url is being request by changing the field ```request_delay``` in the file scraper/settings.ini under the 'Scraping' section.
-
-Default is 0 seconds, but to avoid the website you scrape products from thinking you are DDOS attacting them or you being restricted from scraping on their websites temporarily, set the request_delay in settings.ini to a higher number of seconds, e.g. 5 seconds.
-
 <br/>
 
 
@@ -152,7 +148,8 @@ If you find that some other Amazon domains works or some of the listed doesn't p
 ## User settings <a name="user-settings"></a>
 User settings can be added and changed in the file settings.ini.
 
-Right now there is only one category of user settings, which is "ChangeName".  Under this category you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
+#### ChangeName
+Under under the category ```ChangName``` you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
 
 When adding a new setting under the category "ChangeName" in settings.ini, there must be a line with ```key<n>``` and a line with ```value<n>```, where ```<n>``` is the "link" between keywords and valuewords. E.g. ```value3``` is the value to ```key3```.
 
@@ -166,7 +163,12 @@ value1 = asus geforce rtx 3080 rog strix oc
 
 The script checks if a product name has all of the words in ```key1```, it gets changed to what ```value1``` is.
 
-<br/>
+#### Scraping
+You can change the time between each time a url is being request by changing the field ```request_delay``` in the file scraper/settings.ini under the ```Scraping``` section.
+
+Default is 0 seconds, but to avoid the website you scrape products from thinking you are DDOS attacting them or you being restricted from scraping on their websites temporarily, set the request_delay in settings.ini to a higher number of seconds, e.g. 5 seconds.
+
+<br/>2
 
 
 ## Clean up data <a name="clean-up-data"></a>
