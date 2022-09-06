@@ -168,7 +168,7 @@ You can change the time between each time a url is being request by changing the
 
 Default is 0 seconds, but to avoid the website you scrape products from thinking you are DDOS attacting them or you being restricted from scraping on their websites temporarily, set the request_delay in settings.ini to a higher number of seconds, e.g. 5 seconds.
 
-<br/>2
+<br/>
 
 
 ## Clean up data <a name="clean-up-data"></a>
