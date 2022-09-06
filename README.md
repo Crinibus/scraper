@@ -149,7 +149,7 @@ If you find that some other Amazon domains works or some of the listed doesn't p
 User settings can be added and changed in the file settings.ini.
 
 #### ChangeName
-Under under the category ```ChangName``` you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
+Under the category ```ChangName``` you can change how the script changes product names, so similar products will be placed in the same product in records.json file.
 
 When adding a new setting under the category "ChangeName" in settings.ini, there must be a line with ```key<n>``` and a line with ```value<n>```, where ```<n>``` is the "link" between keywords and valuewords. E.g. ```value3``` is the value to ```key3```.
 
