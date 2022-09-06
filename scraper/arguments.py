@@ -8,7 +8,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "-s",
         "--scrape",
-        help="scrape product prices",
+        help="scrape product info",
         action="store_true",
     )
 
@@ -24,57 +24,49 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "-c",
         "--category",
-        help="the category the new product is going to be in",
+        help=(
+            "the category(s) the new product is going to be in when using --add "
+            "or the category(s) to visualize when using --visualize"
+        ),
         type=str,
-        action="append",
+        nargs="*",
+        action="extend",
     )
 
-    parser.add_argument("-u", "--url", help="the url to the product", type=str, action="append")
+    parser.add_argument("-u", "--url", help="the url to the product", type=str, nargs="*", action="extend")
 
     parser.add_argument(
         "-v",
         "--visualize",
-        help="visualize your data",
+        help="visualize your product data",
         action="store_true",
         dest="visualize",
     )
 
     parser.add_argument(
-        "-va",
-        "--visualize-all",
-        help="show graph for all products",
+        "--all",
+        help="show all product graphs when used with --visualize",
         action="store_true",
-        dest="show_all",
+        dest="all",
     )
 
     parser.add_argument(
-        "-vc",
-        "--visualize-category",
-        help="show graph for the products with the specified categories",
+        "--id",
+        help="show graphs for products with the specified id(s) when used with --visualize",
         type=str,
         nargs="*",
-        dest="visualize_categories",
-        metavar="category",
+        action="extend",
+        dest="id",
     )
 
     parser.add_argument(
-        "-id",
-        "--visualize-id",
-        help="show graph for the products with the specified ids",
+        "-n",
+        "--name",
+        help="show graphs for product with the specified name(s) when used with --visualize",
         type=str,
         nargs="*",
-        dest="visualize_ids",
-        metavar="id",
-    )
-
-    parser.add_argument(
-        "-vn",
-        "--visualize-name",
-        help="show graph for product with the specified name(s)",
-        type=str,
-        nargs="*",
-        dest="visualize_names",
-        metavar="name",
+        action="extend",
+        dest="name",
     )
 
     parser.add_argument(
@@ -90,8 +82,9 @@ def argparse_setup() -> ArgumentParser.parse_args:
         help="search for product names with the specified name(s)",
         type=str,
         nargs="*",
+        action="extend",
         dest="search",
-        metavar="search_term",
+        metavar="SEARCH_TERM",
     )
 
     parser.add_argument(
@@ -108,19 +101,22 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--clean-data",
-        help="clean data, so unnecessary datapoints is removed from records",
+        help="clean data so unnecessary product datapoints is removed from records",
         action="store_true",
         dest="clean_data",
     )
 
-    validate_arguments(parser)
+    args = validate_arguments(parser)
 
-    return parser.parse_args()
+    return args
 
 
 def validate_arguments(parser: ArgumentParser) -> None:
     """Validate arguments"""
     args = parser.parse_args()
+
+    if args.add and args.visualize:
+        parser.error("Cannot use --add and --visualize at the same time")
 
     if args.add:
         if not args.category or not args.url:
@@ -131,8 +127,7 @@ def validate_arguments(parser: ArgumentParser) -> None:
             parser.error("Specified more urls than categories")
 
     if args.visualize:
-        if not any([args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names]):
-            parser.error(
-                "When using --visualize, then one of the following is required: "
-                "--visualize-all, --visualize-category, --visualize-id, --visualize-name"
-            )
+        if not any([args.all, args.category, args.id, args.name]):
+            parser.error("When using --visualize, then one of the following is required: " "--all, --category, --id, --name")
+
+    return args
