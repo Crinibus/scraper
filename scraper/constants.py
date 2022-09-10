@@ -21,4 +21,5 @@ WEBSITE_COLORS = {
     "coolshop": "mediumblue",
     "sharkgaming": "midnightblue",
     "newegg": "#f7c20a",
+    "hifiklubben": "#231f20",
 }
