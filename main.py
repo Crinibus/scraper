@@ -12,9 +12,7 @@ def main():
         scraper.clean_records_data()
 
     if args.visualize:
-        scraper.visualize_data(
-            args.show_all, args.visualize_categories, args.visualize_ids, args.visualize_names, args.up_to_date
-        )
+        scraper.visualize_data(args.all, args.category, args.id, args.name, args.up_to_date)
 
     if args.reset:
         scraper.reset()
