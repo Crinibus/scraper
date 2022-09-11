@@ -108,8 +108,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--latest-datapoint",
-        # help="use with --name or --id to print the latest datapoint of the specified product",
-        help="use with --visualize-name or --visualize-id to print the latest datapoint of the specified product",
+        help="use with --name or --id to print the latest datapoint of the specified product",
         dest="latest_datapoint",
         action="store_true",
     )
