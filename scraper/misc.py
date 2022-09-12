@@ -16,7 +16,7 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
             # - Proshop  - {id} - {currency} {price} - {date}
             # ...
 
-            print(f"Name: {name.upper()}")
+            print(f"{name.upper()}")
             # iterate the different websites the product with the specified name is scraped from
             for website_name, website_dict in get_product_info_with_name(name, records_data):
                 print_latest_datapoint_with_name(website_name, website_dict)
@@ -69,4 +69,4 @@ def print_latest_datapoint_with_name(website_name: str, website_dict: dict):
     latest_datapoint = website_dict["datapoints"][-1]
     date = latest_datapoint["date"]
     price = latest_datapoint["price"]
-    print(f"- {website_name.capitalize()} - {id} - {currency} {price} - {date}")
+    print(f"> {website_name.capitalize()} - {id}\n  - {currency} {price}\n  - {date}")
