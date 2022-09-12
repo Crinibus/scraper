@@ -9,7 +9,7 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
     if names:
         print("\n----- SHOWING LATEST DATAPOINT FOR NAME(s) -----")
         for name in names:
-            print(f"{name.upper()}")
+            print(name.upper())
             # iterate the different websites the product with the specified name is scraped from
             for website_name, website_dict in get_product_info_with_name(name, records_data):
                 print_latest_datapoint_with_name(website_name, website_dict)
