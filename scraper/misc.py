@@ -38,7 +38,7 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
 def get_product_info_with_name(name: str, records_data: dict) -> Generator[Tuple[str, str, dict], None, None]:
     for category_dict in records_data.values():
         for product_name, product_dict in category_dict.items():
-            if not product_name == name:
+            if not product_name.lower() == name.lower():
                 continue
             for website_name, website_dict in product_dict.items():
                 yield website_name, website_dict
