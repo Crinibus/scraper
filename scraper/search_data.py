@@ -33,9 +33,14 @@ def search_product_name(product_name_search: str, records_data: dict) -> List[st
     for category_dict in records_data.values():
         for product_name, product_dict in category_dict.items():
             if product_name_search.lower() in product_name.lower():
+
+                product_websites = []
                 for website_name, website_dict in product_dict.items():
                     id = website_dict["info"]["id"]
-                    matched_products.append(f"{product_name} - {website_name.capitalize()} - {id}")
+                    product_websites.append(f"-- {website_name.capitalize()} - {id}")
+
+                product_websites_string = "\n".join(product_websites)
+                matched_products.append(f"{product_name}\n{product_websites_string}")
     return matched_products
 
 
