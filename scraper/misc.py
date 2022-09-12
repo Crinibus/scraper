@@ -58,9 +58,8 @@ def print_latest_datapoint_with_id(product_name: str, website_name: str, website
     latest_datapoint = website_dict["datapoints"][-1]
     date = latest_datapoint["date"]
     price = latest_datapoint["price"]
-    print(f"ID: {id}")
-    print(f"Name: {product_name.upper()}")
-    print(f"{website_name.capitalize()} - {currency} {price} - {date}\n")
+    print(f"{product_name.upper()} - {id}")
+    print(f"- {website_name.capitalize()}\n- {currency} {price}\n- {date}\n")
 
 
 def print_latest_datapoint_with_name(website_name: str, website_dict: dict):
