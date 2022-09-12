@@ -33,7 +33,7 @@ def main():
             scrape()
 
     if args.latest_datapoint:
-        scraper.print_latest_datapoints(args.visualize_names, args.visualize_ids)
+        scraper.print_latest_datapoints(args.name, args.id)
 
 
 def scrape():
