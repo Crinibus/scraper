@@ -9,13 +9,6 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
     if names:
         print("\n----- SHOWING LATEST DATAPOINT FOR NAME(s) -----")
         for name in names:
-            # print something like:
-            # ---------------------
-            # Name: {name}
-            # - Komplett - {id} - {currency} {price} - {date}
-            # - Proshop  - {id} - {currency} {price} - {date}
-            # ...
-
             print(f"{name.upper()}")
             # iterate the different websites the product with the specified name is scraped from
             for website_name, website_dict in get_product_info_with_name(name, records_data):
@@ -25,12 +18,6 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
     if ids:
         print("\n----- SHOWING LATEST DATAPOINT FOR ID(s) -----")
         for id in ids:
-            # print something like:
-            # ---------------------
-            # ID: {id}
-            # Name: {name}
-            # Komplett - {currency} {price} - {date}
-
             product_name, website_name, website_dict = get_product_info_with_id(id, records_data)
             print_latest_datapoint_with_id(product_name, website_name, website_dict)
 
