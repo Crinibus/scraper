@@ -196,7 +196,7 @@ Example:
 python3 main.py --name "logitech z533" --latest-datapoint
 ```
 
-This will show the latest datapoint for all the websites the specified product, in this case "logitech z533", has been scraped from and will something like this:
+The above command will show the latest datapoint for all the websites the specified product, in this case "logitech z533", has been scraped from and will show something like this:
 
 ```
 LOGITECH Z533
