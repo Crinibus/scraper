@@ -19,7 +19,9 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
         print("\n----- SHOWING LATEST DATAPOINT FOR ID(s) -----")
         for id in ids:
             product_name, website_name, website_dict = get_product_info_with_id(id, records_data)
-            print_latest_datapoint_with_id(product_name, website_name, website_dict)
+            print(product_name.upper())
+            print_latest_datapoint_with_id(website_name, website_dict)
+            print()
 
 
 def get_product_info_with_name(name: str, records_data: dict) -> Generator[Tuple[str, str, dict], None, None]:
@@ -39,14 +41,13 @@ def get_product_info_with_id(id: str, records_data: dict) -> Tuple[str, str, dic
                     return product_name, website_name, website_dict
 
 
-def print_latest_datapoint_with_id(product_name: str, website_name: str, website_dict: dict):
+def print_latest_datapoint_with_id(website_name: str, website_dict: dict):
     id = website_dict["info"]["id"]
     currency = website_dict["info"]["currency"]
     latest_datapoint = website_dict["datapoints"][-1]
     date = latest_datapoint["date"]
     price = latest_datapoint["price"]
-    print(f"{product_name.upper()} - {id}")
-    print(f"- {website_name.capitalize()}\n- {currency} {price}\n- {date}\n")
+    print(f"> {website_name.capitalize()} - {id}\n  - {currency} {price}\n  - {date}")
 
 
 def print_latest_datapoint_with_name(website_name: str, website_dict: dict):
