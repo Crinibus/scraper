@@ -32,6 +32,9 @@ def main():
         else:
             scrape()
 
+    if args.latest_datapoint:
+        scraper.print_latest_datapoints(args.name, args.id)
+
 
 def scrape():
     print("Scraping...")

@@ -106,6 +106,13 @@ def argparse_setup() -> ArgumentParser.parse_args:
         dest="clean_data",
     )
 
+    parser.add_argument(
+        "--latest-datapoint",
+        help="use with --name or --id to print the latest datapoint of the specified product(s)",
+        dest="latest_datapoint",
+        action="store_true",
+    )
+
     args = validate_arguments(parser)
 
     return args
@@ -128,6 +135,10 @@ def validate_arguments(parser: ArgumentParser) -> None:
 
     if args.visualize:
         if not any([args.all, args.category, args.id, args.name]):
-            parser.error("When using --visualize, then one of the following is required: " "--all, --category, --id, --name")
+            parser.error("When using --visualize, then one of the following is required: --all, --category, --id, --name")
+
+    if args.latest_datapoint:
+        if not args.name and not args.id:
+            parser.error("When using --latest-datapoint, then --name or --id is required")
 
     return args
