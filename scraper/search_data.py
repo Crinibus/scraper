@@ -37,7 +37,7 @@ def search_product_name(product_name_search: str, records_data: dict) -> List[st
                 product_websites = []
                 for website_name, website_dict in product_dict.items():
                     id = website_dict["info"]["id"]
-                    product_websites.append(f"-- {website_name.capitalize()} - {id}")
+                    product_websites.append(f" - {website_name.capitalize()} - {id}")
 
                 product_websites_string = "\n".join(product_websites)
                 matched_products.append(f"{product_name}\n{product_websites_string}")
