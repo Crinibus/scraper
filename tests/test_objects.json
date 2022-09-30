@@ -1,0 +1,100 @@
+{
+    "test_website_handlers": {
+        "komplett": {
+            "link": "https://www.komplett.dk/product/1205149/gaming/spiludstyr/vr/vr-briller/htc-vive-flow-sortreflekterende",
+            "expected_title": "HTC VIVE Flow (sort/reflekterende)",
+            "expected_id": "1205149",
+            "expected_currency": "DKK"
+        },
+        "proshop": {
+            "link": "https://www.proshop.dk/Hovedtelefonerheadset/Sony-WH-1000XM4/2883832",
+            "expected_title": "Sony WH-1000XM4",
+            "expected_id": "2883832",
+            "expected_currency": "DKK"
+        },
+        "computersalg": {
+            "link": "https://www.computersalg.dk/i/6647865/sony-wh-1000xm4-hovedtelefoner-med-mik-fuld-st%c3%b8rrelse-bluetooth-tr%c3%a5dl%c3%b8s-kabling-nfc-aktiv-st%c3%b8jfjerning-3-5-mm-jackstik-sort",
+            "expected_title": "Sony WH-1000XM4 - Hovedtelefoner med mik. - fuld størrelse - Bluetooth - trådløs, kabling - NFC - aktiv støjfjerning - 3,5 mm jackstik - sort",
+            "expected_id": "6647865",
+            "expected_currency": "DKK"
+        },
+        "elgiganten": {
+            "link": "https://www.elgiganten.dk/product/tv-lyd-smart-home/horetelefoner-tilbehor/horetelefoner/sony-tradlose-around-ear-horetelefoner-wh-1000xm4-sort/200693", 
+            "expected_title": "Sony trådløse around-ear høretelefoner WH-1000XM4 (sort)",
+            "expected_id": "200693",
+            "expected_currency": "DKK"
+        },
+        "avxperten": {
+            "link": "https://www.avxperten.dk/noise-cancelling-head-set/sony-wh-1000xm4-bluetooth-hovedtelefoner-anc-sort.asp", 
+            "expected_title": "Sony WH-1000XM4 Bluetooth hovedtelefoner (m/ANC) Sort",
+            "expected_id": "33590",
+            "expected_currency": "DKK"
+        },
+        "av-cables": {
+            "link": "https://www.av-cables.dk/bluetooth-hoeretelefoner/sony-wh-1000xm4-over-ear-bluetooth-headset-sort.html", 
+            "expected_title": "Sony WH-1000XM4 Over-Ear Bluetooth Headset - Sort",
+            "expected_id": "833015",
+            "expected_currency": "DKK"
+        },
+        "amazon": {
+            "link": "https://www.amazon.com/Sony-WH-1000XM4-Wireless-Canceling-Headphones/dp/B08HDKHSSN/ref=sr_1_3?crid=2QKY9WQGCV809&keywords=sony+xm4&qid=1660593858&sprefix=sony+xm%2Caps%2C171&sr=8-3",
+            "expected_title": "Sony WH-1000XM4 Wireless Noise Canceling Overhead Headphones - Black (Renewed)",
+            "expected_id": "B08HDKHSSN",
+            "expected_currency": "USD"
+        },
+        "ebay_with_itm": {
+            "link": "https://www.ebay.com/itm/265771092654",
+            "expected_title": "BRAND NEW Sony PS5 Playstation 5 Blu-Ray Disc Edition Console  -Fast Delivery",
+            "expected_id": "265771092654",
+            "expected_currency": "USD"
+        },
+        "ebay_with_p": {
+            "link": "https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc",
+            "expected_title": "Etude House Collagen Eye Patch Korea Cosmetics 10 Sheets",
+            "expected_id": "181677611772",
+            "expected_currency": "USD"
+        },
+        "expert": {
+            "link": "https://www.expert.dk/hoejtalere-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-sort/p-1106907/",
+            "expected_title": "SONY WH-1000XM4 TRÅDLØSE STØJDÆMPENDE HOVEDTELEFONER SORT",
+            "expected_id": "1106907",
+            "expected_currency": "DKK"
+        },
+        "power": {
+            "link": "https://www.power.dk/tv-og-lyd/hovedtelefoner/traadloese-hovedtelefoner/sony-wh-1000xm4-traadloese-stoejdaempende-hovedtelefoner-blaa/p-1185731/",
+            "expected_title": "SONY WH-1000XM4 TRÅDLØSE STØJDÆMPENDE HOVEDTELEFONER BLÅ",
+            "expected_id": "1185731",
+            "expected_currency": "DKK"
+        },
+        "mm-vision": {
+            "link": "https://www.mm-vision.dk/asus-zenbook-duo-14-ux482eg-pure9x-baerbar",
+            "expected_title": "Asus ZenBook Duo 14 UX482",
+            "expected_id": "6987132",
+            "expected_currency": "DKK"
+        },
+        "coolshop": {
+            "link": "https://www.coolshop.dk/produkt/pokemon-brilliant-diamond/238G6U/",
+            "expected_title": "Pokemon Brilliant Diamond - Nintendo Switch",
+            "expected_id": "1177871",
+            "expected_currency": "DKK"
+        },
+        "sharkgaming": {
+            "link": "https://sharkgaming.dk/asus-gladius-ii-origin-gaming-mouse",
+            "expected_title": "ASUS Gladius II Origin gaming mouse",
+            "expected_id": "90MP00U1-B0UA00",
+            "expected_currency": "DKK"
+        },
+        "newegg": {
+            "link": "https://www.newegg.com/sony-wh1000xm4b-bluetooth-headset-black/p/0G6-001C-00614?Description=sony%20xm4&cm_re=sony_xm4-_-0G6-001C-00614-_-Product&quicklink=true",
+            "expected_title": "Sony WH-1000XM4 Wireless Noise-Cancelling Over-Ear Headphones (Black)",
+            "expected_id": "0G6-001C-00614",
+            "expected_currency": "USD"
+        },
+        "hifiklubben": {
+            "link": "https://www.hifiklubben.dk/sennheiser-momentum-4-wireless-hoeretelefoner/senmomentum4bk/",
+            "expected_title": "SENNHEISER MOMENTUM 4 WIRELESS",
+            "expected_id": "senmomentum4bk",
+            "expected_currency": "DKK"
+        }
+    }
+}
