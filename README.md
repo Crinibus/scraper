@@ -9,6 +9,7 @@
 - [User settings](#user-settings)
 - [Clean up data](#clean-up-data)
 - [View the latest datapoint of product(s)](#view-the-latest-datapoint-of-products)
+- [View all products](#view-all-products)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
 
@@ -214,7 +215,7 @@ LOGITECH Z533
 <br/>
 
 
-## View all products
+## View all products <a name="view-all-products"></a>
 To view all the products you have scraped, you can use the argument ```--print-all-products```.
 
 Example:
