@@ -90,6 +90,13 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
+        "--compare",
+        help="use with --visualize and --id to compare two or more products on one graph",
+        action="store_true",
+        dest="compare",
+    )
+
+    parser.add_argument(
         "--reset",
         help="delete data for each product in records.json, such as prices of each recorded day",
         action="store_true",
@@ -143,8 +150,10 @@ def validate_arguments(parser: ArgumentParser) -> None:
             parser.error("Specified more urls than categories")
 
     if args.visualize:
-        if not any([args.all, args.category, args.id, args.name]):
+        if not any([args.all, args.category, args.id, args.name, args.compare]):
             parser.error("When using --visualize, then one of the following is required: --all, --category, --id, --name")
+        if args.compare and not any([args.id, args.name]):
+            parser.error("When using --visualize and --compare, then one of the following is required: --id, --name")
 
     if args.latest_datapoint:
         if not args.name and not args.id:
