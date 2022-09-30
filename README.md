@@ -233,6 +233,8 @@ To show graphs for all products, run the following command:
 python3 main.py -v --all
 ```
 
+<br/>
+
 **Show graph(s) for specific products**
 
 To show a graph for only one product, run the following command where ```<id>``` is the id of the product you want a graph for:
@@ -245,6 +247,7 @@ For multiple products, just add another id, like so:
 python3 main.py -v --id <id> <id>
 ```
 
+<br/>
 
 **Show graphs for products in one or more categories**
 
@@ -258,6 +261,7 @@ For multiple categories, just add another category, like so:
 python3 main.py -v -c <category> <category>
 ```
 
+<br/>
 
 **Show graps for products with a specific name**
 
@@ -273,6 +277,7 @@ python3 main.py -v --name <name> <name2>
 
 If the name of a product has multiple words in it, then just add quotation marks around the name.
 
+<br/>
 
 **Only show graph for products that are up to date**
 
@@ -282,5 +287,5 @@ python3 main.py -v --all -utd
 ```
 The use of the flag ```-utd``` is only implemented when visualizing all products like the example above or when visualizing all products in a category:
 ```
-python3 main.py -v -c gpu -utd
+python3 main.py -v -c <category> -utd
 ```
