@@ -35,6 +35,9 @@ def main():
     if args.latest_datapoint:
         scraper.print_latest_datapoints(args.name, args.id)
 
+    if args.print_all_products:
+        scraper.print_all_products()
+
 
 def scrape():
     print("Scraping...")

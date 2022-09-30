@@ -41,10 +41,24 @@ def get_product_info_with_id(id: str, records_data: dict) -> Tuple[str, str, dic
                     return product_name, website_name, website_dict
 
 
-def print_latest_datapoint(website_name: str, website_dict: dict):
+def print_latest_datapoint(website_name: str, website_dict: dict) -> None:
     id = website_dict["info"]["id"]
     currency = website_dict["info"]["currency"]
     latest_datapoint = website_dict["datapoints"][-1]
     date = latest_datapoint["date"]
     price = latest_datapoint["price"]
     print(f"> {website_name.capitalize()} - {id}\n  - {currency} {price}\n  - {date}")
+
+
+def print_all_products():
+    records_data = Filemanager.get_record_data()
+
+    print("\n----- SHOWING ALL PRODUCTS -----")
+    for category_name, category_dict in records_data.items():
+        print(category_name.upper())
+        for product_name, product_dict in category_dict.items():
+            print(f"  > {product_name.upper()}")
+            for website_name, website_dict in product_dict.items():
+                product_id = website_dict["info"]["id"]
+                print(f"    - {website_name.upper()} - {product_id}")
+    print()

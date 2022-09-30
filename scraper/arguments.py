@@ -113,6 +113,13 @@ def argparse_setup() -> ArgumentParser.parse_args:
         action="store_true",
     )
 
+    parser.add_argument(
+        "--print-all-products",
+        help="print the names, websites and ids of all products",
+        dest="print_all_products",
+        action="store_true",
+    )
+
     args = validate_arguments(parser)
 
     return args
