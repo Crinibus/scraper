@@ -202,14 +202,21 @@ def add_scatter_plot(
     currency: str,
     dates: list,
     prices: list,
+    name=None,
+    color=None,
+    hover_text=None,
 ) -> None:
+    scatter_name = name if name else f"{website_name.capitalize()} - {id}"
+    scatter_color = color if color else WEBSITE_COLORS[website_name]
+    scatter_hover_text = hover_text if hover_text else "Price: %{y:.0f}" + f" {currency}"
+
     figure.add_trace(
         go.Scatter(
-            name=f"{website_name.capitalize()} - {id}",
+            name=scatter_name,
             x=dates,
             y=prices,
-            line={"color": WEBSITE_COLORS[website_name], "width": 2},
-            hovertemplate="Price: %{y:.0f}" + f" {currency}",
+            line={"color": scatter_color, "width": 2},
+            hovertemplate=scatter_hover_text,
         )
     )
 
