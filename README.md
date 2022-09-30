@@ -241,6 +241,7 @@ To visualize your data, just run main.py with the ```-v``` or ```--visualize``` 
 - ```-c [<category> [<category> ...]]``` or ```--category [<category> [<category> ...]]``` to visualize all products in one or more categories
 - ```--id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
 - ```-n [<name> [<name> ...]]``` or ```--name [<name> ...]]``` to visualize one or more products with the specified name(s)
+- ```--compare``` to compare two or more products with the specified id(s) and/or name(s) on one graph. Use with ```--id``` and/or ```--name```
 
 ### Example graph
 ![](https://user-images.githubusercontent.com/57172157/171033112-908f6420-6c7a-44ef-ba67-8a4a73bbd96e.png)
@@ -252,6 +253,8 @@ To show graphs for all products, run the following command:
 ```
 python3 main.py -v --all
 ```
+
+<br/>
 
 **Show graph(s) for specific products**
 
@@ -265,6 +268,7 @@ For multiple products, just add another id, like so:
 python3 main.py -v --id <id> <id>
 ```
 
+<br/>
 
 **Show graphs for products in one or more categories**
 
@@ -278,6 +282,7 @@ For multiple categories, just add another category, like so:
 python3 main.py -v -c <category> <category>
 ```
 
+<br/>
 
 **Show graps for products with a specific name**
 
@@ -293,6 +298,7 @@ python3 main.py -v --name <name> <name2>
 
 If the name of a product has multiple words in it, then just add quotation marks around the name.
 
+<br/>
 
 **Only show graph for products that are up to date**
 
@@ -302,5 +308,22 @@ python3 main.py -v --all -utd
 ```
 The use of the flag ```-utd``` is only implemented when visualizing all products like the example above or when visualizing all products in a category:
 ```
-python3 main.py -v -c gpu -utd
+python3 main.py -v -c <category> -utd
 ```
+
+<br/>
+
+**Compare two products**
+
+To compare two products on one graph, use the flag ```--compare``` with flag ```--id``` and/or ```--name```, like so:
+```
+python3 main.py -v --compare --id <id>
+```
+```
+python3 main.py -v --compare --name <name>
+```
+```
+python3 main.py -v --compare --id <id> --name <name>
+```
+
+***OBS** when using ```--name``` multiple products can be visualized*
