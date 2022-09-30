@@ -57,6 +57,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         nargs="*",
         action="extend",
         dest="id",
+        default=[],
     )
 
     parser.add_argument(
@@ -67,6 +68,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         nargs="*",
         action="extend",
         dest="name",
+        default=[],
     )
 
     parser.add_argument(
