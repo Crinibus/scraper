@@ -221,6 +221,7 @@ To visualize your data, just run main.py with the ```-v``` or ```--visualize``` 
 - ```-c [<category> [<category> ...]]``` or ```--category [<category> [<category> ...]]``` to visualize all products in one or more categories
 - ```--id [<id> [<id> ...]]``` to visualize one or more products with the specified id(s)
 - ```-n [<name> [<name> ...]]``` or ```--name [<name> ...]]``` to visualize one or more products with the specified name(s)
+- ```--compare``` to compare two or more products with the specified id(s) and/or name(s) on one graph. Use with ```--id``` and/or ```--name```
 
 ### Example graph
 ![](https://user-images.githubusercontent.com/57172157/171033112-908f6420-6c7a-44ef-ba67-8a4a73bbd96e.png)
@@ -289,3 +290,20 @@ The use of the flag ```-utd``` is only implemented when visualizing all products
 ```
 python3 main.py -v -c <category> -utd
 ```
+
+<br/>
+
+**Compare two products**
+
+To compare two products on one graph, use the flag ```--compare``` with flag ```--id``` and/or ```--name```, like so:
+```
+python3 main.py -v --compare --id <id>
+```
+```
+python3 main.py -v --compare --name <name>
+```
+```
+python3 main.py -v --compare --id <id> --name <name>
+```
+
+***OBS** when using ```--name``` multiple products can be visualized*
