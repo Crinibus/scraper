@@ -214,6 +214,25 @@ LOGITECH Z533
 <br/>
 
 
+## View all products
+To view all the products you have scraped, you can use the argument ```--print-all-products```.
+
+Example:
+```
+python3 main.py --print-all-products
+```
+
+This will print all the products in the following format:
+
+```
+CATEGORY
+  > PRODUCT NAME
+    - WEBSITE NAME - PRODUCT ID
+```
+
+<br/>
+
+
 ## Visualize data <a name="visualize-data"></a>
 To visualize your data, just run main.py with the ```-v``` or ```--visualize``` argument and then specify which products you want to be visualized. These are your options for how you want to visualize your products:
 
