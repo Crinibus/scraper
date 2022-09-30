@@ -9,6 +9,7 @@
 - [User settings](#user-settings)
 - [Clean up data](#clean-up-data)
 - [View the latest datapoint of product(s)](#view-the-latest-datapoint-of-products)
+- [View all products](#view-all-products)
 - [Visualize data](#visualize-data)
     - [Command examples](#command-examples)
 
@@ -209,6 +210,25 @@ LOGITECH Z533
 > Avxperten - 25630
   - DKK 699.0
   - 2022-09-12
+```
+
+<br/>
+
+
+## View all products <a name="view-all-products"></a>
+To view all the products you have scraped, you can use the argument ```--print-all-products```.
+
+Example:
+```
+python3 main.py --print-all-products
+```
+
+This will print all the products in the following format:
+
+```
+CATEGORY
+  > PRODUCT NAME
+    - WEBSITE NAME - PRODUCT ID
 ```
 
 <br/>
