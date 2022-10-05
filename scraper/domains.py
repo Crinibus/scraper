@@ -137,7 +137,7 @@ class ProshopHandler(BaseWebsiteHandler):
 
 class ComputerSalgHandler(BaseWebsiteHandler):
     def _get_product_name(self) -> str:
-        return self.request_data.find("h1", itemprop="name").text
+        return self.request_data.find("header", class_="product-header grid_20").hgroup.h1.text
 
     def _get_product_price(self) -> float:
         return float(self.request_data.find("span", itemprop="price").text.strip().replace(".", "").replace(",", "."))
