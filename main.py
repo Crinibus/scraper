@@ -2,7 +2,10 @@ import threading
 import logging.config
 import logging
 import time
+import alive_progress
 import scraper
+
+alive_progress.config_handler.set_global(ctrl_c=False, dual_line=True, theme="classic", stats=False)
 
 
 def main():
@@ -49,10 +52,19 @@ def scrape():
     products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
 
     # Scrape and save scraped data for each product (sequentially)
-    for product in products:
-        time.sleep(request_delay)
-        product.scrape_info()
-        product.save_info()
+    # for product in products:
+    #     time.sleep(request_delay)
+    #     product.scrape_info()
+    #     product.save_info()
+
+    with alive_progress.alive_bar(len(products), title="Scraping") as bar:
+        # Scrape and save scraped data for each product (sequentially)
+        for product in products:
+            bar.text = f"-> {product.url}"
+            time.sleep(request_delay)
+            product.scrape_info()
+            product.save_info()
+            bar()
 
 
 def scrape_with_threads():
@@ -67,14 +79,16 @@ def scrape_with_threads():
     # Create threads
     threads = [threading.Thread(target=product.scrape_info) for product in products]
 
-    # Start scraping on all threads
-    for thread in threads:
-        time.sleep(request_delay)
-        thread.start()
+    with alive_progress.alive_bar(len(products), title="Scraping") as bar:
+        # Start scraping on all threads
+        for thread in threads:
+            time.sleep(request_delay)
+            thread.start()
 
-    # Wait for all threads to finish
-    for thread in threads:
-        thread.join()
+        # Wait for all threads to finish
+        for thread in threads:
+            thread.join()
+            bar()
 
     # Save scraped data for each product (sequentially)
     for product in products:
@@ -82,6 +96,9 @@ def scrape_with_threads():
 
 
 if __name__ == "__main__":
+
+    # DON'T MERGE WITH MASTER BRANCH: KNOWN ISSUE: https://github.com/rsalmei/alive-progress/issues/155
+    # alive_progress crashes with the below logging config settings
     logging.config.fileConfig(
         fname=scraper.Filemanager.logging_ini_path,
         defaults={"logfilename": scraper.Filemanager.logfile_path},
