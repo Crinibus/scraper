@@ -24,10 +24,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "-c",
         "--category",
-        help=(
-            "the category(s) the new product is going to be in when using --add "
-            "or the category(s) to visualize when using --visualize"
-        ),
+        help="specify category(s)",
         type=str,
         nargs="*",
         action="extend",
@@ -45,14 +42,14 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--all",
-        help="show all product graphs when used with --visualize",
+        help="specify all products",
         action="store_true",
         dest="all",
     )
 
     parser.add_argument(
         "--id",
-        help="show graphs for products with the specified id(s) when used with --visualize",
+        help="specify id(s) of product(s)",
         type=str,
         nargs="*",
         action="extend",
@@ -63,7 +60,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "-n",
         "--name",
-        help="show graphs for product with the specified name(s) when used with --visualize",
+        help="specify names(s) of product(s)",
         type=str,
         nargs="*",
         action="extend",
@@ -91,7 +88,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--compare",
-        help="use with --visualize and --id to compare two or more products on one graph",
+        help="compare two or more products",
         action="store_true",
         dest="compare",
     )
@@ -117,7 +114,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--latest-datapoint",
-        help="use with --name or --id to print the latest datapoint of the specified product(s)",
+        help="get the latest datapoint of specified product(s)",
         dest="latest_datapoint",
         action="store_true",
     )
