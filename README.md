@@ -2,7 +2,7 @@
 - [Intro](#intro)
 - [Contributing](#contributing)
 - [Installation](#installation)
-- [Start from scratch](#start-scratch)
+- [Delete data](#delete-data)
 - [Scrape products](#scrape-products)
 - [Add products](#add-products)
     - [Websites to scrape from](#websites-to-scrape-from)
@@ -60,7 +60,12 @@ pip3 install -r requirements.txt
 <br/>
 
 
-## Start from scratch <a name="start-scratch"></a>
+## Delete data <a name="delete-data"></a>
+
+
+TODO: UPDATE THIS WITH NEW ARGUMENT --delete
+
+
 If you want to start from scratch with no data in the records.json and products.csv files, then just run the following command:
 ```
 python3 main.py --hard-reset

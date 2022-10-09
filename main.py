@@ -38,6 +38,9 @@ def main():
     if args.print_all_products:
         scraper.print_all_products()
 
+    if args.delete:
+        scraper.delete(args.category, args.name, args.id, args.all)
+
 
 def scrape():
     print("Scraping...")
