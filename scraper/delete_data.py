@@ -4,9 +4,11 @@ from scraper.filemanager import Filemanager
 
 
 def delete(categories: List[str], names: List[str], ids: List[str], all: bool) -> None:
+    print("Deleting...")
     record_data = Filemanager.get_record_data()
 
     if all:
+        print("Deleting all products and categories...")
         delete_all()
         return
 
