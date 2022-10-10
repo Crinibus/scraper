@@ -1,4 +1,5 @@
 from typing import List, Tuple
+import logging
 
 from scraper.filemanager import Filemanager
 
@@ -9,9 +10,11 @@ def delete(categories: List[str], names: List[str], ids: List[str], all: bool) -
 
     if all:
         print("Deleting all products and categories...")
+        logging.getLogger(__name__).info("Deleting all products and categories")
         delete_all()
         return
 
+    logging.getLogger(__name__).info(f"Deleting categories: {categories}, product names: {names} and product ids: {ids}")
     delete_from_record_data(record_data, categories, names, ids)
 
     Filemanager.save_record_data(record_data)
