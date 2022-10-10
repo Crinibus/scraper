@@ -15,7 +15,7 @@ def main():
         scraper.visualize_data(args.all, args.category, args.id, args.name, args.up_to_date, args.compare)
 
     if args.reset:
-        scraper.reset()
+        scraper.reset(args.category, args.name, args.id, args.all)
 
     if args.hard_reset:
         scraper.hard_reset()
