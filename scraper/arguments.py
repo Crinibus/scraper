@@ -28,6 +28,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         type=str,
         nargs="*",
         action="extend",
+        default=[],
     )
 
     parser.add_argument("-u", "--url", help="the url to the product", type=str, nargs="*", action="extend")
