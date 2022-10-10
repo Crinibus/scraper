@@ -52,15 +52,15 @@ class Filemanager:
         return df
 
     @staticmethod
-    def add_product_to_csv(category: str, url: str) -> None:
-        data = [category, url]
+    def add_product_to_csv(category: str, url: str, short_url: str) -> None:
+        data = [category, url, short_url]
         Filemanager.append_csv(Filemanager.products_csv_path, data)
 
     @staticmethod
     def clear_product_csv() -> None:
         Filemanager.clear_csv(Filemanager.products_csv_path)
         # header for csv to use in pandas.DataFrame
-        Filemanager.add_product_to_csv("category", "url")
+        Filemanager.add_product_to_csv("category", "url", "short_url")
 
 
 class Config:
