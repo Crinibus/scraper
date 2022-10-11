@@ -35,6 +35,28 @@ def delete_from_record_data(
     names_to_delete = [] if names_to_delete is None else names_to_delete
     ids_to_delete = [] if ids_to_delete is None else ids_to_delete
 
+    categories_to_delete, products_to_delete_names, products_to_delete_ids = get_categories_products_ids_to_delete(
+        record_data, category_names_to_delete, names_to_delete, ids_to_delete
+    )
+
+    # Delete product ids
+    for product_to_delete_id in products_to_delete_ids:
+        category_name, product_name, website_name = product_to_delete_id
+        record_data[category_name][product_name].pop(website_name)
+
+    # Delete product names
+    for product_to_delete_name in products_to_delete_names:
+        category_name, product_name = product_to_delete_name
+        record_data[category_name].pop(product_name)
+
+    # Delete categories
+    for category_to_delete in categories_to_delete:
+        record_data.pop(category_to_delete)
+
+
+def get_categories_products_ids_to_delete(
+    record_data, category_names_to_delete, names_to_delete, ids_to_delete
+) -> Tuple[List[str], List[Tuple[str, str]], List[Tuple[str, str, str]]]:
     categories_to_delete: List[str] = []
     products_to_delete_names: List[Tuple[str, str]] = []
     products_to_delete_ids: List[Tuple[str, str, str]] = []
@@ -52,16 +74,4 @@ def delete_from_record_data(
                 if website_dict["info"]["id"] in ids_to_delete:
                     products_to_delete_ids.append((category_name, product_name, website_name))
 
-    # Delete product ids
-    for product_to_delete_id in products_to_delete_ids:
-        category_name, product_name, website_name = product_to_delete_id
-        record_data[category_name][product_name].pop(website_name)
-
-    # Delete product names
-    for product_to_delete_name in products_to_delete_names:
-        category_name, product_name = product_to_delete_name
-        record_data[category_name].pop(product_name)
-
-    # Delete categories
-    for category_to_delete in categories_to_delete:
-        record_data.pop(category_to_delete)
+    return categories_to_delete, products_to_delete_names, products_to_delete_ids
