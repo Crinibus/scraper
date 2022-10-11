@@ -34,8 +34,10 @@ class Format:
         for _, row in products_df.iterrows():
             time.sleep(request_delay)
             website_handler = get_website_handler(row["url"])
-            website_handler.get_product_info()
             short_url = website_handler.get_short_url()
+            if short_url is None:
+                website_handler.get_product_info()
+                short_url = website_handler.get_short_url()
             short_urls.append(short_url)
 
         products_df = products_df.drop("short_url", axis=1)
