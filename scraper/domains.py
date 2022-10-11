@@ -96,7 +96,7 @@ class ProshopHandler(BaseWebsiteHandler):
         self.soup_script_tag_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
-        return self.request_data.find("div", class_="col-xs-12 col-sm-7").h1.text
+        return self.soup_script_tag_json["name"]
 
     def _get_product_price(self) -> float:
         try:
