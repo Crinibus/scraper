@@ -67,7 +67,7 @@ class Config:
     @staticmethod
     def read(filename: str) -> configparser.ConfigParser:
         config = configparser.ConfigParser()
-        config.read(filename)
+        config.read(filename, encoding="utf8")
         return config
 
     @staticmethod
