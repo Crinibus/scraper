@@ -286,20 +286,15 @@ class EbayHandler(BaseWebsiteHandler):
         return currency
 
     def _get_product_id(self) -> str:
-        if self.soup_url.split("/")[3] == "itm":
-            id = self.request_data.find("div", id="descItemNumber").text
-        else:
-            id = self.request_data.find("div", class_="item-details").a.get("data-itemid")
-
-        return id
+        return self.url.split("/")[4].split("?")[0]
 
     def get_short_url(self) -> str:
-        if self.url.split("/")[3] != "itm":
-            return self.url.split("?")[0]
+        id = self._get_product_id()
 
-        if not self.info:
-            return None
-        return f"https://www.ebay.com/itm/{self.info.id}"
+        if self.url.split("/")[3] == "itm":
+            return f"https://www.ebay.com/itm/{id}"
+        else:
+            return f"https://www.ebay.com/p/{id}"
 
 
 class PowerHandler(BaseWebsiteHandler):
