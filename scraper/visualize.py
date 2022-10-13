@@ -338,9 +338,9 @@ def check_if_dates_up_to_date(dates: List[str]) -> bool:
 def is_date_up_to_date(date: str) -> bool:
     """check if today and date is at most 1 day apart"""
     latest_date = datetime.strptime(date, "%Y-%m-%d")
-    day_diff = datetime.today().day - latest_date.day
+    date_diff = datetime.today() - latest_date
 
-    return day_diff <= 1
+    return date_diff.days <= 1
 
 
 def append_status_to_title(title: str, dates: list) -> str:
