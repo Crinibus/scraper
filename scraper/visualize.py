@@ -347,10 +347,9 @@ def append_status_to_title(title: str, dates: list) -> str:
     if len(dates) == 0:
         return f"{title} - NO DATAPOINTS"
 
-    if dates[-1] == datetime.today().strftime("%Y-%m-%d"):
-        return f"{title} - UP TO DATE"
+    is_up_to_date = is_date_up_to_date(dates[-1])
 
-    return f"{title} - OUTDATED"
+    return append_status_to_title_bool(title, is_up_to_date)
 
 
 def append_status_to_title_bool(title: str, up_to_date: bool) -> str:
