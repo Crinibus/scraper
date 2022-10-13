@@ -79,7 +79,7 @@ def show_category(category: str, only_up_to_date: bool) -> None:
                 website_info["prices"],
             )
 
-            if check_if_date_up_to_date(website_info["dates"]):
+            if check_if_dates_up_to_date(website_info["dates"]):
                 is_up_to_date = True
 
         if only_up_to_date and not is_up_to_date:
@@ -116,7 +116,7 @@ def show_name(name: str) -> None:
             website_info["prices"],
         )
 
-        if check_if_date_up_to_date(website_info["dates"]):
+        if check_if_dates_up_to_date(website_info["dates"]):
             is_up_to_date = True
 
     title = f"Price(s) of {name.upper()}"
@@ -148,7 +148,7 @@ def show_all_products(only_up_to_date: bool) -> None:
                 website_info["prices"],
             )
 
-            if check_if_date_up_to_date(website_info["dates"]):
+            if check_if_dates_up_to_date(website_info["dates"]):
                 is_up_to_date = True
 
         if only_up_to_date and not is_up_to_date:
@@ -327,14 +327,20 @@ def get_all_products() -> Generator[dict, None, None]:
         yield product_info
 
 
-def check_if_date_up_to_date(dates: list) -> bool:
+def check_if_dates_up_to_date(dates: List[str]) -> bool:
+    """check if today and the last date in dates is at most 1 day apart"""
     if len(dates) == 0:
         return False
 
-    if dates[-1] == datetime.today().strftime("%Y-%m-%d"):
-        return True
+    return is_date_up_to_date(dates[-1])
 
-    return False
+
+def is_date_up_to_date(date: str) -> bool:
+    """check if today and date is at most 1 day apart"""
+    latest_date = datetime.strptime(date, "%Y-%m-%d")
+    day_diff = datetime.today().day - latest_date.day
+
+    return day_diff <= 1
 
 
 def append_status_to_title(title: str, dates: list) -> str:
