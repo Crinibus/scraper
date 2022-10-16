@@ -33,10 +33,17 @@ Feel free to fork the project and create a pull request with new features or ref
 
 ## UPDATE TO HOW DATA IS STORED IN V1.1
 In version v1.1, I have changed how data is stored in "records.json". "dates" under each product have been changed to "datapoints" and now a list containing dicts with "date" and "price" keys. <br/>
-If you want to update your data to be compatible with version v1.1, then open a interactive python session where this repository is located and run the following commands:
+If you want to update your data to be compatible with version v1.1, then open an interactive python session where this repository is located and run the following commands:
 ```
->>> from scraper.format import Format
+>>> from scraper.format_to_new import Format
 >>> Format.format_old_records_to_new()
+```
+
+## UPDATE TO PRODUCTS.CSV IN V2.3.0
+In version v2.3.0, I have add the column ```short_url``` to ```products.csv```. If you have add products before v2.3.0, then run the following commands in an interactive python session to add the new column:
+```
+>>> from scraper.format_to_new import Format
+>>> Format.add_short_urls_to_products_csv()
 ```
 
 <br/>

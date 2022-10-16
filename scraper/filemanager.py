@@ -52,6 +52,10 @@ class Filemanager:
         return df
 
     @staticmethod
+    def save_products_data(data_df: pd.DataFrame) -> None:
+        data_df.to_csv(Filemanager.products_csv_path, sep=",", header=True, index=False)
+
+    @staticmethod
     def add_product_to_csv(category: str, url: str, short_url: str) -> None:
         data = [category, url, short_url]
         Filemanager.append_csv(Filemanager.products_csv_path, data)
@@ -67,7 +71,7 @@ class Config:
     @staticmethod
     def read(filename: str) -> configparser.ConfigParser:
         config = configparser.ConfigParser()
-        config.read(filename)
+        config.read(filename, encoding="utf8")
         return config
 
     @staticmethod
