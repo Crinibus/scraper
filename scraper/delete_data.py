@@ -24,6 +24,7 @@ def delete(categories: List[str], names: List[str], ids: List[str], all: bool) -
 def delete_all() -> None:
     # Save an empty dictionary
     Filemanager.save_record_data({})
+    Filemanager.clear_product_csv()
 
 
 def delete_from_record_data(
