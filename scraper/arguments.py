@@ -28,6 +28,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
         type=str,
         nargs="*",
         action="extend",
+        default=[],
     )
 
     parser.add_argument("-u", "--url", help="the url to the product", type=str, nargs="*", action="extend")
@@ -100,12 +101,6 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
-        "--hard-reset",
-        help="delete all content in records.json and products.csv",
-        action="store_true",
-    )
-
-    parser.add_argument(
         "--clean-data",
         help="clean data so unnecessary product datapoints is removed from records",
         action="store_true",
@@ -126,6 +121,13 @@ def argparse_setup() -> ArgumentParser.parse_args:
         action="store_true",
     )
 
+    parser.add_argument(
+        "--delete",
+        help="delete all or specific products or categories",
+        dest="delete",
+        action="store_true",
+    )
+
     args = validate_arguments(parser)
 
     return args
@@ -137,6 +139,10 @@ def validate_arguments(parser: ArgumentParser) -> None:
 
     if args.add and args.visualize:
         parser.error("Cannot use --add and --visualize at the same time")
+
+    if args.delete:
+        if args.all and any([args.category, args.name, args.id]):
+            parser.error("When using --delete and --all, then using --category, --name or --id does nothing")
 
     if args.add:
         if not args.category or not args.url:

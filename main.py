@@ -15,10 +15,7 @@ def main():
         scraper.visualize_data(args.all, args.category, args.id, args.name, args.up_to_date, args.compare)
 
     if args.reset:
-        scraper.reset()
-
-    if args.hard_reset:
-        scraper.hard_reset()
+        scraper.reset(args.category, args.name, args.id, args.all)
 
     if args.add:
         scraper.add_products(args.category, args.url)
@@ -37,6 +34,9 @@ def main():
 
     if args.print_all_products:
         scraper.print_all_products()
+
+    if args.delete:
+        scraper.delete(args.category, args.name, args.id, args.all)
 
 
 def scrape():
