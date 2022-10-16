@@ -47,9 +47,9 @@ def delete_from_record_data(
     for product_to_delete_id in products_to_delete_ids:
         category_name, product_name, website_name = product_to_delete_id
         deleted_website_dict = record_data[category_name][product_name].pop(website_name)
-        url_to_delete = deleted_website_dict["info"]["url"]
 
-        # Delete row in products_df that match with the products that are deleted from record_data
+        # Delete the row with short_url in products_df that match with the product's url that are deleted from record_data
+        url_to_delete = deleted_website_dict["info"]["url"]
         products_df = delete_dataframe_rows(products_df, "short_url", url_to_delete)
 
     # Delete product names
@@ -57,20 +57,17 @@ def delete_from_record_data(
         category_name, product_name = product_to_delete_name
         deleted_product_dict = record_data[category_name].pop(product_name)
 
-        # Delete row in products_df that match with the products that are deleted from record_data
+        # Delete rows with short_url in products_df that match with the products urls that are deleted from record_data
         for deleted_website_dict in deleted_product_dict.values():
             url_to_delete = deleted_website_dict["info"]["url"]
             products_df = delete_dataframe_rows(products_df, "short_url", url_to_delete)
 
     # Delete categories
     for category_to_delete in categories_to_delete:
-        deleted_category_dict = record_data.pop(category_to_delete)
+        record_data.pop(category_to_delete)
 
-        # Delete row in products_df that match with the products that are deleted from record_data
-        for deleted_product_dict in deleted_category_dict.values():
-            for deleted_website_dict in deleted_product_dict.values():
-                url_to_delete = deleted_website_dict["info"]["url"]
-                products_df = delete_dataframe_rows(products_df, "short_url", url_to_delete)
+        # Delete rows with category in products_df that match with the category to delete
+        products_df = delete_dataframe_rows(products_df, "category", category_to_delete)
 
     Filemanager.save_products_data(products_df)
 
