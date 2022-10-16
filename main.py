@@ -17,9 +17,6 @@ def main():
     if args.reset:
         scraper.reset(args.category, args.name, args.id, args.all)
 
-    if args.hard_reset:
-        scraper.hard_reset()
-
     if args.add:
         scraper.add_products(args.category, args.url)
 

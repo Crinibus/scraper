@@ -53,12 +53,3 @@ def reset_product(product_dict: dict) -> None:
 def reset_product_website(website_dict: dict) -> None:
     website_dict["info"] = {"id": "", "url": "", "currency": ""}
     website_dict["datapoints"] = []
-
-
-def hard_reset():
-    print("Hard resetting data...")
-    logging.getLogger(__name__).info("Hard resetting data")
-
-    data = {}
-    Filemanager.save_record_data(data)
-    Filemanager.clear_product_csv()

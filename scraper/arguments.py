@@ -101,12 +101,6 @@ def argparse_setup() -> ArgumentParser.parse_args:
     )
 
     parser.add_argument(
-        "--hard-reset",
-        help="delete all content in records.json and products.csv",
-        action="store_true",
-    )
-
-    parser.add_argument(
         "--clean-data",
         help="clean data so unnecessary product datapoints is removed from records",
         action="store_true",
