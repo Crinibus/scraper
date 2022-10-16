@@ -19,10 +19,12 @@ def reset(categories: List[str], names: List[str], ids: List[str], all: bool) ->
     for category_name, category_dict in record_data.items():
         if category_name in categories:
             reset_category(category_dict)
+            continue
 
         for product_name, product_dict in category_dict.items():
             if product_name in names:
                 reset_product(product_dict)
+                continue
 
             for website_dict in product_dict.values():
                 if str(website_dict["info"]["id"]) in ids:
