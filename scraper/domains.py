@@ -102,7 +102,10 @@ class ProshopHandler(BaseWebsiteHandler):
         try:
             # find normal price
             price = float(
-                self.request_data.find("span", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
+                self.request_data.find("span", class_="site-currency-attention")
+                .text.replace(".", "")
+                .replace(",", ".")
+                .strip(" kr")
             )
         except AttributeError:
             try:
@@ -116,7 +119,10 @@ class ProshopHandler(BaseWebsiteHandler):
             except AttributeError:
                 # if campaign is sold out (udsolgt)
                 price = float(
-                    self.request_data.find("div", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
+                    self.request_data.find("div", class_="site-currency-attention")
+                    .text.replace(".", "")
+                    .replace(",", ".")
+                    .strip(" kr")
                 )
         return price
 
@@ -232,13 +238,17 @@ class AmazonHandler(BaseWebsiteHandler):
         try:
             return float(self.request_data.find("input", id="attach-base-product-price").get("value"))
         except (AttributeError, ValueError, TypeError):
-            return float(self.request_data.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", ""))
+            return float(
+                self.request_data.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", "")
+            )
 
     def _get_product_currency(self) -> str:
         try:
             return self.request_data.find("input", id="attach-currency-of-preference").get("value")
         except (AttributeError, ValueError, TypeError):
-            return self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
+            return (
+                self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
+            )
 
     def _get_product_id(self) -> str:
         try:
@@ -265,7 +275,12 @@ class EbayHandler(BaseWebsiteHandler):
         if self.soup_url.split("/")[3] == "itm":
             price = float(self.request_data.find("span", itemprop="price").get("content"))
         else:
-            price = float(self.request_data.find("div", class_="display-price").text.replace("DKK ", "").replace("$", "").replace(",", ""))
+            price = float(
+                self.request_data.find("div", class_="display-price")
+                .text.replace("DKK ", "")
+                .replace("$", "")
+                .replace(",", "")
+            )
 
         return price
 
