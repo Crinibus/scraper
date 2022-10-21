@@ -24,13 +24,11 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "-c",
         "--category",
-        help=(
-            "the category(s) the new product is going to be in when using --add "
-            "or the category(s) to visualize when using --visualize"
-        ),
+        help="specify category(s)",
         type=str,
         nargs="*",
         action="extend",
+        default=[],
     )
 
     parser.add_argument("-u", "--url", help="the url to the product", type=str, nargs="*", action="extend")
@@ -45,14 +43,14 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--all",
-        help="show all product graphs when used with --visualize",
+        help="specify all products",
         action="store_true",
         dest="all",
     )
 
     parser.add_argument(
         "--id",
-        help="show graphs for products with the specified id(s) when used with --visualize",
+        help="specify id(s) of product(s)",
         type=str,
         nargs="*",
         action="extend",
@@ -63,7 +61,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "-n",
         "--name",
-        help="show graphs for product with the specified name(s) when used with --visualize",
+        help="specify names(s) of product(s)",
         type=str,
         nargs="*",
         action="extend",
@@ -91,7 +89,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--compare",
-        help="use with --visualize and --id to compare two or more products on one graph",
+        help="compare two or more products",
         action="store_true",
         dest="compare",
     )
@@ -99,12 +97,6 @@ def argparse_setup() -> ArgumentParser.parse_args:
     parser.add_argument(
         "--reset",
         help="delete data for each product in records.json, such as prices of each recorded day",
-        action="store_true",
-    )
-
-    parser.add_argument(
-        "--hard-reset",
-        help="delete all content in records.json and products.csv",
         action="store_true",
     )
 
@@ -117,7 +109,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
 
     parser.add_argument(
         "--latest-datapoint",
-        help="use with --name or --id to print the latest datapoint of the specified product(s)",
+        help="get the latest datapoint of specified product(s)",
         dest="latest_datapoint",
         action="store_true",
     )
@@ -126,6 +118,13 @@ def argparse_setup() -> ArgumentParser.parse_args:
         "--print-all-products",
         help="print the names, websites and ids of all products",
         dest="print_all_products",
+        action="store_true",
+    )
+
+    parser.add_argument(
+        "--delete",
+        help="delete all or specific products or categories",
+        dest="delete",
         action="store_true",
     )
 
@@ -140,6 +139,10 @@ def validate_arguments(parser: ArgumentParser) -> None:
 
     if args.add and args.visualize:
         parser.error("Cannot use --add and --visualize at the same time")
+
+    if args.delete:
+        if args.all and any([args.category, args.name, args.id]):
+            parser.error("When using --delete and --all, then using --category, --name or --id does nothing")
 
     if args.add:
         if not args.category or not args.url:

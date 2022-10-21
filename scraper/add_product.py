@@ -65,7 +65,7 @@ def save_product(product: Scraper):
     add_product_to_records(product)
 
     if not check_if_product_exists_csv(product):
-        Filemanager.add_product_to_csv(product.category, product.url)
+        Filemanager.add_product_to_csv(product.category, product.url, product.website_handler.get_short_url())
 
     product.save_info()
 

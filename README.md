@@ -2,7 +2,7 @@
 - [Intro](#intro)
 - [Contributing](#contributing)
 - [Installation](#installation)
-- [Start from scratch](#start-scratch)
+- [Delete data](#delete-data)
 - [Scrape products](#scrape-products)
 - [Add products](#add-products)
     - [Websites to scrape from](#websites-to-scrape-from)
@@ -33,10 +33,17 @@ Feel free to fork the project and create a pull request with new features or ref
 
 ## UPDATE TO HOW DATA IS STORED IN V1.1
 In version v1.1, I have changed how data is stored in "records.json". "dates" under each product have been changed to "datapoints" and now a list containing dicts with "date" and "price" keys. <br/>
-If you want to update your data to be compatible with version v1.1, then open a interactive python session where this repository is located and run the following commands:
+If you want to update your data to be compatible with version v1.1, then open an interactive python session where this repository is located and run the following commands:
 ```
->>> from scraper.format import Format
+>>> from scraper.format_to_new import Format
 >>> Format.format_old_records_to_new()
+```
+
+## UPDATE TO PRODUCTS.CSV IN V2.3.0
+In version v2.3.0, I have add the column ```short_url``` to ```products.csv```. If you have add products before v2.3.0, then run the following commands in an interactive python session to add the new column:
+```
+>>> from scraper.format_to_new import Format
+>>> Format.add_short_urls_to_products_csv()
 ```
 
 <br/>
@@ -60,21 +67,46 @@ pip3 install -r requirements.txt
 <br/>
 
 
-## Start from scratch <a name="start-scratch"></a>
+## Delete data <a name="delete-data"></a>
+
 If you want to start from scratch with no data in the records.json and products.csv files, then just run the following command:
 ```
-python3 main.py --hard-reset
+python3 main.py --delete --all
 ```
+
+You can also just delete some products or some categories:
+```
+python3 main.py --delete --id <id>
+```
+```
+python3 main.py --delete --name <name>
+```
+```
+python3 main.py --delete --category <category>
+```
+
 
 Then just add products like described [here](#add-products).
 
 <br/>
 
-If you just want to reset your data for each product, just delete all datapoints inside each product, then run this command:
+If you just want to reset your data for every product, deleting all datapoints inside every product, then run this command:
 ```
-python3 main.py --reset
+python3 main.py --reset --all
 ```
 This deletes the data inside each product, such as id, url and all datapoints.
+
+
+You can also just reset some products or all products in some categories:
+```
+python3 main.py --reset --id <id>
+```
+```
+python3 main.py --reset --name <name>
+```
+```
+python3 main.py --reset --category <category>
+```
 
 <br/>
 

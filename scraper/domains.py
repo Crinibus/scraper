@@ -83,12 +83,11 @@ class KomplettHandler(BaseWebsiteHandler):
         return currency
 
     def _get_product_id(self) -> str:
-        return self.request_data.find("span", itemprop="sku").text
+        return self.url.split("/")[4]
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
-        return f"https://www.komplett.dk/product/{self.info.id}"
+        id = self._get_product_id()
+        return f"https://www.komplett.dk/product/{id}"
 
 
 class ProshopHandler(BaseWebsiteHandler):
@@ -97,13 +96,16 @@ class ProshopHandler(BaseWebsiteHandler):
         self.soup_script_tag_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
-        return self.request_data.find("div", class_="col-xs-12 col-sm-7").h1.text
+        return self.soup_script_tag_json["name"]
 
     def _get_product_price(self) -> float:
         try:
             # find normal price
             price = float(
-                self.request_data.find("span", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
+                self.request_data.find("span", class_="site-currency-attention")
+                .text.replace(".", "")
+                .replace(",", ".")
+                .strip(" kr")
             )
         except AttributeError:
             try:
@@ -117,7 +119,10 @@ class ProshopHandler(BaseWebsiteHandler):
             except AttributeError:
                 # if campaign is sold out (udsolgt)
                 price = float(
-                    self.request_data.find("div", class_="site-currency-attention").text.replace(".", "").replace(",", ".").strip(" kr")
+                    self.request_data.find("div", class_="site-currency-attention")
+                    .text.replace(".", "")
+                    .replace(",", ".")
+                    .strip(" kr")
                 )
         return price
 
@@ -126,18 +131,16 @@ class ProshopHandler(BaseWebsiteHandler):
         return currency
 
     def _get_product_id(self) -> str:
-        id = self.soup_script_tag_json.get("sku")
-        return id
+        return self.url.split("/")[-1]
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
-        return f"https://www.proshop.dk/{self.info.id}"
+        id = self._get_product_id()
+        return f"https://www.proshop.dk/{id}"
 
 
 class ComputerSalgHandler(BaseWebsiteHandler):
     def _get_product_name(self) -> str:
-        return self.request_data.find("h1", itemprop="name").text
+        return self.request_data.find("header", class_="product-header grid_20").hgroup.h1.text
 
     def _get_product_price(self) -> float:
         return float(self.request_data.find("span", itemprop="price").text.strip().replace(".", "").replace(",", "."))
@@ -146,12 +149,11 @@ class ComputerSalgHandler(BaseWebsiteHandler):
         return self.request_data.find("span", itemprop="priceCurrency").get("content")
 
     def _get_product_id(self) -> str:
-        return self.request_data.find("h2", class_="productIdentifierHeadline").span.text
+        return self.url.split("/")[4]
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
-        return f"https://www.computersalg.dk/i/{self.info.id}"
+        id = self._get_product_id()
+        return f"https://www.computersalg.dk/i/{id}"
 
 
 class ElgigantenHandler(BaseWebsiteHandler):
@@ -171,16 +173,15 @@ class ElgigantenHandler(BaseWebsiteHandler):
         return self.url.split("/")[-1]
 
     def _get_json_api_data(self) -> dict:
-        id_number = self.url.split("/")[-1]
+        id_number = self._get_product_id()
         # API link to get price and currency
         api_link = f"https://www.elgiganten.dk/cxorchestrator/dk/api?appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%229bfbc062032a2a6b924883b81508af5c77bbfc5f66cc41c7ffd7d519885ac5e4%22%7D%7D"
         response = request_url(api_link)
         return response.json()
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
-        return f"https://www.elgiganten.dk/product/{self.info.id}"
+        id = self._get_product_id()
+        return f"https://www.elgiganten.dk/product/{id}"
 
 
 class AvXpertenHandler(BaseWebsiteHandler):
@@ -237,13 +238,17 @@ class AmazonHandler(BaseWebsiteHandler):
         try:
             return float(self.request_data.find("input", id="attach-base-product-price").get("value"))
         except (AttributeError, ValueError, TypeError):
-            return float(self.request_data.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", ""))
+            return float(
+                self.request_data.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", "")
+            )
 
     def _get_product_currency(self) -> str:
         try:
             return self.request_data.find("input", id="attach-currency-of-preference").get("value")
         except (AttributeError, ValueError, TypeError):
-            return self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
+            return (
+                self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
+            )
 
     def _get_product_id(self) -> str:
         try:
@@ -270,7 +275,12 @@ class EbayHandler(BaseWebsiteHandler):
         if self.soup_url.split("/")[3] == "itm":
             price = float(self.request_data.find("span", itemprop="price").get("content"))
         else:
-            price = float(self.request_data.find("div", class_="display-price").text.replace("DKK ", "").replace("$", "").replace(",", ""))
+            price = float(
+                self.request_data.find("div", class_="display-price")
+                .text.replace("DKK ", "")
+                .replace("$", "")
+                .replace(",", "")
+            )
 
         return price
 
@@ -291,26 +301,21 @@ class EbayHandler(BaseWebsiteHandler):
         return currency
 
     def _get_product_id(self) -> str:
-        if self.soup_url.split("/")[3] == "itm":
-            id = self.request_data.find("div", id="descItemNumber").text
-        else:
-            id = self.request_data.find("div", class_="item-details").a.get("data-itemid")
-
-        return id
+        return self.url.split("/")[4].split("?")[0]
 
     def get_short_url(self) -> str:
-        if self.url.split("/")[3] != "itm":
-            return self.url.split("?")[0]
+        id = self._get_product_id()
 
-        if not self.info:
-            return None
-        return f"https://www.ebay.com/itm/{self.info.id}"
+        if self.url.split("/")[3] == "itm":
+            return f"https://www.ebay.com/itm/{id}"
+        else:
+            return f"https://www.ebay.com/p/{id}"
 
 
 class PowerHandler(BaseWebsiteHandler):
     def _get_common_data(self) -> None:
-        self.id = self.url.split("/")[-2].strip("p-")
-        self.api_json = request_url(f"https://www.power.dk/api/v2/products?ids={self.id}").json()
+        id = self._get_product_id()
+        self.api_json = request_url(f"https://www.power.dk/api/v2/products?ids={id}").json()
 
     def _get_product_name(self) -> str:
         return self.api_json[0].get("title")
@@ -322,19 +327,18 @@ class PowerHandler(BaseWebsiteHandler):
         return "DKK"
 
     def _get_product_id(self) -> str:
-        return self.id
+        return self.url.split("/")[-2].strip("p-")
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
+        id = self._get_product_id()
         url_id = self.url.split("/")[3]
-        return f"https://www.power.dk/{url_id}/p-{self.info.id}"
+        return f"https://www.power.dk/{url_id}/p-{id}"
 
 
 class ExpertHandler(BaseWebsiteHandler):
     def _get_common_data(self) -> None:
-        self.id = self.url.split("/")[-2].strip("p-")
-        self.api_json = request_url(f"https://www.expert.dk/api/v2/products?ids={self.id}").json()
+        id = self._get_product_id()
+        self.api_json = request_url(f"https://www.expert.dk/api/v2/products?ids={id}").json()
 
     def _get_product_name(self) -> str:
         return self.api_json[0].get("title")
@@ -346,13 +350,12 @@ class ExpertHandler(BaseWebsiteHandler):
         return "DKK"
 
     def _get_product_id(self) -> str:
-        return self.id
+        return self.url.split("/")[-2].strip("p-")
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
+        id = self._get_product_id()
         url_id = self.url.split("/")[3]
-        return f"https://www.expert.dk/{url_id}/p-{self.info.id}"
+        return f"https://www.expert.dk/{url_id}/p-{id}"
 
 
 class MMVisionHandler(BaseWebsiteHandler):
@@ -367,12 +370,10 @@ class MMVisionHandler(BaseWebsiteHandler):
         return float(self.request_data.find("h3", class_="product-price text-right").text.strip("fra ").strip().strip(",-"))
 
     def _get_product_currency(self) -> str:
-        currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
-        return currency
+        return self.soup_script_tag_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
-        id = self.soup_script_tag_json.get("productID")
-        return id
+        return self.soup_script_tag_json.get("productID")
 
     def get_short_url(self) -> str:
         return self.url
@@ -428,12 +429,11 @@ class NeweggHandler(BaseWebsiteHandler):
         return self.product_data.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
-        return self.product_data.get("sku")
+        return self.url.split("/")[5].split("?")[0]
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
-        return f"https://www.newegg.com/p/{self.info.id}"
+        id = self._get_product_id()
+        return f"https://www.newegg.com/p/{id}"
 
 
 class HifiKlubbenHandler(BaseWebsiteHandler):
@@ -452,9 +452,8 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
         return self.url.split("/")[4]
 
     def get_short_url(self) -> str:
-        if not self.info:
-            return None
-        return f"https://www.hifiklubben.dk/{self.info.id}"
+        id = self._get_product_id()
+        return f"https://www.hifiklubben.dk/{id}"
 
 
 def get_website_name(url: str) -> str:

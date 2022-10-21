@@ -1,25 +1,30 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
 
+from scraper.filemanager import Filemanager
 from scraper.add_product import add_product
 from scraper.exceptions import WebsiteNotSupported
 
+test_objects_json = Filemanager.read_json("./tests/test_objects.json")
+test_json = test_objects_json["test_website_handlers"]
+
 test_domains = [
-    ("https://www.amazon.com/", does_not_raise()),
-    ("https://www.ebay.com/", does_not_raise()),
-    ("https://www.komplett.dk/", does_not_raise()),
-    ("https://www.proshop.dk/", does_not_raise()),
-    ("https://www.computersalg.dk/", does_not_raise()),
-    ("https://www.elgiganten.dk/", does_not_raise()),
-    ("https://www.avxperten.dk/", does_not_raise()),
-    ("https://www.av-cables.dk/", does_not_raise()),
-    ("https://www.power.dk/", does_not_raise()),
-    ("https://www.expert.dk/", does_not_raise()),
-    ("https://www.mm-vision.dk/", does_not_raise()),
-    ("https://www.coolshop.dk/", does_not_raise()),
-    ("https://www.sharkgaming.dk/", does_not_raise()),
-    ("https://www.newegg.com/", does_not_raise()),
-    ("https://www.hifiklubben.dk/", does_not_raise()),
+    (test_json["amazon"]["link"], does_not_raise()),
+    (test_json["ebay_with_itm"]["link"], does_not_raise()),
+    (test_json["ebay_with_p"]["link"], does_not_raise()),
+    (test_json["komplett"]["link"], does_not_raise()),
+    (test_json["proshop"]["link"], does_not_raise()),
+    (test_json["computersalg"]["link"], does_not_raise()),
+    (test_json["elgiganten"]["link"], does_not_raise()),
+    (test_json["avxperten"]["link"], does_not_raise()),
+    (test_json["av-cables"]["link"], does_not_raise()),
+    (test_json["power"]["link"], does_not_raise()),
+    (test_json["expert"]["link"], does_not_raise()),
+    (test_json["mm-vision"]["link"], does_not_raise()),
+    (test_json["coolshop"]["link"], does_not_raise()),
+    (test_json["sharkgaming"]["link"], does_not_raise()),
+    (test_json["newegg"]["link"], does_not_raise()),
+    (test_json["hifiklubben"]["link"], does_not_raise()),
     ("https://www.notsupported.com/", pytest.raises(WebsiteNotSupported)),
 ]
 

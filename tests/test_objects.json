@@ -51,7 +51,7 @@
         "ebay_with_p": {
             "link": "https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc",
             "expected_title": "Etude House Collagen Eye Patch Korea Cosmetics 10 Sheets",
-            "expected_id": "181677611772",
+            "expected_id": "1248083754",
             "expected_currency": "USD"
         },
         "expert": {
