@@ -35,6 +35,8 @@ class Format:
             time.sleep(request_delay)
             website_handler = get_website_handler(row["url"])
             short_url = website_handler.get_short_url()
+
+            # scrape only if short_url can't be created without
             if short_url is None:
                 website_handler.get_product_info()
                 short_url = website_handler.get_short_url()
