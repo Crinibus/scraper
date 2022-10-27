@@ -437,16 +437,20 @@ class NeweggHandler(BaseWebsiteHandler):
 
 
 class HifiKlubbenHandler(BaseWebsiteHandler):
+    def _get_common_data(self):
+        script_data_raw = self.request_data.findAll("script", type="application/ld+json")[1].text
+        self.product_data = json.loads(script_data_raw)["offers"]
+
     def _get_product_name(self) -> str:
         brand_name = self.request_data.find("span", class_="product-page__brand-name").text
         model_name = self.request_data.find("span", class_="product-page__model-name").text
         return f"{brand_name} {model_name}"
 
     def _get_product_price(self) -> float:
-        return float(self.request_data.find("meta", itemprop="price").get("content"))
+        return float(self.product_data.get("price"))
 
     def _get_product_currency(self) -> str:
-        return self.request_data.find("meta", itemprop="priceCurrency").get("content")
+        return self.product_data.get("priceCurrency")
 
     def _get_product_id(self) -> str:
         return self.url.split("/")[4]
