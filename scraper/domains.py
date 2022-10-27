@@ -18,7 +18,6 @@ def request_url(url: str) -> requests.Response:
 
 class BaseWebsiteHandler(ABC):
     def __init__(self, url: str) -> None:
-        # super().__init__()
         self.url = url
         self.website_name = get_website_name(url)
         self.info: Info = None
