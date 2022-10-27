@@ -1,3 +1,4 @@
+from typing import Dict
 import requests
 from requests import Response
 from bs4 import BeautifulSoup
@@ -468,58 +469,31 @@ def get_website_name(url: str) -> str:
 def get_website_handler(url: str) -> BaseWebsiteHandler:
     website_name = get_website_name(url).lower()
 
-    match website_name:
-        case "komplett":
-            return KomplettHandler(url)
-        case "proshop":
-            return ProshopHandler(url)
-        case "computersalg":
-            return ComputerSalgHandler(url)
-        case "elgiganten":
-            return ElgigantenHandler(url)
-        case "avxperten":
-            return AvXpertenHandler(url)
-        case "av-cables":
-            return AvCablesHandler(url)
-        case "amazon":
-            return AmazonHandler(url)
-        case "ebay":
-            return EbayHandler(url)
-        case "power":
-            return PowerHandler(url)
-        case "expert":
-            return ExpertHandler(url)
-        case "mm-vision":
-            return MMVisionHandler(url)
-        case "coolshop":
-            return CoolshopHandler(url)
-        case "sharkgaming":
-            return SharkGamingHandler(url)
-        case "newegg":
-            return NeweggHandler(url)
-        case "hifiklubben":
-            return HifiKlubbenHandler(url)
-        case _:
-            logging.getLogger(__name__).error(
-                f"Can't find a website handler - website: '{website_name}' possibly not supported"
-            )
-            return None
+    website_handler = SUPPORTED_DOMAINS.get(website_name, None)
+
+    if not website_handler:
+        logging.getLogger(__name__).error(
+            f"Can't find a website handler - website: '{website_name}' possibly not supported"
+        )
+        return None
+
+    return website_handler(url)
 
 
-SUPPORTED_DOMAINS = {
-    "komplett",
-    "proshop",
-    "computersalg",
-    "elgiganten",
-    "avxperten",
-    "av-cables",
-    "amazon",
-    "ebay",
-    "power",
-    "expert",
-    "mm-vision",
-    "coolshop",
-    "sharkgaming",
-    "newegg",
-    "hifiklubben",
+SUPPORTED_DOMAINS: Dict[str, BaseWebsiteHandler] = {
+    "komplett": KomplettHandler,
+    "proshop": ProshopHandler,
+    "computersalg": ComputerSalgHandler,
+    "elgiganten": ElgigantenHandler,
+    "avxperten": AvXpertenHandler,
+    "av-cables": AvCablesHandler,
+    "amazon": AmazonHandler,
+    "ebay": EbayHandler,
+    "power": PowerHandler,
+    "expert": ExpertHandler,
+    "mm-vision": MMVisionHandler,
+    "coolshop": CoolshopHandler,
+    "sharkgaming": SharkGamingHandler,
+    "newegg": NeweggHandler,
+    "hifiklubben": HifiKlubbenHandler,
 }
