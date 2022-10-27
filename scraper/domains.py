@@ -1,6 +1,5 @@
 from typing import Dict
 import requests
-from requests import Response
 from bs4 import BeautifulSoup
 import json
 import logging
@@ -9,7 +8,7 @@ from scraper.format import Format, Info
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 
 
-def request_url(url: str) -> Response:
+def request_url(url: str) -> requests.Response:
     try:
         response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10)
         return response
