@@ -1,4 +1,4 @@
-from typing import Generator, List, Tuple
+from typing import Iterator, List, Tuple
 
 from scraper.filemanager import Filemanager
 
@@ -24,7 +24,7 @@ def print_latest_datapoints(names: List[str], ids: List[str]):
             print()
 
 
-def get_product_info_with_name(name: str, records_data: dict) -> Generator[Tuple[str, str, dict], None, None]:
+def get_product_info_with_name(name: str, records_data: dict) -> Iterator[Tuple[str, str, dict]]:
     for category_dict in records_data.values():
         for product_name, product_dict in category_dict.items():
             if not product_name.lower() == name.lower():

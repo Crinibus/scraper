@@ -1,4 +1,4 @@
-from typing import Generator, List
+from typing import Iterator, List
 import plotly.graph_objs as go
 from scraper.filemanager import Filemanager
 from scraper.constants import WEBSITE_COLORS
@@ -199,7 +199,7 @@ def compare_products(ids: List[str], names: List[str]) -> None:
     fig.show()
 
 
-def format_data() -> Generator[dict, None, None]:
+def format_data() -> Iterator[dict]:
     records_data = Filemanager.get_record_data()
 
     for category_name, category_info in records_data.items():
@@ -264,7 +264,7 @@ def add_scatter_plot(
     )
 
 
-def get_products_with_category(category_name: str) -> Generator[dict, None, None]:
+def get_products_with_category(category_name: str) -> Iterator[dict]:
     for product_info in format_data():
         if product_info["category"].lower() == category_name.lower():
             yield product_info
@@ -322,7 +322,7 @@ def get_products_with_names(names: List[str]) -> List[str]:
     return products
 
 
-def get_all_products() -> Generator[dict, None, None]:
+def get_all_products() -> Iterator[dict]:
     for product_info in format_data():
         yield product_info
 

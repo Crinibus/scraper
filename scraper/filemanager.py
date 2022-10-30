@@ -1,6 +1,6 @@
 import pathlib
 import configparser
-from typing import Generator
+from typing import Iterator
 import pandas as pd
 import json
 import csv
@@ -86,7 +86,7 @@ class Config:
         return config["ChangeName"]
 
     @staticmethod
-    def get_key_values(elements: list) -> Generator[str, None, None]:
+    def get_key_values(elements: list) -> Iterator[str]:
         for elem in elements:
             if "key" in elem:
                 yield elem
