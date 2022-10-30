@@ -92,10 +92,10 @@ class KomplettHandler(BaseWebsiteHandler):
 class ProshopHandler(BaseWebsiteHandler):
     def _get_common_data(self):
         soup_script_tag = self.request_data.find("script", type="application/ld+json").contents[0]
-        self.soup_script_tag_json = json.loads(soup_script_tag)
+        self.script_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
-        return self.soup_script_tag_json["name"]
+        return self.script_json["name"]
 
     def _get_product_price(self) -> float:
         try:
@@ -126,7 +126,7 @@ class ProshopHandler(BaseWebsiteHandler):
         return price
 
     def _get_product_currency(self) -> str:
-        currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
+        currency = self.script_json.get("offers").get("priceCurrency")
         return currency
 
     def _get_product_id(self) -> str:
@@ -186,7 +186,7 @@ class ElgigantenHandler(BaseWebsiteHandler):
 class AvXpertenHandler(BaseWebsiteHandler):
     def _get_common_data(self):
         soup_script_tag = self.request_data.find("script", type="application/ld+json").contents[0]
-        self.soup_script_tag_json = json.loads(soup_script_tag)
+        self.script_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
         return self.request_data.find("div", class_="content-head").h1.text.strip()
@@ -195,10 +195,10 @@ class AvXpertenHandler(BaseWebsiteHandler):
         return float(self.request_data.find("div", class_="price").text.replace("\xa0DKK", ""))
 
     def _get_product_currency(self) -> str:
-        return self.soup_script_tag_json.get("offers").get("priceCurrency")
+        return self.script_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
-        return self.soup_script_tag_json.get("sku")
+        return self.script_json.get("sku")
 
     def get_short_url(self) -> str:
         return self.url
@@ -360,7 +360,7 @@ class ExpertHandler(BaseWebsiteHandler):
 class MMVisionHandler(BaseWebsiteHandler):
     def _get_common_data(self):
         soup_script_tag = self.request_data.find_all("script", type="application/ld+json")[1].contents[0]
-        self.soup_script_tag_json = json.loads(soup_script_tag)
+        self.script_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
         return self.request_data.find("h1", itemprop="name").text.strip()
@@ -369,10 +369,10 @@ class MMVisionHandler(BaseWebsiteHandler):
         return float(self.request_data.find("h3", class_="product-price text-right").text.strip("fra ").strip().strip(",-"))
 
     def _get_product_currency(self) -> str:
-        return self.soup_script_tag_json.get("offers").get("priceCurrency")
+        return self.script_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
-        return self.soup_script_tag_json.get("productID")
+        return self.script_json.get("productID")
 
     def get_short_url(self) -> str:
         return self.url
