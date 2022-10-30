@@ -470,9 +470,7 @@ def get_website_handler(url: str) -> BaseWebsiteHandler:
     website_handler = SUPPORTED_DOMAINS.get(website_name, None)
 
     if not website_handler:
-        logging.getLogger(__name__).error(
-            f"Can't find a website handler - website: '{website_name}' possibly not supported"
-        )
+        logging.getLogger(__name__).error(f"Can't find a website handler - website: '{website_name}' possibly not supported")
         return None
 
     return website_handler(url)
