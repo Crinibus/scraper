@@ -20,7 +20,7 @@ def add_product(category: str, url: str) -> None:
 
     website_name = get_website_name(url)
 
-    if website_name not in SUPPORTED_DOMAINS:
+    if website_name not in SUPPORTED_DOMAINS.keys():
         raise WebsiteNotSupported(website_name)
 
     print(f"Adding product with category '{category}' and url '{url[0:min(50, len(url))]}'...")
