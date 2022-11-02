@@ -416,16 +416,16 @@ class SharkGamingHandler(BaseWebsiteHandler):
 class NeweggHandler(BaseWebsiteHandler):
     def _get_common_data(self):
         script_data_raw = self.request_data.find_all("script", type="application/ld+json")[2].text
-        self.product_data = json.loads(script_data_raw)
+        self.script_json = json.loads(script_data_raw)
 
     def _get_product_name(self) -> str:
-        return self.product_data.get("name")
+        return self.script_json.get("name")
 
     def _get_product_price(self) -> float:
-        return float(self.product_data.get("offers").get("price"))
+        return float(self.script_json.get("offers").get("price"))
 
     def _get_product_currency(self) -> str:
-        return self.product_data.get("offers").get("priceCurrency")
+        return self.script_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
         return self.url.split("/")[5].split("?")[0]
