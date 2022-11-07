@@ -304,7 +304,7 @@ def get_product_with_name(name: str) -> dict:
     return None
 
 
-def get_products_with_names(names: List[str]) -> List[str]:
+def get_products_with_names(names: List[str]) -> List[dict]:
     names_lowercase = [name.lower() for name in names]
     products = []
     for product_info in format_data():
