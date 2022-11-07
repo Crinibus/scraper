@@ -211,8 +211,8 @@ def format_data() -> Iterator[dict]:
             }
 
             for website_name, website_info in product_info.items():
-                dates = [datapoint["date"] for datapoint in website_info["datapoints"]]
-                prices = [datapoint["price"] for datapoint in website_info["datapoints"]]
+                dates: List[str] = [datapoint["date"] for datapoint in website_info["datapoints"]]
+                prices: List[float] = [datapoint["price"] for datapoint in website_info["datapoints"]]
 
                 product_data["websites"].append(
                     {
