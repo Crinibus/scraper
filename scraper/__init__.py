@@ -7,7 +7,7 @@ from .clean_data import clean_records_data
 from .delete_data import delete
 from .reset_data import reset
 from .search_data import search
-from .misc import print_latest_datapoints, print_all_products
+from .print_products import print_latest_datapoints, print_all_products
 
 
 __author__ = "Crinibus"
