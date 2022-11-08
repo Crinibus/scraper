@@ -1,7 +1,8 @@
-from typing import List
+from typing import Dict, List
 import pandas as pd
 from pandas.core.groupby.generic import DataFrameGroupBy
 
+from scraper.scrape import Scraper
 from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name
 
@@ -22,3 +23,12 @@ def get_products_df_grouped_by_domains() -> DataFrameGroupBy:
     df = add_dataframe_column(product_df, "domain", domain_names)
     grouped_df = group_df(df, "domain", True)
     return grouped_df
+
+
+def get_products_grouped_by_domain(grouped_products_df: DataFrameGroupBy) -> Dict[str, List[Scraper]]:
+    domains_dict: Dict[str, List[Scraper]] = {}
+
+    for domain_name in grouped_products_df.groups:
+        group_products = grouped_products_df.get_group(domain_name)
+        domains_dict[domain_name] = [Scraper(category, url) for category, url in zip(group_products["category"], group_products["url"])]
+    return domains_dict
