@@ -62,7 +62,6 @@ def scrape_with_threads():
     request_delay = scraper.Config.get_request_delay()
 
     domain_grouped_products_df = scraper.get_products_df_grouped_by_domains()
-
     grouped_products = scraper.get_products_grouped_by_domain(domain_grouped_products_df)
 
     grouped_scraper_threads: List[List[threading.Thread]] = []
