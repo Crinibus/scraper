@@ -72,7 +72,7 @@ def scrape_with_threads():
         scraper_threads = [threading.Thread(target=product.scrape_info) for product in products]
         grouped_scraper_threads.append(scraper_threads)
 
-    # Create master threads to start scraper threads sequentially for each domain
+    # Create master threads to manage scraper threads sequentially for each domain
     master_threads = [
         threading.Thread(target=scraper.start_threads_sequentially, args=[scraper_threads, request_delay])
         for scraper_threads in grouped_scraper_threads
