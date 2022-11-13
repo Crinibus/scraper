@@ -31,7 +31,7 @@ test_domains = [
 
 # Tests to make sure the websites that are supported can be added to be scraped
 @pytest.mark.parametrize("url,expectation", test_domains)
-def test_add_product(url, expectation, mocker):
+def test_add_product(url, expectation, mocker) -> None:
     mocker.patch("scraper.Scraper.scrape_info", return_value=None)
     mocker.patch("scraper.Scraper.save_info", return_value=None)
     mocker.patch("scraper.filemanager.Filemanager.add_product_to_csv", return_value=None)

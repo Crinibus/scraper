@@ -5,7 +5,7 @@ import time
 import scraper
 
 
-def main():
+def main() -> None:
     args = scraper.argparse_setup()
 
     if args.clean_data:
@@ -39,7 +39,7 @@ def main():
         scraper.delete(args.category, args.name, args.id, args.all)
 
 
-def scrape():
+def scrape() -> None:
     print("Scraping...")
 
     request_delay = scraper.Config.get_request_delay()
@@ -55,7 +55,7 @@ def scrape():
         product.save_info()
 
 
-def scrape_with_threads():
+def scrape_with_threads() -> None:
     print("Scraping with threads...")
 
     request_delay = scraper.Config.get_request_delay()
