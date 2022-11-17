@@ -160,6 +160,7 @@ This is equivalent to the above:
 python3 main.py -a -c <category> <category2> -u <url> <url2>
 ```
 
+**OBS**: The url must have the ```https://``` part.<br/>
 **OBS**: If an error occures when adding a product, then the error might happen because the url has a ```&``` in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
 
 <br/>
