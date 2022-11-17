@@ -460,10 +460,11 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
 
 
 def get_website_name(url: str) -> str:
-    domain = url.split("/")[2]
+    stripped_url = url.removeprefix("https://").removeprefix("http://").removeprefix("www.")
+    domain = stripped_url.split("/")[0]
 
-    # Remove "www." and the TLD/DNS name (such as ".com")
-    website_name_list = domain.strip("www.").split(".")[:-1]
+    # Remove the TLD/DNS name (such as ".com")
+    website_name_list = domain.split(".")[:-1]
     website_name = ".".join(website_name_list)
     return website_name
 
