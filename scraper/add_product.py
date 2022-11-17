@@ -23,7 +23,7 @@ def add_product(category: str, url: str) -> None:
     if website_name not in SUPPORTED_DOMAINS.keys():
         raise WebsiteNotSupported(website_name)
 
-    print(f"Adding product with category '{category}' and url '{url[0:min(50, len(url))]}'...")
+    print(f"Adding product with category '{category}' and url '{url}'")
     logger.info(f"Adding product with category '{category}' and url '{url}'")
 
     new_product = Scraper(category, url)
