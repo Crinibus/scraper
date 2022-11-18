@@ -2,10 +2,10 @@
 - [Intro](#intro)
 - [Contributing](#contributing)
 - [Installation](#installation)
-- [Delete data](#delete-data)
-- [Scrape products](#scrape-products)
 - [Add products](#add-products)
     - [Websites to scrape from](#websites-to-scrape-from)
+- [Scrape products](#scrape-products)
+- [Delete data](#delete-data)
 - [User settings](#user-settings)
 - [Clean up data](#clean-up-data)
 - [View the latest datapoint of product(s)](#view-the-latest-datapoint-of-products)
@@ -79,63 +79,6 @@ pip3 install -r requirements.txt
 <br/>
 
 
-## Delete data <a name="delete-data"></a>
-
-If you want to start from scratch with no data in the records.json and products.csv files, then just run the following command:
-```
-python3 main.py --delete --all
-```
-
-You can also just delete some products or some categories:
-```
-python3 main.py --delete --id <id>
-```
-```
-python3 main.py --delete --name <name>
-```
-```
-python3 main.py --delete --category <category>
-```
-
-
-Then just add products like described [here](#add-products).
-
-<br/>
-
-If you just want to reset your data for every product, deleting all datapoints inside every product, then run this command:
-```
-python3 main.py --reset --all
-```
-This deletes the data inside each product, such as id, url and all datapoints.
-
-
-You can also just reset some products or all products in some categories:
-```
-python3 main.py --reset --id <id>
-```
-```
-python3 main.py --reset --name <name>
-```
-```
-python3 main.py --reset --category <category>
-```
-
-<br/>
-
-
-## Scrape products <a name="scrape-products"></a>
-To scrape prices of products run this in the terminal:
-```
-python3 main.py -s
-```
-To scrape with threads run the same command but with the ```--threads``` argument:
-```
-python3 main.py -s --threads
-```
-
-<br/>
-
-
 ## Add products <a name="add-products"></a>
 To add a single product, use the following command, where you replace ```<category>``` and ```<url>``` with your category and url:
 ```
@@ -187,6 +130,63 @@ This scraper can (so far) scrape prices on products from:
 ****OBS these Amazon domains should work: [.com](https://www.amazon.com/), [.ca](https://www.amazon.ca/), [.es](https://www.amazon.es/), [.fr](https://www.amazon.fr/), [.de](https://www.amazon.de/) and [.it](https://www.amazon.it/)<br/>
 The listed Amazon domains is from my quick testing with one or two products from each domain.<br/>
 If you find that some other Amazon domains works or some of the listed doesn't please create an issue.***
+
+<br/>
+
+
+## Scrape products <a name="scrape-products"></a>
+To scrape prices of products run this in the terminal:
+```
+python3 main.py -s
+```
+To scrape with threads run the same command but with the ```--threads``` argument:
+```
+python3 main.py -s --threads
+```
+
+<br/>
+
+
+## Delete data <a name="delete-data"></a>
+
+If you want to start from scratch with no data in the records.json and products.csv files, then just run the following command:
+```
+python3 main.py --delete --all
+```
+
+You can also just delete some products or some categories:
+```
+python3 main.py --delete --id <id>
+```
+```
+python3 main.py --delete --name <name>
+```
+```
+python3 main.py --delete --category <category>
+```
+
+
+Then just add products like described [here](#add-products).
+
+<br/>
+
+If you just want to reset your data for every product, deleting all datapoints inside every product, then run this command:
+```
+python3 main.py --reset --all
+```
+This deletes the data inside each product, such as id, url and all datapoints.
+
+
+You can also just reset some products or all products in some categories:
+```
+python3 main.py --reset --id <id>
+```
+```
+python3 main.py --reset --name <name>
+```
+```
+python3 main.py --reset --category <category>
+```
 
 <br/>
 
