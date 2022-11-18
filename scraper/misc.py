@@ -3,7 +3,7 @@ from typing import Iterator, List, Tuple
 from scraper.filemanager import Filemanager
 
 
-def print_latest_datapoints(names: List[str], ids: List[str]):
+def print_latest_datapoints(names: List[str], ids: List[str]) -> None:
     records_data = Filemanager.get_record_data()
 
     if names:
@@ -50,7 +50,7 @@ def print_latest_datapoint(website_name: str, website_dict: dict) -> None:
     print(f"> {website_name.capitalize()} - {id}\n  - {currency} {price}\n  - {date}")
 
 
-def print_all_products():
+def print_all_products() -> None:
     records_data = Filemanager.get_record_data()
 
     print("\n----- SHOWING ALL PRODUCTS -----")

@@ -22,18 +22,18 @@ class Filemanager:
         return data
 
     @staticmethod
-    def write_json(filename: str, data: dict):
+    def write_json(filename: str, data: dict) -> None:
         with open(filename, "w", encoding="utf8") as file:
             json.dump(data, file, ensure_ascii=False, indent=2)
 
     @staticmethod
-    def append_csv(filename: str, data: list):
+    def append_csv(filename: str, data: list) -> None:
         with open(filename, "a", encoding="utf8", newline="") as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(data)
 
     @staticmethod
-    def clear_csv(filename: str):
+    def clear_csv(filename: str) -> None:
         with open(filename, "w", encoding="utf8") as file:
             file.truncate()
 
