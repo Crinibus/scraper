@@ -90,7 +90,7 @@ class KomplettHandler(BaseWebsiteHandler):
 
 
 class ProshopHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         soup_script_tag = self.request_data.find("script", type="application/ld+json").contents[0]
         self.script_json = json.loads(soup_script_tag)
 
@@ -184,7 +184,7 @@ class ElgigantenHandler(BaseWebsiteHandler):
 
 
 class AvXpertenHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         soup_script_tag = self.request_data.find("script", type="application/ld+json").contents[0]
         self.script_json = json.loads(soup_script_tag)
 
@@ -261,7 +261,7 @@ class AmazonHandler(BaseWebsiteHandler):
 
 
 class EbayHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         self.soup_url = self.request_data.find("meta", property="og:url").get("content")
 
     def _get_product_name(self) -> str:
@@ -358,7 +358,7 @@ class ExpertHandler(BaseWebsiteHandler):
 
 
 class MMVisionHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         soup_script_tag = self.request_data.find_all("script", type="application/ld+json")[1].contents[0]
         self.script_json = json.loads(soup_script_tag)
 
@@ -414,7 +414,7 @@ class SharkGamingHandler(BaseWebsiteHandler):
 
 
 class NeweggHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         script_data_raw = self.request_data.find_all("script", type="application/ld+json")[2].text
         self.script_json = json.loads(script_data_raw)
 
@@ -436,7 +436,7 @@ class NeweggHandler(BaseWebsiteHandler):
 
 
 class HifiKlubbenHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         script_data_raw = self.request_data.findAll("script", type="application/ld+json")[1].text
         self.product_data = json.loads(script_data_raw)["offers"]
 
@@ -460,10 +460,11 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
 
 
 def get_website_name(url: str) -> str:
-    domain = url.split("/")[2]
+    stripped_url = url.removeprefix("https://").removeprefix("http://").removeprefix("www.")
+    domain = stripped_url.split("/")[0]
 
-    # Remove "www." and the TLD/DNS name (such as ".com")
-    website_name_list = domain.strip("www.").split(".")[:-1]
+    # Remove the TLD/DNS name (such as ".com")
+    website_name_list = domain.split(".")[:-1]
     website_name = ".".join(website_name_list)
     return website_name
 

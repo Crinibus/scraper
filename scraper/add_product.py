@@ -7,7 +7,7 @@ from scraper.domains import get_website_name, SUPPORTED_DOMAINS
 from scraper.constants import URL_SCHEMES
 
 
-def add_products(categories: List[str], urls: List[str]):
+def add_products(categories: List[str], urls: List[str]) -> None:
     for category, url in zip(categories, urls):
         try:
             add_product(category, url)
@@ -27,7 +27,7 @@ def add_product(category: str, url: str) -> None:
     if is_missing_url_schema(url):
         raise URLMissingSchema(url)
 
-    print(f"Adding product with category '{category}' and url '{url[0:min(50, len(url))]}'...")
+    print(f"Adding product with category '{category}' and url '{url}'")
     logger.info(f"Adding product with category '{category}' and url '{url}'")
 
     new_product = Scraper(category, url)
@@ -65,7 +65,7 @@ def check_if_product_exists(product: Scraper) -> bool:
     return True
 
 
-def save_product(product: Scraper):
+def save_product(product: Scraper) -> None:
     add_product_to_records(product)
 
     if not check_if_product_exists_csv(product):
@@ -94,7 +94,7 @@ def add_product_to_records(product: Scraper) -> None:
     Filemanager.save_record_data(data)
 
 
-def check_if_product_exists_csv(product: Scraper):
+def check_if_product_exists_csv(product: Scraper) -> bool:
     products_df = Filemanager.get_products_data()
 
     for category, url in zip(products_df["category"], products_df["url"]):

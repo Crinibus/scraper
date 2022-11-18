@@ -14,6 +14,6 @@ test_websites = [
 
 
 @pytest.mark.parametrize("url,expected", test_websites)
-def test_get_website_name(url, expected):
+def test_get_website_name(url, expected) -> None:
     result = get_website_name(url)
     assert result == expected

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from scraper.filemanager import Config, Filemanager
+from scraper.filemanager import Config
 
 
 @dataclass
