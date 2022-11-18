@@ -1,16 +1,17 @@
 from typing import List
 import logging
-from scraper.exceptions import WebsiteNotSupported
+from scraper.exceptions import WebsiteNotSupported, URLMissingSchema
 from scraper.scrape import Scraper
 from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name, SUPPORTED_DOMAINS
+from scraper.constants import URL_SCHEMES
 
 
 def add_products(categories: List[str], urls: List[str]) -> None:
     for category, url in zip(categories, urls):
         try:
             add_product(category, url)
-        except WebsiteNotSupported as err:
+        except (WebsiteNotSupported, URLMissingSchema) as err:
             logging.getLogger(__name__).error(err)
             print(err)
 
@@ -22,6 +23,9 @@ def add_product(category: str, url: str) -> None:
 
     if website_name not in SUPPORTED_DOMAINS.keys():
         raise WebsiteNotSupported(website_name)
+
+    if is_missing_url_schema(url):
+        raise URLMissingSchema(url)
 
     print(f"Adding product with category '{category}' and url '{url}'")
     logger.info(f"Adding product with category '{category}' and url '{url}'")
@@ -98,3 +102,7 @@ def check_if_product_exists_csv(product: Scraper) -> bool:
             return True
 
     return False
+
+
+def is_missing_url_schema(url: str) -> bool:
+    return not any(schema in url for schema in URL_SCHEMES)
