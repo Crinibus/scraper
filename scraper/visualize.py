@@ -211,8 +211,8 @@ def format_data() -> Iterator[dict]:
             }
 
             for website_name, website_info in product_info.items():
-                dates = [datapoint["date"] for datapoint in website_info["datapoints"]]
-                prices = [datapoint["price"] for datapoint in website_info["datapoints"]]
+                dates: List[str] = [datapoint["date"] for datapoint in website_info["datapoints"]]
+                prices: List[float] = [datapoint["price"] for datapoint in website_info["datapoints"]]
 
                 product_data["websites"].append(
                     {
@@ -243,11 +243,11 @@ def add_scatter_plot(
     website_name: str,
     id: str,
     currency: str,
-    dates: list,
-    prices: list,
-    name=None,
-    color=None,
-    hover_text=None,
+    dates: List[str],
+    prices: List[float],
+    name: str = None,
+    color: str = None,
+    hover_text: str = None,
 ) -> None:
     scatter_name = name if name else f"{website_name.capitalize()} - {id}"
     scatter_color = color if color else WEBSITE_COLORS[website_name]
@@ -304,7 +304,7 @@ def get_product_with_name(name: str) -> dict:
     return None
 
 
-def get_products_with_names(names: List[str]) -> List[str]:
+def get_products_with_names(names: List[str]) -> List[dict]:
     names_lowercase = [name.lower() for name in names]
     products = []
     for product_info in format_data():

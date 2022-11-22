@@ -2,10 +2,10 @@
 - [Intro](#intro)
 - [Contributing](#contributing)
 - [Installation](#installation)
-- [Delete data](#delete-data)
-- [Scrape products](#scrape-products)
 - [Add products](#add-products)
     - [Websites to scrape from](#websites-to-scrape-from)
+- [Scrape products](#scrape-products)
+- [Delete data](#delete-data)
 - [User settings](#user-settings)
 - [Clean up data](#clean-up-data)
 - [View the latest datapoint of product(s)](#view-the-latest-datapoint-of-products)
@@ -31,22 +31,34 @@ Feel free to fork the project and create a pull request with new features or ref
 <br/>
 
 
-## UPDATE TO HOW DATA IS STORED IN V1.1
-In version v1.1, I have changed how data is stored in "records.json". "dates" under each product have been changed to "datapoints" and now a list containing dicts with "date" and "price" keys. <br/>
+<details><summary><h2>UPDATE TO HOW DATA IS STORED IN V1.1</h2></summary>
+<p>
+
+In version v1.1, I have changed how data is stored in ```records.json```: ```dates``` under each product have been changed to ```datapoints``` and now a list containing dictionaries with ```date``` and ```price``` keys. <br/>
 If you want to update your data to be compatible with version v1.1, then open an interactive python session where this repository is located and run the following commands:
 ```
 >>> from scraper.format_to_new import Format
 >>> Format.format_old_records_to_new()
 ```
 
-## UPDATE TO PRODUCTS.CSV IN V2.3.0
+</p>
+</details>
+
+
+<details><summary><h2>UPDATE TO PRODUCTS.CSV IN V2.3.0</h2></summary>
+<p>
+
 In version v2.3.0, I have add the column ```short_url``` to ```products.csv```. If you have add products before v2.3.0, then run the following commands in an interactive python session to add the new column:
 ```
 >>> from scraper.format_to_new import Format
 >>> Format.add_short_urls_to_products_csv()
 ```
 
+</p>
+</details>
+
 <br/>
+
 
 ## Installation <a name="installation"></a>
 **Requires** `python 3.10+`
@@ -62,6 +74,74 @@ cd scraper
 Then make sure you have the modules, run this in the terminal:
 ```
 pip3 install -r requirements.txt
+```
+
+<br/>
+
+
+## Add products <a name="add-products"></a>
+To add a single product, use the following command, where you replace ```<category>``` and ```<url>``` with your category and url:
+```
+python3 main.py -a -c <category> -u <url>
+```
+
+e.g.
+```
+python3 main.py -a -c vr -u https://www.komplett.dk/product/1168594/gaming/spiludstyr/vr/vr-briller/oculus-quest-2-vr-briller
+```
+
+This adds the category (if new) and the product to the records.json file, and adds a line at the end of the products.csv file so the script can scrape price of the new product.
+
+<br/>
+
+To add multiple products at once, just add specify another category and url with ```-c <category>``` and ```-u <url>```. E.g. with the following command I add two products:
+```
+python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
+``` 
+This is equivalent to the above:
+```
+python3 main.py -a -c <category> <category2> -u <url> <url2>
+```
+
+**OBS**: The url must have a schema like: ```https://``` or ```http://```.<br/>
+**OBS**: If an error occures when adding a product, then the error might happen because the url has a ```&``` in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
+
+<br/>
+
+
+### Websites to scrape from <a name="websites-to-scrape-from"></a>
+This scraper can (so far) scrape prices on products from:
+- [Amazon](https://www.amazon.com/)*
+- [eBay.com](https://www.ebay.com/)
+- [Komplett.dk](https://www.komplett.dk/)
+- [Proshop.dk](https://www.proshop.dk/)
+- [Computersalg.dk](https://www.computersalg.dk/)
+- [Elgiganten.dk](https://www.elgiganten.dk/)
+- [AvXperten.dk](https://www.avxperten.dk/)
+- [Av-Cables.dk](https://www.av-cables.dk/)
+- [Power.dk](https://www.power.dk/)
+- [Expert.dk](https://www.expert.dk/)
+- [MM-Vision.dk](https://www.mm-vision.dk/)
+- [Coolshop.dk](https://www.coolshop.dk/)
+- [Sharkgaming.dk](https://www.sharkgaming.dk/)
+- [Newegg.com](https://www.newegg.com/) & [Newegg.ca](https://www.newegg.ca/)
+- [HifiKlubben.dk](https://www.hifiklubben.dk/)
+
+****OBS these Amazon domains should work: [.com](https://www.amazon.com/), [.ca](https://www.amazon.ca/), [.es](https://www.amazon.es/), [.fr](https://www.amazon.fr/), [.de](https://www.amazon.de/) and [.it](https://www.amazon.it/)<br/>
+The listed Amazon domains is from my quick testing with one or two products from each domain.<br/>
+If you find that some other Amazon domains works or some of the listed doesn't please create an issue.***
+
+<br/>
+
+
+## Scrape products <a name="scrape-products"></a>
+To scrape prices of products run this in the terminal:
+```
+python3 main.py -s
+```
+To scrape with threads run the same command but with the ```--threads``` argument:
+```
+python3 main.py -s --threads
 ```
 
 <br/>
@@ -107,74 +187,6 @@ python3 main.py --reset --name <name>
 ```
 python3 main.py --reset --category <category>
 ```
-
-<br/>
-
-
-## Scrape products <a name="scrape-products"></a>
-To scrape prices of products run this in the terminal:
-```
-python3 main.py -s
-```
-To scrape with threads run the same command but with the ```--threads``` argument:
-```
-python3 main.py -s --threads
-```
-
-<br/>
-
-
-## Add products <a name="add-products"></a>
-To add a single product, use the following command, where you replace ```<category>``` and ```<url>``` with your category and url:
-```
-python3 main.py -a -c <category> -u <url>
-```
-
-e.g.
-```
-python3 main.py -a -c vr -u https://www.komplett.dk/product/1168594/gaming/spiludstyr/vr/vr-briller/oculus-quest-2-vr-briller
-```
-
-This adds the category (if new) and the product to the records.json file, and adds a line at the end of the products.csv file so the script can scrape price of the new product.
-
-<br/>
-
-To add multiple products at once, just add specify another category and url with ```-c <category>``` and ```-u <url>```. E.g. with the following command I add two products:
-```
-python3 main.py -a -c <category> -u <url> -c <category2> -u <url2>
-``` 
-This is equivalent to the above:
-```
-python3 main.py -a -c <category> <category2> -u <url> <url2>
-```
-
-**OBS**: The url must have the ```https://``` part.<br/>
-**OBS**: If an error occures when adding a product, then the error might happen because the url has a ```&``` in it, when this happens then just put quotation marks around the url. This should solve the problem. If this doesn't solve the problem then summit a issue.<br/>
-
-<br/>
-
-
-### Websites to scrape from <a name="websites-to-scrape-from"></a>
-This scraper can (so far) scrape prices on products from:
-- [Amazon](https://www.amazon.com/)*
-- [eBay.com](https://www.ebay.com/)
-- [Komplett.dk](https://www.komplett.dk/)
-- [Proshop.dk](https://www.proshop.dk/)
-- [Computersalg.dk](https://www.computersalg.dk/)
-- [Elgiganten.dk](https://www.elgiganten.dk/)
-- [AvXperten.dk](https://www.avxperten.dk/)
-- [Av-Cables.dk](https://www.av-cables.dk/)
-- [Power.dk](https://www.power.dk/)
-- [Expert.dk](https://www.expert.dk/)
-- [MM-Vision.dk](https://www.mm-vision.dk/)
-- [Coolshop.dk](https://www.coolshop.dk/)
-- [Sharkgaming.dk](https://www.sharkgaming.dk/)
-- [Newegg.com](https://www.newegg.com/) & [Newegg.ca](https://www.newegg.ca/)
-- [HifiKlubben.dk](https://www.hifiklubben.dk/)
-
-****OBS these Amazon domains should work: [.com](https://www.amazon.com/), [.ca](https://www.amazon.ca/), [.es](https://www.amazon.es/), [.fr](https://www.amazon.fr/), [.de](https://www.amazon.de/) and [.it](https://www.amazon.it/)<br/>
-The listed Amazon domains is from my quick testing with one or two products from each domain.<br/>
-If you find that some other Amazon domains works or some of the listed doesn't please create an issue.***
 
 <br/>
 

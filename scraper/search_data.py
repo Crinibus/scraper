@@ -2,7 +2,7 @@ from typing import List
 from .filemanager import Filemanager
 
 
-def search(queries: List[str]):
+def search(queries: List[str]) -> None:
     print("Searching...")
 
     records_data = Filemanager.get_record_data()

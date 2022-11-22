@@ -5,7 +5,6 @@ REQUEST_HEADER = {
 
 REQUEST_COOKIES = {"cookies_are": "working"}
 
-
 WEBSITE_COLORS = {
     "komplett": "orange",
     "proshop": "red",
@@ -23,3 +22,5 @@ WEBSITE_COLORS = {
     "newegg": "#f7c20a",
     "hifiklubben": "#231f20",
 }
+
+URL_SCHEMES = ("http://", "https://")
