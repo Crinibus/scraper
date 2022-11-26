@@ -6,11 +6,14 @@ import logging
 from abc import ABC, abstractmethod
 from scraper.format import Format, Info
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
+from scraper.filemanager import Config
 
 
 def request_url(url: str) -> requests.Response:
+    request_timeout = Config.get_request_timeout()
+
     try:
-        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10)
+        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=request_timeout)
         return response
     except requests.RequestException:
         logging.getLogger(__name__).exception(f"Module requests exception with url: {url}")
