@@ -37,9 +37,9 @@
             "expected_currency": "DKK"
         },
         "amazon": {
-            "link": "https://www.amazon.com/Sony-WH-1000XM4-Canceling-Headphones-Phone-Call/dp/B092LHZWXN/ref=pd_rhf_d_ee_s_pd_sbs_rvi_sccl_1_2/146-2828110-0046747?pd_rd_w=yk0z7&content-id=amzn1.sym.a089f039-4dde-401a-9041-8b534ae99e65&pf_rd_p=a089f039-4dde-401a-9041-8b534ae99e65&pf_rd_r=RZA04PRQVA24GDBD686T&pd_rd_wg=lEmqI&pd_rd_r=0834962e-faa2-4f42-82b8-8a2b55abf6b2&pd_rd_i=B092LHZWXN&psc=1",
-            "expected_title": "Sony WH-1000XM4 Wireless Premium Noise Canceling Overhead Headphones, Blue (Renewed)",
-            "expected_id": "B092LHZWXN",
+            "link": "https://www.amazon.com/Sony-WH-1000XM5-Canceling-Headphones-Hands-Free/dp/B09XS7JWHH",
+            "expected_title": "Sony WH-1000XM5 Wireless Industry Leading Noise Canceling Headphones with Auto Noise Canceling Optimizer, Crystal Clear Hands-Free Calling, and Alexa Voice Control, Black",
+            "expected_id": "B09XS7JWHH",
             "expected_currency": "USD"
         },
         "ebay_with_itm": {

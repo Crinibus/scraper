@@ -234,12 +234,7 @@ class AmazonHandler(BaseWebsiteHandler):
         return self.request_data.find("span", id="productTitle").text.strip()
 
     def _get_product_price(self) -> float:
-        try:
-            return float(self.request_data.find("input", id="attach-base-product-price").get("value"))
-        except (AttributeError, ValueError, TypeError):
-            return float(
-                self.request_data.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", "")
-            )
+        return float(self.request_data.find("span", class_="a-price").span.text.replace("$", ""))
 
     def _get_product_currency(self) -> str:
         try:
