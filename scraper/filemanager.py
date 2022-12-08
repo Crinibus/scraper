@@ -95,3 +95,13 @@ class Config:
     def get_request_delay() -> int:
         config = Config.read(Filemanager.settings_ini_path)
         return int(config["Scraping"]["request_delay"])
+
+    @staticmethod
+    def get_request_timeout() -> float | None:
+        """Get request timeout - if number return float else return None"""
+        config = Config.read(Filemanager.settings_ini_path)
+        timeout = config["Scraping"]["request_timeout"]
+        try:
+            return float(timeout)
+        except ValueError:
+            return None
