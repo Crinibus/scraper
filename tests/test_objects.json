@@ -49,9 +49,9 @@
             "expected_currency": "USD"
         },
         "ebay_with_p": {
-            "link": "https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc",
-            "expected_title": "Etude House Collagen Eye Patch Korea Cosmetics 10 Sheets",
-            "expected_id": "1248083754",
+            "link": "https://www.ebay.com/p/17005345300?iid=391613649077",
+            "expected_title": "O Hui Age Recovery Eye Cream 1ml X 40pcs (40ml) Baby Collagen OHUI",
+            "expected_id": "17005345300",
             "expected_currency": "USD"
         },
         "expert": {
