@@ -3,7 +3,6 @@ import pandas as pd
 from pandas.core.groupby.generic import DataFrameGroupBy
 
 from scraper.scrape import Scraper
-from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name
 
 
@@ -17,10 +16,9 @@ def group_df(df: pd.DataFrame, column_name: str, group_keys: bool) -> DataFrameG
     return grouped_df
 
 
-def get_products_df_grouped_by_domains() -> DataFrameGroupBy:
-    product_df = Filemanager.get_products_data()
-    domain_names = [get_website_name(url) for url in product_df["url"]]
-    df = add_dataframe_column(product_df, "domain", domain_names)
+def get_products_df_grouped_by_domains(products_df: pd.DataFrame) -> DataFrameGroupBy:
+    domain_names = [get_website_name(url) for url in products_df["url"]]
+    df = add_dataframe_column(products_df, "domain", domain_names)
     grouped_df = group_df(df, "domain", True)
     return grouped_df
 
