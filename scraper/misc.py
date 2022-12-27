@@ -30,5 +30,7 @@ def get_products_grouped_by_domain(grouped_products_df: DataFrameGroupBy) -> Dic
 
     for domain_name in grouped_products_df.groups:
         group_products = grouped_products_df.get_group(domain_name)
-        domains_dict[domain_name] = [Scraper(category, url) for category, url in zip(group_products["category"], group_products["url"])]
+        domains_dict[domain_name] = [
+            Scraper(category, url) for category, url in zip(group_products["category"], group_products["url"])
+        ]
     return domains_dict
