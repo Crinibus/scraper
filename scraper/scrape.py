@@ -78,4 +78,5 @@ def add_product_datapoint(product_data: dict, price: float) -> None:
 def start_threads_sequentially(threads: List[threading.Thread], request_delay: int) -> None:
     for thread in threads:
         thread.start()
+        thread.join()
         time.sleep(request_delay)
