@@ -96,9 +96,6 @@ def scrape_with_threads():
 
 
 if __name__ == "__main__":
-
-    # DON'T MERGE WITH MASTER BRANCH: KNOWN ISSUE: https://github.com/rsalmei/alive-progress/issues/155
-    # alive_progress crashes with the below logging config settings
     logging.config.fileConfig(
         fname=scraper.Filemanager.logging_ini_path,
         defaults={"logfilename": scraper.Filemanager.logfile_path},
