@@ -37,6 +37,11 @@ def visualize_data(
 ) -> None:
     print("Visualizing...")
 
+    # Convert all string to lowercase
+    categories = [category.lower() for category in categories]
+    ids = [id.lower() for id in ids]
+    names = [name.lower() for name in names]
+
     records_data = Filemanager.get_record_data()
     master_products = get_products(records_data)
 
@@ -140,7 +145,6 @@ def get_products_with_ids(master_products: tuple[MasterProduct], ids: list[str],
 def get_master_products_with_categories(
     master_products: tuple[MasterProduct], categories: list[str], only_up_to_date: bool
 ) -> Iterator[MasterProduct]:
-    categories = [category.lower() for category in categories]
     for master_product in master_products:
         if master_product.category not in categories:
             continue
@@ -154,8 +158,6 @@ def get_master_products_with_categories(
 def get_products_with_names(
     master_products: tuple[MasterProduct], names: list[str], only_up_to_date: bool
 ) -> list[MasterProduct]:
-    names = [name.lower() for name in names]
-
     for master_product in master_products:
         if master_product.product_name not in names:
             continue
