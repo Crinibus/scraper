@@ -137,7 +137,7 @@ def get_products_with_ids(master_products: tuple[MasterProduct], ids: list[str],
             if only_up_to_date and not product.is_up_to_date:
                 continue
 
-            if product.id not in ids:
+            if product.id.lower() not in ids:
                 continue
 
             yield product
@@ -147,7 +147,7 @@ def get_master_products_with_categories(
     master_products: tuple[MasterProduct], categories: list[str], only_up_to_date: bool
 ) -> Iterator[MasterProduct]:
     for master_product in master_products:
-        if master_product.category not in categories:
+        if master_product.category.lower() not in categories:
             continue
 
         if only_up_to_date and not any((product.is_up_to_date for product in master_product.products)):
@@ -160,7 +160,7 @@ def get_master_products_with_names(
     master_products: tuple[MasterProduct], names: list[str], only_up_to_date: bool
 ) -> list[MasterProduct]:
     for master_product in master_products:
-        if master_product.product_name not in names:
+        if master_product.product_name.lower() not in names:
             continue
 
         if only_up_to_date and not any((product.is_up_to_date for product in master_product.products)):
