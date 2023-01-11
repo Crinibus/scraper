@@ -47,6 +47,7 @@ def visualize_data(
 
     if compare:
         compare_products(master_products, ids, names)
+        return
 
     if show_all:
         show_all_products(master_products, only_up_to_date)
