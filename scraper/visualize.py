@@ -68,7 +68,7 @@ def visualize_data(
             show_product(product, title)
 
     if names:
-        for master_product in get_products_with_names(master_products, names, only_up_to_date):
+        for master_product in get_master_products_with_names(master_products, names, only_up_to_date):
             product_name = master_product.product_name.upper()
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {status_of_master_product}"
@@ -156,7 +156,7 @@ def get_master_products_with_categories(
         yield master_product
 
 
-def get_products_with_names(
+def get_master_products_with_names(
     master_products: tuple[MasterProduct], names: list[str], only_up_to_date: bool
 ) -> list[MasterProduct]:
     for master_product in master_products:
