@@ -24,6 +24,12 @@ class Product:
     datapoints: list[Datapoint]
     is_up_to_date: bool
 
+    def get_all_dates(self) -> list[str]:
+        return [datapoint.date for datapoint in self.datapoints]
+
+    def get_all_prices(self) -> list[float]:
+        return [datapoint.price for datapoint in self.datapoints]
+
 
 @dataclass
 class MasterProduct:
@@ -91,8 +97,8 @@ def show_master_product(master_product: MasterProduct, title: str) -> None:
             product.website,
             product.id,
             product.currency,
-            [datapoint.date for datapoint in product.datapoints],
-            [datapoint.price for datapoint in product.datapoints],
+            product.get_all_dates(),
+            product.get_all_prices(),
         )
     config_figure(fig, title)
     fig.show()
@@ -105,8 +111,8 @@ def show_product(product: Product, title: str) -> None:
         product.website,
         product.id,
         product.currency,
-        [datapoint.date for datapoint in product.datapoints],
-        [datapoint.price for datapoint in product.datapoints],
+        product.get_all_dates(),
+        product.get_all_prices(),
     )
     config_figure(fig, title)
     fig.show()
