@@ -82,11 +82,39 @@ def visualize_data(
 
 
 def compare_products(master_products: tuple[MasterProduct], ids: list[str], names: list[str]) -> None:
-    pass
+    master_products_with_names = get_master_products_with_names(master_products, names, False)
+    products_with_names = [product for master_product in master_products_with_names for product in master_product.products]
+
+    products_with_ids = list(get_products_with_ids(master_products, ids, False))
+
+    all_products = [*products_with_ids, *products_with_names]
+
+    fig = go.Figure()
+
+    for product in all_products:
+        add_scatter_plot(
+            fig,
+            product.website,
+            product.id,
+            product.currency,
+            product.get_all_dates(),
+            product.get_all_prices(),
+        )
+
+    product_ids = [product.id for product in all_products]
+    product_ids_string = ", ".join(product_ids)
+
+    config_figure(
+        fig,
+        f"Comparing products with ids: {product_ids_string}",
+    )
+    fig.show()
 
 
 def show_all_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
-    pass
+    for master_product in master_products:
+        status_of_master_product = get_status_of_master_product(master_product)
+        show_master_product(master_product, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}")
 
 
 def show_master_product(master_product: MasterProduct, title: str) -> None:
