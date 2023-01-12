@@ -104,6 +104,9 @@ def compare_products(
 
 def show_master_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
     for master_product in master_products:
+        if only_up_to_date and not is_master_product_up_to_date(master_product):
+            continue
+
         status_of_master_product = get_status_of_master_product(master_product)
         show_products(
             master_product.products, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}"
