@@ -52,7 +52,7 @@ def visualize_data(
     master_products = get_master_products(records_data)
 
     if compare:
-        compare_products(master_products, ids, names)
+        compare_products(master_products, ids, names, categories, only_up_to_date)
         return
 
     if show_all:
@@ -81,13 +81,20 @@ def visualize_data(
             show_products(master_product.products, title)
 
 
-def compare_products(master_products: tuple[MasterProduct], ids: list[str], names: list[str]) -> None:
-    master_products_with_names = get_master_products_with_names(master_products, names, False)
+def compare_products(
+    master_products: tuple[MasterProduct], ids: list[str], names: list[str], categories: list[str], only_up_to_date: bool
+) -> None:
+    master_products_with_names = get_master_products_with_names(master_products, names, only_up_to_date)
     products_with_names = [product for master_product in master_products_with_names for product in master_product.products]
 
-    products_with_ids = list(get_products_with_ids(master_products, ids, False))
+    products_with_ids = list(get_products_with_ids(master_products, ids, only_up_to_date))
 
-    products_to_compare = [*products_with_ids, *products_with_names]
+    master_products_with_categories = list(get_master_products_with_categories(master_products, categories, only_up_to_date))
+    products_with_categories = [
+        product for master_product in master_products_with_categories for product in master_product.products
+    ]
+
+    products_to_compare = [*products_with_ids, *products_with_names, *products_with_categories]
 
     product_ids = [product.id for product in products_to_compare]
     product_ids_string = ", ".join(product_ids)
