@@ -49,7 +49,7 @@ def visualize_data(
     names = [name.lower() for name in names]
 
     records_data = Filemanager.get_record_data()
-    master_products = get_products(records_data)
+    master_products = get_master_products(records_data)
 
     if compare:
         compare_products(master_products, ids, names)
@@ -146,7 +146,7 @@ def show_product(product: Product, title: str) -> None:
     fig.show()
 
 
-def get_products(records_data: dict) -> tuple[MasterProduct]:
+def get_master_products(records_data: dict) -> tuple[MasterProduct]:
     master_products: list[MasterProduct] = []
 
     for category_name, category_info in records_data.items():
