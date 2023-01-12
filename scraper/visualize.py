@@ -87,28 +87,12 @@ def compare_products(master_products: tuple[MasterProduct], ids: list[str], name
 
     products_with_ids = list(get_products_with_ids(master_products, ids, False))
 
-    all_products = [*products_with_ids, *products_with_names]
+    products_to_compare = [*products_with_ids, *products_with_names]
 
-    fig = go.Figure()
-
-    for product in all_products:
-        add_scatter_plot(
-            fig,
-            product.website,
-            product.id,
-            product.currency,
-            product.get_all_dates(),
-            product.get_all_prices(),
-        )
-
-    product_ids = [product.id for product in all_products]
+    product_ids = [product.id for product in products_to_compare]
     product_ids_string = ", ".join(product_ids)
 
-    config_figure(
-        fig,
-        f"Comparing products with ids: {product_ids_string}",
-    )
-    fig.show()
+    show_products(products_to_compare, f"Comparing products with ids: {product_ids_string}")
 
 
 def show_all_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
@@ -142,6 +126,21 @@ def show_product(product: Product, title: str) -> None:
         product.get_all_dates(),
         product.get_all_prices(),
     )
+    config_figure(fig, title)
+    fig.show()
+
+
+def show_products(products: list[Product], title: str) -> None:
+    fig = go.Figure()
+    for product in products:
+        add_scatter_plot(
+            fig,
+            product.website,
+            product.id,
+            product.currency,
+            product.get_all_dates(),
+            product.get_all_prices(),
+        )
     config_figure(fig, title)
     fig.show()
 
