@@ -64,7 +64,7 @@ def visualize_data(
             category = master_product.category.upper()
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {category} - {status_of_master_product}"
-            show_master_product(master_product, title)
+            show_products(master_product.products, title)
 
     if ids:
         for product in get_products_with_ids(master_products, ids, only_up_to_date):
@@ -78,7 +78,7 @@ def visualize_data(
             product_name = master_product.product_name.upper()
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {status_of_master_product}"
-            show_master_product(master_product, title)
+            show_products(master_product.products, title)
 
 
 def compare_products(master_products: tuple[MasterProduct], ids: list[str], names: list[str]) -> None:
@@ -98,22 +98,9 @@ def compare_products(master_products: tuple[MasterProduct], ids: list[str], name
 def show_all_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
     for master_product in master_products:
         status_of_master_product = get_status_of_master_product(master_product)
-        show_master_product(master_product, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}")
-
-
-def show_master_product(master_product: MasterProduct, title: str) -> None:
-    fig = go.Figure()
-    for product in master_product.products:
-        add_scatter_plot(
-            fig,
-            product.website,
-            product.id,
-            product.currency,
-            product.get_all_dates(),
-            product.get_all_prices(),
+        show_products(
+            master_product.products, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}"
         )
-    config_figure(fig, title)
-    fig.show()
 
 
 def show_product(product: Product, title: str) -> None:
