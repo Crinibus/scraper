@@ -267,10 +267,7 @@ def get_status_of_product(product: Product) -> str:
 
 
 def get_status_of_product_by_bool(up_to_date: bool) -> str:
-    if up_to_date:
-        return "UP TO DATE"
-
-    return "OUTDATED"
+    return "UP TO DATE" if up_to_date else "OUTDATED"
 
 
 def main_test():
