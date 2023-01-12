@@ -170,7 +170,7 @@ def get_master_products_with_categories(
         if master_product.category.lower() not in categories:
             continue
 
-        if only_up_to_date and not any((product.is_up_to_date for product in master_product.products)):
+        if only_up_to_date and not is_master_product_up_to_date(master_product):
             continue
 
         yield master_product
@@ -183,7 +183,7 @@ def get_master_products_with_names(
         if master_product.product_name.lower() not in names:
             continue
 
-        if only_up_to_date and not any((product.is_up_to_date for product in master_product.products)):
+        if only_up_to_date and not is_master_product_up_to_date(master_product):
             continue
 
         yield master_product
@@ -242,8 +242,12 @@ def is_date_up_to_date(date: str) -> bool:
     return date_diff.days <= 1
 
 
+def is_master_product_up_to_date(master_product: MasterProduct) -> bool:
+    return any((product.is_up_to_date for product in master_product.products))
+
+
 def get_status_of_master_product(master_product: MasterProduct) -> str:
-    if any((product.is_up_to_date for product in master_product.products)):
+    if is_master_product_up_to_date(master_product):
         return get_status_of_product_by_bool(True)
 
     return get_status_of_product_by_bool(False)
