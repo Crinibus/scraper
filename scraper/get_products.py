@@ -19,3 +19,16 @@ def get_master_products(records_data: dict) -> tuple[MasterProduct]:
 
     return tuple(master_products)
 
+
+def group_master_products_by_category(master_products: list[MasterProduct]) -> dict[str, list[MasterProduct]]:
+    group_dict: dict[str, list[MasterProduct]] = {}
+
+    for master_product in master_products:
+        category = master_product.category
+
+        if category not in group_dict:
+            group_dict[category] = []
+
+        group_dict[category].append(master_product)
+
+    return group_dict
