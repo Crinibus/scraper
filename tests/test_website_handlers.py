@@ -4,6 +4,7 @@ from scraper.domains import (
     AmazonHandler,
     AvCablesHandler,
     AvXpertenHandler,
+    BaseWebsiteHandler,
     ComputerSalgHandler,
     CoolshopHandler,
     EbayHandler,
