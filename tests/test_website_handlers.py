@@ -42,6 +42,13 @@ hifiklubben_test = test_website_handlers_json["hifiklubben"]
 
 
 class BaseTestWebsiteHandler(ABC):
+    test_handler: BaseWebsiteHandler
+
+    def setup(self) -> None:
+        if not self.test_handler.request_data:
+            self.test_handler._request_product_data()
+            self.test_handler._get_common_data()
+
     @abstractmethod
     def test_get_product_info(self) -> None:
         pass
