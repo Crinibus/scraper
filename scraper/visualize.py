@@ -269,8 +269,3 @@ def get_status_of_product(product: Product) -> str:
 
 def get_status_of_product_by_bool(up_to_date: bool) -> str:
     return "UP TO DATE" if up_to_date else "OUTDATED"
-
-
-def main_test():
-    # TODO - DELETE THIS FUNCTION
-    visualize_data(False, ["højtAler"], [], ["kIngSton a2000 m.2 nvme ssd - 1tb"], False, False)
