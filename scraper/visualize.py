@@ -89,7 +89,7 @@ def compare_products(
 
     products_with_ids = list(get_products_with_ids(master_products, ids, only_up_to_date))
 
-    master_products_with_categories = list(get_master_products_with_categories(master_products, categories, only_up_to_date))
+    master_products_with_categories = get_master_products_with_categories(master_products, categories, only_up_to_date)
     products_with_categories = get_products_from_master_products(master_products_with_categories)
 
     products_to_compare = [*products_with_ids, *products_with_names, *products_with_categories]
