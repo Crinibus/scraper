@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Generator
+from typing import Iterator
 import plotly.graph_objs as go
 from datetime import datetime
 
@@ -161,9 +161,7 @@ def get_master_products(records_data: dict) -> tuple[MasterProduct]:
     return tuple(master_products)
 
 
-def get_products_with_ids(
-    master_products: tuple[MasterProduct], ids: list[str], only_up_to_date: bool
-) -> Generator[Product, None, None]:
+def get_products_with_ids(master_products: tuple[MasterProduct], ids: list[str], only_up_to_date: bool) -> Iterator[Product]:
     for master_product in master_products:
         for product in master_product.products:
             if only_up_to_date and not product.is_up_to_date:
@@ -177,7 +175,7 @@ def get_products_with_ids(
 
 def get_master_products_with_categories(
     master_products: tuple[MasterProduct], categories: list[str], only_up_to_date: bool
-) -> Generator[MasterProduct, None, None]:
+) -> Iterator[MasterProduct]:
     for master_product in master_products:
         if master_product.category.lower() not in categories:
             continue
@@ -190,7 +188,7 @@ def get_master_products_with_categories(
 
 def get_master_products_with_names(
     master_products: tuple[MasterProduct], names: list[str], only_up_to_date: bool
-) -> list[MasterProduct]:
+) -> Iterator[MasterProduct]:
     for master_product in master_products:
         if master_product.product_name.lower() not in names:
             continue
