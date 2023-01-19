@@ -25,6 +25,7 @@ class BaseWebsiteHandler(ABC):
         self.url = url
         self.website_name = get_website_name(url)
         self.info: Info = None
+        self.request_data = None
 
     def get_product_info(self) -> Info:
         try:
