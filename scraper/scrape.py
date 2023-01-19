@@ -1,4 +1,3 @@
-from typing import List
 import time
 import threading
 import logging
@@ -75,7 +74,7 @@ def add_product_datapoint(product_data: dict, price: float) -> None:
         product_datapoints.append(new_datapoint)
 
 
-def start_threads_sequentially(threads: List[threading.Thread], request_delay: int) -> None:
+def start_threads_sequentially(threads: list[threading.Thread], request_delay: int) -> None:
     for thread in threads:
         thread.start()
         thread.join()

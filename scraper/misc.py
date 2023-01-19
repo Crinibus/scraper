@@ -1,4 +1,3 @@
-from typing import Dict, List
 import pandas as pd
 from pandas.core.groupby.generic import DataFrameGroupBy
 
@@ -6,7 +5,7 @@ from scraper.scrape import Scraper
 from scraper.domains import get_website_name
 
 
-def add_dataframe_column(df: pd.DataFrame, column_name: str, column_data: List[any]) -> pd.DataFrame:
+def add_dataframe_column(df: pd.DataFrame, column_name: str, column_data: list[any]) -> pd.DataFrame:
     df[column_name] = column_data
     return df
 
@@ -23,8 +22,8 @@ def get_products_df_grouped_by_domains(products_df: pd.DataFrame) -> DataFrameGr
     return grouped_df
 
 
-def get_products_grouped_by_domain(grouped_products_df: DataFrameGroupBy) -> Dict[str, List[Scraper]]:
-    domains_dict: Dict[str, List[Scraper]] = {}
+def get_products_grouped_by_domain(grouped_products_df: DataFrameGroupBy) -> dict[str, list[Scraper]]:
+    domains_dict: dict[str, list[Scraper]] = {}
 
     for domain_name in grouped_products_df.groups:
         group_products = grouped_products_df.get_group(domain_name)

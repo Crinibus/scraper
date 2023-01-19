@@ -1,9 +1,9 @@
-from typing import Iterator, List, Tuple
+from typing import Iterator
 
 from scraper.filemanager import Filemanager
 
 
-def print_latest_datapoints(names: List[str], ids: List[str]) -> None:
+def print_latest_datapoints(names: list[str], ids: list[str]) -> None:
     records_data = Filemanager.get_record_data()
 
     if names:
@@ -24,7 +24,7 @@ def print_latest_datapoints(names: List[str], ids: List[str]) -> None:
             print()
 
 
-def get_product_info_with_name(name: str, records_data: dict) -> Iterator[Tuple[str, str, dict]]:
+def get_product_info_with_name(name: str, records_data: dict) -> Iterator[tuple[str, str, dict]]:
     for category_dict in records_data.values():
         for product_name, product_dict in category_dict.items():
             if not product_name.lower() == name.lower():
@@ -33,7 +33,7 @@ def get_product_info_with_name(name: str, records_data: dict) -> Iterator[Tuple[
                 yield website_name, website_dict
 
 
-def get_product_info_with_id(id: str, records_data: dict) -> Tuple[str, str, dict]:
+def get_product_info_with_id(id: str, records_data: dict) -> tuple[str, str, dict]:
     for category_dict in records_data.values():
         for product_name, product_dict in category_dict.items():
             for website_name, website_dict in product_dict.items():
