@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Dict
 from scraper.domains import (
     AmazonHandler,
     AvCablesHandler,
@@ -22,7 +21,7 @@ from scraper.format import Info
 from scraper.filemanager import Filemanager
 
 test_objects_json = Filemanager.read_json("./tests/test_objects.json")
-test_website_handlers_json: Dict[str, Dict[str, str]] = test_objects_json["test_website_handlers"]
+test_website_handlers_json: dict[str, dict[str, str]] = test_objects_json["test_website_handlers"]
 
 komplett_test = test_website_handlers_json["komplett"]
 proshop_test = test_website_handlers_json["proshop"]
