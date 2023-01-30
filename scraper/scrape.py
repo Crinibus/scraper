@@ -1,3 +1,5 @@
+import time
+import threading
 import logging
 from datetime import datetime
 from scraper.domains import BaseWebsiteHandler, get_website_handler
@@ -70,3 +72,10 @@ def add_product_datapoint(product_data: dict, price: float) -> None:
         latest_datapoint["price"] = price
     else:
         product_datapoints.append(new_datapoint)
+
+
+def start_threads_sequentially(threads: list[threading.Thread], request_delay: int) -> None:
+    for thread in threads:
+        thread.start()
+        thread.join()
+        time.sleep(request_delay)
