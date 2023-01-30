@@ -84,21 +84,22 @@ def scrape_with_threads() -> None:
         scraper_threads = [threading.Thread(target=product.scrape_info) for product in products]
         grouped_scraper_threads.append(scraper_threads)
 
-    # Create master threads to manage scraper threads sequentially for each domain
-    master_threads = [
-        threading.Thread(target=scraper.start_threads_sequentially, args=[scraper_threads, request_delay])
-        for scraper_threads in grouped_scraper_threads
-    ]
-
-    # Start all master threads
-    for master_thread in master_threads:
-        master_thread.start()
-
-    # Wait for all master threads to finish
-    for master_thread in master_threads:
-        master_thread.join()
-
     products_flatten = [product for products in grouped_products.values() for product in products]
+
+    with alive_progress.alive_bar(len(products_flatten), title="Scraping with threads") as progress_bar:
+        # Create master threads to manage scraper threads sequentially for each domain
+        master_threads = [
+            threading.Thread(target=scraper.start_threads_sequentially, args=[scraper_threads, request_delay, progress_bar])
+            for scraper_threads in grouped_scraper_threads
+        ]
+
+        # Start all master threads
+        for master_thread in master_threads:
+            master_thread.start()
+
+        # Wait for all master threads to finish
+        for master_thread in master_threads:
+            master_thread.join()
 
     # Save scraped data for each product (sequentially)
     for product in products_flatten:
