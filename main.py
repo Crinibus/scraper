@@ -52,12 +52,6 @@ def scrape() -> None:
     # Create instances of class "Scraper"
     products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
 
-    # Scrape and save scraped data for each product (sequentially)
-    # for product in products:
-    #     time.sleep(request_delay)
-    #     product.scrape_info()
-    #     product.save_info()
-
     with alive_progress.alive_bar(len(products), title="Scraping") as bar:
         # Scrape and save scraped data for each product (sequentially)
         for product in products:
