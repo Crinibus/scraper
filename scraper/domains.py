@@ -1,16 +1,20 @@
+from typing import Dict
 import requests
-from requests import Response
+import urllib.parse
 from bs4 import BeautifulSoup
 import json
 import logging
 from abc import ABC, abstractmethod
 from scraper.format import Format, Info
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
+from scraper.filemanager import Config
 
 
-def request_url(url: str) -> Response:
+def request_url(url: str) -> requests.Response:
+    request_timeout = Config.get_request_timeout()
+
     try:
-        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=10)
+        response = requests.get(url, headers=REQUEST_HEADER, cookies=REQUEST_COOKIES, timeout=request_timeout)
         return response
     except requests.RequestException:
         logging.getLogger(__name__).exception(f"Module requests exception with url: {url}")
@@ -18,10 +22,10 @@ def request_url(url: str) -> Response:
 
 class BaseWebsiteHandler(ABC):
     def __init__(self, url: str) -> None:
-        # super().__init__()
         self.url = url
         self.website_name = get_website_name(url)
         self.info: Info = None
+        self.request_data = None
 
     def get_product_info(self) -> Info:
         try:
@@ -91,12 +95,12 @@ class KomplettHandler(BaseWebsiteHandler):
 
 
 class ProshopHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         soup_script_tag = self.request_data.find("script", type="application/ld+json").contents[0]
-        self.soup_script_tag_json = json.loads(soup_script_tag)
+        self.script_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
-        return self.soup_script_tag_json["name"]
+        return self.script_json["name"]
 
     def _get_product_price(self) -> float:
         try:
@@ -127,7 +131,7 @@ class ProshopHandler(BaseWebsiteHandler):
         return price
 
     def _get_product_currency(self) -> str:
-        currency = self.soup_script_tag_json.get("offers").get("priceCurrency")
+        currency = self.script_json.get("offers").get("priceCurrency")
         return currency
 
     def _get_product_id(self) -> str:
@@ -185,9 +189,9 @@ class ElgigantenHandler(BaseWebsiteHandler):
 
 
 class AvXpertenHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         soup_script_tag = self.request_data.find("script", type="application/ld+json").contents[0]
-        self.soup_script_tag_json = json.loads(soup_script_tag)
+        self.script_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
         return self.request_data.find("div", class_="content-head").h1.text.strip()
@@ -196,10 +200,10 @@ class AvXpertenHandler(BaseWebsiteHandler):
         return float(self.request_data.find("div", class_="price").text.replace("\xa0DKK", ""))
 
     def _get_product_currency(self) -> str:
-        return self.soup_script_tag_json.get("offers").get("priceCurrency")
+        return self.script_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
-        return self.soup_script_tag_json.get("sku")
+        return self.script_json.get("sku")
 
     def get_short_url(self) -> str:
         return self.url
@@ -235,20 +239,36 @@ class AmazonHandler(BaseWebsiteHandler):
         return self.request_data.find("span", id="productTitle").text.strip()
 
     def _get_product_price(self) -> float:
-        try:
-            return float(self.request_data.find("input", id="attach-base-product-price").get("value"))
-        except (AttributeError, ValueError, TypeError):
-            return float(
-                self.request_data.find("span", class_="a-price a-text-price a-size-medium").span.text.replace("$", "")
-            )
+        return float(self.request_data.find("span", class_="a-price").span.text.replace("$", ""))
 
     def _get_product_currency(self) -> str:
         try:
             return self.request_data.find("input", id="attach-currency-of-preference").get("value")
         except (AttributeError, ValueError, TypeError):
-            return (
-                self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
-            )
+            try:
+                return (
+                    self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
+                )
+            except (AttributeError, ValueError, TypeError):
+                raw_data = self.request_data.find_all(
+                    "span",
+                    class_="a-declarative",
+                    attrs={
+                        "data-action": "a-modal",
+                        "data-csa-c-type": "widget",
+                        "data-csa-c-func-deps": "aui-da-a-modal",
+                        "data-a-modal": True,
+                    },
+                )[1].get("data-a-modal")
+                json_data = json.loads(raw_data)
+                parsed_url = urllib.parse.unquote(json_data.get("url"))
+                currency = (
+                    json.loads(parsed_url.replace("/af/sp-detail/feedback-form?pl=", ""))
+                    .get("offerCollection")[0]
+                    .get("priceInfo")
+                    .get("currencyCode")
+                )
+                return currency
 
     def _get_product_id(self) -> str:
         try:
@@ -262,7 +282,7 @@ class AmazonHandler(BaseWebsiteHandler):
 
 
 class EbayHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         self.soup_url = self.request_data.find("meta", property="og:url").get("content")
 
     def _get_product_name(self) -> str:
@@ -359,9 +379,9 @@ class ExpertHandler(BaseWebsiteHandler):
 
 
 class MMVisionHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         soup_script_tag = self.request_data.find_all("script", type="application/ld+json")[1].contents[0]
-        self.soup_script_tag_json = json.loads(soup_script_tag)
+        self.script_json = json.loads(soup_script_tag)
 
     def _get_product_name(self) -> str:
         return self.request_data.find("h1", itemprop="name").text.strip()
@@ -370,10 +390,10 @@ class MMVisionHandler(BaseWebsiteHandler):
         return float(self.request_data.find("h3", class_="product-price text-right").text.strip("fra ").strip().strip(",-"))
 
     def _get_product_currency(self) -> str:
-        return self.soup_script_tag_json.get("offers").get("priceCurrency")
+        return self.script_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
-        return self.soup_script_tag_json.get("productID")
+        return self.script_json.get("productID")
 
     def get_short_url(self) -> str:
         return self.url
@@ -415,18 +435,18 @@ class SharkGamingHandler(BaseWebsiteHandler):
 
 
 class NeweggHandler(BaseWebsiteHandler):
-    def _get_common_data(self):
+    def _get_common_data(self) -> None:
         script_data_raw = self.request_data.find_all("script", type="application/ld+json")[2].text
-        self.product_data = json.loads(script_data_raw)
+        self.script_json = json.loads(script_data_raw)
 
     def _get_product_name(self) -> str:
-        return self.product_data.get("name")
+        return self.script_json.get("name")
 
     def _get_product_price(self) -> float:
-        return float(self.product_data.get("offers").get("price"))
+        return float(self.script_json.get("offers").get("price"))
 
     def _get_product_currency(self) -> str:
-        return self.product_data.get("offers").get("priceCurrency")
+        return self.script_json.get("offers").get("priceCurrency")
 
     def _get_product_id(self) -> str:
         return self.url.split("/")[5].split("?")[0]
@@ -437,16 +457,20 @@ class NeweggHandler(BaseWebsiteHandler):
 
 
 class HifiKlubbenHandler(BaseWebsiteHandler):
+    def _get_common_data(self) -> None:
+        script_data_raw = self.request_data.findAll("script", type="application/ld+json")[1].text
+        self.product_data = json.loads(script_data_raw)["offers"]
+
     def _get_product_name(self) -> str:
         brand_name = self.request_data.find("span", class_="product-page__brand-name").text
         model_name = self.request_data.find("span", class_="product-page__model-name").text
         return f"{brand_name} {model_name}"
 
     def _get_product_price(self) -> float:
-        return float(self.request_data.find("meta", itemprop="price").get("content"))
+        return float(self.product_data.get("price"))
 
     def _get_product_currency(self) -> str:
-        return self.request_data.find("meta", itemprop="priceCurrency").get("content")
+        return self.product_data.get("priceCurrency")
 
     def _get_product_id(self) -> str:
         return self.url.split("/")[4]
@@ -457,10 +481,11 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
 
 
 def get_website_name(url: str) -> str:
-    domain = url.split("/")[2]
+    stripped_url = url.removeprefix("https://").removeprefix("http://").removeprefix("www.")
+    domain = stripped_url.split("/")[0]
 
-    # Remove "www." and the TLD/DNS name (such as ".com")
-    website_name_list = domain.strip("www.").split(".")[:-1]
+    # Remove the TLD/DNS name (such as ".com")
+    website_name_list = domain.split(".")[:-1]
     website_name = ".".join(website_name_list)
     return website_name
 
@@ -468,58 +493,29 @@ def get_website_name(url: str) -> str:
 def get_website_handler(url: str) -> BaseWebsiteHandler:
     website_name = get_website_name(url).lower()
 
-    match website_name:
-        case "komplett":
-            return KomplettHandler(url)
-        case "proshop":
-            return ProshopHandler(url)
-        case "computersalg":
-            return ComputerSalgHandler(url)
-        case "elgiganten":
-            return ElgigantenHandler(url)
-        case "avxperten":
-            return AvXpertenHandler(url)
-        case "av-cables":
-            return AvCablesHandler(url)
-        case "amazon":
-            return AmazonHandler(url)
-        case "ebay":
-            return EbayHandler(url)
-        case "power":
-            return PowerHandler(url)
-        case "expert":
-            return ExpertHandler(url)
-        case "mm-vision":
-            return MMVisionHandler(url)
-        case "coolshop":
-            return CoolshopHandler(url)
-        case "sharkgaming":
-            return SharkGamingHandler(url)
-        case "newegg":
-            return NeweggHandler(url)
-        case "hifiklubben":
-            return HifiKlubbenHandler(url)
-        case _:
-            logging.getLogger(__name__).error(
-                f"Can't find a website handler - website: '{website_name}' possibly not supported"
-            )
-            return None
+    website_handler = SUPPORTED_DOMAINS.get(website_name, None)
+
+    if not website_handler:
+        logging.getLogger(__name__).error(f"Can't find a website handler - website: '{website_name}' possibly not supported")
+        return None
+
+    return website_handler(url)
 
 
-SUPPORTED_DOMAINS = {
-    "komplett",
-    "proshop",
-    "computersalg",
-    "elgiganten",
-    "avxperten",
-    "av-cables",
-    "amazon",
-    "ebay",
-    "power",
-    "expert",
-    "mm-vision",
-    "coolshop",
-    "sharkgaming",
-    "newegg",
-    "hifiklubben",
+SUPPORTED_DOMAINS: Dict[str, BaseWebsiteHandler] = {
+    "komplett": KomplettHandler,
+    "proshop": ProshopHandler,
+    "computersalg": ComputerSalgHandler,
+    "elgiganten": ElgigantenHandler,
+    "avxperten": AvXpertenHandler,
+    "av-cables": AvCablesHandler,
+    "amazon": AmazonHandler,
+    "ebay": EbayHandler,
+    "power": PowerHandler,
+    "expert": ExpertHandler,
+    "mm-vision": MMVisionHandler,
+    "coolshop": CoolshopHandler,
+    "sharkgaming": SharkGamingHandler,
+    "newegg": NeweggHandler,
+    "hifiklubben": HifiKlubbenHandler,
 }

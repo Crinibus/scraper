@@ -1,4 +1,4 @@
-from typing import Generator, List
+from typing import Iterator, List
 import plotly.graph_objs as go
 from scraper.filemanager import Filemanager
 from scraper.constants import WEBSITE_COLORS
@@ -199,7 +199,7 @@ def compare_products(ids: List[str], names: List[str]) -> None:
     fig.show()
 
 
-def format_data() -> Generator[dict, None, None]:
+def format_data() -> Iterator[dict]:
     records_data = Filemanager.get_record_data()
 
     for category_name, category_info in records_data.items():
@@ -211,8 +211,8 @@ def format_data() -> Generator[dict, None, None]:
             }
 
             for website_name, website_info in product_info.items():
-                dates = [datapoint["date"] for datapoint in website_info["datapoints"]]
-                prices = [datapoint["price"] for datapoint in website_info["datapoints"]]
+                dates: List[str] = [datapoint["date"] for datapoint in website_info["datapoints"]]
+                prices: List[float] = [datapoint["price"] for datapoint in website_info["datapoints"]]
 
                 product_data["websites"].append(
                     {
@@ -243,11 +243,11 @@ def add_scatter_plot(
     website_name: str,
     id: str,
     currency: str,
-    dates: list,
-    prices: list,
-    name=None,
-    color=None,
-    hover_text=None,
+    dates: List[str],
+    prices: List[float],
+    name: str = None,
+    color: str = None,
+    hover_text: str = None,
 ) -> None:
     scatter_name = name if name else f"{website_name.capitalize()} - {id}"
     scatter_color = color if color else WEBSITE_COLORS[website_name]
@@ -264,7 +264,7 @@ def add_scatter_plot(
     )
 
 
-def get_products_with_category(category_name: str) -> Generator[dict, None, None]:
+def get_products_with_category(category_name: str) -> Iterator[dict]:
     for product_info in format_data():
         if product_info["category"].lower() == category_name.lower():
             yield product_info
@@ -304,7 +304,7 @@ def get_product_with_name(name: str) -> dict:
     return None
 
 
-def get_products_with_names(names: List[str]) -> List[str]:
+def get_products_with_names(names: List[str]) -> List[dict]:
     names_lowercase = [name.lower() for name in names]
     products = []
     for product_info in format_data():
@@ -322,7 +322,7 @@ def get_products_with_names(names: List[str]) -> List[str]:
     return products
 
 
-def get_all_products() -> Generator[dict, None, None]:
+def get_all_products() -> Iterator[dict]:
     for product_info in format_data():
         yield product_info
 

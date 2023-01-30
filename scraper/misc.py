@@ -1,64 +1,33 @@
-from typing import Generator, List, Tuple
+import pandas as pd
+from pandas.core.groupby.generic import DataFrameGroupBy
 
-from scraper.filemanager import Filemanager
-
-
-def print_latest_datapoints(names: List[str], ids: List[str]):
-    records_data = Filemanager.get_record_data()
-
-    if names:
-        print("\n----- SHOWING LATEST DATAPOINT FOR NAME(s) -----")
-        for name in names:
-            print(name.upper())
-            # iterate the different websites the product with the specified name is scraped from
-            for website_name, website_dict in get_product_info_with_name(name, records_data):
-                print_latest_datapoint(website_name, website_dict)
-            print()
-
-    if ids:
-        print("\n----- SHOWING LATEST DATAPOINT FOR ID(s) -----")
-        for id in ids:
-            product_name, website_name, website_dict = get_product_info_with_id(id, records_data)
-            print(product_name.upper())
-            print_latest_datapoint(website_name, website_dict)
-            print()
+from scraper.scrape import Scraper
+from scraper.domains import get_website_name
 
 
-def get_product_info_with_name(name: str, records_data: dict) -> Generator[Tuple[str, str, dict], None, None]:
-    for category_dict in records_data.values():
-        for product_name, product_dict in category_dict.items():
-            if not product_name.lower() == name.lower():
-                continue
-            for website_name, website_dict in product_dict.items():
-                yield website_name, website_dict
+def add_dataframe_column(df: pd.DataFrame, column_name: str, column_data: list[any]) -> pd.DataFrame:
+    df[column_name] = column_data
+    return df
 
 
-def get_product_info_with_id(id: str, records_data: dict) -> Tuple[str, str, dict]:
-    for category_dict in records_data.values():
-        for product_name, product_dict in category_dict.items():
-            for website_name, website_dict in product_dict.items():
-                if website_dict["info"]["id"] == id:
-                    return product_name, website_name, website_dict
+def group_df(df: pd.DataFrame, column_name: str, group_keys: bool) -> DataFrameGroupBy:
+    grouped_df = df.groupby(column_name, group_keys=group_keys)
+    return grouped_df
 
 
-def print_latest_datapoint(website_name: str, website_dict: dict) -> None:
-    id = website_dict["info"]["id"]
-    currency = website_dict["info"]["currency"]
-    latest_datapoint = website_dict["datapoints"][-1]
-    date = latest_datapoint["date"]
-    price = latest_datapoint["price"]
-    print(f"> {website_name.capitalize()} - {id}\n  - {currency} {price}\n  - {date}")
+def get_products_df_grouped_by_domains(products_df: pd.DataFrame) -> DataFrameGroupBy:
+    domain_names = [get_website_name(url) for url in products_df["url"]]
+    df = add_dataframe_column(products_df, "domain", domain_names)
+    grouped_df = group_df(df, "domain", True)
+    return grouped_df
 
 
-def print_all_products():
-    records_data = Filemanager.get_record_data()
+def get_products_grouped_by_domain(grouped_products_df: DataFrameGroupBy) -> dict[str, list[Scraper]]:
+    domains_dict: dict[str, list[Scraper]] = {}
 
-    print("\n----- SHOWING ALL PRODUCTS -----")
-    for category_name, category_dict in records_data.items():
-        print(category_name.upper())
-        for product_name, product_dict in category_dict.items():
-            print(f"  > {product_name.upper()}")
-            for website_name, website_dict in product_dict.items():
-                product_id = website_dict["info"]["id"]
-                print(f"    - {website_name.upper()} - {product_id}")
-    print()
+    for domain_name in grouped_products_df.groups:
+        group_products = grouped_products_df.get_group(domain_name)
+        domains_dict[domain_name] = [
+            Scraper(category, url) for category, url in zip(group_products["category"], group_products["url"])
+        ]
+    return domains_dict

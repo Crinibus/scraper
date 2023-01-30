@@ -37,9 +37,9 @@
             "expected_currency": "DKK"
         },
         "amazon": {
-            "link": "https://www.amazon.com/Sony-WH-1000XM4-Wireless-Canceling-Headphones/dp/B08HDKHSSN/ref=sr_1_3?crid=2QKY9WQGCV809&keywords=sony+xm4&qid=1660593858&sprefix=sony+xm%2Caps%2C171&sr=8-3",
-            "expected_title": "Sony WH-1000XM4 Wireless Noise Canceling Overhead Headphones - Black (Renewed)",
-            "expected_id": "B08HDKHSSN",
+            "link": "https://www.amazon.com/Sony-WH-1000XM5-Canceling-Headphones-Hands-Free/dp/B09XS7JWHH",
+            "expected_title": "Sony WH-1000XM5 Wireless Industry Leading Headphones with Auto Noise Canceling Optimizer, Crystal Clear Hands-Free Calling, and Alexa Voice Control, Black",
+            "expected_id": "B09XS7JWHH",
             "expected_currency": "USD"
         },
         "ebay_with_itm": {
@@ -49,9 +49,9 @@
             "expected_currency": "USD"
         },
         "ebay_with_p": {
-            "link": "https://www.ebay.com/p/1248083754?iid=181677611772&rt=nc",
-            "expected_title": "Etude House Collagen Eye Patch Korea Cosmetics 10 Sheets",
-            "expected_id": "1248083754",
+            "link": "https://www.ebay.com/p/17005345300?iid=391613649077",
+            "expected_title": "O Hui Age Recovery Eye Cream 1ml X 40pcs (40ml) Baby Collagen OHUI",
+            "expected_id": "17005345300",
             "expected_currency": "USD"
         },
         "expert": {

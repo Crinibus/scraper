@@ -1,6 +1,6 @@
 import pathlib
 import configparser
-from typing import Generator
+from typing import Iterator
 import pandas as pd
 import json
 import csv
@@ -22,18 +22,18 @@ class Filemanager:
         return data
 
     @staticmethod
-    def write_json(filename: str, data: dict):
+    def write_json(filename: str, data: dict) -> None:
         with open(filename, "w", encoding="utf8") as file:
             json.dump(data, file, ensure_ascii=False, indent=2)
 
     @staticmethod
-    def append_csv(filename: str, data: list):
+    def append_csv(filename: str, data: list) -> None:
         with open(filename, "a", encoding="utf8", newline="") as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(data)
 
     @staticmethod
-    def clear_csv(filename: str):
+    def clear_csv(filename: str) -> None:
         with open(filename, "w", encoding="utf8") as file:
             file.truncate()
 
@@ -86,7 +86,7 @@ class Config:
         return config["ChangeName"]
 
     @staticmethod
-    def get_key_values(elements: list) -> Generator[str, None, None]:
+    def get_key_values(elements: list) -> Iterator[str]:
         for elem in elements:
             if "key" in elem:
                 yield elem
@@ -95,3 +95,13 @@ class Config:
     def get_request_delay() -> int:
         config = Config.read(Filemanager.settings_ini_path)
         return int(config["Scraping"]["request_delay"])
+
+    @staticmethod
+    def get_request_timeout() -> float | None:
+        """Get request timeout - if number return float else return None"""
+        config = Config.read(Filemanager.settings_ini_path)
+        timeout = config["Scraping"]["request_timeout"]
+        try:
+            return float(timeout)
+        except ValueError:
+            return None

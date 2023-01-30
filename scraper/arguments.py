@@ -1,9 +1,9 @@
-from argparse import ArgumentParser
+import argparse
 
 
-def argparse_setup() -> ArgumentParser.parse_args:
+def argparse_setup() -> argparse.Namespace:
     """Setup and return argparse."""
-    parser = ArgumentParser(description="")
+    parser = argparse.ArgumentParser(description="")
 
     parser.add_argument(
         "-s",
@@ -133,7 +133,7 @@ def argparse_setup() -> ArgumentParser.parse_args:
     return args
 
 
-def validate_arguments(parser: ArgumentParser) -> None:
+def validate_arguments(parser: argparse.ArgumentParser) -> argparse.Namespace:
     """Validate arguments"""
     args = parser.parse_args()
 

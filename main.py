@@ -1,3 +1,4 @@
+from typing import List
 import threading
 import logging.config
 import logging
@@ -8,7 +9,7 @@ import scraper
 alive_progress.config_handler.set_global(ctrl_c=False, dual_line=True, theme="classic", stats=False)
 
 
-def main():
+def main() -> None:
     args = scraper.argparse_setup()
 
     if args.clean_data:
@@ -42,7 +43,7 @@ def main():
         scraper.delete(args.category, args.name, args.id, args.all)
 
 
-def scrape():
+def scrape() -> None:
     print("Scraping...")
 
     request_delay = scraper.Config.get_request_delay()
@@ -67,31 +68,40 @@ def scrape():
             bar()
 
 
-def scrape_with_threads():
+def scrape_with_threads() -> None:
     print("Scraping with threads...")
 
     request_delay = scraper.Config.get_request_delay()
+
     products_df = scraper.Filemanager.get_products_data()
+    domain_grouped_products_df = scraper.get_products_df_grouped_by_domains(products_df)
+    grouped_products = scraper.get_products_grouped_by_domain(domain_grouped_products_df)
 
-    # Create instances of class "Scraper"
-    products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
+    grouped_scraper_threads: List[List[threading.Thread]] = []
 
-    # Create threads
-    threads = [threading.Thread(target=product.scrape_info) for product in products]
+    # Create scraper threads and group by domain
+    for products in grouped_products.values():
+        scraper_threads = [threading.Thread(target=product.scrape_info) for product in products]
+        grouped_scraper_threads.append(scraper_threads)
 
-    with alive_progress.alive_bar(len(products), title="Scraping") as bar:
-        # Start scraping on all threads
-        for thread in threads:
-            time.sleep(request_delay)
-            thread.start()
+    # Create master threads to manage scraper threads sequentially for each domain
+    master_threads = [
+        threading.Thread(target=scraper.start_threads_sequentially, args=[scraper_threads, request_delay])
+        for scraper_threads in grouped_scraper_threads
+    ]
 
-        # Wait for all threads to finish
-        for thread in threads:
-            thread.join()
-            bar()
+    # Start all master threads
+    for master_thread in master_threads:
+        master_thread.start()
+
+    # Wait for all master threads to finish
+    for master_thread in master_threads:
+        master_thread.join()
+
+    products_flatten = [product for products in grouped_products.values() for product in products]
 
     # Save scraped data for each product (sequentially)
-    for product in products:
+    for product in products_flatten:
         product.save_info()
 
 
