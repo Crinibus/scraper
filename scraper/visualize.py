@@ -1,230 +1,204 @@
-from typing import Iterator, List
+from dataclasses import dataclass, field
+from typing import Iterable, Iterator
 import plotly.graph_objs as go
-from scraper.filemanager import Filemanager
-from scraper.constants import WEBSITE_COLORS
 from datetime import datetime
+
+from scraper import Filemanager
+from scraper.constants import WEBSITE_COLORS
+
+
+@dataclass
+class Datapoint:
+    date: str
+    price: float
+
+
+@dataclass
+class Product:
+    product_name: str
+    category: str
+    url: str
+    id: str
+    currency: str
+    website: str
+    datapoints: list[Datapoint]
+    is_up_to_date: bool
+
+    def get_all_dates(self) -> list[str]:
+        return [datapoint.date for datapoint in self.datapoints]
+
+    def get_all_prices(self) -> list[float]:
+        return [datapoint.price for datapoint in self.datapoints]
+
+
+@dataclass
+class MasterProduct:
+    product_name: str
+    category: str
+    products: list[Product] = field(default_factory=list)
 
 
 def visualize_data(
-    show_all: bool, categories: List[str], ids: List[str], names: List[str], only_up_to_date: bool, compare: bool
+    show_all: bool, categories: list[str], ids: list[str], names: list[str], only_up_to_date: bool, compare: bool
 ) -> None:
     print("Visualizing...")
 
+    # Convert all string to lowercase
+    categories = [category.lower() for category in categories]
+    ids = [id.lower() for id in ids]
+    names = [name.lower() for name in names]
+
+    records_data = Filemanager.get_record_data()
+    master_products = get_master_products(records_data)
+
     if compare:
-        compare_products(ids, names)
+        compare_products(master_products, ids, names, categories, only_up_to_date)
         return
 
     if show_all:
-        show_all_products(only_up_to_date)
+        show_master_products(master_products, only_up_to_date)
 
     if categories:
-        for category in categories:
-            show_category(category, only_up_to_date)
+        for master_product in get_master_products_with_categories(master_products, categories, only_up_to_date):
+            product_name = master_product.product_name.upper()
+            category = master_product.category.upper()
+            status_of_master_product = get_status_of_master_product(master_product)
+            title = f"Price(s) of {product_name} - {category} - {status_of_master_product}"
+            show_products(master_product.products, title)
 
     if ids:
-        for id in ids:
-            show_id(id)
+        for product in get_products_with_ids(master_products, ids, only_up_to_date):
+            status_of_product = get_status_of_product(product)
+            product_name = product.product_name.upper()
+            title = f"Price(s) of {product_name} - {status_of_product}"
+            show_product(product, title)
 
     if names:
-        for name in names:
-            show_name(name)
+        for master_product in get_master_products_with_names(master_products, names, only_up_to_date):
+            product_name = master_product.product_name.upper()
+            status_of_master_product = get_status_of_master_product(master_product)
+            title = f"Price(s) of {product_name} - {status_of_master_product}"
+            show_products(master_product.products, title)
 
 
-def show_id(id: str) -> None:
-    product_data = get_product_with_id(id)
+def compare_products(
+    master_products: tuple[MasterProduct], ids: list[str], names: list[str], categories: list[str], only_up_to_date: bool
+) -> None:
+    master_products_with_names = get_master_products_with_names(master_products, names, only_up_to_date)
+    products_with_names = get_products_from_master_products(master_products_with_names)
 
-    if not product_data:
-        print(f"Couldn't find product with id: {id}")
-        return
+    products_with_ids = list(get_products_with_ids(master_products, ids, only_up_to_date))
 
-    print(f"Visualizing product with id: {id}")
+    master_products_with_categories = get_master_products_with_categories(master_products, categories, only_up_to_date)
+    products_with_categories = get_products_from_master_products(master_products_with_categories)
 
-    product_name = product_data["name"]
-    product_info = product_data["info"]
+    products_to_compare = [*products_with_ids, *products_with_names, *products_with_categories]
 
+    product_ids = [product.id for product in products_to_compare]
+    product_ids_string = ", ".join(product_ids)
+
+    show_products(products_to_compare, f"Comparing products with ids: {product_ids_string}")
+
+
+def show_master_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
+    for master_product in master_products:
+        if only_up_to_date and not is_master_product_up_to_date(master_product):
+            continue
+
+        status_of_master_product = get_status_of_master_product(master_product)
+        show_products(
+            master_product.products, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}"
+        )
+
+
+def show_product(product: Product, title: str) -> None:
     fig = go.Figure()
     add_scatter_plot(
         fig,
-        product_info["website_name"],
-        str(product_info["id"]),
-        product_info["currency"],
-        product_info["dates"],
-        product_info["prices"],
+        product.website,
+        product.id,
+        product.currency,
+        product.get_all_dates(),
+        product.get_all_prices(),
     )
-
-    title = f"Price(s) of {product_name.upper()} - ID {product_info['id']}"
-
-    title_with_status = append_status_to_title(title, product_info["dates"])
-
-    config_figure(fig, title_with_status)
-    fig.show()
-
-
-def show_category(category: str, only_up_to_date: bool) -> None:
-    print(f"Visualizing products in category: {category.lower()}")
-
-    for product_info in get_products_with_category(category):
-        product_name = product_info["name"]
-        fig = go.Figure()
-
-        is_up_to_date = False
-
-        for website_info in product_info["websites"]:
-            add_scatter_plot(
-                fig,
-                website_info["website_name"],
-                str(website_info["id"]),
-                website_info["currency"],
-                website_info["dates"],
-                website_info["prices"],
-            )
-
-            if check_if_dates_up_to_date(website_info["dates"]):
-                is_up_to_date = True
-
-        if only_up_to_date and not is_up_to_date:
-            continue
-
-        title = f"Price(s) of {product_name.upper()}"
-
-        title_with_status = append_status_to_title_bool(title, is_up_to_date)
-
-        config_figure(fig, title_with_status)
-        fig.show()
-
-
-def show_name(name: str) -> None:
-    product_info = get_product_with_name(name)
-
-    if not product_info:
-        print(f"Couldn't find product with name: {name.lower()}")
-        return
-
-    print(f"Visualizing product with name: {name.lower()}")
-
-    fig = go.Figure()
-
-    is_up_to_date = False
-
-    for website_info in product_info["websites"]:
-        add_scatter_plot(
-            fig,
-            website_info["website_name"],
-            str(website_info["id"]),
-            website_info["currency"],
-            website_info["dates"],
-            website_info["prices"],
-        )
-
-        if check_if_dates_up_to_date(website_info["dates"]):
-            is_up_to_date = True
-
-    title = f"Price(s) of {name.upper()}"
-
-    title_with_status = append_status_to_title_bool(title, is_up_to_date)
-
-    config_figure(fig, title_with_status)
-    fig.show()
-
-
-def show_all_products(only_up_to_date: bool) -> None:
-    if only_up_to_date:
-        print("Visualizing all products that are up to date...")
-    else:
-        print("Visualizing all products...")
-
-    for product_info in get_all_products():
-        fig = go.Figure()
-
-        is_up_to_date = False
-
-        for website_info in product_info["websites"]:
-            add_scatter_plot(
-                fig,
-                website_info["website_name"],
-                str(website_info["id"]),
-                website_info["currency"],
-                website_info["dates"],
-                website_info["prices"],
-            )
-
-            if check_if_dates_up_to_date(website_info["dates"]):
-                is_up_to_date = True
-
-        if only_up_to_date and not is_up_to_date:
-            continue
-
-        title = f"Price(s) of {product_info['name'].upper()}"
-
-        title_with_status = append_status_to_title_bool(title, is_up_to_date)
-
-        config_figure(fig, title_with_status)
-        fig.show()
-
-
-def compare_products(ids: List[str], names: List[str]) -> None:
-    products_with_ids = get_products_with_ids(ids)
-    products_with_name = get_products_with_names(names)
-
-    products = [*products_with_ids, *products_with_name]
-
-    if len(products_with_ids) < len(ids) or len(products_with_name) < len(names):
-        print("\nCouldn't find all products that have the specified id(s) or name(s), only comparing those that are found\n")
-
-    product_ids = [product["info"]["id"] for product in products]
-    product_ids_string = ", ".join(product_ids)
-
-    print(f"Comparing products with ids: {product_ids_string}")
-
-    fig = go.Figure()
-
-    for product in products:
-        product_name = product["name"]
-        product_info = product["info"]
-        product_id = product_info["id"]
-
-        add_scatter_plot(
-            fig,
-            product_info["website_name"],
-            str(product_id),
-            product_info["currency"],
-            product_info["dates"],
-            product_info["prices"],
-            name=f"{product_id} - {product_name}",
-        )
-
-    title = f"Comparing products with ids {product_ids_string}"
-
     config_figure(fig, title)
     fig.show()
 
 
-def format_data() -> Iterator[dict]:
-    records_data = Filemanager.get_record_data()
+def show_products(products: list[Product], title: str) -> None:
+    fig = go.Figure()
+    for product in products:
+        add_scatter_plot(
+            fig,
+            product.website,
+            product.id,
+            product.currency,
+            product.get_all_dates(),
+            product.get_all_prices(),
+        )
+    config_figure(fig, title)
+    fig.show()
+
+
+def get_master_products(records_data: dict) -> tuple[MasterProduct]:
+    master_products: list[MasterProduct] = []
 
     for category_name, category_info in records_data.items():
         for product_name, product_info in category_info.items():
-            product_data = {
-                "name": product_name,
-                "category": category_name,
-                "websites": [],
-            }
-
+            master_product = MasterProduct(product_name, category_name)
             for website_name, website_info in product_info.items():
-                dates: List[str] = [datapoint["date"] for datapoint in website_info["datapoints"]]
-                prices: List[float] = [datapoint["price"] for datapoint in website_info["datapoints"]]
+                id = website_info["info"]["id"]
+                url = website_info["info"]["url"]
+                currency = website_info["info"]["currency"]
+                datapoints = [Datapoint(datapoint["date"], datapoint["price"]) for datapoint in website_info["datapoints"]]
+                is_up_to_date = is_datapoints_up_to_date(datapoints)
+                product = Product(product_name, category_name, url, id, currency, website_name, datapoints, is_up_to_date)
+                master_product.products.append(product)
+            master_products.append(master_product)
 
-                product_data["websites"].append(
-                    {
-                        "website_name": website_name,
-                        "id": website_info["info"]["id"],
-                        "currency": website_info["info"]["currency"],
-                        "dates": dates,
-                        "prices": prices,
-                    }
-                )
+    return tuple(master_products)
 
-            yield product_data
+
+def get_products_with_ids(master_products: tuple[MasterProduct], ids: list[str], only_up_to_date: bool) -> Iterator[Product]:
+    for master_product in master_products:
+        for product in master_product.products:
+            if only_up_to_date and not product.is_up_to_date:
+                continue
+
+            if product.id.lower() not in ids:
+                continue
+
+            yield product
+
+
+def get_master_products_with_categories(
+    master_products: tuple[MasterProduct], categories: list[str], only_up_to_date: bool
+) -> Iterator[MasterProduct]:
+    for master_product in master_products:
+        if master_product.category.lower() not in categories:
+            continue
+
+        if only_up_to_date and not is_master_product_up_to_date(master_product):
+            continue
+
+        yield master_product
+
+
+def get_master_products_with_names(
+    master_products: tuple[MasterProduct], names: list[str], only_up_to_date: bool
+) -> Iterator[MasterProduct]:
+    for master_product in master_products:
+        if master_product.product_name.lower() not in names:
+            continue
+
+        if only_up_to_date and not is_master_product_up_to_date(master_product):
+            continue
+
+        yield master_product
+
+
+def get_products_from_master_products(master_products: Iterable[MasterProduct]) -> list[Product]:
+    return [product for master_product in master_products for product in master_product.products]
 
 
 def config_figure(figure: go.Figure, figure_title: str) -> None:
@@ -243,8 +217,8 @@ def add_scatter_plot(
     website_name: str,
     id: str,
     currency: str,
-    dates: List[str],
-    prices: List[float],
+    dates: list[str],
+    prices: list[float],
     name: str = None,
     color: str = None,
     hover_text: str = None,
@@ -264,75 +238,12 @@ def add_scatter_plot(
     )
 
 
-def get_products_with_category(category_name: str) -> Iterator[dict]:
-    for product_info in format_data():
-        if product_info["category"].lower() == category_name.lower():
-            yield product_info
-
-
-def get_product_with_id(id: str) -> dict:
-    for product_info in format_data():
-        for website_info in product_info["websites"]:
-            if id == str(website_info["id"]):
-                return {
-                    "name": product_info["name"],
-                    "category": product_info["category"],
-                    "info": website_info,
-                }
-    return None
-
-
-def get_products_with_ids(ids: List[str]) -> List[dict]:
-    products = []
-    for product_info in format_data():
-        for website_info in product_info["websites"]:
-            if str(website_info["id"]) in ids:
-                products.append(
-                    {
-                        "name": product_info["name"],
-                        "category": product_info["category"],
-                        "info": website_info,
-                    }
-                )
-    return products
-
-
-def get_product_with_name(name: str) -> dict:
-    for product_info in format_data():
-        if product_info["name"].lower() == name.lower():
-            return product_info
-    return None
-
-
-def get_products_with_names(names: List[str]) -> List[dict]:
-    names_lowercase = [name.lower() for name in names]
-    products = []
-    for product_info in format_data():
-        if not product_info["name"].lower() in names_lowercase:
-            continue
-
-        for website_info in product_info["websites"]:
-            products.append(
-                {
-                    "name": product_info["name"],
-                    "category": product_info["category"],
-                    "info": website_info,
-                }
-            )
-    return products
-
-
-def get_all_products() -> Iterator[dict]:
-    for product_info in format_data():
-        yield product_info
-
-
-def check_if_dates_up_to_date(dates: List[str]) -> bool:
-    """check if today and the last date in dates is at most 1 day apart"""
-    if len(dates) == 0:
+def is_datapoints_up_to_date(datapoints: list[Datapoint]) -> bool:
+    """check if today and the last date in datapoints is at most 1 day apart"""
+    if len(datapoints) == 0:
         return False
 
-    return is_date_up_to_date(dates[-1])
+    return is_date_up_to_date(datapoints[-1].date)
 
 
 def is_date_up_to_date(date: str) -> bool:
@@ -343,17 +254,20 @@ def is_date_up_to_date(date: str) -> bool:
     return date_diff.days <= 1
 
 
-def append_status_to_title(title: str, dates: list) -> str:
-    if len(dates) == 0:
-        return f"{title} - NO DATAPOINTS"
-
-    is_up_to_date = is_date_up_to_date(dates[-1])
-
-    return append_status_to_title_bool(title, is_up_to_date)
+def is_master_product_up_to_date(master_product: MasterProduct) -> bool:
+    return any((product.is_up_to_date for product in master_product.products))
 
 
-def append_status_to_title_bool(title: str, up_to_date: bool) -> str:
-    if up_to_date:
-        return f"{title} - UP TO DATE"
+def get_status_of_master_product(master_product: MasterProduct) -> str:
+    if is_master_product_up_to_date(master_product):
+        return get_status_of_product_by_bool(True)
 
-    return f"{title} - OUTDATED"
+    return get_status_of_product_by_bool(False)
+
+
+def get_status_of_product(product: Product) -> str:
+    return get_status_of_product_by_bool(product.is_up_to_date)
+
+
+def get_status_of_product_by_bool(up_to_date: bool) -> str:
+    return "UP TO DATE" if up_to_date else "OUTDATED"
