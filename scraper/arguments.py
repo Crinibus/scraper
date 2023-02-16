@@ -157,9 +157,9 @@ def validate_arguments(parser: argparse.ArgumentParser) -> argparse.Namespace:
             parser.error(
                 "When using --visualize, then one of the following is required: --all, --category, --id, --name, --compare"
             )
-        if args.compare and not any([args.id, args.name, args.category]):
+        if args.compare and not any([args.id, args.name, args.category, args.all]):
             parser.error(
-                "When using --visualize and --compare, then one of the following is required: --id, --name, --category"
+                "When using --visualize and --compare, then one of the following is required: --id, --name, --category, --all"
             )
 
     if args.latest_datapoint:
