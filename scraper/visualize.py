@@ -112,17 +112,7 @@ def show_master_products(master_products: tuple[MasterProduct], only_up_to_date:
 
 
 def show_product(product: Product, title: str) -> None:
-    fig = go.Figure()
-    add_scatter_plot(
-        fig,
-        product.website,
-        product.id,
-        product.currency,
-        product.get_all_dates(),
-        product.get_all_prices(),
-    )
-    config_figure(fig, title)
-    fig.show()
+    show_products([product], title)
 
 
 def show_products(products: list[Product], title: str) -> None:
