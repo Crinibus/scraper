@@ -157,11 +157,8 @@ def show_products(products: list[Product], title: str) -> None:
     for product in products:
         add_scatter_plot(
             fig,
-            product.website,
-            product.id,
-            product.currency,
-            product.get_all_dates(),
-            product.get_all_prices(),
+            product,
+            name_format="%website - %name - %id",
         )
     config_figure(fig, title)
     fig.show()
@@ -241,24 +238,20 @@ def config_figure(figure: go.Figure, figure_title: str) -> None:
 
 def add_scatter_plot(
     figure: go.Figure,
-    website_name: str,
-    id: str,
-    currency: str,
-    dates: list[str],
-    prices: list[float],
-    name: str = None,
+    product: Product,
     color: str = None,
     hover_text: str = None,
+    name_format: str = None,
 ) -> None:
-    scatter_name = name if name else f"{website_name.capitalize()} - {id}"
-    scatter_color = color if color else WEBSITE_COLORS[website_name]
-    scatter_hover_text = hover_text if hover_text else "Price: %{y:.0f}" + f" {currency}"
+    scatter_name = product.to_string_format(name_format) if name_format else f"{product.website.capitalize()} - {product.id}"
+    scatter_color = color if color else WEBSITE_COLORS[product.website]
+    scatter_hover_text = hover_text if hover_text else "Price: %{y:.0f}" + f" {product.currency}"
 
     figure.add_trace(
         go.Scatter(
             name=scatter_name,
-            x=dates,
-            y=prices,
+            x=product.get_all_dates(),
+            y=product.get_all_prices(),
             line={"color": scatter_color, "width": 2},
             hovertemplate=scatter_hover_text,
         )
