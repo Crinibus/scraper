@@ -44,7 +44,7 @@ hifiklubben_test = test_website_handlers_json["hifiklubben"]
 class BaseTestWebsiteHandler(ABC):
     test_handler: BaseWebsiteHandler
 
-    def setup(self) -> None:
+    def setup_method(self) -> None:
         if not self.test_handler.request_data:
             self.test_handler._request_product_data()
             self.test_handler._get_common_data()
@@ -72,9 +72,6 @@ class BaseTestWebsiteHandler(ABC):
 
 class TestKomplettHandler(BaseTestWebsiteHandler):
     test_handler = KomplettHandler(komplett_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -106,9 +103,6 @@ class TestKomplettHandler(BaseTestWebsiteHandler):
 class TestProshopHandler(BaseTestWebsiteHandler):
     test_handler = ProshopHandler(proshop_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -138,9 +132,6 @@ class TestProshopHandler(BaseTestWebsiteHandler):
 
 class TestComputersalgHandler(BaseTestWebsiteHandler):
     test_handler = ComputerSalgHandler(computersalg_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -172,9 +163,6 @@ class TestComputersalgHandler(BaseTestWebsiteHandler):
 class TestElgigantenHandler(BaseTestWebsiteHandler):
     test_handler = ElgigantenHandler(elgiganten_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -204,9 +192,6 @@ class TestElgigantenHandler(BaseTestWebsiteHandler):
 
 class TestAvXpertenHandler(BaseTestWebsiteHandler):
     test_handler = AvXpertenHandler(avxperten_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -238,9 +223,6 @@ class TestAvXpertenHandler(BaseTestWebsiteHandler):
 class TestAvCablesHandler(BaseTestWebsiteHandler):
     test_handler = AvCablesHandler(avcables_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -270,9 +252,6 @@ class TestAvCablesHandler(BaseTestWebsiteHandler):
 
 class TestAmazonHandler(BaseTestWebsiteHandler):
     test_handler = AmazonHandler(amazon_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -304,9 +283,6 @@ class TestAmazonHandler(BaseTestWebsiteHandler):
 # OBS: There is two Ebay versions - This is for url that start with 'ebay.com/itm/'
 class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
     test_handler = EbayHandler(ebay_with_itm_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -340,9 +316,6 @@ class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
 class TestEbayHandler_with_p(BaseTestWebsiteHandler):
     test_handler = EbayHandler(ebay_with_p_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -374,9 +347,6 @@ class TestEbayHandler_with_p(BaseTestWebsiteHandler):
 class TestPowerHandler(BaseTestWebsiteHandler):
     test_handler = PowerHandler(power_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -406,9 +376,6 @@ class TestPowerHandler(BaseTestWebsiteHandler):
 
 class TestExpertHandler(BaseTestWebsiteHandler):
     test_handler = ExpertHandler(expert_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -440,9 +407,6 @@ class TestExpertHandler(BaseTestWebsiteHandler):
 class TestMMVisionHandler(BaseTestWebsiteHandler):
     test_handler = MMVisionHandler(mmvision_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -472,9 +436,6 @@ class TestMMVisionHandler(BaseTestWebsiteHandler):
 
 class TestCoolshopHandler(BaseTestWebsiteHandler):
     test_handler = CoolshopHandler(coolshop_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
@@ -506,9 +467,6 @@ class TestCoolshopHandler(BaseTestWebsiteHandler):
 class TestSharkGamingHandler(BaseTestWebsiteHandler):
     test_handler = SharkGamingHandler(sharkgaming_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -539,9 +497,6 @@ class TestSharkGamingHandler(BaseTestWebsiteHandler):
 class TestNeweggHandler(BaseTestWebsiteHandler):
     test_handler = NeweggHandler(newegg_test["link"])
 
-    def setup_method(self):
-        super().setup()
-
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
@@ -571,9 +526,6 @@ class TestNeweggHandler(BaseTestWebsiteHandler):
 
 class TestHifiKlubbenHandler(BaseTestWebsiteHandler):
     test_handler = HifiKlubbenHandler(hifiklubben_test["link"])
-
-    def setup_method(self):
-        super().setup()
 
     def test_get_product_info(self, mocker) -> None:
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
