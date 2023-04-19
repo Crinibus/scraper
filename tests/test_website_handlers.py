@@ -51,60 +51,53 @@ class BaseTestWebsiteHandler(ABC):
 
     @abstractmethod
     def test_get_product_info(self) -> None:
-        self.setup()
         pass
 
     @abstractmethod
     def test_get_name(self) -> None:
-        self.setup()
         pass
 
     @abstractmethod
     def test_get_price(self) -> None:
-        self.setup()
         pass
 
     @abstractmethod
     def test_get_currency(self) -> None:
-        self.setup()
         pass
 
     @abstractmethod
     def test_get_id(self) -> None:
-        self.setup()
         pass
 
 
 class TestKomplettHandler(BaseTestWebsiteHandler):
     test_handler = KomplettHandler(komplett_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = komplett_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == komplett_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == komplett_test["expected_id"]
@@ -113,33 +106,31 @@ class TestKomplettHandler(BaseTestWebsiteHandler):
 class TestProshopHandler(BaseTestWebsiteHandler):
     test_handler = ProshopHandler(proshop_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = proshop_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == proshop_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == proshop_test["expected_id"]
@@ -148,33 +139,31 @@ class TestProshopHandler(BaseTestWebsiteHandler):
 class TestComputersalgHandler(BaseTestWebsiteHandler):
     test_handler = ComputerSalgHandler(computersalg_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = computersalg_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == computersalg_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == computersalg_test["expected_id"]
@@ -183,33 +172,31 @@ class TestComputersalgHandler(BaseTestWebsiteHandler):
 class TestElgigantenHandler(BaseTestWebsiteHandler):
     test_handler = ElgigantenHandler(elgiganten_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = elgiganten_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == elgiganten_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == elgiganten_test["expected_id"]
@@ -218,33 +205,31 @@ class TestElgigantenHandler(BaseTestWebsiteHandler):
 class TestAvXpertenHandler(BaseTestWebsiteHandler):
     test_handler = AvXpertenHandler(avxperten_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = avxperten_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == avxperten_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == avxperten_test["expected_id"]
@@ -253,33 +238,31 @@ class TestAvXpertenHandler(BaseTestWebsiteHandler):
 class TestAvCablesHandler(BaseTestWebsiteHandler):
     test_handler = AvCablesHandler(avcables_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = avcables_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == avcables_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == avcables_test["expected_id"]
@@ -288,33 +271,31 @@ class TestAvCablesHandler(BaseTestWebsiteHandler):
 class TestAmazonHandler(BaseTestWebsiteHandler):
     test_handler = AmazonHandler(amazon_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = amazon_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == amazon_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == amazon_test["expected_id"]
@@ -324,34 +305,32 @@ class TestAmazonHandler(BaseTestWebsiteHandler):
 class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
     test_handler = EbayHandler(ebay_with_itm_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = ebay_with_itm_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert len(currency) == 3
         assert currency == ebay_with_itm_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == ebay_with_itm_test["expected_id"]
@@ -361,34 +340,32 @@ class TestEbayHandler_with_itm(BaseTestWebsiteHandler):
 class TestEbayHandler_with_p(BaseTestWebsiteHandler):
     test_handler = EbayHandler(ebay_with_p_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = ebay_with_p_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert len(currency) == 3
         # assert currency == ebay_with_p_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == ebay_with_p_test["expected_id"]
@@ -397,33 +374,31 @@ class TestEbayHandler_with_p(BaseTestWebsiteHandler):
 class TestPowerHandler(BaseTestWebsiteHandler):
     test_handler = PowerHandler(power_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = power_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == power_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == power_test["expected_id"]
@@ -432,33 +407,31 @@ class TestPowerHandler(BaseTestWebsiteHandler):
 class TestExpertHandler(BaseTestWebsiteHandler):
     test_handler = ExpertHandler(expert_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = expert_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == expert_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == expert_test["expected_id"]
@@ -467,33 +440,31 @@ class TestExpertHandler(BaseTestWebsiteHandler):
 class TestMMVisionHandler(BaseTestWebsiteHandler):
     test_handler = MMVisionHandler(mmvision_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = mmvision_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == mmvision_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == mmvision_test["expected_id"]
@@ -502,33 +473,31 @@ class TestMMVisionHandler(BaseTestWebsiteHandler):
 class TestCoolshopHandler(BaseTestWebsiteHandler):
     test_handler = CoolshopHandler(coolshop_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = coolshop_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == coolshop_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == coolshop_test["expected_id"]
@@ -537,33 +506,31 @@ class TestCoolshopHandler(BaseTestWebsiteHandler):
 class TestSharkGamingHandler(BaseTestWebsiteHandler):
     test_handler = SharkGamingHandler(sharkgaming_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = sharkgaming_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == sharkgaming_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == sharkgaming_test["expected_id"]
@@ -572,33 +539,31 @@ class TestSharkGamingHandler(BaseTestWebsiteHandler):
 class TestNeweggHandler(BaseTestWebsiteHandler):
     test_handler = NeweggHandler(newegg_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = newegg_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == newegg_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == newegg_test["expected_id"]
@@ -607,33 +572,31 @@ class TestNeweggHandler(BaseTestWebsiteHandler):
 class TestHifiKlubbenHandler(BaseTestWebsiteHandler):
     test_handler = HifiKlubbenHandler(hifiklubben_test["link"])
 
+    def setup_method(self):
+        super().setup()
+
     def test_get_product_info(self, mocker) -> None:
-        self.setup()
         mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
         actual = self.test_handler.get_product_info()
         assert isinstance(actual, Info)
         assert actual.valid
 
     def test_get_name(self) -> None:
-        self.setup()
         actual = self.test_handler._get_product_name().lower()
         expected = hifiklubben_test["expected_title"].lower()
         assert isinstance(actual, str)
         assert actual == expected
 
     def test_get_price(self) -> None:
-        self.setup()
         price = self.test_handler._get_product_price()
         assert isinstance(price, float)
 
     def test_get_currency(self) -> None:
-        self.setup()
         currency = self.test_handler._get_product_currency()
         assert isinstance(currency, str)
         assert currency == hifiklubben_test["expected_currency"]
 
     def test_get_id(self) -> None:
-        self.setup()
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == hifiklubben_test["expected_id"]
