@@ -387,7 +387,13 @@ class MMVisionHandler(BaseWebsiteHandler):
         return self.request_data.find("h1", itemprop="name").text.strip()
 
     def _get_product_price(self) -> float:
-        return float(self.request_data.find("h3", class_="product-price text-right").text.strip("fra ").strip().strip(",-"))
+        return float(
+            self.request_data.find("h3", class_="product-price text-right")
+            .text.strip("fra ")
+            .strip()
+            .strip(",-")
+            .replace(".", "")
+        )
 
     def _get_product_currency(self) -> str:
         return self.script_json.get("offers").get("priceCurrency")
