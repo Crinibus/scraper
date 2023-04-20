@@ -67,9 +67,9 @@
             "expected_currency": "DKK"
         },
         "mm-vision": {
-            "link": "https://www.mm-vision.dk/asus-zenbook-duo-14-ux482eg-pure9x-baerbar",
-            "expected_title": "Asus ZenBook Duo 14 UX482",
-            "expected_id": "6987132",
+            "link": "https://www.mm-vision.dk/demo-asus-rog-flow-x16-gv601",
+            "expected_title": "DEMO Asus ROG Flow X16 (GV601)",
+            "expected_id": "6987145",
             "expected_currency": "DKK"
         },
         "coolshop": {
