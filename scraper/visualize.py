@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Iterable, Iterator
 import plotly.graph_objs as go
 from datetime import datetime
+import re
 
 from scraper import Filemanager
 from scraper.constants import WEBSITE_COLORS
@@ -29,6 +30,42 @@ class Product:
 
     def get_all_prices(self) -> list[float]:
         return [datapoint.price for datapoint in self.datapoints]
+
+    def to_string_format(self, format: str) -> str:
+        """Return a string representing the product, controlled by an explicit format string.
+
+        >>> p = Product("ASUS RTX 4090", "GPU", "https://www.example.com/", "123", "USD", "example", [datepoints], True)
+        >>> p.to_string_format("Name: %name, Category: %category, URL: %url, ID: %id, Website: %website")
+        'Name: ASUS RTX 4090, Category: GPU, URL: https://www.example.com/, ID: 123, Website: example'
+        """
+        # inspiration from https://docs.python.org/3/library/re.html#writing-a-tokenizer
+        token_specification = [
+            ("NAME", r"(%name)"),
+            ("CATEGORY", r"(%category)"),
+            ("URL", r"(%url)"),
+            ("ID", r"(%id)"),
+            ("CURRENCY", r"(%currency)"),
+            ("WEBSITE", r"(%website)"),
+        ]
+        format_to = {
+            "NAME": self.product_name,
+            "CATEGORY": self.category,
+            "URL": self.url,
+            "ID": self.id,
+            "CURRENCY": self.currency,
+            "WEBSITE": self.website,
+        }
+
+        tok_regex = "|".join("(?P<%s>%s)" % pair for pair in token_specification)
+        new_string = format
+
+        for mo in re.finditer(tok_regex, format):
+            kind = mo.lastgroup
+            value = mo.group()
+
+            new_string = new_string.replace(value, format_to[kind], 1)
+
+        return new_string
 
 
 @dataclass
@@ -120,11 +157,8 @@ def show_products(products: list[Product], title: str) -> None:
     for product in products:
         add_scatter_plot(
             fig,
-            product.website,
-            product.id,
-            product.currency,
-            product.get_all_dates(),
-            product.get_all_prices(),
+            product,
+            name_format="%website - %name - %id",
         )
     config_figure(fig, title)
     fig.show()
@@ -204,24 +238,20 @@ def config_figure(figure: go.Figure, figure_title: str) -> None:
 
 def add_scatter_plot(
     figure: go.Figure,
-    website_name: str,
-    id: str,
-    currency: str,
-    dates: list[str],
-    prices: list[float],
-    name: str = None,
+    product: Product,
     color: str = None,
     hover_text: str = None,
+    name_format: str = None,
 ) -> None:
-    scatter_name = name if name else f"{website_name.capitalize()} - {id}"
-    scatter_color = color if color else WEBSITE_COLORS[website_name]
-    scatter_hover_text = hover_text if hover_text else "Price: %{y:.0f}" + f" {currency}"
+    scatter_name = product.to_string_format(name_format) if name_format else f"{product.website.capitalize()} - {product.id}"
+    scatter_color = color if color else WEBSITE_COLORS[product.website]
+    scatter_hover_text = hover_text if hover_text else "Price: %{y:.0f}" + f" {product.currency}"
 
     figure.add_trace(
         go.Scatter(
             name=scatter_name,
-            x=dates,
-            y=prices,
+            x=product.get_all_dates(),
+            y=product.get_all_prices(),
             line={"color": scatter_color, "width": 2},
             hovertemplate=scatter_hover_text,
         )
