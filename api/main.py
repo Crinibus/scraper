@@ -29,8 +29,8 @@ async def get_records(only_up_to_date: bool = False):
 async def get_products(ids: list[str] = Query(default=[]), utd: bool = False):
     records_data = Filemanager.get_record_data()
     master_products = get_master_products(records_data)
-    product = get_products_with_ids(master_products, ids, utd)
-    return product
+    products = get_products_with_ids(master_products, ids, utd)
+    return products
 
 
 class ScrapeId(BaseModel):
