@@ -247,7 +247,9 @@ class AmazonHandler(BaseWebsiteHandler):
         except (AttributeError, ValueError, TypeError):
             try:
                 return (
-                    self.request_data.find("a", id="icp-touch-link-cop").find("span", class_="icp-color-base").text.split(" ")[0]
+                    self.request_data.find("a", id="icp-touch-link-cop")
+                    .find("span", class_="icp-color-base")
+                    .text.split(" ")[0]
                 )
             except (AttributeError, ValueError, TypeError):
                 raw_data = self.request_data.find_all(
