@@ -1,16 +1,4 @@
-from dataclasses import dataclass
 from scraper.filemanager import Config
-
-
-@dataclass
-class Info:
-    """Scraped info about product"""
-
-    name: str
-    price: float
-    currency: str
-    id: str
-    valid: bool = True
 
 
 class Format:

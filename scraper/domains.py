@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 import json
 import logging
 from abc import ABC, abstractmethod
-from scraper.format import Format, Info
+
+from scraper.models import Info
+from scraper.format import Format
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.filemanager import Config
 
