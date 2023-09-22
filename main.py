@@ -13,7 +13,7 @@ def main() -> None:
     args = scraper.argparse_setup()
 
     if args.clean_data:
-        scraper.clean_records_data()
+        scraper.clean_datapoints()
 
     if args.visualize:
         scraper.visualize_data(args.all, args.category, args.id, args.name, args.up_to_date, args.compare)
