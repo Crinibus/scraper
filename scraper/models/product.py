@@ -14,20 +14,20 @@ class Info:
 
 
 @dataclass
-class Datapoint:
+class DataPointInfo:
     date: str
     price: float
 
 
 @dataclass
-class Product:
+class ProductInfo:
     product_name: str
     category: str
     url: str
     id: str
     currency: str
     website: str
-    datapoints: list[Datapoint]
+    datapoints: list[DataPointInfo]
     is_up_to_date: bool
 
     def get_all_dates(self) -> list[str]:
@@ -77,4 +77,4 @@ class Product:
 class MasterProduct:
     product_name: str
     category: str
-    products: list[Product] = field(default_factory=list)
+    products: list[ProductInfo] = field(default_factory=list)
