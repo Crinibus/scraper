@@ -5,7 +5,7 @@ class Product(SQLModel, table=True):
     __tablename__: str = "products"
 
     id: int = Field(default=None, primary_key=True)
-    productId: str
+    product_code: str
     name: str
     category: str
     domain: str
@@ -17,7 +17,7 @@ class DataPoint(SQLModel, table=True):
     __tablename__: str = "datapoints"
 
     id: int = Field(default=None, primary_key=True)
-    productId: str
+    product_code: str
     date: str
     price: float
     currency: str

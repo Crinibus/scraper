@@ -12,7 +12,7 @@ def clean_datapoints() -> None:
 
         for product in all_products:
             datapoints = session.exec(
-                select(DataPoint).where(DataPoint.productId == product.productId).order_by(col(DataPoint.date).asc())
+                select(DataPoint).where(DataPoint.product_code == product.product_code).order_by(col(DataPoint.date).asc())
             ).all()
 
             for index, datapoint in enumerate(datapoints):

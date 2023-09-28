@@ -71,7 +71,7 @@ class Format:
         products_to_db = [
             Product(
                 name=product_from_json.product_name,
-                productId=product_from_json.id,
+                product_code=product_from_json.id,
                 domain=product_from_json.website,
                 url=product_from_json.url,
                 category=product_from_json.category,
@@ -84,7 +84,7 @@ class Format:
         for product in products_from_json:
             for datapoint in product.datapoints:
                 datapoint_to_db = DataPoint(
-                    productId=product.id, date=datapoint.date, price=datapoint.price, currency=product.currency
+                    product_code=product.id, date=datapoint.date, price=datapoint.price, currency=product.currency
                 )
                 datapoints_to_db.append(datapoint_to_db)
 
