@@ -7,6 +7,7 @@ class Product(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     productId: str
     name: str
+    category: str
     domain: str
     url: str
     isActive: bool

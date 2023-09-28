@@ -74,6 +74,7 @@ class Format:
                 productId=product_from_json.id,
                 domain=product_from_json.website,
                 url=product_from_json.url,
+                category=product_from_json.category,
                 isActive=any([product_from_json.url == product_from_csv.url for product_from_csv in products_from_csv]),
             )
             for product_from_json in products_from_json
