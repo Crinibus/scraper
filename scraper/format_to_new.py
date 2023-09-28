@@ -5,7 +5,7 @@ from scraper import Scraper
 from scraper.filemanager import Config, Filemanager
 from scraper.domains import get_website_handler
 from scraper.visualize import get_master_products, get_products_from_master_products
-from scraper.database.models import Product as ProductDB, DataPoint as DataPointDB
+from scraper.database.models import Product, DataPoint
 from scraper.database.db import engine, create_db_and_tables
 
 
@@ -69,7 +69,7 @@ class Format:
         products_from_json = get_products_from_master_products(master_products)
 
         products_to_db = [
-            ProductDB(
+            Product(
                 name=product_from_json.product_name,
                 productId=product_from_json.id,
                 domain=product_from_json.website,
@@ -82,17 +82,17 @@ class Format:
         datapoints_to_db = []
         for product in products_from_json:
             for datapoint in product.datapoints:
-                datapoint_to_db = DataPointDB(
+                datapoint_to_db = DataPoint(
                     productId=product.id, date=datapoint.date, price=datapoint.price, currency=product.currency
                 )
                 datapoints_to_db.append(datapoint_to_db)
 
         with Session(engine) as session:
-            products_in_db = session.exec(select(ProductDB)).all()
+            products_in_db = session.exec(select(Product)).all()
             for product_in_db in products_in_db:
                 session.delete(product_in_db)
 
-            datapoints_in_db = session.exec(select(DataPointDB)).all()
+            datapoints_in_db = session.exec(select(DataPoint)).all()
             for datapoint_in_db in datapoints_in_db:
                 session.delete(datapoint_in_db)
 
@@ -102,7 +102,7 @@ class Format:
             session.commit()
 
         with Session(engine) as session:
-            products_in_db = session.exec(select(ProductDB)).all()
-            datapoints_in_db = session.exec(select(DataPointDB)).all()
+            products_in_db = session.exec(select(Product)).all()
+            datapoints_in_db = session.exec(select(DataPoint)).all()
             print(f"Inserted products to db: {len(products_in_db)}")
             print(f"Inserted datapoints to db: {len(datapoints_in_db)}")
