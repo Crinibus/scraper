@@ -10,15 +10,15 @@ def delete_all(elements: list[Product | DataPoint]) -> None:
         session.commit()
 
 
-def add_product(product: Product) -> None:
+def add(element: Product | DataPoint) -> None:
     with Session(engine) as session:
-        session.add(product)
+        session.add(element)
         session.commit()
 
 
-def add_datapoint(datapoint: DataPoint) -> None:
+def add_all(elements: list[Product] | list[DataPoint]) -> None:
     with Session(engine) as session:
-        session.add(datapoint)
+        session.add_all(elements)
         session.commit()
 
 

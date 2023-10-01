@@ -3,8 +3,8 @@ from .db import create_db_and_tables, engine
 
 from .functions import (
     delete_all,
-    add_datapoint,
-    add_product,
+    add,
+    add_all,
     get_all_products,
     get_all_datapoints,
     get_product_by_product_code,

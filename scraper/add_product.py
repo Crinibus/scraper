@@ -72,7 +72,7 @@ def add_new_product(product: Scraper) -> None:
         isActive=True,
     )
 
-    db.add_product(product_to_db)
+    db.add(product_to_db)
 
 
 def add_new_datapoint(product_code: str, price: float, currency: str, date: str | None = None):
@@ -87,7 +87,7 @@ def add_new_datapoint(product_code: str, price: float, currency: str, date: str 
         currency=currency,
     )
 
-    db.add_datapoint(new_datapoint)
+    db.add(new_datapoint)
 
 
 def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) -> None:
@@ -100,7 +100,7 @@ def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) ->
 
 def active_existing_product(product: db.Product) -> None:
     product.isActive = True
-    db.add_product(product)
+    db.add(product)
 
 
 def is_missing_url_schema(url: str) -> bool:
