@@ -1,8 +1,32 @@
-from sqlmodel import Session, select
+from sqlmodel import Session, select, col
 from .db import engine
-from .models import Product, DataPoint  # noqa: F401
+from .models import Product, DataPoint
 
 
-def get_product_by_product_id(product_id: str) -> Product | None:
+def delete_all(elements: list[Product | DataPoint]) -> None:
     with Session(engine) as session:
-        return session.exec(select(Product).where(Product.productId == product_id)).first()
+        for element in elements:
+            session.delete(element)
+        session.commit()
+
+
+def get_product_by_product_code(product_code: str) -> Product | None:
+    with Session(engine) as session:
+        return session.exec(select(Product).where(Product.product_code == product_code)).first()
+
+
+def get_products_by_product_codes(product_codes: list[str]) -> list[Product]:
+    with Session(engine) as session:
+        return session.exec(select(col(Product.product_code).in_(product_codes))).all()
+
+
+def add_product(product: Product) -> None:
+    with Session(engine) as session:
+        session.add(product)
+        session.commit()
+
+
+def add_datapoint(datapoint: DataPoint) -> None:
+    with Session(engine) as session:
+        session.add(datapoint)
+        session.commit()
