@@ -1,5 +1,8 @@
 import time
 from sqlmodel import Session, select
+from dataclasses import dataclass
+import pandas as pd
+import json
 
 from scraper import Scraper
 from scraper.filemanager import Config, Filemanager
@@ -9,11 +12,37 @@ from scraper.database.models import Product, DataPoint
 from scraper.database.db import engine, create_db_and_tables
 
 
+class FilemanagerLegacy:
+    @staticmethod
+    def read_json(filename: str) -> dict:
+        with open(filename, "r", encoding="utf8") as file:
+            data = json.load(file)
+        return data
+
+    @staticmethod
+    def get_record_data() -> dict:
+        data = FilemanagerLegacy.read_json(Filemanager.products_json_path)
+        return data
+
+    @staticmethod
+    def save_record_data(data: dict) -> None:
+        FilemanagerLegacy.write_json(Filemanager.products_json_path, data)
+
+    @staticmethod
+    def get_products_data() -> pd.DataFrame:
+        df = pd.read_csv(Filemanager.products_csv_path, sep=",", header=0)
+        return df
+
+    @staticmethod
+    def save_products_data(data_df: pd.DataFrame) -> None:
+        data_df.to_csv(Filemanager.products_csv_path, sep=",", header=True, index=False)
+
+
 class Format:
     @staticmethod
     def format_old_records_to_new() -> None:
         """Format records data from pre v1.1 to new records data format in v1.1"""
-        records_data = Filemanager.get_record_data()
+        records_data = FilemanagerLegacy.get_record_data()
 
         for category_info in records_data.values():
             for product_info in category_info.values():
@@ -26,14 +55,14 @@ class Format:
 
                     website_info.pop("dates")
 
-        Filemanager.save_record_data(records_data)
+        FilemanagerLegacy.save_record_data(records_data)
 
     @staticmethod
     def add_short_urls_to_products_csv() -> None:
         """Format products.csv to have short_url column - introduced in v2.3.0"""
         request_delay = Config.get_request_delay()
 
-        products_df = Filemanager.get_products_data()
+        products_df = FilemanagerLegacy.get_products_data()
 
         short_urls = []
         for _, row in products_df.iterrows():
@@ -50,7 +79,7 @@ class Format:
         products_df = products_df.drop("short_url", axis=1)
         products_df.insert(2, "short_url", short_urls, True)
 
-        Filemanager.save_products_data(products_df)
+        FilemanagerLegacy.save_products_data(products_df)
 
     @staticmethod
     def from_json_to_db() -> None:
@@ -58,8 +87,8 @@ class Format:
         - NOTE all products in database will be deleted before inserting data from records.json"""
 
         create_db_and_tables()
-        records = Filemanager.get_record_data()
-        products_df = Filemanager.get_products_data()
+        records = FilemanagerLegacy.get_record_data()
+        products_df = FilemanagerLegacy.get_products_data()
 
         products_from_csv = [
             Scraper(category, short_url) for category, short_url in zip(products_df["category"], products_df["short_url"])
