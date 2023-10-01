@@ -39,14 +39,14 @@ def get_product_by_product_code(product_code: str) -> Product | None:
 
 def get_products_by_product_codes(product_codes: list[str]) -> list[Product]:
     with Session(engine) as session:
-        return session.exec(select(col(Product.product_code).in_(product_codes))).all()
+        return session.exec(select(Product).where(col(Product.product_code).in_(product_codes))).all()
 
 
 def get_products_by_categories(categories: list[str]) -> list[Product]:
     with Session(engine) as session:
-        return session.exec(select(col(Product.category).in_(categories))).all()
+        return session.exec(select(Product).where(col(Product.category).in_(categories))).all()
 
 
 def get_products_by_names(names: list[str]) -> list[Product]:
     with Session(engine) as session:
-        return session.exec(select(col(Product.name).in_(names))).all()
+        return session.exec(select(Product).where(col(Product.name).in_(names))).all()
