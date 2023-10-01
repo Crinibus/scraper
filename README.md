@@ -170,14 +170,13 @@ Then just add products like described [here](#add-products).
 
 <br/>
 
-If you just want to reset your data for every product, deleting all datapoints inside every product, then run this command:
+If you just want to reset deleting all datapoints inside every product, then run this command:
 ```
 python3 main.py --reset --all
 ```
-This deletes the data inside each product, such as id, url and all datapoints.
 
 
-You can also just reset some products or all products in some categories:
+You can also just delete datapoints for some products:
 ```
 python3 main.py --reset --id <id>
 ```
