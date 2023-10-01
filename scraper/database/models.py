@@ -10,6 +10,7 @@ class Product(SQLModel, table=True):
     category: str
     domain: str
     url: str
+    short_url: str
     isActive: bool
 
 
