@@ -50,3 +50,27 @@ def get_products_by_categories(categories: list[str]) -> list[Product]:
 def get_products_by_names(names: list[str]) -> list[Product]:
     with Session(engine) as session:
         return session.exec(select(Product).where(col(Product.name).in_(names))).all()
+
+
+def get_datapoints_by_categories(categories: list[str]) -> list[DataPoint]:
+    with Session(engine) as session:
+        products = session.exec(select(Product).where(col(Product.category).in_(categories))).all()
+        product_codes = [product.product_code for product in products]
+        datapoints = session.exec(select(DataPoint).where(col(DataPoint.product_code).in_(product_codes))).all()
+        return datapoints
+
+
+def get_datapoints_by_names(names: list[str]) -> list[DataPoint]:
+    with Session(engine) as session:
+        products = session.exec(select(Product).where(col(Product.name).in_(names))).all()
+        product_codes = [product.product_code for product in products]
+        datapoints = session.exec(select(DataPoint).where(col(DataPoint.product_code).in_(product_codes))).all()
+        return datapoints
+
+
+def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]:
+    with Session(engine) as session:
+        products = session.exec(select(Product).where(col(Product.product_code).in_(product_codes))).all()
+        found_product_codes = [product.product_code for product in products]
+        datapoints = session.exec(select(DataPoint).where(col(DataPoint.product_code).in_(found_product_codes))).all()
+        return datapoints

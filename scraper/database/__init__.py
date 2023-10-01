@@ -11,4 +11,7 @@ from .functions import (
     get_products_by_product_codes,
     get_products_by_categories,
     get_products_by_names,
+    get_datapoints_by_categories,
+    get_datapoints_by_names,
+    get_datapoints_by_product_codes,
 )
