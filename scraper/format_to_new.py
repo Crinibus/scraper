@@ -4,12 +4,18 @@ from dataclasses import dataclass
 import pandas as pd
 import json
 
-from scraper import Scraper
 from scraper.filemanager import Config, Filemanager
 from scraper.domains import get_website_handler
 from scraper.visualize import get_master_products, get_products_from_master_products
 from scraper.database.models import Product, DataPoint
 from scraper.database.db import engine, create_db_and_tables
+
+
+@dataclass
+class ProductCSV:
+    url: str
+    short_url: str
+    category: str
 
 
 class FilemanagerLegacy:
@@ -91,25 +97,33 @@ class Format:
         products_df = FilemanagerLegacy.get_products_data()
 
         products_from_csv = [
-            Scraper(category, short_url) for category, short_url in zip(products_df["category"], products_df["short_url"])
+            ProductCSV(category=category, url=url, short_url=short_url)
+            for category, url, short_url in zip(products_df["category"], products_df["url"], products_df["short_url"])
         ]
 
         master_products = get_master_products(records)
         products_from_json = get_products_from_master_products(master_products)
 
-        products_to_db = [
-            Product(
-                name=product_from_json.product_name,
-                product_code=product_from_json.id,
-                domain=product_from_json.website,
-                url=product_from_json.url,
-                category=product_from_json.category,
-                isActive=any([product_from_json.url == product_from_csv.url for product_from_csv in products_from_csv]),
+        products_to_db: list[Product] = []
+        for product_json in products_from_json:
+            product_to_db = Product(
+                name=product_json.product_name,
+                product_code=product_json.id,
+                domain=product_json.website,
+                url="",
+                short_url=product_json.url,
+                category=product_json.category,
+                isActive=False,
             )
-            for product_from_json in products_from_json
-        ]
 
-        datapoints_to_db = []
+            for product_csv in products_from_csv:
+                if product_csv.short_url == product_json.url:
+                    product_to_db.url = product_csv.url
+                    product_to_db.isActive = True
+
+            products_to_db.append(product_to_db)
+
+        datapoints_to_db: list[DataPoint] = []
         for product in products_from_json:
             for datapoint in product.datapoints:
                 datapoint_to_db = DataPoint(
