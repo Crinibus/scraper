@@ -4,6 +4,8 @@ import scraper.database as db
 
 def delete(categories: list[str], names: list[str], product_codes: list[str], all: bool) -> None:
     print("Deleting...")
+    logging.getLogger(__name__).info(f"Deleting products and datapoint for {categories=}, {names=}, {product_codes=}, {all=}")
+
     if all:
         delete_all()
         return
