@@ -1,4 +1,5 @@
 import time
+from typing import Iterable
 from sqlmodel import Session, select
 from dataclasses import dataclass
 import pandas as pd
@@ -6,7 +7,8 @@ import json
 
 from scraper.filemanager import Config, Filemanager
 from scraper.domains import get_website_handler
-from scraper.visualize import get_master_products, get_products_from_master_products
+from scraper.models.product import DataPointInfo, MasterProduct, ProductInfo
+from scraper.visualize import is_datapoints_up_to_date
 from scraper.database.models import Product, DataPoint
 from scraper.database.db import engine, create_db_and_tables
 
@@ -150,3 +152,26 @@ class Format:
             datapoints_in_db = session.exec(select(DataPoint)).all()
             print(f"Inserted products to db: {len(products_in_db)}")
             print(f"Inserted datapoints to db: {len(datapoints_in_db)}")
+
+
+def get_master_products(records_data: dict) -> tuple[MasterProduct]:
+    master_products: list[MasterProduct] = []
+
+    for category_name, category_info in records_data.items():
+        for product_name, product_info in category_info.items():
+            master_product = MasterProduct(product_name, category_name)
+            for website_name, website_info in product_info.items():
+                id = website_info["info"]["id"]
+                url = website_info["info"]["url"]
+                currency = website_info["info"]["currency"]
+                datapoints = [DataPointInfo(datapoint["date"], datapoint["price"]) for datapoint in website_info["datapoints"]]
+                is_up_to_date = is_datapoints_up_to_date(datapoints)
+                product = ProductInfo(product_name, category_name, url, id, currency, website_name, datapoints, is_up_to_date)
+                master_product.products.append(product)
+            master_products.append(master_product)
+
+    return tuple(master_products)
+
+
+def get_products_from_master_products(master_products: Iterable[MasterProduct]) -> list[ProductInfo]:
+    return [product for master_product in master_products for product in master_product.products]
