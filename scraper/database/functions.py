@@ -10,6 +10,18 @@ def delete_all(elements: list[Product | DataPoint]) -> None:
         session.commit()
 
 
+def add_product(product: Product) -> None:
+    with Session(engine) as session:
+        session.add(product)
+        session.commit()
+
+
+def add_datapoint(datapoint: DataPoint) -> None:
+    with Session(engine) as session:
+        session.add(datapoint)
+        session.commit()
+
+
 def get_all_products() -> list[Product]:
     with Session(engine) as session:
         return session.exec(select(Product)).all()
@@ -38,15 +50,3 @@ def get_products_by_categories(categories: list[str]) -> list[Product]:
 def get_products_by_names(names: list[str]) -> list[Product]:
     with Session(engine) as session:
         return session.exec(select(col(Product.name).in_(names))).all()
-
-
-def add_product(product: Product) -> None:
-    with Session(engine) as session:
-        session.add(product)
-        session.commit()
-
-
-def add_datapoint(datapoint: DataPoint) -> None:
-    with Session(engine) as session:
-        session.add(datapoint)
-        session.commit()
