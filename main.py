@@ -1,4 +1,3 @@
-from typing import List
 import threading
 import logging.config
 import logging
@@ -71,7 +70,7 @@ def scrape_with_threads() -> None:
     domain_grouped_products_df = scraper.get_products_df_grouped_by_domains(products_df)
     grouped_products = scraper.get_products_grouped_by_domain(domain_grouped_products_df)
 
-    grouped_scraper_threads: List[List[threading.Thread]] = []
+    grouped_scraper_threads: list[list[threading.Thread]] = []
 
     # Create scraper threads and group by domain
     for products in grouped_products.values():
