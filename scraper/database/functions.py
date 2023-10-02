@@ -79,9 +79,12 @@ def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]
 
 
 def get_all_products_with_datapoints() -> list[ProductInfo]:
-    with Session(engine) as session:
-        products = session.exec(select(Product)).all()
+    products = get_all_products()
+    return get_product_infos_from_products(products)
 
+
+def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo]:
+    with Session(engine) as session:
         product_infos: list[ProductInfo] = []
 
         for product in products:

@@ -15,4 +15,5 @@ from .functions import (
     get_datapoints_by_names,
     get_datapoints_by_product_codes,
     get_all_products_with_datapoints,
+    get_product_infos_from_products,
 )
