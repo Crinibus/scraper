@@ -1,4 +1,6 @@
 from sqlmodel import Session, select, col
+
+from scraper.models.product import ProductInfo
 from .db import engine
 from .models import Product, DataPoint
 
@@ -74,3 +76,29 @@ def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]
         found_product_codes = [product.product_code for product in products]
         datapoints = session.exec(select(DataPoint).where(col(DataPoint.product_code).in_(found_product_codes))).all()
         return datapoints
+
+
+def get_all_products_with_datapoints() -> list[ProductInfo]:
+    with Session(engine) as session:
+        products = session.exec(select(Product)).all()
+
+        product_infos: list[ProductInfo] = []
+
+        for product in products:
+            datapoints = session.exec(
+                select(DataPoint).where(DataPoint.product_code == product.product_code).order_by(DataPoint.date)
+            ).all()
+
+            product_info = ProductInfo(
+                id=product.product_code,
+                product_name=product.name,
+                category=product.category,
+                currency=datapoints[0].currency,
+                datapoints=datapoints,
+                url=product.url,
+                website=product.domain,
+            )
+
+            product_infos.append(product_info)
+
+        return product_infos
