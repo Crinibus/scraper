@@ -117,3 +117,8 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
             product_infos.append(product_info)
 
         return product_infos
+
+
+def get_all_unique_categories() -> list[str]:
+    with Session(engine) as session:
+        return session.exec(select(Product.category).distinct()).all()
