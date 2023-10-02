@@ -54,6 +54,18 @@ def get_products_by_names(names: list[str]) -> list[Product]:
         return session.exec(select(Product).where(col(Product.name).in_(names))).all()
 
 
+def get_products_by_names_fuzzy(names: list[str]) -> list[Product]:
+    with Session(engine) as session:
+        matched_products = []
+
+        for name in names:
+            name = f"%{name}%"
+            products = session.exec(select(Product).where(col(Product.name).like(name))).all()
+            matched_products.extend(products)
+
+        return matched_products
+
+
 def get_datapoints_by_categories(categories: list[str]) -> list[DataPoint]:
     with Session(engine) as session:
         products = session.exec(select(Product).where(col(Product.category).in_(categories))).all()
