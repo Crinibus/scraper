@@ -2,8 +2,8 @@ from typing import Iterable, Iterator
 import plotly.graph_objs as go
 from datetime import datetime
 
+import scraper.database as db
 from scraper.models import DataPointInfo, ProductInfo, MasterProduct
-from scraper import Filemanager
 from scraper.constants import WEBSITE_COLORS
 
 
@@ -17,8 +17,7 @@ def visualize_data(
     ids = [id.lower() for id in ids]
     names = [name.lower() for name in names]
 
-    records_data = Filemanager.get_record_data()
-    master_products = get_master_products(records_data)
+    master_products = get_master_products()
 
     if compare:
         compare_products(master_products, ids, names, categories, only_up_to_date)
@@ -96,21 +95,20 @@ def show_products(products: list[ProductInfo], title: str) -> None:
     fig.show()
 
 
-def get_master_products(records_data: dict) -> tuple[MasterProduct]:
+def get_master_products() -> tuple[MasterProduct]:
     master_products: list[MasterProduct] = []
 
-    for category_name, category_info in records_data.items():
-        for product_name, product_info in category_info.items():
-            master_product = MasterProduct(product_name, category_name)
-            for website_name, website_info in product_info.items():
-                id = website_info["info"]["id"]
-                url = website_info["info"]["url"]
-                currency = website_info["info"]["currency"]
-                datapoints = [DataPointInfo(datapoint["date"], datapoint["price"]) for datapoint in website_info["datapoints"]]
-                is_up_to_date = is_datapoints_up_to_date(datapoints)
-                product = ProductInfo(product_name, category_name, url, id, currency, website_name, datapoints, is_up_to_date)
-                master_product.products.append(product)
-            master_products.append(master_product)
+    all_products = db.get_all_products_with_datapoints()
+
+    unique_product_names = set([product.product_name for product in all_products])
+
+    for unique_product_name in unique_product_names:
+        products_from_db = db.get_products_by_names([unique_product_name])
+        products = db.get_product_infos_from_products(products_from_db)
+
+        category = products[0].category
+        master_product = MasterProduct(unique_product_name, category, products)
+        master_products.append(master_product)
 
     return tuple(master_products)
 
