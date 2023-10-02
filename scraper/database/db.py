@@ -1,8 +1,8 @@
 from sqlmodel import SQLModel, create_engine
+from scraper.filemanager import Filemanager
 from .models import Product, DataPoint  # noqa: F401
 
-sqlite_file_name = "database/database.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+sqlite_url = f"sqlite:///{Filemanager.database_path}"
 
 engine = create_engine(sqlite_url, echo=False)
 
