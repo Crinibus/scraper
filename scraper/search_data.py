@@ -1,11 +1,8 @@
-from typing import List
-from .filemanager import Filemanager
+import scraper.database as db
 
 
-def search(queries: List[str]) -> None:
+def search(queries: list[str]) -> None:
     print("Searching...")
-
-    records_data = Filemanager.get_record_data()
 
     for query in queries:
         search_functions = [search_product_name, search_categories]
@@ -15,7 +12,7 @@ def search(queries: List[str]) -> None:
         ]
 
         for search_function, searching_for_name in zip(search_functions, searching_for_names):
-            results = search_function(query, records_data)
+            results = search_function(query)
 
             if not results:
                 print(f"\nFound nothing for search term '{query}' when searching for {searching_for_name[0]}")
@@ -27,26 +24,23 @@ def search(queries: List[str]) -> None:
         print()
 
 
-def search_product_name(product_name_search: str, records_data: dict) -> List[str]:
-    matched_products = []
+def search_product_name(product_name_search: str) -> list[str]:
+    matched_domains = []
 
-    for category_dict in records_data.values():
-        for product_name, product_dict in category_dict.items():
-            if product_name_search.lower() in product_name.lower():
-                product_websites = []
-                for website_name, website_dict in product_dict.items():
-                    id = website_dict["info"]["id"]
-                    product_websites.append(f" - {website_name.capitalize()} - {id}")
+    products = db.get_products_by_names_fuzzy([product_name_search])
 
-                product_websites_string = "\n".join(product_websites)
-                matched_products.append(f"{product_name}\n{product_websites_string}")
-    return matched_products
+    if not products:
+        return []
+
+    for product in products:
+        match_string = f" - {product.domain.capitalize()} - {product.product_code}"
+        matched_domains.append(match_string)
+
+    matched_domains_string = "\n".join(matched_domains)
+    return [f"{products[0].name}\n{matched_domains_string}"]
 
 
-def search_categories(category_search: str, records_data: dict) -> List[str]:
-    matched_categories = []
+def search_categories(category_search: str) -> list[str]:
+    all_categories = db.get_all_unique_categories()
 
-    for category_name in records_data.keys():
-        if category_search.lower() in category_name.lower():
-            matched_categories.append(category_name)
-    return matched_categories
+    return [category for category in all_categories if category_search.lower() in category.lower()]
