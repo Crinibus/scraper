@@ -39,6 +39,11 @@ def get_all_unique_categories() -> list[str]:
         return session.exec(select(Product.category).distinct()).all()
 
 
+def get_all_unique_domains() -> list[str]:
+    with Session(engine) as session:
+        return session.exec(select(Product.domain).distinct()).all()
+
+
 def get_product_by_product_code(product_code: str) -> Product | None:
     with Session(engine) as session:
         return session.exec(select(Product).where(Product.product_code == product_code)).first()
@@ -69,6 +74,11 @@ def get_products_by_names_fuzzy(names: list[str]) -> list[Product]:
             matched_products.extend(products)
 
         return matched_products
+
+
+def get_products_by_domains(domains: list[str]) -> list[Product]:
+    with Session(engine) as session:
+        return session.exec(select(Product).where(col(Product.domain).in_(domains))).all()
 
 
 def get_datapoints_by_categories(categories: list[str]) -> list[DataPoint]:
@@ -122,3 +132,15 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
             product_infos.append(product_info)
 
         return product_infos
+
+
+def get_all_products_grouped_by_domains() -> list[list[Product]]:
+    grouped_products = []
+
+    unique_domains = get_all_unique_domains()
+
+    for domain in unique_domains:
+        products = get_products_by_domains([domain])
+        grouped_products.append(products)
+
+    return grouped_products
