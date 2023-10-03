@@ -1,29 +1,30 @@
 import logging
-from sqlmodel import Session, select, col
-from scraper.database import engine, Product, DataPoint
+
+import scraper.database as db
 
 
 def clean_datapoints() -> None:
     print("Cleaning data...")
     logging.getLogger(__name__).info("Cleaning database datapoints")
 
-    with Session(engine) as session:
-        all_products = session.exec(select(Product)).all()
+    all_products = db.get_all_products()
+    datapoints_to_delete = []
 
-        for product in all_products:
-            datapoints = session.exec(
-                select(DataPoint).where(DataPoint.product_code == product.product_code).order_by(col(DataPoint.date).asc())
-            ).all()
+    for product in all_products:
+        datapoints = db.get_datapoints_by_product_codes([product.product_code])
 
-            for index, datapoint in enumerate(datapoints):
-                if index in (0, len(datapoints) - 1):
-                    continue
+        datapoints.sort(key=lambda product: product.date)
 
-                previous_datapoint = datapoints[index - 1]
-                next_datapoint = datapoints[index + 1]
+        for index, datapoint in enumerate(datapoints):
+            if index in (0, len(datapoints) - 1):
+                continue
 
-                if datapoint.price == previous_datapoint.price and datapoint.price == next_datapoint.price:
-                    session.delete(datapoint)
-        session.commit()
+            previous_datapoint = datapoints[index - 1]
+            next_datapoint = datapoints[index + 1]
+
+            if datapoint.price == previous_datapoint.price and datapoint.price == next_datapoint.price:
+                datapoints_to_delete.append(datapoint)
+
+    db.delete_all(datapoints_to_delete)
 
     print("Done cleaning data")
