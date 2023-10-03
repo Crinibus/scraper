@@ -3,6 +3,12 @@ from scraper.scrape import Scraper
 
 
 class Format:
+    def db_products_to_scrapers(products: list[db.Product]) -> list[Scraper]:
+        scrapers = []
+        for product in products:
+            scraper = Format.db_product_to_scraper(product)
+            scrapers.append(scraper)
+        return scrapers
 
     @staticmethod
     def db_product_to_scraper(product: db.Product) -> Scraper:
