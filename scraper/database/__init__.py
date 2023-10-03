@@ -7,6 +7,7 @@ from .functions import (
     add_all,
     get_all_products,
     get_all_datapoints,
+    get_all_active_products,
     get_product_by_product_code,
     get_products_by_product_codes,
     get_products_by_categories,
