@@ -7,7 +7,6 @@ import logging
 from abc import ABC, abstractmethod
 
 from scraper.models import Info
-from scraper.format import Format
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.filemanager import Config
 
@@ -34,7 +33,7 @@ class BaseWebsiteHandler(ABC):
             self._request_product_data()
             self._get_common_data()
             raw_name = self._get_product_name()
-            name = Format.get_user_product_name(raw_name.lower())
+            name = Config.get_user_product_name(raw_name.lower())
             price = self._get_product_price()
             currency = self._get_product_currency()
             id = self._get_product_id()
