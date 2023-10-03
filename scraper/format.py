@@ -1,5 +1,4 @@
 import scraper.database as db
-from scraper.filemanager import Config
 from scraper.scrape import Scraper
 
 
