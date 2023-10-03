@@ -17,6 +17,10 @@ class Format:
         return product_name
 
     @staticmethod
+    def db_product_to_scraper(product: db.Product) -> Scraper:
+        return Scraper(category=product.category, url=product.short_url)
+
+    @staticmethod
     def scraper_to_db_product(product: Scraper, isActive: bool) -> db.Product:
         return db.Product(
             product_code=product.product_info.id,
