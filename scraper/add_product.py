@@ -3,6 +3,7 @@ from datetime import datetime
 
 import scraper.database as db
 from scraper.exceptions import WebsiteNotSupported, URLMissingSchema
+from scraper.format import Format
 from scraper.scrape import Scraper
 from scraper.domains import get_website_name, SUPPORTED_DOMAINS
 from scraper.constants import URL_SCHEMES
@@ -62,16 +63,7 @@ def add_product(category: str, url: str) -> None:
 
 
 def add_new_product(product: Scraper) -> None:
-    product_to_db = db.Product(
-        product_code=product.product_info.id,
-        name=product.product_info.name,
-        category=product.category,
-        domain=product.website_handler.website_name,
-        url=product.url,
-        short_url=product.website_handler.get_short_url(),
-        isActive=True,
-    )
-
+    product_to_db = Format.scraper_to_db_product(product, True)
     db.add(product_to_db)
 
 
