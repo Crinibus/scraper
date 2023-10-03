@@ -29,5 +29,5 @@ class Format:
             domain=product.website_handler.website_name,
             url=product.url,
             short_url=product.website_handler.get_short_url(),
-            isActive=True,
+            isActive=isActive,
         )
