@@ -9,6 +9,8 @@ from .reset_data import reset
 from .search_data import search
 from .print_products import print_latest_datapoints, print_all_products
 from .misc import get_products_df_grouped_by_domains, get_products_grouped_by_domain
+from .format import Format
+import scraper.database as db
 
 
 __author__ = "Crinibus"
