@@ -120,8 +120,8 @@ def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]
         return datapoints
 
 
-def get_all_products_with_datapoints() -> list[ProductInfo]:
-    products = get_all_products()
+def get_all_products_with_datapoints(select_only_active: bool = False) -> list[ProductInfo]:
+    products = get_all_products(select_only_active=select_only_active)
     return get_product_infos_from_products(products)
 
 
