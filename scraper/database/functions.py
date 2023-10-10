@@ -24,9 +24,14 @@ def add_all(elements: list[Product] | list[DataPoint]) -> None:
         session.commit()
 
 
-def get_all_products() -> list[Product]:
+def get_all_products(select_only_active: bool = False) -> list[Product]:
     with Session(engine) as session:
-        return session.exec(select(Product)).all()
+        query = select(Product)
+
+        if select_only_active:
+            query = query.where(Product.isActive)
+
+        return session.exec(query).all()
 
 
 def get_all_datapoints() -> list[DataPoint]:
