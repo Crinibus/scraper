@@ -81,9 +81,14 @@ def get_products_by_names_fuzzy(names: list[str]) -> list[Product]:
         return matched_products
 
 
-def get_products_by_domains(domains: list[str]) -> list[Product]:
+def get_products_by_domains(domains: list[str], select_only_active: bool = False) -> list[Product]:
     with Session(engine) as session:
-        return session.exec(select(Product).where(col(Product.domain).in_(domains))).all()
+        query = select(Product).where(col(Product.domain).in_(domains))
+
+        if select_only_active:
+            query = query.where(Product.isActive)
+
+        return session.exec(query).all()
 
 
 def get_datapoints_by_categories(categories: list[str]) -> list[DataPoint]:
@@ -139,13 +144,17 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
         return product_infos
 
 
-def get_all_products_grouped_by_domains() -> list[list[Product]]:
+def get_all_products_grouped_by_domains(select_only_active: bool = False) -> list[list[Product]]:
     grouped_products = []
 
     unique_domains = get_all_unique_domains()
 
     for domain in unique_domains:
-        products = get_products_by_domains([domain])
+        products = get_products_by_domains([domain], select_only_active=select_only_active)
+
+        if not products:
+            continue
+
         grouped_products.append(products)
 
     return grouped_products
