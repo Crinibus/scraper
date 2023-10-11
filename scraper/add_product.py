@@ -38,7 +38,7 @@ def add_product(category: str, url: str) -> None:
     product_in_db = db.get_product_by_product_code(new_product.product_info.id)
 
     if product_in_db is None:
-        add_new_product(new_product)
+        add_new_product_to_db(new_product)
         add_new_datapoint_with_scraper(new_product)
         return
 
@@ -62,12 +62,12 @@ def add_product(category: str, url: str) -> None:
         logger.info("Product not activated")
 
 
-def add_new_product(product: Scraper) -> None:
+def add_new_product_to_db(product: Scraper) -> None:
     product_to_db = Format.scraper_to_db_product(product, True)
     db.add(product_to_db)
 
 
-def add_new_datapoint(product_code: str, price: float, currency: str, date: str | None = None):
+def add_new_datapoint_to_db(product_code: str, price: float, currency: str, date: str | None = None):
     """Parameter 'date' defaults to the date of today in the format: YYYY-MM-DD"""
     if date is None:
         date = datetime.today().strftime("%Y-%m-%d")
@@ -87,7 +87,7 @@ def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) ->
     price = product.product_info.price
     currency = product.product_info.currency
 
-    add_new_datapoint(product_code, price, currency, date)
+    add_new_datapoint_to_db(product_code, price, currency, date)
 
 
 def active_existing_product(product: db.Product) -> None:
