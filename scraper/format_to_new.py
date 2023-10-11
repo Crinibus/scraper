@@ -8,7 +8,6 @@ import json
 from scraper.filemanager import Config, Filemanager
 from scraper.domains import get_website_handler
 from scraper.models.product import DataPointInfo, MasterProduct, ProductInfo
-from scraper.visualize import is_datapoints_up_to_date
 from scraper.database.models import Product, DataPoint
 from scraper.database.db import engine, create_db_and_tables
 
@@ -165,8 +164,7 @@ def get_master_products(records_data: dict) -> tuple[MasterProduct]:
                 url = website_info["info"]["url"]
                 currency = website_info["info"]["currency"]
                 datapoints = [DataPointInfo(datapoint["date"], datapoint["price"]) for datapoint in website_info["datapoints"]]
-                is_up_to_date = is_datapoints_up_to_date(datapoints)
-                product = ProductInfo(product_name, category_name, url, id, currency, website_name, datapoints, is_up_to_date)
+                product = ProductInfo(product_name, category_name, url, id, currency, website_name, datapoints)
                 master_product.products.append(product)
             master_products.append(master_product)
 
