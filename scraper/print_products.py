@@ -15,11 +15,14 @@ def print_latest_datapoints(names: list[str], product_codes: list[str]) -> None:
 
 
 def print_latest_datapoints_for_products(products: list[db.Product]):
-    product_infos = db.get_product_infos_from_products(products)
+    grouped_products = db.group_products_by_names(products)
 
-    for product_info in product_infos:
-        print(product_info.product_name.upper())
-        print_latest_datapoint(product_info)
+    for products in grouped_products:
+        product_infos = db.get_product_infos_from_products(products)
+        print(product_infos[0].product_name.upper())
+
+        for product_info in product_infos:
+            print_latest_datapoint(product_info)
         print()
 
 
