@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlmodel import Field, SQLModel
 
 
@@ -12,6 +13,7 @@ class Product(SQLModel, table=True):
     url: str
     short_url: str
     isActive: bool
+    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
 
 class DataPoint(SQLModel, table=True):
@@ -22,3 +24,4 @@ class DataPoint(SQLModel, table=True):
     date: str
     price: float
     currency: str
+    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
