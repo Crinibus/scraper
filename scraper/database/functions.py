@@ -49,11 +49,6 @@ def get_all_unique_domains() -> list[str]:
         return session.exec(select(Product.domain).distinct()).all()
 
 
-def get_all_active_products() -> list[Product]:
-    with Session(engine) as session:
-        return session.exec(select(Product).where(Product.isActive)).all()
-
-
 def get_product_by_product_code(product_code: str) -> Product | None:
     with Session(engine) as session:
         return session.exec(select(Product).where(Product.product_code == product_code)).first()
