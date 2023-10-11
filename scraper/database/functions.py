@@ -145,16 +145,37 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
 
 
 def get_all_products_grouped_by_domains(select_only_active: bool = False) -> list[list[Product]]:
+    all_products = get_all_products(select_only_active=select_only_active)
+    return group_products_by_domains(all_products)
+
+
+def group_products_by_domains(products: list[Product]) -> list[list[Product]]:
     grouped_products = []
 
-    unique_domains = get_all_unique_domains()
+    unique_domains = set([product.domain for product in products])
 
     for domain in unique_domains:
-        products = get_products_by_domains([domain], select_only_active=select_only_active)
+        products_with_domain = list(filter(lambda product: product.domain == domain, products))
 
-        if not products:
+        if not products_with_domain:
             continue
 
-        grouped_products.append(products)
+        grouped_products.append(products_with_domain)
+
+    return grouped_products
+
+
+def group_products_by_names(products: list[Product]) -> list[list[Product]]:
+    grouped_products = []
+
+    unique_names = set([product.name for product in products])
+
+    for name in unique_names:
+        products_with_name = list(filter(lambda product: product.name == name, products))
+
+        if not products_with_name:
+            continue
+
+        grouped_products.append(products_with_name)
 
     return grouped_products

@@ -21,4 +21,6 @@ from .functions import (
     get_all_unique_domains,
     get_products_by_domains,
     get_all_products_grouped_by_domains,
+    group_products_by_domains,
+    group_products_by_names,
 )
