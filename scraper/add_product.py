@@ -83,6 +83,10 @@ def add_new_datapoint_to_db(product_code: str, price: float, currency: str, date
 
 
 def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) -> None:
+    if not product.product_info or not product.product_info.valid:
+        print(f"Product info is not valid - category: '{product.category}' - url: {product.url}")
+        return
+
     product_code = product.product_info.id
     price = product.product_info.price
     currency = product.product_info.currency
