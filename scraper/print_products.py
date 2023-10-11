@@ -1,64 +1,51 @@
-from typing import Iterator
+import scraper.database as db
+from scraper.models.product import ProductInfo
 
-from scraper.filemanager import Filemanager
 
-
-def print_latest_datapoints(names: list[str], ids: list[str]) -> None:
-    records_data = Filemanager.get_record_data()
-
+def print_latest_datapoints(names: list[str], product_codes: list[str]) -> None:
     if names:
         print("\n----- SHOWING LATEST DATAPOINT FOR NAME(s) -----")
-        for name in names:
-            print(name.upper())
-            # iterate the different websites the product with the specified name is scraped from
-            for website_name, website_dict in get_product_info_with_name(name, records_data):
-                print_latest_datapoint(website_name, website_dict)
-            print()
+        products = db.get_products_by_names(names)
+        print_latest_datapoints_for_products(products)
 
-    if ids:
+    if product_codes:
         print("\n----- SHOWING LATEST DATAPOINT FOR ID(s) -----")
-        for id in ids:
-            product_name, website_name, website_dict = get_product_info_with_id(id, records_data)
-            print(product_name.upper())
-            print_latest_datapoint(website_name, website_dict)
-            print()
+        products = db.get_products_by_product_codes(product_codes)
+        print_latest_datapoints_for_products(products)
 
 
-def get_product_info_with_name(name: str, records_data: dict) -> Iterator[tuple[str, str, dict]]:
-    for category_dict in records_data.values():
-        for product_name, product_dict in category_dict.items():
-            if not product_name.lower() == name.lower():
-                continue
-            for website_name, website_dict in product_dict.items():
-                yield website_name, website_dict
+def print_latest_datapoints_for_products(products: list[db.Product]):
+    product_infos = db.get_product_infos_from_products(products)
+
+    for product_info in product_infos:
+        print(product_info.product_name.upper())
+        print_latest_datapoint(product_info)
+        print()
 
 
-def get_product_info_with_id(id: str, records_data: dict) -> tuple[str, str, dict]:
-    for category_dict in records_data.values():
-        for product_name, product_dict in category_dict.items():
-            for website_name, website_dict in product_dict.items():
-                if website_dict["info"]["id"] == id:
-                    return product_name, website_name, website_dict
-
-
-def print_latest_datapoint(website_name: str, website_dict: dict) -> None:
-    id = website_dict["info"]["id"]
-    currency = website_dict["info"]["currency"]
-    latest_datapoint = website_dict["datapoints"][-1]
-    date = latest_datapoint["date"]
-    price = latest_datapoint["price"]
-    print(f"> {website_name.capitalize()} - {id}\n  - {currency} {price}\n  - {date}")
+def print_latest_datapoint(product_info: ProductInfo) -> None:
+    id = product_info.id
+    website_name = product_info.website.capitalize()
+    currency = product_info.currency
+    latest_datapoint = product_info.datapoints[-1]
+    date = latest_datapoint.date
+    price = latest_datapoint.price
+    print(f"> {website_name} - {id}\n  - {currency} {price}\n  - {date}")
 
 
 def print_all_products() -> None:
-    records_data = Filemanager.get_record_data()
-
     print("\n----- SHOWING ALL PRODUCTS -----")
-    for category_name, category_dict in records_data.items():
-        print(category_name.upper())
-        for product_name, product_dict in category_dict.items():
-            print(f"  > {product_name.upper()}")
-            for website_name, website_dict in product_dict.items():
-                product_id = website_dict["info"]["id"]
-                print(f"    - {website_name.upper()} - {product_id}")
-    print()
+    categories = db.get_all_unique_categories()
+
+    for category in categories:
+        print(category.upper())
+
+        products = db.get_products_by_categories([category])
+
+        grouped_products = db.group_products_by_names(products)
+
+        for products in grouped_products:
+            print(f"  > {products[0].name.upper()}")
+            for product in products:
+                print(f"    - {product.domain.upper()} - {product.id}")
+        print()
