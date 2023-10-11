@@ -163,7 +163,7 @@ def validate_arguments(parser: argparse.ArgumentParser) -> argparse.Namespace:
             )
 
     if args.latest_datapoint:
-        if not args.name and not args.id:
-            parser.error("When using --latest-datapoint, then --name or --id is required")
+        if not any([args.name, args.id, args.category]):
+            parser.error("When using --latest-datapoint, then --name, --id or --category is required")
 
     return args

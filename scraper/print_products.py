@@ -2,7 +2,7 @@ import scraper.database as db
 from scraper.models.product import ProductInfo
 
 
-def print_latest_datapoints(names: list[str], product_codes: list[str]) -> None:
+def print_latest_datapoints(names: list[str], product_codes: list[str], categories: list[str]) -> None:
     if names:
         print("\n----- SHOWING LATEST DATAPOINT FOR NAME(s) -----")
         products = db.get_products_by_names(names)
@@ -11,6 +11,11 @@ def print_latest_datapoints(names: list[str], product_codes: list[str]) -> None:
     if product_codes:
         print("\n----- SHOWING LATEST DATAPOINT FOR ID(s) -----")
         products = db.get_products_by_product_codes(product_codes)
+        print_latest_datapoints_for_products(products)
+
+    if categories:
+        print("\n----- SHOWING LATEST DATAPOINT FOR CATEGORY(s) -----")
+        products = db.get_products_by_categories(categories)
         print_latest_datapoints_for_products(products)
 
 
