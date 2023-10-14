@@ -23,6 +23,12 @@ def main() -> None:
     if args.add:
         scraper.add_products(args.category, args.url)
 
+    if args.activate:
+        scraper.update_products_is_active_with_product_codes(args.id, True)
+
+    if args.deactivate:
+        scraper.update_products_is_active_with_product_codes(args.id, False)
+
     if args.search:
         scraper.search(args.search)
 

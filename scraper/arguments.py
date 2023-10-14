@@ -33,6 +33,10 @@ def argparse_setup() -> argparse.Namespace:
 
     parser.add_argument("-u", "--url", help="the url to the product", type=str, nargs="*", action="extend")
 
+    parser.add_argument("--activate", help="activate a product to be scraped", action="store_true")
+
+    parser.add_argument("--deactivate", help="deactivate a product to not be scraped", action="store_true")
+
     parser.add_argument(
         "-v",
         "--visualize",
@@ -139,6 +143,12 @@ def validate_arguments(parser: argparse.ArgumentParser) -> argparse.Namespace:
 
     if args.add and args.visualize:
         parser.error("Cannot use --add and --visualize at the same time")
+
+    if args.activate and args.deactivate:
+        parser.error("Cannot use --activate and --deactivate at the same time")
+
+    if (args.activate or args.deactivate) and not args.id:
+        parser.error("When using --activate or --deactivate, then --id is required")
 
     if args.delete:
         if args.all and any([args.category, args.name, args.id]):

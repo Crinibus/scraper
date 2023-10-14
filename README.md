@@ -165,6 +165,19 @@ python3 main.py -s --threads
 
 <br/>
 
+## Activating and deactivating products
+
+When you add a new product the product is activated to be scraped. If you wish to not scrape a product anymore, you can deactivate the product with the following command:
+```
+python3 main.py --deactivate --id <id>
+```
+
+You can activate a product again with the following command:
+```
+python3 main.py --activate --id <id>
+```
+
+<br/>
 
 ## Delete data <a name="delete-data"></a>
 
