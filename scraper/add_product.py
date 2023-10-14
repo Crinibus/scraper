@@ -44,7 +44,7 @@ def add_product(category: str, url: str) -> None:
 
     logger.info("Product with the same product code already exists in database")
 
-    if product_in_db.isActive:
+    if product_in_db.is_active:
         print("Product with the same product code already exists in database and is active")
         return
 
@@ -95,7 +95,7 @@ def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) ->
 
 
 def active_existing_product(product: db.Product) -> None:
-    product.isActive = True
+    product.is_active = True
     db.add(product)
 
 

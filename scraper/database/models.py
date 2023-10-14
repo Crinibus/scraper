@@ -12,7 +12,7 @@ class Product(SQLModel, table=True):
     domain: str
     url: str
     short_url: str
-    isActive: bool
+    is_active: bool
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
 

@@ -114,13 +114,13 @@ class Format:
                 url="",
                 short_url=product_json.url,
                 category=product_json.category,
-                isActive=False,
+                is_active=False,
             )
 
             for product_csv in products_from_csv:
                 if product_csv.short_url == product_json.url:
                     product_to_db.url = product_csv.url
-                    product_to_db.isActive = True
+                    product_to_db.is_active = True
 
             products_to_db.append(product_to_db)
 

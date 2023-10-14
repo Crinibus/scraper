@@ -15,7 +15,7 @@ class Format:
         return Scraper(category=product.category, url=product.short_url)
 
     @staticmethod
-    def scraper_to_db_product(product: Scraper, isActive: bool) -> db.Product:
+    def scraper_to_db_product(product: Scraper, is_active: bool) -> db.Product:
         return db.Product(
             product_code=product.product_info.id,
             name=product.product_info.name,

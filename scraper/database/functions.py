@@ -29,7 +29,7 @@ def get_all_products(select_only_active: bool = False) -> list[Product]:
         query = select(Product)
 
         if select_only_active:
-            query = query.where(Product.isActive)
+            query = query.where(Product.is_active)
 
         return session.exec(query).all()
 
@@ -86,7 +86,7 @@ def get_products_by_domains(domains: list[str], select_only_active: bool = False
         query = select(Product).where(col(Product.domain).in_(domains))
 
         if select_only_active:
-            query = query.where(Product.isActive)
+            query = query.where(Product.is_active)
 
         return session.exec(query).all()
 
