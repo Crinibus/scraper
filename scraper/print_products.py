@@ -55,5 +55,6 @@ def print_all_products() -> None:
         for products in grouped_products:
             print(f"  > {products[0].name.upper()}")
             for product in products:
-                print(f"    - {product.domain.upper()} - {product.product_code}")
+                is_active_marker = "\u2713 " if product.is_active else ""
+                print(f"    - {is_active_marker}{product.domain.upper()} - {product.product_code}")
         print()
