@@ -55,7 +55,7 @@ def add_product(category: str, url: str) -> None:
 
     if user_input.lower() in ("y", "yes"):
         print("Activating product...")
-        active_existing_product(product_in_db)
+        set_existing_product_is_active(product_in_db, True)
         logger.info("Product has been activated")
     else:
         print("Product has not been activated")
@@ -94,8 +94,8 @@ def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) ->
     add_new_datapoint_to_db(product_code, price, currency, date)
 
 
-def active_existing_product(product: db.Product) -> None:
-    product.is_active = True
+def set_existing_product_is_active(product: db.Product, is_active: bool) -> None:
+    product.is_active = is_active
     db.add(product)
 
 
