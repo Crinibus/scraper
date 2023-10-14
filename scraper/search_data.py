@@ -1,32 +1,30 @@
 import scraper.database as db
 
 
-def search(queries: list[str]) -> None:
+def search(search_terms: list[str]) -> None:
     print("Searching...")
 
-    for query in queries:
-        search_functions = [search_product_name, search_category]
-        searching_for_names = [
-            ("product names", "product name(s)"),
-            ("categories", "categories"),
-        ]
+    product_name_search_results = search_product_names(search_terms)
+    categories_search_results = search_categories(search_terms)
 
-        for search_function, searching_for_name in zip(search_functions, searching_for_names):
-            results = search_function(query)
+    if product_name_search_results:
+        print("\n--- Results from product name search ---")
+        for result in product_name_search_results:
+            print(f"> {result}\n")
+    else:
+        print("\nNo results for product name search")
 
-            if not results:
-                print(f"\nFound nothing for search term '{query}' when searching for {searching_for_name[0]}")
-                continue
-
-            print(f"\nFound these {searching_for_name[1]} with search term '{query}':")
-            for result in results:
-                print(f"> {result}")
-        print()
+    if categories_search_results:
+        print("\n--- Results from category search ---")
+        for result in categories_search_results:
+            print(f"> {result}")
+    else:
+        print("\nNo results for categories search")
 
 
-def search_product_name(product_name_search: str) -> list[str]:
+def search_product_names(search_terms: list[str]) -> list[str]:
     products_strings = []
-    products = db.get_products_by_names_fuzzy([product_name_search])
+    products = db.get_products_by_names_fuzzy(search_terms)
 
     if not products:
         return []
@@ -39,12 +37,22 @@ def search_product_name(product_name_search: str) -> list[str]:
             match_string = f" - {product.domain.capitalize()} - {product.product_code}"
             matched_domains.append(match_string)
         matched_domains_string = "\n".join(matched_domains)
-        products_strings.append(f"{products[0].name}\n{matched_domains_string}\n")
+        products_strings.append(f"{products[0].name}\n{matched_domains_string}")
 
     return products_strings
 
 
-def search_category(category_search: str) -> list[str]:
+def search_categories(search_terms: list[str]) -> list[str]:
+    all_results = []
+
+    for search_term in search_terms:
+        results = search_category(search_term)
+        all_results.extend(results)
+
+    return all_results
+
+
+def search_category(search_term: str) -> list[str]:
     all_categories = db.get_all_unique_categories()
 
-    return [category for category in all_categories if category_search.lower() in category.lower()]
+    return [category for category in all_categories if search_term.lower() in category.lower()]
