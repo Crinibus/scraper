@@ -94,6 +94,15 @@ def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) ->
     add_new_datapoint_to_db(product_code, price, currency, date)
 
 
+def update_products_is_active_with_product_codes(product_codes: list[str], is_active: bool) -> None:
+    action = "Activating" if is_active else "Deactivating"
+
+    for product_code in product_codes:
+        print(f"{action} {product_code}")
+        product = db.get_product_by_product_code(product_code)
+        set_existing_product_is_active(product, is_active)
+
+
 def set_existing_product_is_active(product: db.Product, is_active: bool) -> None:
     product.is_active = is_active
     db.add(product)

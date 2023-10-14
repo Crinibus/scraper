@@ -1,6 +1,6 @@
 from .scrape import Scraper, start_threads_sequentially
 from .arguments import argparse_setup
-from .add_product import add_products
+from .add_product import add_products, update_products_is_active_with_product_codes
 from .filemanager import Filemanager, Config
 from .visualize import visualize_data
 from .clean_data import clean_datapoints
