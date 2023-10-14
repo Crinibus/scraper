@@ -291,7 +291,10 @@ This will print all the products in the following format:
 CATEGORY
   > PRODUCT NAME
     - WEBSITE NAME - PRODUCT ID
+    - ✓ WEBSITE NAME - PRODUCT ID
 ```
+
+The check mark (✓) shows that the product is activated.
 
 <br/>
 
