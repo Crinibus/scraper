@@ -5,7 +5,7 @@ def search(queries: list[str]) -> None:
     print("Searching...")
 
     for query in queries:
-        search_functions = [search_product_name, search_categories]
+        search_functions = [search_product_name, search_category]
         searching_for_names = [
             ("product names", "product name(s)"),
             ("categories", "categories"),
@@ -44,7 +44,7 @@ def search_product_name(product_name_search: str) -> list[str]:
     return products_strings
 
 
-def search_categories(category_search: str) -> list[str]:
+def search_category(category_search: str) -> list[str]:
     all_categories = db.get_all_unique_categories()
 
     return [category for category in all_categories if category_search.lower() in category.lower()]
