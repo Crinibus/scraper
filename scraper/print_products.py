@@ -55,5 +55,5 @@ def print_all_products() -> None:
         for products in grouped_products:
             print(f"  > {products[0].name.upper()}")
             for product in products:
-                print(f"    - {product.domain.upper()} - {product.id}")
+                print(f"    - {product.domain.upper()} - {product.product_code}")
         print()
