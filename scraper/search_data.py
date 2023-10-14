@@ -44,15 +44,10 @@ def search_product_names(search_terms: list[str]) -> list[str]:
 
 def search_categories(search_terms: list[str]) -> list[str]:
     all_results = []
+    all_categories = db.get_all_unique_categories()
 
     for search_term in search_terms:
-        results = search_category(search_term)
+        results = [category for category in all_categories if search_term.lower() in category.lower()]
         all_results.extend(results)
 
     return all_results
-
-
-def search_category(search_term: str) -> list[str]:
-    all_categories = db.get_all_unique_categories()
-
-    return [category for category in all_categories if search_term.lower() in category.lower()]
