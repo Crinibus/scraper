@@ -25,19 +25,23 @@ def search(queries: list[str]) -> None:
 
 
 def search_product_name(product_name_search: str) -> list[str]:
-    matched_domains = []
-
+    products_strings = []
     products = db.get_products_by_names_fuzzy([product_name_search])
 
     if not products:
         return []
 
-    for product in products:
-        match_string = f" - {product.domain.capitalize()} - {product.product_code}"
-        matched_domains.append(match_string)
+    grouped_products = db.group_products_by_names(products)
 
-    matched_domains_string = "\n".join(matched_domains)
-    return [f"{products[0].name}\n{matched_domains_string}"]
+    for products in grouped_products:
+        matched_domains = []
+        for product in products:
+            match_string = f" - {product.domain.capitalize()} - {product.product_code}"
+            matched_domains.append(match_string)
+        matched_domains_string = "\n".join(matched_domains)
+        products_strings.append(f"{products[0].name}\n{matched_domains_string}\n")
+
+    return products_strings
 
 
 def search_categories(category_search: str) -> list[str]:
