@@ -57,6 +57,25 @@ In version v2.3.0, I have add the column ```short_url``` to ```products.csv```. 
 </p>
 </details>
 
+<details><summary><h2>UPDATE TO HOW DATA IS STORED IN V3.0.0</h2></summary>
+<p>
+
+In version v3.0.0, I have changed where data is stored from a json file to a SQLite database. If you have data from before v3.0.0, then run the following commands in an interactive python session to add the new column (**OBS: Pandas is required**):
+```
+>>> from scraper.format_to_new import Format
+>>> Format.from_json_to_db()
+```
+
+<br/>
+
+OBS: If you doesn't have Pandas installed run this command:
+```
+pip3 install pandas
+```
+
+</p>
+</details>
+
 <br/>
 
 
