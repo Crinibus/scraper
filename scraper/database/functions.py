@@ -133,7 +133,7 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
                 id=product.product_code,
                 product_name=product.name,
                 category=product.category,
-                currency=datapoints[0].currency,
+                currency=datapoints[0].currency if datapoints else "<N/A>",
                 datapoints=datapoints,
                 url=product.url,
                 website=product.domain,
