@@ -18,7 +18,7 @@ def add(element: Product | DataPoint) -> None:
         session.commit()
 
 
-def add_all(elements: list[Product] | list[DataPoint]) -> None:
+def add_all(elements: list[Product | DataPoint]) -> None:
     with Session(engine) as session:
         session.add_all(elements)
         session.commit()
