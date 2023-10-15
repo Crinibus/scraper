@@ -74,8 +74,8 @@ def get_products_by_names_fuzzy(names: list[str]) -> list[Product]:
         matched_products = []
 
         for name in names:
-            name = f"%{name}%"
-            products = session.exec(select(Product).where(col(Product.name).like(name))).all()
+            fuzzy_name = f"%{name}%"
+            products = session.exec(select(Product).where(col(Product.name).like(fuzzy_name))).all()
             matched_products.extend(products)
 
         return matched_products
