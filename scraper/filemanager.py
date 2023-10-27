@@ -27,10 +27,10 @@ class Config:
             config.write(default_file)
 
     @staticmethod
-    def get_user_product_names() -> configparser.SectionProxy:
-        """Get section 'ChangeName' from settings.ini file"""
+    def get_section_by_name(section_name: str) -> configparser.SectionProxy:
+        """Get a section from settings.ini file"""
         config = Config.read(Filemanager.settings_ini_path)
-        return config["ChangeName"]
+        return config[section_name]
 
     @staticmethod
     def get_key_values(elements: list) -> Iterator[str]:
@@ -55,7 +55,7 @@ class Config:
 
     @staticmethod
     def get_user_product_name(product_name: str) -> str:
-        user_product_names = Config.get_user_product_names()
+        user_product_names = Config.get_section_by_name("ChangeName")
 
         for key in Config.get_key_values(user_product_names):
             key_list = user_product_names[key].split(",")
