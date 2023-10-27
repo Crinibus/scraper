@@ -86,7 +86,7 @@ def scrape_with_threads() -> None:
         scraper_threads = [threading.Thread(target=product.scrape_info) for product in products]
         grouped_scraper_threads.append(scraper_threads)
 
-    products_flatten = [product for products in grouped_products.values() for product in products]
+    products_flatten = [product for products in grouped_products for product in products]
 
     with alive_progress.alive_bar(len(products_flatten), title="Scraping with threads") as progress_bar:
         # Create master threads to manage scraper threads sequentially for each domain
@@ -105,7 +105,7 @@ def scrape_with_threads() -> None:
 
     # Save scraped data for each product (sequentially)
     for product in products_flatten:
-        product.save_info()
+        scraper.add_product.add_new_datapoint_with_scraper(product)
 
 
 if __name__ == "__main__":
