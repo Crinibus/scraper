@@ -1,4 +1,3 @@
-from typing import Dict
 import requests
 import urllib.parse
 from bs4 import BeautifulSoup
@@ -511,7 +510,7 @@ def get_website_handler(url: str) -> BaseWebsiteHandler:
     return website_handler(url)
 
 
-SUPPORTED_DOMAINS: Dict[str, BaseWebsiteHandler] = {
+SUPPORTED_DOMAINS: dict[str, BaseWebsiteHandler] = {
     "komplett": KomplettHandler,
     "proshop": ProshopHandler,
     "computersalg": ComputerSalgHandler,
