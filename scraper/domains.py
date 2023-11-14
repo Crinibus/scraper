@@ -490,12 +490,12 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
         return f"https://www.hifiklubben.dk/{id}"
 
 
-def get_website_name(url: str) -> str:
+def get_website_name(url: str, keep_tld=False) -> str:
     stripped_url = url.removeprefix("https://").removeprefix("http://").removeprefix("www.")
     domain = stripped_url.split("/")[0]
 
-    # Remove the TLD/DNS name (such as ".com")
-    website_name_list = domain.split(".")[:-1]
+    # Remove the TLD/DNS name (such as ".com") if keep_tld is false
+    website_name_list = domain.split(".") if keep_tld else domain.split(".")[:-1]
     website_name = ".".join(website_name_list)
     return website_name
 
