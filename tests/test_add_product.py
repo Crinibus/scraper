@@ -3,7 +3,7 @@ from contextlib import nullcontext as does_not_raise
 
 from scraper.add_product import add_product
 from scraper.exceptions import WebsiteNotSupported
-
+from scraper.models import Info
 
 test_domains = [
     ("https://www.amazon.com/", does_not_raise()),
@@ -29,13 +29,11 @@ test_domains = [
 # Tests to make sure the websites that are supported can be added to be scraped
 @pytest.mark.parametrize("url,expectation", test_domains)
 def test_add_product(url, expectation, mocker) -> None:
-    mocker.patch("scraper.Scraper.scrape_info", return_value=None)
-    mocker.patch("scraper.Scraper.save_info", return_value=None)
-    mocker.patch("scraper.filemanager.Filemanager.add_product_to_csv", return_value=None)
-    mocker.patch("scraper.add_product.check_if_product_exists", return_value=False)
-    mocker.patch("scraper.add_product.check_if_product_exists_csv", return_value=False)
-    mocker.patch("scraper.add_product.add_product_to_records", return_value=None)
-    mocker.patch("scraper.add_product.save_product", return_value=None)
+    mock_info = Info(name="", price=1, currency="", id="")
+    mocker.patch("scraper.Scraper.scrape_info", return_value=mock_info)
+    mocker.patch("scraper.database.get_product_by_product_code", return_value=None)
+    mocker.patch("scraper.add_product.add_new_product_to_db", return_value=None)
+    mocker.patch("scraper.add_product.add_new_datapoint_with_scraper", return_value=None)
 
     with expectation:
         add_product("test", url)
