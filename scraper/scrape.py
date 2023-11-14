@@ -11,7 +11,7 @@ class Scraper:
         self.category = category
         self.url = url
         self.website_handler = get_website_handler(url)
-        self.product_info: Info
+        self.product_info: Info = None
 
     def scrape_info(self) -> None:
         logging.getLogger(__name__).debug(f"Scraping: {self.category} - {self.url}")
