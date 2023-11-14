@@ -117,6 +117,7 @@ This scraper can (so far) scrape prices on products from:
 - [Proshop.dk](https://www.proshop.dk/)
 - [Computersalg.dk](https://www.computersalg.dk/)
 - [Elgiganten.dk](https://www.elgiganten.dk/)
+- [Elgiganten.se](https://www.elgiganten.se/)
 - [AvXperten.dk](https://www.avxperten.dk/)
 - [Av-Cables.dk](https://www.av-cables.dk/)
 - [Power.dk](https://www.power.dk/)
