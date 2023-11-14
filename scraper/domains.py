@@ -10,6 +10,7 @@ from scraper.models import Info
 from scraper.format import Format
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.filemanager import Config
+from scraper.exceptions import WebsiteVersionNotSupported
 
 
 def request_url(url: str) -> requests.Response:
@@ -43,6 +44,9 @@ class BaseWebsiteHandler(ABC):
         except (AttributeError, ValueError, TypeError):
             logging.getLogger(__name__).exception(f"Could not get all the data needed from url: {self.url}")
             return Info(None, None, None, None, valid=False)
+        except WebsiteVersionNotSupported as ex:
+            logging.getLogger(__name__).exception(ex)
+            print(ex)
 
     def _request_product_data(self) -> None:
         # option for each specific class to change how the request data is being handled
@@ -180,8 +184,15 @@ class ElgigantenHandler(BaseWebsiteHandler):
 
     def _get_json_api_data(self) -> dict:
         id_number = self._get_product_id()
+
         # API link to get price and currency
-        api_link = f"https://www.elgiganten.dk/cxorchestrator/dk/api?appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%229bfbc062032a2a6b924883b81508af5c77bbfc5f66cc41c7ffd7d519885ac5e4%22%7D%7D"
+        if "elgiganten.dk" in self.url:
+            api_link = f"https://www.elgiganten.dk/cxorchestrator/dk/api?appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%229bfbc062032a2a6b924883b81508af5c77bbfc5f66cc41c7ffd7d519885ac5e4%22%7D%7D"  # noqa E501
+        elif "elgiganten.se" in self.url:
+            api_link = f"https://www.elgiganten.se/cxorchestrator/se/api?getProductWithDynamicDetails&appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22229bbb14ee6f93449967eb326f5bfb87619a37e7ee6c4555b94496313c139ee1%22%7D%7D"  # noqa E501
+        else:
+            raise WebsiteVersionNotSupported(get_website_name(self.url, keep_tld=True))
+
         response = request_url(api_link)
         return response.json()
 
