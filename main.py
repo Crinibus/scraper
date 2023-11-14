@@ -54,7 +54,6 @@ def scrape() -> None:
     request_delay = scraper.Config.get_request_delay()
     active_products = scraper.db.get_all_products(select_only_active=True)
 
-    # Create instances of class "Scraper"
     products = scraper.Format.db_products_to_scrapers(active_products)
 
     with alive_progress.alive_bar(len(products), title="Scraping") as bar:
