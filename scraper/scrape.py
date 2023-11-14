@@ -13,9 +13,10 @@ class Scraper:
         self.website_handler = get_website_handler(url)
         self.product_info: Info = None
 
-    def scrape_info(self) -> None:
+    def scrape_info(self) -> Info:
         logging.getLogger(__name__).debug(f"Scraping: {self.category} - {self.url}")
         self.product_info = self.website_handler.get_product_info()
+        return self.product_info
 
 
 def start_threads_sequentially(threads: list[threading.Thread], request_delay: int, progress_bar=None) -> None:

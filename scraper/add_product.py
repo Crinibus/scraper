@@ -33,9 +33,9 @@ def add_product(category: str, url: str) -> None:
     logger.info(f"Adding product with category '{category}' and url '{url}'")
 
     new_product = Scraper(category, url)
-    new_product.scrape_info()
+    new_product_info = new_product.scrape_info()
 
-    product_in_db = db.get_product_by_product_code(new_product.product_info.id)
+    product_in_db = db.get_product_by_product_code(new_product_info.id)
 
     if product_in_db is None:
         add_new_product_to_db(new_product)
