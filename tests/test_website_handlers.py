@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import json
 from scraper.domains import (
     AmazonHandler,
     AvCablesHandler,
@@ -17,10 +18,17 @@ from scraper.domains import (
     SharkGamingHandler,
     HifiKlubbenHandler,
 )
-from scraper.format import Info
-from scraper.filemanager import Filemanager
+from scraper.models import Info
 
-test_objects_json = Filemanager.read_json("./tests/test_objects.json")
+
+def read_json(filename: str) -> dict:
+    with open(filename, "r", encoding="utf8") as file:
+        data = json.load(file)
+    return data
+
+
+test_objects_json = read_json("./tests/test_objects.json")
+
 test_website_handlers_json: dict[str, dict[str, str]] = test_objects_json["test_website_handlers"]
 
 komplett_test = test_website_handlers_json["komplett"]
