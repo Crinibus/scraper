@@ -11,7 +11,8 @@ class Filemanager:
     settings_ini_path = f"{root_path}/scraper/settings.ini"
     logging_ini_path = f"{root_path}/scraper/logging.ini"
     logfile_path = f"{root_path}/scraper/logfile.log"
-    database_path = f"{root_path}/scraper/data/database.db"
+    database_folder = f"{root_path}/scraper/data"
+    database_path = f"{database_folder}/database.db"
 
 
 class Config:
