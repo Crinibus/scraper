@@ -202,7 +202,7 @@ Then just add products like described [here](#add-products).
 
 <br/>
 
-If you just want to reset deleting all datapoints inside every product, then run this command:
+If you just want to delete all datapoints for every product, then run this command:
 ```
 python3 main.py --reset --all
 ```
