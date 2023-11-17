@@ -57,6 +57,30 @@ In version v2.3.0, I have add the column ```short_url``` to ```products.csv```. 
 </p>
 </details>
 
+<details><summary><h2>UPDATE TO HOW DATA IS STORED IN V3.0.0</h2></summary>
+<p>
+
+In version v3.0.0, I have changed where data is stored from a json file to a SQLite database. If you have data from before v3.0.0, then run the following commands in an interactive python session to add the data from records.json to the database (**OBS: Pandas is required**):
+```
+>>> from scraper.format_to_new import Format
+>>> Format.from_json_to_db()
+```
+
+<br/>
+
+**NOTE:** This will replace the content in the database with what is in records.json. That means if you have products and/or datapoints in the database but not records.json, they will be deleted.
+
+
+<br/>
+
+OBS: If you doesn't have Pandas installed run this command:
+```
+pip3 install pandas
+```
+
+</p>
+</details>
+
 <br/>
 
 
@@ -147,6 +171,19 @@ python3 main.py -s --threads
 
 <br/>
 
+## Activating and deactivating products
+
+When you add a new product the product is activated to be scraped. If you wish to not scrape a product anymore, you can deactivate the product with the following command:
+```
+python3 main.py --deactivate --id <id>
+```
+
+You can activate a product again with the following command:
+```
+python3 main.py --activate --id <id>
+```
+
+<br/>
 
 ## Delete data <a name="delete-data"></a>
 
@@ -171,14 +208,13 @@ Then just add products like described [here](#add-products).
 
 <br/>
 
-If you just want to reset your data for every product, deleting all datapoints inside every product, then run this command:
+If you just want to delete all datapoints for every product, then run this command:
 ```
 python3 main.py --reset --all
 ```
-This deletes the data inside each product, such as id, url and all datapoints.
 
 
-You can also just reset some products or all products in some categories:
+You can also just delete datapoints for some products:
 ```
 python3 main.py --reset --id <id>
 ```
@@ -274,7 +310,10 @@ This will print all the products in the following format:
 CATEGORY
   > PRODUCT NAME
     - WEBSITE NAME - PRODUCT ID
+    - ✓ WEBSITE NAME - PRODUCT ID
 ```
+
+The check mark (✓) shows that the product is activated.
 
 <br/>
 

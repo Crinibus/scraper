@@ -1,55 +1,41 @@
-from typing import List
 import logging
 
-from scraper import Filemanager
+import scraper.database as db
 
 
-def reset(categories: List[str], names: List[str], ids: List[str], all: bool) -> None:
-    print("Resetting data...")
-
-    record_data = Filemanager.get_record_data()
+def reset(categories: list[str], names: list[str], product_codes: list[str], all: bool) -> None:
+    print("Resetting datapoints...")
+    logging.getLogger(__name__).info(f"Resetting datapoints for {categories=}, {names=}, {product_codes=}, {all=}")
 
     if all:
-        logging.getLogger(__name__).info("Resetting all products")
-        reset_all(record_data)
+        delete_all_datapoints()
         return
 
-    logging.getLogger(__name__).info(f"Resetting categories: {categories}, product names: {names} and product ids: {ids}")
+    if categories:
+        delete_datapoints_for_products_by_categories(categories)
 
-    for category_name, category_dict in record_data.items():
-        if category_name in categories:
-            reset_category(category_dict)
-            continue
+    if names:
+        delete_datapoints_for_products_by_names(names)
 
-        for product_name, product_dict in category_dict.items():
-            if product_name in names:
-                reset_product(product_dict)
-                continue
-
-            for website_dict in product_dict.values():
-                if str(website_dict["info"]["id"]) in ids:
-                    reset_product_website(website_dict)
-
-    Filemanager.save_record_data(record_data)
+    if product_codes:
+        delete_datapoints_for_products_by_product_codes(product_codes)
 
 
-def reset_all(record_data: dict) -> None:
-    for category_dict in record_data.values():
-        reset_category(category_dict)
-
-    Filemanager.save_record_data(record_data)
+def delete_all_datapoints():
+    datapoints = db.get_all_datapoints()
+    db.delete_all(datapoints)
 
 
-def reset_category(category_dict: dict) -> None:
-    for product_dict in category_dict.values():
-        reset_product(product_dict)
+def delete_datapoints_for_products_by_categories(categories: list[str]):
+    datapoints = db.get_datapoints_by_categories(categories)
+    db.delete_all(datapoints)
 
 
-def reset_product(product_dict: dict) -> None:
-    for website_dict in product_dict.values():
-        reset_product_website(website_dict)
+def delete_datapoints_for_products_by_names(names: list[str]):
+    datapoints = db.get_datapoints_by_names(names)
+    db.delete_all(datapoints)
 
 
-def reset_product_website(website_dict: dict) -> None:
-    website_dict["info"] = {"id": "", "url": "", "currency": ""}
-    website_dict["datapoints"] = []
+def delete_datapoints_for_products_by_product_codes(product_codes: list[str]):
+    datapoints = db.get_datapoints_by_product_codes(product_codes)
+    db.delete_all(datapoints)

@@ -1,13 +1,15 @@
-from typing import List
 import logging
+from datetime import datetime
+
+import scraper.database as db
 from scraper.exceptions import WebsiteNotSupported, URLMissingSchema
+from scraper.format import Format
 from scraper.scrape import Scraper
-from scraper.filemanager import Filemanager
 from scraper.domains import get_website_name, SUPPORTED_DOMAINS
 from scraper.constants import URL_SCHEMES
 
 
-def add_products(categories: List[str], urls: List[str]) -> None:
+def add_products(categories: list[str], urls: list[str]) -> None:
     for category, url in zip(categories, urls):
         try:
             add_product(category, url)
@@ -31,77 +33,79 @@ def add_product(category: str, url: str) -> None:
     logger.info(f"Adding product with category '{category}' and url '{url}'")
 
     new_product = Scraper(category, url)
-    new_product.scrape_info()
+    new_product_info = new_product.scrape_info()
 
-    if not check_if_product_exists(new_product):
-        save_product(new_product)
+    product_in_db = db.get_product_by_product_code(new_product_info.id)
+
+    if product_in_db is None:
+        add_new_product_to_db(new_product)
+        add_new_datapoint_with_scraper(new_product)
+        return
+
+    logger.info("Product with the same product code already exists in database")
+
+    if product_in_db.is_active:
+        print("Product with the same product code already exists in database and is active")
         return
 
     user_input = input(
-        "A product with the same name and from the same website already exist in your data, "
-        "do you want to override this product? (y/n) > "
+        "A product with the same product id already exist in the database but is not active, "
+        "do you want to activate it? (y/n) > "
     )
 
     if user_input.lower() in ("y", "yes"):
-        print("Overriding product...")
-        save_product(new_product)
+        print("Activating product...")
+        set_existing_product_is_active(product_in_db, True)
+        logger.info("Product has been activated")
     else:
-        print("Product was not added nor overrided")
-        logger.info("Adding product cancelled")
+        print("Product has not been activated")
+        logger.info("Product not activated")
 
 
-def check_if_product_exists(product: Scraper) -> bool:
-    data = Filemanager.get_record_data()
-
-    category = product.category
-    product_name = product.product_info.name
-    website_name = product.website_handler.website_name
-
-    try:
-        data[category][product_name][website_name]
-    except KeyError:
-        return False
-
-    return True
+def add_new_product_to_db(product: Scraper) -> None:
+    product_to_db = Format.scraper_to_db_product(product, True)
+    db.add(product_to_db)
 
 
-def save_product(product: Scraper) -> None:
-    add_product_to_records(product)
+def add_new_datapoint_to_db(product_code: str, price: float, currency: str, date: str | None = None):
+    """Parameter 'date' defaults to the date of today in the format: YYYY-MM-DD"""
+    if date is None:
+        date = datetime.today().strftime("%Y-%m-%d")
 
-    if not check_if_product_exists_csv(product):
-        Filemanager.add_product_to_csv(product.category, product.url, product.website_handler.get_short_url())
+    new_datapoint = db.DataPoint(
+        product_code=product_code,
+        date=date,
+        price=price,
+        currency=currency,
+    )
 
-    product.save_info()
-
-
-def add_product_to_records(product: Scraper) -> None:
-    data = Filemanager.get_record_data()
-
-    category = product.category
-    product_name = product.product_info.name
-    website_name = product.website_handler.website_name
-
-    empty_product_dict = {website_name: {"info": {}, "datapoints": []}}
-
-    if not data.get(category):
-        data.update({category: {product_name: empty_product_dict}})
-
-    if data[category].get(product_name):
-        data[category][product_name].update(empty_product_dict)
-    else:
-        data[category].update({product_name: empty_product_dict})
-
-    Filemanager.save_record_data(data)
+    db.add(new_datapoint)
 
 
-def check_if_product_exists_csv(product: Scraper) -> bool:
-    products_df = Filemanager.get_products_data()
+def add_new_datapoint_with_scraper(product: Scraper, date: str | None = None) -> None:
+    if not product.product_info or not product.product_info.valid:
+        print(f"Product info is not valid - category: '{product.category}' - url: {product.url}")
+        return
 
-    for category, url in zip(products_df["category"], products_df["url"]):
-        if product.category.lower() == category.lower() and product.url == url:
-            return True
+    product_code = product.product_info.id
+    price = product.product_info.price
+    currency = product.product_info.currency
 
-    return False
+    add_new_datapoint_to_db(product_code, price, currency, date)
+
+
+def update_products_is_active_with_product_codes(product_codes: list[str], is_active: bool) -> None:
+    action = "Activating" if is_active else "Deactivating"
+
+    for product_code in product_codes:
+        print(f"{action} {product_code}")
+        product = db.get_product_by_product_code(product_code)
+        set_existing_product_is_active(product, is_active)
+
+
+def set_existing_product_is_active(product: db.Product, is_active: bool) -> None:
+    product.is_active = is_active
+    db.add(product)
 
 
 def is_missing_url_schema(url: str) -> bool:

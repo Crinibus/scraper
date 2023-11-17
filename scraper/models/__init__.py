@@ -1,1 +1,1 @@
-from scraper.models.product import Datapoint, Info, Product, MasterProduct
+from scraper.models.product import DataPointInfo, ProductInfo, Info, MasterProduct

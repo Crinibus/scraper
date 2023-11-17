@@ -1,34 +1,30 @@
 import logging
-from scraper.filemanager import Filemanager
+
+import scraper.database as db
 
 
-def clean_records_data() -> None:
+def clean_datapoints() -> None:
     print("Cleaning data...")
-    logging.getLogger(__name__).info("Cleaning records data")
-    records_data = Filemanager.get_record_data()
+    logging.getLogger(__name__).info("Cleaning database datapoints")
 
-    for category_info in records_data.values():
-        for product_info in category_info.values():
-            for website_info in product_info.values():
-                datapoints = website_info["datapoints"]
+    all_products = db.get_all_products()
+    datapoints_to_delete = []
 
-                new_datapoints = []
+    for product in all_products:
+        datapoints = db.get_datapoints_by_product_codes([product.product_code])
 
-                for index, datapoint in enumerate(datapoints):
-                    if index in (0, len(datapoints) - 1):
-                        new_datapoints.append(datapoint)
-                        continue
+        datapoints.sort(key=lambda product: product.date)
 
-                    previous_datapoint = datapoints[index - 1]
-                    next_datapoint = datapoints[index + 1]
+        for index, datapoint in enumerate(datapoints):
+            if index in (0, len(datapoints) - 1):
+                continue
 
-                    # Skip unnecessary datapoints
-                    if datapoint["price"] == previous_datapoint["price"] and datapoint["price"] == next_datapoint["price"]:
-                        continue
+            previous_datapoint = datapoints[index - 1]
+            next_datapoint = datapoints[index + 1]
 
-                    new_datapoints.append(datapoint)
+            if datapoint.price == previous_datapoint.price and datapoint.price == next_datapoint.price:
+                datapoints_to_delete.append(datapoint)
 
-                website_info["datapoints"] = new_datapoints
+    db.delete_all(datapoints_to_delete)
 
-    Filemanager.save_record_data(records_data)
     print("Done cleaning data")

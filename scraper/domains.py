@@ -1,4 +1,3 @@
-from typing import Dict
 import requests
 import urllib.parse
 from bs4 import BeautifulSoup
@@ -7,7 +6,6 @@ import logging
 from abc import ABC, abstractmethod
 
 from scraper.models import Info
-from scraper.format import Format
 from scraper.constants import REQUEST_HEADER, REQUEST_COOKIES
 from scraper.filemanager import Config
 from scraper.exceptions import WebsiteVersionNotSupported
@@ -35,7 +33,7 @@ class BaseWebsiteHandler(ABC):
             self._request_product_data()
             self._get_common_data()
             raw_name = self._get_product_name()
-            name = Format.get_user_product_name(raw_name.lower())
+            name = Config.get_user_product_name(raw_name.lower())
             price = self._get_product_price()
             currency = self._get_product_currency()
             id = self._get_product_id()
@@ -302,17 +300,22 @@ class EbayHandler(BaseWebsiteHandler):
 
     def _get_product_name(self) -> str:
         try:
-            return self.request_data.find("h1", class_="product-title").text
+            return self.request_data.find("h1", class_="x-item-title__mainTitle").text.strip()
         except (AttributeError, ValueError, TypeError):
             return self.request_data.find("meta", property="og:title").get("content").replace("  | eBay", "")
 
     def _get_product_price(self) -> float:
         if self.soup_url.split("/")[3] == "itm":
-            price = float(self.request_data.find("span", itemprop="price").get("content"))
+            price = float(
+                self.request_data.find("div", class_="x-price-primary")
+                .text
+                .replace("US $", "")
+            )
         else:
             price = float(
-                self.request_data.find("div", class_="display-price")
-                .text.replace("DKK ", "")
+                self.request_data.find("div", class_="x-price-primary")
+                .text
+                .replace("DKK ", "")
                 .replace("$", "")
                 .replace(",", "")
             )
@@ -523,7 +526,7 @@ def get_website_handler(url: str) -> BaseWebsiteHandler:
     return website_handler(url)
 
 
-SUPPORTED_DOMAINS: Dict[str, BaseWebsiteHandler] = {
+SUPPORTED_DOMAINS: dict[str, BaseWebsiteHandler] = {
     "komplett": KomplettHandler,
     "proshop": ProshopHandler,
     "computersalg": ComputerSalgHandler,

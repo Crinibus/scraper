@@ -1,4 +1,3 @@
-from typing import List
 import threading
 import logging.config
 import logging
@@ -13,7 +12,7 @@ def main() -> None:
     args = scraper.argparse_setup()
 
     if args.clean_data:
-        scraper.clean_records_data()
+        scraper.clean_datapoints()
 
     if args.visualize:
         scraper.visualize_data(args.all, args.category, args.id, args.name, args.up_to_date, args.compare)
@@ -23,6 +22,12 @@ def main() -> None:
 
     if args.add:
         scraper.add_products(args.category, args.url)
+
+    if args.activate:
+        scraper.update_products_is_active_with_product_codes(args.id, True)
+
+    if args.deactivate:
+        scraper.update_products_is_active_with_product_codes(args.id, False)
 
     if args.search:
         scraper.search(args.search)
@@ -34,7 +39,7 @@ def main() -> None:
             scrape()
 
     if args.latest_datapoint:
-        scraper.print_latest_datapoints(args.name, args.id)
+        scraper.print_latest_datapoints(args.name, args.id, args.category)
 
     if args.print_all_products:
         scraper.print_all_products()
@@ -47,10 +52,9 @@ def scrape() -> None:
     print("Scraping...")
 
     request_delay = scraper.Config.get_request_delay()
-    products_df = scraper.Filemanager.get_products_data()
+    active_products = scraper.db.get_all_products(select_only_active=True)
 
-    # Create instances of class "Scraper"
-    products = [scraper.Scraper(category, url) for category, url in zip(products_df["category"], products_df["url"])]
+    products = scraper.Format.db_products_to_scrapers(active_products)
 
     with alive_progress.alive_bar(len(products), title="Scraping") as bar:
         # Scrape and save scraped data for each product (sequentially)
@@ -58,7 +62,7 @@ def scrape() -> None:
             bar.text = f"-> {product.url}"
             time.sleep(request_delay)
             product.scrape_info()
-            product.save_info()
+            scraper.add_product.add_new_datapoint_with_scraper(product)
             bar()
 
 
@@ -67,18 +71,21 @@ def scrape_with_threads() -> None:
 
     request_delay = scraper.Config.get_request_delay()
 
-    products_df = scraper.Filemanager.get_products_data()
-    domain_grouped_products_df = scraper.get_products_df_grouped_by_domains(products_df)
-    grouped_products = scraper.get_products_grouped_by_domain(domain_grouped_products_df)
+    grouped_db_products = scraper.db.get_all_products_grouped_by_domains(select_only_active=True)
+    grouped_products: list[list[scraper.Scraper]] = []
 
-    grouped_scraper_threads: List[List[threading.Thread]] = []
+    for db_products in grouped_db_products:
+        products = scraper.Format.db_products_to_scrapers(db_products)
+        grouped_products.append(products)
+
+    grouped_scraper_threads: list[list[threading.Thread]] = []
 
     # Create scraper threads and group by domain
-    for products in grouped_products.values():
+    for products in grouped_products:
         scraper_threads = [threading.Thread(target=product.scrape_info) for product in products]
         grouped_scraper_threads.append(scraper_threads)
 
-    products_flatten = [product for products in grouped_products.values() for product in products]
+    products_flatten = [product for products in grouped_products for product in products]
 
     with alive_progress.alive_bar(len(products_flatten), title="Scraping with threads") as progress_bar:
         # Create master threads to manage scraper threads sequentially for each domain
@@ -97,10 +104,11 @@ def scrape_with_threads() -> None:
 
     # Save scraped data for each product (sequentially)
     for product in products_flatten:
-        product.save_info()
+        scraper.add_product.add_new_datapoint_with_scraper(product)
 
 
 if __name__ == "__main__":
+    scraper.db.create_db_and_tables()
     logging.config.fileConfig(
         fname=scraper.Filemanager.logging_ini_path,
         defaults={"logfilename": scraper.Filemanager.logfile_path},

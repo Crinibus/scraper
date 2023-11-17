@@ -2,8 +2,8 @@ from typing import Iterable, Iterator
 import plotly.graph_objs as go
 from datetime import datetime
 
-from scraper.models import Datapoint, MasterProduct, Product
-from scraper import Filemanager
+import scraper.database as db
+from scraper.models import DataPointInfo, ProductInfo, MasterProduct
 from scraper.constants import WEBSITE_COLORS
 
 
@@ -17,8 +17,7 @@ def visualize_data(
     ids = [id.lower() for id in ids]
     names = [name.lower() for name in names]
 
-    records_data = Filemanager.get_record_data()
-    master_products = get_master_products(records_data)
+    master_products = get_master_products()
 
     if compare:
         compare_products(master_products, ids, names, categories, only_up_to_date)
@@ -80,11 +79,11 @@ def show_master_products(master_products: tuple[MasterProduct], only_up_to_date:
         )
 
 
-def show_product(product: Product, title: str) -> None:
+def show_product(product: ProductInfo, title: str) -> None:
     show_products([product], title)
 
 
-def show_products(products: list[Product], title: str) -> None:
+def show_products(products: list[ProductInfo], title: str) -> None:
     fig = go.Figure()
     for product in products:
         add_scatter_plot(
@@ -96,26 +95,27 @@ def show_products(products: list[Product], title: str) -> None:
     fig.show()
 
 
-def get_master_products(records_data: dict) -> tuple[MasterProduct]:
+def get_master_products() -> tuple[MasterProduct]:
     master_products: list[MasterProduct] = []
 
-    for category_name, category_info in records_data.items():
-        for product_name, product_info in category_info.items():
-            master_product = MasterProduct(product_name, category_name)
-            for website_name, website_info in product_info.items():
-                id = website_info["info"]["id"]
-                url = website_info["info"]["url"]
-                currency = website_info["info"]["currency"]
-                datapoints = [Datapoint(datapoint["date"], datapoint["price"]) for datapoint in website_info["datapoints"]]
-                is_up_to_date = is_datapoints_up_to_date(datapoints)
-                product = Product(product_name, category_name, url, id, currency, website_name, datapoints, is_up_to_date)
-                master_product.products.append(product)
-            master_products.append(master_product)
+    all_products = db.get_all_products_with_datapoints()
+
+    unique_product_names = set([product.product_name for product in all_products])
+
+    for unique_product_name in unique_product_names:
+        products_from_db = db.get_products_by_names([unique_product_name])
+        products = db.get_product_infos_from_products(products_from_db)
+
+        category = products[0].category
+        master_product = MasterProduct(unique_product_name, category, products)
+        master_products.append(master_product)
 
     return tuple(master_products)
 
 
-def get_products_with_ids(master_products: tuple[MasterProduct], ids: list[str], only_up_to_date: bool) -> Iterator[Product]:
+def get_products_with_ids(
+    master_products: tuple[MasterProduct], ids: list[str], only_up_to_date: bool
+) -> Iterator[ProductInfo]:
     for master_product in master_products:
         for product in master_product.products:
             if only_up_to_date and not product.is_up_to_date:
@@ -153,7 +153,7 @@ def get_master_products_with_names(
         yield master_product
 
 
-def get_products_from_master_products(master_products: Iterable[MasterProduct]) -> list[Product]:
+def get_products_from_master_products(master_products: Iterable[MasterProduct]) -> list[ProductInfo]:
     return [product for master_product in master_products for product in master_product.products]
 
 
@@ -170,7 +170,7 @@ def config_figure(figure: go.Figure, figure_title: str) -> None:
 
 def add_scatter_plot(
     figure: go.Figure,
-    product: Product,
+    product: ProductInfo,
     color: str = None,
     hover_text: str = None,
     name_format: str = None,
@@ -190,7 +190,7 @@ def add_scatter_plot(
     )
 
 
-def is_datapoints_up_to_date(datapoints: list[Datapoint]) -> bool:
+def is_datapoints_up_to_date(datapoints: list[DataPointInfo]) -> bool:
     """check if today and the last date in datapoints is at most 1 day apart"""
     if len(datapoints) == 0:
         return False
@@ -217,7 +217,7 @@ def get_status_of_master_product(master_product: MasterProduct) -> str:
     return get_status_of_product_by_bool(False)
 
 
-def get_status_of_product(product: Product) -> str:
+def get_status_of_product(product: ProductInfo) -> str:
     return get_status_of_product_by_bool(product.is_up_to_date)
 
 

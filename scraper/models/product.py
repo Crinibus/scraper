@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 import re
 
 
@@ -14,27 +15,35 @@ class Info:
 
 
 @dataclass
-class Datapoint:
+class DataPointInfo:
     date: str
     price: float
 
 
 @dataclass
-class Product:
+class ProductInfo:
     product_name: str
     category: str
     url: str
     id: str
     currency: str
     website: str
-    datapoints: list[Datapoint]
-    is_up_to_date: bool
+    datapoints: list[DataPointInfo]
 
     def get_all_dates(self) -> list[str]:
         return [datapoint.date for datapoint in self.datapoints]
 
     def get_all_prices(self) -> list[float]:
         return [datapoint.price for datapoint in self.datapoints]
+
+    @property
+    def is_up_to_date(self) -> bool:
+        if not self.datapoints:
+            return False
+
+        latest_date = datetime.strptime(self.datapoints[-1].date, "%Y-%m-%d")
+        date_diff = datetime.today() - latest_date
+        return date_diff.days <= 1
 
     def to_string_format(self, format: str) -> str:
         """Return a string representing the product, controlled by an explicit format string.
@@ -77,4 +86,4 @@ class Product:
 class MasterProduct:
     product_name: str
     category: str
-    products: list[Product] = field(default_factory=list)
+    products: list[ProductInfo] = field(default_factory=list)
