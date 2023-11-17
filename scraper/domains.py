@@ -289,17 +289,22 @@ class EbayHandler(BaseWebsiteHandler):
 
     def _get_product_name(self) -> str:
         try:
-            return self.request_data.find("h1", class_="product-title").text
+            return self.request_data.find("h1", class_="x-item-title__mainTitle").text.strip()
         except (AttributeError, ValueError, TypeError):
             return self.request_data.find("meta", property="og:title").get("content").replace("  | eBay", "")
 
     def _get_product_price(self) -> float:
         if self.soup_url.split("/")[3] == "itm":
-            price = float(self.request_data.find("span", itemprop="price").get("content"))
+            price = float(
+                self.request_data.find("div", class_="x-price-primary")
+                .text
+                .replace("US $", "")
+            )
         else:
             price = float(
-                self.request_data.find("div", class_="display-price")
-                .text.replace("DKK ", "")
+                self.request_data.find("div", class_="x-price-primary")
+                .text
+                .replace("DKK ", "")
                 .replace("$", "")
                 .replace(",", "")
             )
