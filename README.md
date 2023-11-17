@@ -68,6 +68,11 @@ In version v3.0.0, I have changed where data is stored from a json file to a SQL
 
 <br/>
 
+**NOTE:** This will replace the content in the database with what is in records.json. That means if you have products and/or datapoints in the database but not records.json, they will be deleted.
+
+
+<br/>
+
 OBS: If you doesn't have Pandas installed run this command:
 ```
 pip3 install pandas
