@@ -108,6 +108,7 @@ def scrape_with_threads() -> None:
 
 
 if __name__ == "__main__":
+    scraper.db.create_db_and_tables()
     logging.config.fileConfig(
         fname=scraper.Filemanager.logging_ini_path,
         defaults={"logfilename": scraper.Filemanager.logfile_path},
