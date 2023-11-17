@@ -32,6 +32,10 @@ def print_latest_datapoints_for_products(products: list[db.Product]):
 
 
 def print_latest_datapoint(product_info: ProductInfo) -> None:
+    if not product_info.datapoints:
+        print(f"> No datapoints for {product_info.id}")
+        return
+
     id = product_info.id
     website_name = product_info.website.capitalize()
     currency = product_info.currency
