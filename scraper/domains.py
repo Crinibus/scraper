@@ -188,7 +188,7 @@ class ElgigantenHandler(BaseWebsiteHandler):
 
         # API link to get price and currency
         if "elgiganten.dk" in self.url:
-            api_link = f"https://www.elgiganten.dk/cxorchestrator/dk/api?appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%229bfbc062032a2a6b924883b81508af5c77bbfc5f66cc41c7ffd7d519885ac5e4%22%7D%7D"  # noqa E501
+            api_link = f"https://www.elgiganten.dk/cxorchestrator/dk/api?getProductWithDynamicDetails&appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22229bbb14ee6f93449967eb326f5bfb87619a37e7ee6c4555b94496313c139ee1%22%7D%7D"  # noqa E501
         elif "elgiganten.se" in self.url:
             api_link = f"https://www.elgiganten.se/cxorchestrator/se/api?getProductWithDynamicDetails&appMode=b2c&user=anonymous&operationName=getProductWithDynamicDetails&variables=%7B%22articleNumber%22%3A%22{id_number}%22%2C%22withCustomerSpecificPrices%22%3Afalse%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22229bbb14ee6f93449967eb326f5bfb87619a37e7ee6c4555b94496313c139ee1%22%7D%7D"  # noqa E501
         else:
