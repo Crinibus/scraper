@@ -95,7 +95,8 @@ class KomplettHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
-        return f"https://www.komplett.dk/product/{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/product/{id}"
 
 
 class ProshopHandler(BaseWebsiteHandler):
@@ -143,7 +144,8 @@ class ProshopHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
-        return f"https://www.proshop.dk/{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/{id}"
 
 
 class ComputerSalgHandler(BaseWebsiteHandler):
@@ -161,7 +163,8 @@ class ComputerSalgHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
-        return f"https://www.computersalg.dk/i/{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/i/{id}"
 
 
 class ElgigantenHandler(BaseWebsiteHandler):
@@ -196,7 +199,8 @@ class ElgigantenHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
-        return f"https://www.elgiganten.dk/product/{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/product/{id}"
 
 
 class AvXpertenHandler(BaseWebsiteHandler):
@@ -343,11 +347,12 @@ class EbayHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
 
         if self.url.split("/")[3] == "itm":
-            return f"https://www.ebay.com/itm/{id}"
+            return f"{website}/itm/{id}"
         else:
-            return f"https://www.ebay.com/p/{id}"
+            return f"{website}/p/{id}"
 
 
 class PowerHandler(BaseWebsiteHandler):
@@ -370,7 +375,8 @@ class PowerHandler(BaseWebsiteHandler):
     def get_short_url(self) -> str:
         id = self._get_product_id()
         url_id = self.url.split("/")[3]
-        return f"https://www.power.dk/{url_id}/p-{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/{url_id}/p-{id}"
 
 
 class ExpertHandler(BaseWebsiteHandler):
@@ -393,7 +399,8 @@ class ExpertHandler(BaseWebsiteHandler):
     def get_short_url(self) -> str:
         id = self._get_product_id()
         url_id = self.url.split("/")[3]
-        return f"https://www.expert.dk/{url_id}/p-{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/{url_id}/p-{id}"
 
 
 class MMVisionHandler(BaseWebsiteHandler):
@@ -438,7 +445,8 @@ class CoolshopHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         url_id = self.url.split("/")[-2]
-        return f"https://www.coolshop.dk/produkt/{url_id}/"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/produkt/{url_id}/"
 
 
 class SharkGamingHandler(BaseWebsiteHandler):
@@ -477,7 +485,8 @@ class NeweggHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
-        return f"https://www.newegg.com/p/{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/p/{id}"
 
 
 class HifiKlubbenHandler(BaseWebsiteHandler):
@@ -501,12 +510,14 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
 
     def get_short_url(self) -> str:
         id = self._get_product_id()
-        return f"https://www.hifiklubben.dk/{id}"
+        website = get_website_name(self.url, keep_tld=True, keep_http=True, keep_www=True)
+        return f"{website}/{id}"
 
 
-def get_website_name(url: str, keep_tld=False) -> str:
-    stripped_url = url.removeprefix("https://").removeprefix("http://").removeprefix("www.")
-    domain = stripped_url.split("/")[0]
+def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False) -> str:
+    stripped_url = url if keep_http else url.removeprefix("https://").removeprefix("http://")
+    stripped_url = stripped_url if keep_www else stripped_url.replace("www.", "", 1)
+    domain = "/".join(stripped_url.split("/")[0:3]) if keep_http else stripped_url.split("/")[0]
 
     # Remove the TLD/DNS name (such as ".com") if keep_tld is false
     website_name_list = domain.split(".") if keep_tld else domain.split(".")[:-1]
