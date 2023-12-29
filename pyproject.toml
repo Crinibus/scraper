@@ -4,5 +4,5 @@ line-length = 127
 [tool.ruff]
 line-length = 127
 
-[tool.ruff.lint.per-file-ignores]
+[tool.ruff.per-file-ignores]
 "__init__.py" = ["E402"]
