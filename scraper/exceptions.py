@@ -38,4 +38,5 @@ class URLMissingSchema(Exception):
         self.url = url
 
     def __str__(self) -> str:
-        return f"Missing schema in url '{self.url}'. Consider prefixing the url with one of following schemes: {', '.join(URL_SCHEMES)}"
+        url_schemes = ", ".join(URL_SCHEMES)
+        return f"Missing schema in url '{self.url}'. Consider prefixing the url with one of following schemes: {url_schemes}"
