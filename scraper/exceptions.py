@@ -1,4 +1,17 @@
+from typing import Callable
+import logging
 from scraper.constants import URL_SCHEMES
+
+
+def log_exception(func: Callable):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as ex:
+            logging.getLogger(func.__name__).exception(f"Function '{func.__name__}' raised an exception")
+            raise ex
+
+    return inner
 
 
 class WebsiteNotSupported(Exception):

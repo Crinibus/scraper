@@ -1,19 +1,9 @@
 from sqlmodel import Session, select, col
-import logging
 
+from scraper.exceptions import log_exception
 from scraper.models.product import ProductInfo
 from .db import engine
 from .models import Product, DataPoint
-
-
-def log_exception(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as ex:
-            logging.getLogger(func.__name__).exception(f"Function {func.__name__} raised an exception")
-
-    return inner
 
 
 @log_exception
@@ -22,6 +12,7 @@ def delete_all(elements: list[Product | DataPoint]) -> None:
         for element in elements:
             session.delete(element)
         session.commit()
+
 
 @log_exception
 def add(element: Product | DataPoint) -> None:
