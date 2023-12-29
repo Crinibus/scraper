@@ -35,6 +35,10 @@ def add_product(category: str, url: str) -> None:
     new_product = Scraper(category, url)
     new_product_info = new_product.scrape_info()
 
+    if not new_product_info.valid:
+        print("Product info is not valid - see logs for more info")
+        return
+
     product_in_db = db.get_product_by_product_code(new_product_info.id)
 
     if product_in_db is None:

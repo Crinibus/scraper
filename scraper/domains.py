@@ -43,8 +43,8 @@ class BaseWebsiteHandler(ABC):
             logging.getLogger(__name__).exception(f"Could not get all the data needed from url: {self.url}")
             return Info(None, None, None, None, valid=False)
         except WebsiteVersionNotSupported as ex:
-            logging.getLogger(__name__).exception(ex)
-            print(ex)
+            logging.getLogger(__name__).error(ex)
+            return Info(None, None, None, None, valid=False)
 
     def _request_product_data(self) -> None:
         # option for each specific class to change how the request data is being handled
