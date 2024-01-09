@@ -536,7 +536,7 @@ def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False, 
 
 
 def get_website_handler(url: str) -> BaseWebsiteHandler:
-    website_name = get_website_name(url).lower()
+    website_name = get_website_name(url, keep_subdomain=False).lower()
 
     website_handler = SUPPORTED_DOMAINS.get(website_name, None)
 
