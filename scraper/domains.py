@@ -514,7 +514,6 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
         return f"{website}/{id}"
 
 
-def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False) -> str:
 class Shein(BaseWebsiteHandler):
     def _get_common_data(self) -> None:
         script_data_raw = self.request_data.find_all("script", type="application/ld+json")[1].text
@@ -536,6 +535,7 @@ class Shein(BaseWebsiteHandler):
         return self.url
 
 
+def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False) -> str:
     stripped_url = url if keep_http else url.removeprefix("https://").removeprefix("http://")
     stripped_url = stripped_url if keep_www else stripped_url.replace("www.", "", 1)
     domain = "/".join(stripped_url.split("/")[0:3]) if keep_http else stripped_url.split("/")[0]
