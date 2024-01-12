@@ -27,6 +27,8 @@ test_websites = [
     ("https://www.main.com", UrlSetting(keep_http=True, keep_subdomain=False), "https://main"),
     ("https://www.main.com/", UrlSetting(keep_http=True, keep_subdomain=False), "https://main"),
     ("https://www.sub.main.com/", UrlSetting(keep_http=True), "https://sub.main"),
+    ("https://www.sub.main.com/", UrlSetting(keep_http=True, keep_www=True), "https://www.sub.main"),
+    ("https://www.sub.main.com/", UrlSetting(keep_http=True, keep_www=True, keep_subdomain=False), "https://www.main"),
 ]
 
 

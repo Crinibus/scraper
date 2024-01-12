@@ -529,7 +529,12 @@ def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False, 
 
     # Remove subdomain if keep_subdomain is false
     if not keep_subdomain and len(website_name_list) > 1:
-        website_name_list = website_name_list[1:]
+        subdomain_and_domain = get_website_name(domain, keep_subdomain=True)
+        subdomains = subdomain_and_domain.split(".")[:-1]
+
+        website_name_list_copy = website_name_list.copy()
+        # remove subdomains
+        website_name_list = [elem for elem in website_name_list_copy if elem not in subdomains]
 
     website_name = ".".join(website_name_list)
     return website_name
