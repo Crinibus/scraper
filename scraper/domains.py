@@ -310,16 +310,11 @@ class EbayHandler(BaseWebsiteHandler):
 
     def _get_product_price(self) -> float:
         if self.soup_url.split("/")[3] == "itm":
-            price = float(
-                self.request_data.find("div", class_="x-price-primary")
-                .text
-                .replace("US $", "")
-            )
+            price = float(self.request_data.find("div", class_="x-price-primary").text.replace("US $", ""))
         else:
             price = float(
                 self.request_data.find("div", class_="x-price-primary")
-                .text
-                .replace("DKK ", "")
+                .text.replace("DKK ", "")
                 .replace("$", "")
                 .replace(",", "")
             )
@@ -535,19 +530,55 @@ class Shein(BaseWebsiteHandler):
         return self.url
 
 
-def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False) -> str:
+class Shein(BaseWebsiteHandler):
+    def _get_common_data(self) -> None:
+        script_data_raw = self.request_data.find_all("script", type="application/ld+json")[1].text
+        self.script_json = json.loads(script_data_raw)
+
+    def _get_product_name(self) -> str:
+        return self.script_json.get("name")
+
+    def _get_product_price(self) -> float:
+        return float(self.script_json.get("offers").get("price"))
+
+    def _get_product_currency(self) -> str:
+        return self.script_json.get("offers").get("priceCurrency")
+
+    def _get_product_id(self) -> str:
+        return self.script_json.get("sku")
+
+    def get_short_url(self) -> str:
+        return self.url
+
+
+def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True) -> str:
     stripped_url = url if keep_http else url.removeprefix("https://").removeprefix("http://")
-    stripped_url = stripped_url if keep_www else stripped_url.replace("www.", "", 1)
+
+    if not keep_www and keep_http:
+        stripped_url = stripped_url.replace("www.", "", 1)
+    elif not keep_www:
+        stripped_url = stripped_url.removeprefix("www.")
+
     domain = "/".join(stripped_url.split("/")[0:3]) if keep_http else stripped_url.split("/")[0]
 
     # Remove the TLD/DNS name (such as ".com") if keep_tld is false
     website_name_list = domain.split(".") if keep_tld else domain.split(".")[:-1]
+
+    # Remove subdomain if keep_subdomain is false
+    if not keep_subdomain and len(website_name_list) > 1:
+        subdomain_and_domain = get_website_name(domain, keep_subdomain=True)
+        subdomains = subdomain_and_domain.split(".")[:-1]
+
+        website_name_list_copy = website_name_list.copy()
+        # remove subdomains
+        website_name_list = [elem for elem in website_name_list_copy if elem not in subdomains]
+
     website_name = ".".join(website_name_list)
     return website_name
 
 
 def get_website_handler(url: str) -> BaseWebsiteHandler:
-    website_name = get_website_name(url).lower()
+    website_name = get_website_name(url, keep_subdomain=False).lower()
 
     website_handler = SUPPORTED_DOMAINS.get(website_name, None)
 

@@ -21,7 +21,7 @@ def add_products(categories: list[str], urls: list[str]) -> None:
 def add_product(category: str, url: str) -> None:
     logger = logging.getLogger(__name__)
 
-    website_name = get_website_name(url)
+    website_name = get_website_name(url, keep_subdomain=False)
 
     if website_name not in SUPPORTED_DOMAINS.keys():
         raise WebsiteNotSupported(website_name)
