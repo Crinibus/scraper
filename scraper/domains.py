@@ -530,27 +530,6 @@ class Shein(BaseWebsiteHandler):
         return self.url
 
 
-class Shein(BaseWebsiteHandler):
-    def _get_common_data(self) -> None:
-        script_data_raw = self.request_data.find_all("script", type="application/ld+json")[1].text
-        self.script_json = json.loads(script_data_raw)
-
-    def _get_product_name(self) -> str:
-        return self.script_json.get("name")
-
-    def _get_product_price(self) -> float:
-        return float(self.script_json.get("offers").get("price"))
-
-    def _get_product_currency(self) -> str:
-        return self.script_json.get("offers").get("priceCurrency")
-
-    def _get_product_id(self) -> str:
-        return self.script_json.get("sku")
-
-    def get_short_url(self) -> str:
-        return self.url
-
-
 def get_website_name(url: str, keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True) -> str:
     stripped_url = url if keep_http else url.removeprefix("https://").removeprefix("http://")
 
