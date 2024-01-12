@@ -6,41 +6,25 @@ from scraper.domains import get_website_name
 
 @dataclass
 class UrlSetting:
-    keep_tld: bool
-    keep_http: bool
-    keep_www: bool
-    keep_subdomain: bool
+    keep_tld: bool = False
+    keep_http: bool = False
+    keep_www: bool = False
+    keep_subdomain: bool = True
 
 
 test_websites = [
-    ("https://www.amazon.com/", UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True), "amazon"),
-    ("https://www.komplett.dk/", UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True), "komplett"),
-    (
-        "https://www.av-cables.dk/",
-        UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True),
-        "av-cables",
-    ),
-    ("https://nowww.com/", UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True), "nowww"),
-    (
-        "https://no-ending-slash.com",
-        UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True),
-        "no-ending-slash",
-    ),
-    (
-        "https://www.test.testing.com/",
-        UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True),
-        "test.testing",
-    ),
-    (
-        "https://www.test.hello.com/hello/world",
-        UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=True),
-        "test.hello",
-    ),
-    ("https://sub.main.com", UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=False), "main"),
-    ("https://www.sub.main.com", UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=False), "main"),
-    ("https://main.com", UrlSetting(keep_tld=False, keep_http=False, keep_www=False, keep_subdomain=False), "main"),
-    ("https://main.com", UrlSetting(keep_tld=False, keep_http=True, keep_www=False, keep_subdomain=False), "https://main"),
-    ("https://www.main.com", UrlSetting(keep_tld=False, keep_http=True, keep_www=False, keep_subdomain=False), "https://main"),
+    ("https://www.amazon.com/", UrlSetting(), "amazon"),
+    ("https://www.komplett.dk/", UrlSetting(), "komplett"),
+    ("https://www.av-cables.dk/", UrlSetting(), "av-cables"),
+    ("https://nowww.com/", UrlSetting(), "nowww"),
+    ("https://no-ending-slash.com", UrlSetting(), "no-ending-slash"),
+    ("https://www.test.testing.com/", UrlSetting(), "test.testing"),
+    ("https://www.test.hello.com/hello/world", UrlSetting(), "test.hello"),
+    ("https://sub.main.com", UrlSetting(keep_subdomain=False), "main"),
+    ("https://www.sub.main.com", UrlSetting(keep_subdomain=False), "main"),
+    ("https://main.com", UrlSetting(keep_subdomain=False), "main"),
+    ("https://main.com", UrlSetting(keep_http=True, keep_subdomain=False), "https://main"),
+    ("https://www.main.com", UrlSetting(keep_http=True, keep_subdomain=False), "https://main"),
 ]
 
 
