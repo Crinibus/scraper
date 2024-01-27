@@ -17,6 +17,7 @@ from scraper.domains import (
     ProshopHandler,
     SharkGamingHandler,
     HifiKlubbenHandler,
+    SheinHandler,
 )
 from scraper.models import Info
 
@@ -47,6 +48,7 @@ coolshop_test = test_website_handlers_json["coolshop"]
 sharkgaming_test = test_website_handlers_json["sharkgaming"]
 newegg_test = test_website_handlers_json["newegg"]
 hifiklubben_test = test_website_handlers_json["hifiklubben"]
+shein_test = test_website_handlers_json["shein"]
 
 
 class BaseTestWebsiteHandler(ABC):
@@ -560,3 +562,33 @@ class TestHifiKlubbenHandler(BaseTestWebsiteHandler):
         id = self.test_handler._get_product_id()
         assert isinstance(id, str)
         assert id == hifiklubben_test["expected_id"]
+
+
+class TestSheinHandler(BaseTestWebsiteHandler):
+    test_handler = SheinHandler(shein_test["link"])
+
+    def test_get_product_info(self, mocker) -> None:
+        mocker.patch("scraper.domains.BaseWebsiteHandler._request_product_data", return_value=self.test_handler.request_data)
+        actual = self.test_handler.get_product_info()
+        assert isinstance(actual, Info)
+        assert actual.valid
+
+    def test_get_name(self) -> None:
+        actual = self.test_handler._get_product_name().lower()
+        expected = shein_test["expected_title"].lower()
+        assert isinstance(actual, str)
+        assert actual == expected
+
+    def test_get_price(self) -> None:
+        price = self.test_handler._get_product_price()
+        assert isinstance(price, float)
+
+    def test_get_currency(self) -> None:
+        currency = self.test_handler._get_product_currency()
+        assert isinstance(currency, str)
+        assert currency == shein_test["expected_currency"]
+
+    def test_get_id(self) -> None:
+        id = self.test_handler._get_product_id()
+        assert isinstance(id, str)
+        assert id == shein_test["expected_id"]

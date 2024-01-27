@@ -150,6 +150,7 @@ This scraper can (so far) scrape prices on products from:
 - [Sharkgaming.dk](https://www.sharkgaming.dk/)
 - [Newegg.com](https://www.newegg.com/) & [Newegg.ca](https://www.newegg.ca/)
 - [HifiKlubben.dk](https://www.hifiklubben.dk/)
+- [Shein.com](https://www.shein.com/)
 
 ****OBS these Amazon domains should work: [.com](https://www.amazon.com/), [.ca](https://www.amazon.ca/), [.es](https://www.amazon.es/), [.fr](https://www.amazon.fr/), [.de](https://www.amazon.de/) and [.it](https://www.amazon.it/)<br/>
 The listed Amazon domains is from my quick testing with one or two products from each domain.<br/>

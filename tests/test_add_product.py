@@ -22,6 +22,7 @@ test_domains = [
     ("https://sharkgaming.dk/", does_not_raise()),
     ("https://www.newegg.com/", does_not_raise()),
     ("https://www.hifiklubben.dk/", does_not_raise()),
+    ("https://us.shein.com/", does_not_raise()),
     ("https://www.notsupported.com/", pytest.raises(WebsiteNotSupported)),
 ]
 
