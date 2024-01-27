@@ -95,6 +95,12 @@
       "expected_title": "SENNHEISER MOMENTUM 4 WIRELESS",
       "expected_id": "senmomentum4bk",
       "expected_currency": "DKK"
+    },
+    "shein": {
+      "link": "https://euqs.shein.com/Men-s-Letter-Print-Slim-Fit-Short-Sleeve-T-Shirt-p-28492178.html",
+      "expected_title": "Men's Letter Print Slim Fit Short Sleeve T-Shirt",
+      "expected_id": "sm2311284334246374",
+      "expected_currency": "EUR"
     }
   }
 }
