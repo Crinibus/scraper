@@ -509,7 +509,7 @@ class HifiKlubbenHandler(BaseWebsiteHandler):
         return f"{website}/{id}"
 
 
-class Shein(BaseWebsiteHandler):
+class SheinHandler(BaseWebsiteHandler):
     def _get_common_data(self) -> None:
         script_data_raw = self.request_data.find_all("script", type="application/ld+json")[1].text
         self.script_json = json.loads(script_data_raw)
@@ -584,5 +584,5 @@ SUPPORTED_DOMAINS: dict[str, BaseWebsiteHandler] = {
     "sharkgaming": SharkGamingHandler,
     "newegg": NeweggHandler,
     "hifiklubben": HifiKlubbenHandler,
-    "shein": Shein,
+    "shein": SheinHandler,
 }
