@@ -1,5 +1,7 @@
 import scraper.database as db
+from scraper.models.product import ProductInfo
 from scraper.scrape import Scraper
+from scraper.domains import get_website_name
 
 
 class Format:
@@ -24,4 +26,24 @@ class Format:
             url=product.url,
             short_url=product.website_handler.get_short_url(),
             is_active=is_active,
+        )
+
+    @staticmethod
+    def db_products_to_product_infos(products: list[db.Product]) -> list[ProductInfo]:
+        product_infos = []
+        for product in products:
+            product_info = Format.db_product_to_product_info(product)
+            product_infos.append(product_info)
+        return product_infos
+
+    @staticmethod
+    def db_product_to_product_info(product: db.Product) -> ProductInfo:
+        return ProductInfo(
+            product_name=product.name,
+            category=product.category,
+            url=product.short_url,
+            id=product.product_code,
+            currency=None,
+            website=get_website_name(product.short_url, keep_subdomain=False),
+            datapoints=None,
         )
