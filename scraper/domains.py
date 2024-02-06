@@ -1,5 +1,5 @@
+import re
 import requests
-import urllib.parse
 from bs4 import BeautifulSoup
 import json
 import logging
@@ -257,35 +257,14 @@ class AmazonHandler(BaseWebsiteHandler):
         return float(self.request_data.find("span", class_="a-price").span.text.replace("$", ""))
 
     def _get_product_currency(self) -> str:
-        try:
-            return self.request_data.find("input", id="attach-currency-of-preference").get("value")
-        except (AttributeError, ValueError, TypeError):
-            try:
-                return (
-                    self.request_data.find("a", id="icp-touch-link-cop")
-                    .find("span", class_="icp-color-base")
-                    .text.split(" ")[0]
-                )
-            except (AttributeError, ValueError, TypeError):
-                raw_data = self.request_data.find_all(
-                    "span",
-                    class_="a-declarative",
-                    attrs={
-                        "data-action": "a-modal",
-                        "data-csa-c-type": "widget",
-                        "data-csa-c-func-deps": "aui-da-a-modal",
-                        "data-a-modal": True,
-                    },
-                )[1].get("data-a-modal")
-                json_data = json.loads(raw_data)
-                parsed_url = urllib.parse.unquote(json_data.get("url"))
-                currency = (
-                    json.loads(parsed_url.replace("/af/sp-detail/feedback-form?pl=", ""))
-                    .get("offerCollection")[0]
-                    .get("priceInfo")
-                    .get("currencyCode")
-                )
-                return currency
+        regex_pattern = "%22currencyCode%22%3A%22(.{3})%22"
+
+        search_result = self.request_data.find(string=re.compile(regex_pattern))
+        regex_result = re.search(regex_pattern, search_result)
+
+        if regex_result:
+            return regex_result.group(1)
+        return "N/F"
 
     def _get_product_id(self) -> str:
         try:
