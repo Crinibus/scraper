@@ -212,7 +212,7 @@ class AvXpertenHandler(BaseWebsiteHandler):
         return self.request_data.find("div", class_="content-head").h1.text.strip()
 
     def _get_product_price(self) -> float:
-        return float(self.request_data.find("div", class_="price").text.replace("\xa0DKK", ""))
+        return float(self.request_data.find("div", class_="price").text.replace("\xa0DKK", "").replace(" DKK", ""))
 
     def _get_product_currency(self) -> str:
         return self.script_json.get("offers").get("priceCurrency")
