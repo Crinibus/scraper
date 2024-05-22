@@ -92,6 +92,12 @@ def show_products(products: list[ProductInfo], title: str) -> None:
             name_format="%website - %name - %id",
         )
     config_figure(fig, title)
+    fig.update_layout(legend=dict(
+        yanchor="bottom",
+        y=-0.20,
+        xanchor="left",
+        x=0.01
+    ))    
     fig.show()
 
 
