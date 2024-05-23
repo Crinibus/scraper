@@ -1,5 +1,6 @@
 from typing import Iterable, Iterator
 import plotly.graph_objs as go
+from plotly import graph_objs
 from datetime import datetime
 
 import scraper.database as db
@@ -64,8 +65,8 @@ def compare_products(
 
     product_ids = [product.id for product in products_to_compare]
     product_ids_string = ", ".join(product_ids)
-
-    show_products(products_to_compare, f"Comparing products with ids: {product_ids_string}")
+    
+    show_products(products_to_compare, f"Comparing products with ids: {product_ids_string[:100] + ' ...' if  len(product_ids_string) > 100 else product_ids_string}")
 
 
 def show_master_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
@@ -91,13 +92,7 @@ def show_products(products: list[ProductInfo], title: str) -> None:
             product,
             name_format="%website - %name - %id",
         )
-    config_figure(fig, title)
-    fig.update_layout(legend=dict(
-        yanchor="bottom",
-        y=-0.20,
-        xanchor="left",
-        x=0.01
-    ))    
+    config_figure(fig, title) 
     fig.show()
 
 
@@ -163,16 +158,20 @@ def get_products_from_master_products(master_products: Iterable[MasterProduct]) 
     return [product for master_product in master_products for product in master_product.products]
 
 
-def config_figure(figure: go.Figure, figure_title: str) -> None:
+def config_figure(figure: go.Figure, figure_title: str) -> None:   
     figure.update_traces(mode="markers+lines")
     figure.update_layout(
         title=figure_title,
         xaxis_title="Date",
         yaxis_title="Price",
         hovermode="x",
-        separators=".,",
+        separators=".,",   
+        legend=dict(orientation = "h", yanchor="bottom",y=-2,xanchor="left", x=0),
+        hoverlabel_namelength=-1,
     )
-
+    figure.update_traces(mode="markers+lines", hovertemplate=None)
+    figure.update_layout(hovermode="closest") 
+    
 
 def add_scatter_plot(
     figure: go.Figure,
