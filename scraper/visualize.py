@@ -159,18 +159,16 @@ def get_products_from_master_products(master_products: Iterable[MasterProduct]) 
 
 
 def config_figure(figure: go.Figure, figure_title: str) -> None:   
-    figure.update_traces(mode="markers+lines")
     figure.update_layout(
         title=figure_title,
         xaxis_title="Date",
         yaxis_title="Price",
-        hovermode="x",
+        hovermode="closest",
         separators=".,",   
         legend=dict(orientation = "h", yanchor="bottom",y=-2,xanchor="left", x=0),
         hoverlabel_namelength=-1,
     )
     figure.update_traces(mode="markers+lines", hovertemplate=None)
-    figure.update_layout(hovermode="closest") 
     
 
 def add_scatter_plot(
