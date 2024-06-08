@@ -254,7 +254,9 @@ class AmazonHandler(BaseWebsiteHandler):
         return self.request_data.find("span", id="productTitle").text.strip()
 
     def _get_product_price(self) -> float:
-        return float(self.request_data.find("span", class_="a-price").span.text.replace("$", "").replace(",", "").replace(" ", ""))
+        return float(
+            self.request_data.find("span", class_="a-price").span.text.replace("$", "").replace(",", "").replace(" ", "")
+        )
 
     def _get_product_currency(self) -> str:
         regex_pattern = "%22currencyCode%22%3A%22(.{3})%22"
