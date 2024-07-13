@@ -91,7 +91,10 @@ def show_products(products: list[ProductInfo], title: str) -> None:
             product,
             name_format="%website - %name - %id",
         )
-    config_figure(fig, title)
+
+    num_products = len(products)
+
+    config_figure(fig, title, num_products)
     fig.show(config={"scrollZoom": True})
 
 
@@ -157,15 +160,29 @@ def get_products_from_master_products(master_products: Iterable[MasterProduct]) 
     return [product for master_product in master_products for product in master_product.products]
 
 
-def config_figure(figure: go.Figure, figure_title: str) -> None:
+def get_yvalue_for_configure_figure(num_products: int, min_value: int, max_value: int, max_num: int):
+    value = ((num_products / max_num) * (max_value - min_value)) + min_value
+
+    if value > max_value:
+        value = max_value
+    elif value < min_value:
+        value = min_value
+
+    return value
+
+
+def config_figure(figure: go.Figure, figure_title: str, num_products: int) -> None:
     figure.update_traces(mode="markers+lines", hovertemplate=None)
+
+    y_value = get_yvalue_for_configure_figure(num_products, 0.1, 0.25, 30)
+
     figure.update_layout(
         title=dict(text=figure_title),
         xaxis_title="Date",
         yaxis_title="Price",
         hovermode="closest",
         separators=".,",
-        legend=dict(orientation="h", y=-0.3, x=0, yref="paper", xref="paper", yanchor="top", xanchor="left"),
+        legend=dict(orientation="h", y=-y_value, x=0, yref="paper", xref="paper", yanchor="top", xanchor="left"),
         hoverlabel_namelength=-1,
     )
 
