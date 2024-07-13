@@ -160,10 +160,7 @@ def get_products_from_master_products(master_products: Iterable[MasterProduct]) 
 def config_figure(figure: go.Figure, figure_title: str) -> None:
     figure.update_traces(mode="markers+lines", hovertemplate=None)
     figure.update_layout(
-        title=dict(
-            text=figure_title,
-            font=dict(family="Courier New, monospace", color="#000000", size=18, weight="bold", style="italic"),
-        ),
+        title=dict(text=figure_title),
         xaxis_title="Date",
         yaxis_title="Price",
         hovermode="closest",
