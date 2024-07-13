@@ -297,14 +297,14 @@ LOGITECH Z533
 
 
 ## View all products <a name="view-all-products"></a>
-To view all the products you have scraped, you can use the argument ```--print-all-products```.
+To view all the products you have scraped, you can use the argument ```--list-products```.
 
 Example:
 ```
-python3 main.py --print-all-products
+python3 main.py --list-products
 ```
 
-This will print all the products in the following format:
+This will list all the products in the following format:
 
 ```
 CATEGORY

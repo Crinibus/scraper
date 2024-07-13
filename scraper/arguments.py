@@ -119,9 +119,9 @@ def argparse_setup() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--print-all-products",
-        help="print the names, websites and ids of all products",
-        dest="print_all_products",
+        "--list-products",
+        help="lists the names, websites and ids of all products",
+        dest="list_products",
         action="store_true",
     )
 
