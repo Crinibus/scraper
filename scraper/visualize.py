@@ -64,8 +64,8 @@ def compare_products(
 
     product_ids = [product.id for product in products_to_compare]
     product_ids_string = ", ".join(product_ids)
-
-    show_products(products_to_compare, f"Comparing products with ids: {product_ids_string}")
+    title_ = product_ids_string[:100] + " ..." if len(product_ids_string) > 100 else product_ids_string
+    show_products(products_to_compare, f"Comparing products with ids: {title_}")
 
 
 def show_master_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
@@ -92,7 +92,7 @@ def show_products(products: list[ProductInfo], title: str) -> None:
             name_format="%website - %name - %id",
         )
     config_figure(fig, title)
-    fig.show()
+    fig.show(config={"scrollZoom": True})
 
 
 def get_master_products() -> tuple[MasterProduct]:
@@ -158,13 +158,18 @@ def get_products_from_master_products(master_products: Iterable[MasterProduct]) 
 
 
 def config_figure(figure: go.Figure, figure_title: str) -> None:
-    figure.update_traces(mode="markers+lines")
+    figure.update_traces(mode="markers+lines", hovertemplate=None)
     figure.update_layout(
-        title=figure_title,
+        title=dict(
+            text=figure_title,
+            font=dict(family="Courier New, monospace", color="#000000", size=18, weight="bold", style="italic"),
+        ),
         xaxis_title="Date",
         yaxis_title="Price",
-        hovermode="x",
+        hovermode="closest",
         separators=".,",
+        legend=dict(orientation="h", y=-0.3, x=0, yref="paper", xref="paper", yanchor="top", xanchor="left"),
+        hoverlabel_namelength=-1,
     )
 
 
