@@ -1,4 +1,17 @@
+from typing import Callable
+import logging
 from scraper.constants import URL_SCHEMES
+
+
+def log_exception(func: Callable):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as ex:
+            logging.getLogger(func.__name__).exception(f"Function '{func.__name__}' raised an exception")
+            raise ex
+
+    return inner
 
 
 class WebsiteNotSupported(Exception):
@@ -25,4 +38,5 @@ class URLMissingSchema(Exception):
         self.url = url
 
     def __str__(self) -> str:
-        return f"Missing schema in url '{self.url}'. Consider prefixing the url with one of following schemes: {', '.join(URL_SCHEMES)}"
+        url_schemes = ", ".join(URL_SCHEMES)
+        return f"Missing schema in url '{self.url}'. Consider prefixing the url with one of following schemes: {url_schemes}"
