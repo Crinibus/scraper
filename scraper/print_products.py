@@ -49,6 +49,10 @@ def print_all_products() -> None:
     print("\n----- SHOWING ALL PRODUCTS -----")
     categories = db.get_all_unique_categories()
 
+    if not categories:
+        print("No products")
+        return
+
     for category in categories:
         print(category.upper())
 
