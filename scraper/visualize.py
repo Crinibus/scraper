@@ -19,6 +19,10 @@ def visualize_data(
 
     master_products = get_master_products()
 
+    if not master_products:
+        print("No products saved")
+        return
+
     if compare:
         compare_products(master_products, ids, names, categories, only_up_to_date, show_all)
         return
@@ -33,6 +37,8 @@ def visualize_data(
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {category} - {status_of_master_product}"
             show_products(master_product.products, title)
+        else:
+            print("No products found with category/categories")
 
     if ids:
         for product in get_products_with_ids(master_products, ids, only_up_to_date):
@@ -40,6 +46,8 @@ def visualize_data(
             product_name = product.product_name.upper()
             title = f"Price(s) of {product_name} - {status_of_product}"
             show_product(product, title)
+        else:
+            print("No products found with id(s)")
 
     if names:
         for master_product in get_master_products_with_names(master_products, names, only_up_to_date):
@@ -47,6 +55,8 @@ def visualize_data(
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {status_of_master_product}"
             show_products(master_product.products, title)
+        else:
+            print("No products found with name(s)")
 
 
 def compare_products(
@@ -70,6 +80,10 @@ def compare_products(
     if show_all:
         products_to_compare = get_products_from_master_products(master_products)
 
+    if not products_to_compare:
+        print("No products found to compare")
+        return
+
     product_ids = [product.id for product in products_to_compare]
     product_ids_string = ", ".join(product_ids)
     title_ = product_ids_string[:100] + " ..." if len(product_ids_string) > 100 else product_ids_string
@@ -85,6 +99,8 @@ def show_master_products(master_products: tuple[MasterProduct], only_up_to_date:
         show_products(
             master_product.products, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}"
         )
+    else:
+        print("No products found")
 
 
 def show_product(product: ProductInfo, title: str) -> None:
