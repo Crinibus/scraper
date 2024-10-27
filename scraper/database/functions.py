@@ -1,10 +1,12 @@
 from sqlmodel import Session, select, col
 
+from scraper.exceptions import log_exception
 from scraper.models.product import ProductInfo
 from .db import engine
 from .models import Product, DataPoint
 
 
+@log_exception
 def delete_all(elements: list[Product | DataPoint]) -> None:
     with Session(engine) as session:
         for element in elements:
@@ -12,18 +14,21 @@ def delete_all(elements: list[Product | DataPoint]) -> None:
         session.commit()
 
 
+@log_exception
 def add(element: Product | DataPoint) -> None:
     with Session(engine) as session:
         session.add(element)
         session.commit()
 
 
+@log_exception
 def add_all(elements: list[Product | DataPoint]) -> None:
     with Session(engine) as session:
         session.add_all(elements)
         session.commit()
 
 
+@log_exception
 def get_all_products(select_only_active: bool = False) -> list[Product]:
     with Session(engine) as session:
         query = select(Product)
@@ -34,41 +39,49 @@ def get_all_products(select_only_active: bool = False) -> list[Product]:
         return session.exec(query).all()
 
 
+@log_exception
 def get_all_datapoints() -> list[DataPoint]:
     with Session(engine) as session:
         return session.exec(select(DataPoint)).all()
 
 
+@log_exception
 def get_all_unique_categories() -> list[str]:
     with Session(engine) as session:
         return session.exec(select(Product.category).distinct()).all()
 
 
+@log_exception
 def get_all_unique_domains() -> list[str]:
     with Session(engine) as session:
         return session.exec(select(Product.domain).distinct()).all()
 
 
+@log_exception
 def get_product_by_product_code(product_code: str) -> Product | None:
     with Session(engine) as session:
         return session.exec(select(Product).where(Product.product_code == product_code)).first()
 
 
+@log_exception
 def get_products_by_product_codes(product_codes: list[str]) -> list[Product]:
     with Session(engine) as session:
         return session.exec(select(Product).where(col(Product.product_code).in_(product_codes))).all()
 
 
+@log_exception
 def get_products_by_categories(categories: list[str]) -> list[Product]:
     with Session(engine) as session:
         return session.exec(select(Product).where(col(Product.category).in_(categories))).all()
 
 
+@log_exception
 def get_products_by_names(names: list[str]) -> list[Product]:
     with Session(engine) as session:
         return session.exec(select(Product).where(col(Product.name).in_(names))).all()
 
 
+@log_exception
 def get_products_by_names_fuzzy(names: list[str]) -> list[Product]:
     with Session(engine) as session:
         matched_products = []
@@ -81,6 +94,7 @@ def get_products_by_names_fuzzy(names: list[str]) -> list[Product]:
         return matched_products
 
 
+@log_exception
 def get_products_by_domains(domains: list[str], select_only_active: bool = False) -> list[Product]:
     with Session(engine) as session:
         query = select(Product).where(col(Product.domain).in_(domains))
@@ -91,6 +105,7 @@ def get_products_by_domains(domains: list[str], select_only_active: bool = False
         return session.exec(query).all()
 
 
+@log_exception
 def get_datapoints_by_categories(categories: list[str]) -> list[DataPoint]:
     with Session(engine) as session:
         products = session.exec(select(Product).where(col(Product.category).in_(categories))).all()
@@ -99,6 +114,7 @@ def get_datapoints_by_categories(categories: list[str]) -> list[DataPoint]:
         return datapoints
 
 
+@log_exception
 def get_datapoints_by_names(names: list[str]) -> list[DataPoint]:
     with Session(engine) as session:
         products = session.exec(select(Product).where(col(Product.name).in_(names))).all()
@@ -107,6 +123,7 @@ def get_datapoints_by_names(names: list[str]) -> list[DataPoint]:
         return datapoints
 
 
+@log_exception
 def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]:
     with Session(engine) as session:
         products = session.exec(select(Product).where(col(Product.product_code).in_(product_codes))).all()
@@ -115,11 +132,13 @@ def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]
         return datapoints
 
 
+@log_exception
 def get_all_products_with_datapoints(select_only_active: bool = False) -> list[ProductInfo]:
     products = get_all_products(select_only_active=select_only_active)
     return get_product_infos_from_products(products)
 
 
+@log_exception
 def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo]:
     with Session(engine) as session:
         product_infos: list[ProductInfo] = []
@@ -144,11 +163,13 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
         return product_infos
 
 
+@log_exception
 def get_all_products_grouped_by_domains(select_only_active: bool = False) -> list[list[Product]]:
     all_products = get_all_products(select_only_active=select_only_active)
     return group_products_by_domains(all_products)
 
 
+@log_exception
 def group_products_by_domains(products: list[Product]) -> list[list[Product]]:
     grouped_products = []
 
@@ -165,6 +186,7 @@ def group_products_by_domains(products: list[Product]) -> list[list[Product]]:
     return grouped_products
 
 
+@log_exception
 def group_products_by_names(products: list[Product]) -> list[list[Product]]:
     grouped_products = []
 
