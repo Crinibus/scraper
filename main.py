@@ -42,7 +42,10 @@ def main() -> None:
         scraper.print_latest_datapoints(args.name, args.id, args.category)
 
     if args.list_products:
-        scraper.print_all_products()
+        if any([args.name, args.id, args.category]):
+            scraper.list_products_with_filters(args.name, args.id, args.category)
+        else:
+            scraper.print_all_products()
 
     if args.delete:
         scraper.delete(args.category, args.name, args.id, args.all)
