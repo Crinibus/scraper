@@ -1,4 +1,6 @@
+from scraper.constants import CHECK_MARK
 import scraper.database as db
+from scraper.database.models import Product
 from scraper.models.product import ProductInfo
 
 
@@ -60,9 +62,46 @@ def print_all_products() -> None:
 
         grouped_products = db.group_products_by_names(products)
 
-        for products in grouped_products:
-            print(f"  > {products[0].name.upper()}")
-            for product in products:
-                is_active_marker = "\u2713 " if product.is_active else ""
-                print(f"    - {is_active_marker}{product.domain.upper()} - {product.product_code}")
-        print()
+        list_grouped_products(grouped_products)
+
+
+def list_products_with_filters(names: list[str] | None, product_codes: list[str] | None, categories: list[str] | None) -> None:
+    print("\n----- LISTING PRODUCTS -----")
+    products_by_filters: list[Product] = []
+
+    if names:
+        products_with_names = db.get_products_by_names(names)
+        products_by_filters.extend(products_with_names)
+
+    if product_codes:
+        products_with_product_codes = db.get_products_by_product_codes(product_codes)
+        products_by_filters.extend(products_with_product_codes)
+
+    if categories:
+        products_with_categories = db.get_products_by_categories(categories)
+        products_by_filters.extend(products_with_categories)
+
+    if not products_by_filters:
+        print("Found no products with filters")
+        return
+
+    categories = set([product.category for product in products_by_filters])
+    sorted_categories = sorted(categories)
+
+    for category in sorted_categories:
+        print(category.upper())
+
+        products_with_category = [product for product in products_by_filters if product.category == category]
+
+        grouped_products = db.group_products_by_names(products_with_category)
+
+        list_grouped_products(grouped_products)
+
+
+def list_grouped_products(grouped_products: list[list[Product]]) -> None:
+    for products in grouped_products:
+        print(f"  > {products[0].name.upper()}")
+        for product in products:
+            is_active_marker = f"{CHECK_MARK} " if product.is_active else ""
+            print(f"    - {is_active_marker}{product.domain.upper()} - {product.product_code}")
+    print()
