@@ -1,3 +1,4 @@
+from scraper.constants import CHECK_MARK
 import scraper.database as db
 from scraper.database.models import Product
 from scraper.models.product import ProductInfo
@@ -101,6 +102,6 @@ def list_grouped_products(grouped_products: list[list[Product]]) -> None:
     for products in grouped_products:
         print(f"  > {products[0].name.upper()}")
         for product in products:
-            is_active_marker = "\u2713 " if product.is_active else ""
+            is_active_marker = f"{CHECK_MARK} " if product.is_active else ""
             print(f"    - {is_active_marker}{product.domain.upper()} - {product.product_code}")
     print()

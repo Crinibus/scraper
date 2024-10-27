@@ -22,3 +22,5 @@ WEBSITE_COLORS = {
 }
 
 URL_SCHEMES = ("http://", "https://")
+
+CHECK_MARK = "\u2713"
