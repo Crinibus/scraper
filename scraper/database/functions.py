@@ -1,6 +1,6 @@
 from sqlmodel import Session, select, col
 
-from scraper.models.product import ProductInfo
+from scraper.models.product import DataPointInfo, ProductInfo
 from .db import engine
 from .models import Product, DataPoint
 
@@ -129,12 +129,14 @@ def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo
                 select(DataPoint).where(DataPoint.product_code == product.product_code).order_by(DataPoint.date)
             ).all()
 
+            datapoint_infos = [DataPointInfo(date=datapoint.date, price=datapoint.price) for datapoint in datapoints]
+
             product_info = ProductInfo(
                 id=product.product_code,
                 product_name=product.name,
                 category=product.category,
                 currency=datapoints[0].currency if datapoints else "<N/A>",
-                datapoints=datapoints,
+                datapoints=datapoint_infos,
                 url=product.url,
                 website=product.domain,
             )
