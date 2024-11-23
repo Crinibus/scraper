@@ -115,35 +115,40 @@ def get_datapoints_by_product_codes(product_codes: list[str]) -> list[DataPoint]
         return datapoints
 
 
+def get_datapoints_by_product(product: Product) -> list[DataPoint]:
+    with Session(engine) as session:
+        datapoints = session.exec(
+            select(DataPoint).where(DataPoint.product_code == product.product_code).order_by(DataPoint.date)
+        ).all()
+        return datapoints
+
+
 def get_all_products_with_datapoints(select_only_active: bool = False) -> list[ProductInfo]:
     products = get_all_products(select_only_active=select_only_active)
     return get_product_infos_from_products(products)
 
 
 def get_product_infos_from_products(products: list[Product]) -> list[ProductInfo]:
-    with Session(engine) as session:
-        product_infos: list[ProductInfo] = []
+    product_infos: list[ProductInfo] = []
 
-        for product in products:
-            datapoints = session.exec(
-                select(DataPoint).where(DataPoint.product_code == product.product_code).order_by(DataPoint.date)
-            ).all()
+    for product in products:
+        datapoints = get_datapoints_by_product(product)
 
-            datapoint_infos = [DataPointInfo(date=datapoint.date, price=datapoint.price) for datapoint in datapoints]
+        datapoint_infos = [DataPointInfo(date=datapoint.date, price=datapoint.price) for datapoint in datapoints]
 
-            product_info = ProductInfo(
-                id=product.product_code,
-                product_name=product.name,
-                category=product.category,
-                currency=datapoints[0].currency if datapoints else "<N/A>",
-                datapoints=datapoint_infos,
-                url=product.url,
-                website=product.domain,
-            )
+        product_info = ProductInfo(
+            id=product.product_code,
+            product_name=product.name,
+            category=product.category,
+            currency=datapoints[0].currency if datapoints else "<N/A>",
+            datapoints=datapoint_infos,
+            url=product.url,
+            website=product.domain,
+        )
 
-            product_infos.append(product_info)
+        product_infos.append(product_info)
 
-        return product_infos
+    return product_infos
 
 
 def get_all_products_grouped_by_domains(select_only_active: bool = False) -> list[list[Product]]:
