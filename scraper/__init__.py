@@ -7,7 +7,7 @@ from .clean_data import clean_datapoints
 from .delete_data import delete
 from .reset_data import reset
 from .search_data import search
-from .print_products import print_latest_datapoints, print_all_products
+from .print_products import print_latest_datapoints, print_all_products, list_products_with_filters
 from .format import Format
 import scraper.database as db
 

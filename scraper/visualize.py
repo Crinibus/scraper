@@ -19,8 +19,12 @@ def visualize_data(
 
     master_products = get_master_products()
 
+    if not master_products:
+        print("No products saved")
+        return
+
     if compare:
-        compare_products(master_products, ids, names, categories, only_up_to_date)
+        compare_products(master_products, ids, names, categories, only_up_to_date, show_all)
         return
 
     if show_all:
@@ -33,6 +37,8 @@ def visualize_data(
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {category} - {status_of_master_product}"
             show_products(master_product.products, title)
+        else:
+            print("No products found with category/categories")
 
     if ids:
         for product in get_products_with_ids(master_products, ids, only_up_to_date):
@@ -40,6 +46,8 @@ def visualize_data(
             product_name = product.product_name.upper()
             title = f"Price(s) of {product_name} - {status_of_product}"
             show_product(product, title)
+        else:
+            print("No products found with id(s)")
 
     if names:
         for master_product in get_master_products_with_names(master_products, names, only_up_to_date):
@@ -47,10 +55,17 @@ def visualize_data(
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {status_of_master_product}"
             show_products(master_product.products, title)
+        else:
+            print("No products found with name(s)")
 
 
 def compare_products(
-    master_products: tuple[MasterProduct], ids: list[str], names: list[str], categories: list[str], only_up_to_date: bool
+    master_products: tuple[MasterProduct],
+    ids: list[str],
+    names: list[str],
+    categories: list[str],
+    only_up_to_date: bool,
+    show_all: bool,
 ) -> None:
     master_products_with_names = get_master_products_with_names(master_products, names, only_up_to_date)
     products_with_names = get_products_from_master_products(master_products_with_names)
@@ -62,10 +77,17 @@ def compare_products(
 
     products_to_compare = [*products_with_ids, *products_with_names, *products_with_categories]
 
+    if show_all:
+        products_to_compare = get_products_from_master_products(master_products)
+
+    if not products_to_compare:
+        print("No products found to compare")
+        return
+
     product_ids = [product.id for product in products_to_compare]
     product_ids_string = ", ".join(product_ids)
-
-    show_products(products_to_compare, f"Comparing products with ids: {product_ids_string}")
+    title_ = product_ids_string[:100] + " ..." if len(product_ids_string) > 100 else product_ids_string
+    show_products(products_to_compare, f"Comparing products with ids: {title_}")
 
 
 def show_master_products(master_products: tuple[MasterProduct], only_up_to_date: bool) -> None:
@@ -77,6 +99,8 @@ def show_master_products(master_products: tuple[MasterProduct], only_up_to_date:
         show_products(
             master_product.products, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}"
         )
+    else:
+        print("No products found")
 
 
 def show_product(product: ProductInfo, title: str) -> None:
@@ -91,8 +115,11 @@ def show_products(products: list[ProductInfo], title: str) -> None:
             product,
             name_format="%website - %name - %id",
         )
-    config_figure(fig, title)
-    fig.show()
+
+    num_products = len(products)
+
+    config_figure(fig, title, num_products)
+    fig.show(config={"scrollZoom": True})
 
 
 def get_master_products() -> tuple[MasterProduct]:
@@ -157,14 +184,30 @@ def get_products_from_master_products(master_products: Iterable[MasterProduct]) 
     return [product for master_product in master_products for product in master_product.products]
 
 
-def config_figure(figure: go.Figure, figure_title: str) -> None:
-    figure.update_traces(mode="markers+lines")
+def get_yvalue_for_configure_figure(num_products: int, min_value: int, max_value: int, max_num: int):
+    value = ((num_products / max_num) * (max_value - min_value)) + min_value
+
+    if value > max_value:
+        value = max_value
+    elif value < min_value:
+        value = min_value
+
+    return value
+
+
+def config_figure(figure: go.Figure, figure_title: str, num_products: int) -> None:
+    figure.update_traces(mode="markers+lines", hovertemplate=None)
+
+    y_value = get_yvalue_for_configure_figure(num_products, 0.1, 0.25, 30)
+
     figure.update_layout(
-        title=figure_title,
+        title=dict(text=figure_title),
         xaxis_title="Date",
         yaxis_title="Price",
-        hovermode="x",
+        hovermode="closest",
         separators=".,",
+        legend=dict(orientation="h", y=-y_value, x=0, yref="paper", xref="paper", yanchor="top", xanchor="left"),
+        hoverlabel_namelength=-1,
     )
 
 
