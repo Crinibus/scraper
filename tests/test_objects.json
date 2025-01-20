@@ -37,10 +37,10 @@
       "expected_currency": "DKK"
     },
     "amazon": {
-      "link": "https://www.amazon.com/Sony-WH-1000XM5-Canceling-Headphones-Hands-Free/dp/B09XS7JWHH",
-      "expected_title": "Sony WH-1000XM5 The Best Wireless Noise Canceling Headphones with Auto Noise Canceling Optimizer, Crystal Clear Hands-Free Calling, and Alexa Voice Control, Black",
-      "expected_id": "B09XS7JWHH",
-      "expected_currency": "USD"
+      "link": "https://www.amazon.de/-/en/Google-Pixel-Pro-Smartphone-Obsidian/dp/B0DG9DD9VN",
+      "expected_title": "Google Pixel 9 Pro (512GB, Obsi, EU / UK) + Pixel 9/9 Pro Case, Obsidian",
+      "expected_id": "B0DG9DD9VN",
+      "expected_currency": "EUR"
     },
     "ebay_with_itm": {
       "link": "https://www.ebay.com/itm/265771092654",
