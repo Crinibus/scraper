@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import pytest
 
-from scraper.domains import get_website_name
+from scraper.domains import get_website_name, get_number_string
 
 
 @dataclass
@@ -41,4 +41,25 @@ def test_get_website_name(url: str, setting: UrlSetting, expected: str) -> None:
         keep_www=setting.keep_www,
         keep_subdomain=setting.keep_subdomain,
     )
+    assert result == expected
+
+
+test_price_values = [
+    ("USD 12.40", "12.40"),
+    ("$234.00", "234.00"),
+    ("£345.37", "345.37"),
+    ("486,89 kr", "486,89"),
+    ("$345.37", "345.37"),
+    ("£1345.37", "1345.37"),
+    ("1345,37 DKK", "1345,37"),
+    ("1345.37 DKK", "1345.37"),
+    ("USD 1345.37", "1345.37"),
+    ("USD 10345.37", "10345.37"),
+]
+
+
+@pytest.mark.parametrize("value,expected", test_price_values)
+def test_get_number_string(value: str, expected: str) -> None:
+    result = get_number_string(value)
+
     assert result == expected

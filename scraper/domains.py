@@ -254,9 +254,8 @@ class AmazonHandler(BaseWebsiteHandler):
         return self.request_data.find("span", id="productTitle").text.strip()
 
     def _get_product_price(self) -> float:
-        return float(
-            self.request_data.find("span", class_="a-price").span.text.replace("$", "").replace(",", "").replace(" ", "")
-        )
+        raw_price = self.request_data.find("span", class_="a-price").span.text.replace(",", "").replace(" ", "")
+        return float(get_number_string(raw_price))
 
     def _get_product_currency(self) -> str:
         regex_pattern = "%22currencyCode%22%3A%22(.{3})%22"
@@ -546,6 +545,13 @@ def get_website_handler(url: str) -> BaseWebsiteHandler:
         return None
 
     return website_handler(url)
+
+
+def get_number_string(value: str) -> str:
+    """Return string with only digits, commas (,) and periods (.)"""
+    text_pattern = re.compile(r"[^\d.,]+")
+    result = text_pattern.sub("", value)
+    return result
 
 
 SUPPORTED_DOMAINS: dict[str, BaseWebsiteHandler] = {
