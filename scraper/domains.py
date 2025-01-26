@@ -33,7 +33,7 @@ class BaseWebsiteHandler(ABC):
             self._request_product_data()
             self._get_common_data()
             raw_name = self._get_product_name()
-            name = Config.get_user_product_name(raw_name.lower())
+            name = Config.get_user_product_name(raw_name)
             price = self._get_product_price()
             currency = self._get_product_currency()
             id = self._get_product_id()
