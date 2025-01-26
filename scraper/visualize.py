@@ -32,8 +32,8 @@ def visualize_data(
 
     if categories:
         for master_product in get_master_products_with_categories(master_products, categories, only_up_to_date):
-            product_name = master_product.product_name.upper()
-            category = master_product.category.upper()
+            product_name = master_product.product_name
+            category = master_product.category
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {category} - {status_of_master_product}"
             show_products(master_product.products, title)
@@ -43,7 +43,7 @@ def visualize_data(
     if ids:
         for product in get_products_with_ids(master_products, ids, only_up_to_date):
             status_of_product = get_status_of_product(product)
-            product_name = product.product_name.upper()
+            product_name = product.product_name
             title = f"Price(s) of {product_name} - {status_of_product}"
             show_product(product, title)
         else:
@@ -51,7 +51,7 @@ def visualize_data(
 
     if names:
         for master_product in get_master_products_with_names(master_products, names, only_up_to_date):
-            product_name = master_product.product_name.upper()
+            product_name = master_product.product_name
             status_of_master_product = get_status_of_master_product(master_product)
             title = f"Price(s) of {product_name} - {status_of_master_product}"
             show_products(master_product.products, title)
@@ -96,9 +96,7 @@ def show_master_products(master_products: tuple[MasterProduct], only_up_to_date:
             continue
 
         status_of_master_product = get_status_of_master_product(master_product)
-        show_products(
-            master_product.products, f"Price(s) of {master_product.product_name.upper()} - {status_of_master_product}"
-        )
+        show_products(master_product.products, f"Price(s) of {master_product.product_name} - {status_of_master_product}")
     else:
         print("No products found")
 
