@@ -22,6 +22,10 @@ def print_latest_datapoints(names: list[str], product_codes: list[str], categori
 
 
 def print_latest_datapoints_for_products(products: list[db.Product]):
+    if not products:
+        print("Found no products")
+        return
+
     grouped_products = db.group_products_by_names(products)
 
     for products in grouped_products:
