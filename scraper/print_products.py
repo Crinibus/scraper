@@ -26,7 +26,7 @@ def print_latest_datapoints_for_products(products: list[db.Product]):
 
     for products in grouped_products:
         product_infos = db.get_product_infos_from_products(products)
-        print(product_infos[0].product_name.upper())
+        print(product_infos[0].product_name)
 
         for product_info in product_infos:
             print_latest_datapoint(product_info)
@@ -56,7 +56,7 @@ def print_all_products() -> None:
         return
 
     for category in categories:
-        print(category.upper())
+        print(category)
 
         products = db.get_products_by_categories([category])
 
@@ -89,7 +89,7 @@ def list_products_with_filters(names: list[str] | None, product_codes: list[str]
     sorted_categories = sorted(categories)
 
     for category in sorted_categories:
-        print(category.upper())
+        print(category)
 
         products_with_category = [product for product in products_by_filters if product.category == category]
 
@@ -100,7 +100,7 @@ def list_products_with_filters(names: list[str] | None, product_codes: list[str]
 
 def list_grouped_products(grouped_products: list[list[Product]]) -> None:
     for products in grouped_products:
-        print(f"  > {products[0].name.upper()}")
+        print(f"  > {products[0].name}")
         for product in products:
             is_active_marker = f"{CHECK_MARK} " if product.is_active else ""
             print(f"    - {is_active_marker}{product.domain.upper()} - {product.product_code}")
