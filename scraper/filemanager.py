@@ -56,12 +56,13 @@ class Config:
 
     @staticmethod
     def get_user_product_name(product_name: str) -> str:
+        product_name_lowercase = product_name.lower()
         user_product_names = Config.get_section_by_name("ChangeName")
 
         for key in Config.get_key_values(user_product_names):
             key_list = user_product_names[key].split(",")
             value_key = f'value{key.strip("key")}'
-            if all(elem in product_name for elem in key_list):
+            if all(elem.lower() in product_name_lowercase for elem in key_list):
                 return user_product_names[value_key]
 
         return product_name
